@@ -252,7 +252,7 @@ Kept **separate** from container orchestration. These deploy Solidity contracts 
 mainnet with Foundry. Both default to a gas-free dry run; pass `broadcast` to spend real gas.
 
 **Ecosystem core** — FakeUSDT + `AIMarketEscrow` + `AIMarketCapabilityNFT`
-(ACEX is intentionally excluded — the audit flagged AuditPool TWAP + PulseAMM as HIGH):
+(Agent Capital Exchange is intentionally excluded — the audit flagged AuditPool TWAP + PulseAMM as HIGH):
 
 ```bash
 ./scripts/deploy_ecosystem_base.sh            # dry-run (no gas)

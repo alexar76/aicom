@@ -63,4 +63,4 @@ doesn't burn (only gas leaks, and Base gas is sub-cent).
 ## Mainnet (Base) — same, with real funds
 Identical flow with `RPC_URL=https://mainnet.base.org CHAIN_ID=8453` and the real ~$20
 burner. Audit posture: deploy only the audited-safe set (lottery + escrow + NFT +
-FakeUSDT); **do not** deploy ACEX with value (audit flagged AuditPool TWAP + PulseAMM).
+FakeUSDT); **do not** deploy Agent Capital Exchange with value (audit flagged AuditPool TWAP + PulseAMM).

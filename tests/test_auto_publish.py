@@ -137,3 +137,33 @@ def test_working_app_publish_uses_compose_view_url(tmp_path, monkeypatch):
     )
     saved = json.loads((tmp_path / "state" / "prod-x" / "auto_publish.json").read_text())
     assert saved["published_url"] == out["published_url"]
+
+
+def test_deploy_tokens_go_by_env_not_argv(tmp_path, monkeypatch):
+    """An argv token is readable by every process on the host (ps, /proc/<pid>/cmdline). The CLIs read
+    VERCEL_TOKEN / NETLIFY_AUTH_TOKEN from env; Vercel CLI 62.1.0 in the factory image was checked on 2026-11-16."""
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    (tmp_path / "code" / "prod-tok-1").mkdir(parents=True)
+    monkeypatch.setattr(ap, "_product_delivery_profile", lambda _pid: "marketing_landing")
+    seen: list[tuple[list[str], dict[str, str]]] = []
+
+    class Done:
+        returncode, stdout, stderr = 0, "https://x.vercel.app\nWebsite URL: https://x.netlify.app\n", ""
+
+    def fake_run(cmd, **kw):
+        seen.append((list(cmd), dict(kw.get("env") or {})))
+        return Done()
+
+    monkeypatch.setattr(ap.subprocess, "run", fake_run)
+    monkeypatch.setattr(ap, "_which_vercel", lambda: "/usr/bin/vercel")
+    monkeypatch.setattr(ap.shutil, "which", lambda name: f"/usr/bin/{name}")
+    for provider, var in (("vercel", "VERCEL_TOKEN"), ("netlify", "NETLIFY_AUTH_TOKEN")):
+        monkeypatch.setattr(ap, "_read_general",
+                            lambda p=provider: {"auto_publish_enabled": True, "auto_publish_provider": p})
+        monkeypatch.setenv(var, "tok-secret-123")
+        seen.clear()
+        ap.try_publish_after_devops("prod-tok-1")
+        assert seen, provider
+        cmd, env = seen[-1]
+        assert not any("tok-secret-123" in part for part in cmd), (provider, cmd)
+        assert env.get(var) == "tok-secret-123", provider

@@ -190,6 +190,30 @@ _assert_python_bug_gate() {
   return 1
 }
 
+# Code scan (scripts/code_scan_gate.sh): what this push brings in, compared with what the remote has —
+# our Vulnetix-class rules plus Semgrep's registry rules. Old findings never block. Override: SKIP_CODE_SCAN=1
+_assert_code_scan_gate() {
+  local base="$1"
+  if [[ "${SKIP_CODE_SCAN:-0}" == "1" ]]; then
+    echo "  ⚠️  SKIP_CODE_SCAN=1 — not scanning the change for Vulnetix-class bugs / Semgrep rules"
+    return 0
+  fi
+  local rc=0
+  bash "$ROOT/scripts/code_scan_gate.sh" "$BRANCH" "$base" >/tmp/aicom-code-scan.log 2>&1 || rc=$?
+  if [[ "$rc" -eq 0 ]]; then
+    echo "  ✓ code scan clean (Vulnetix-class rules + Semgrep, change since ${base:0:10})"
+    return 0
+  fi
+  if [[ "$rc" -eq 2 ]]; then
+    echo "  ⚠️  code scan partly skipped: $(grep -E '⚠️|could not|no base' /tmp/aicom-code-scan.log | head -2 | tr '\n' ' ')"
+    return 0
+  fi
+  echo "  ✗ code scan found new issues in ${BRANCH}:" >&2
+  tail -60 /tmp/aicom-code-scan.log >&2
+  echo "  (fix them, accept one in code with '# vx-ok: <reason>' / '# nosemgrep: <rule>', or SKIP_CODE_SCAN=1)" >&2
+  return 1
+}
+
 _assert_clean_commit_trailers() {
   local url="$1"
   if [[ "${SKIP_TRAILER_GATE:-0}" == "1" ]]; then
@@ -284,6 +308,7 @@ _push_direct() {
     _assert_clean_commit_trailers "$url"
     _assert_satellite_links_resolve
     _assert_python_bug_gate
+    _assert_code_scan_gate "$remote"
     local pr_description
     # Git push options cannot contain literal LF; Gitea decodes escaped newlines.
     pr_description="$(python3 - "$PR_BODY_FILE" <<'PY'
@@ -312,6 +337,7 @@ PY
   _assert_clean_commit_trailers "$url"
   _assert_satellite_links_resolve
   _assert_python_bug_gate
+  _assert_code_scan_gate "$remote"
   git_t push "$url" "${BRANCH}:${BRANCH}"
   remote="$(_remote_head "$url" || true)"
   if [[ "$remote" != "$local_head" ]]; then

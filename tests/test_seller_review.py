@@ -80,7 +80,7 @@ def test_a_new_passage_is_filed_with_his_window_and_blocks():
     assert code == 2 and "BLOCKED" in out and "waiting for YuTao" in out
     method, url, body = svc.calls[-1]
     assert method == "POST" and url.endswith("/requests")
-    assert body["not_before"] == sr.iso(NOW + timedelta(hours=72))
+    assert body["not_before"] == sr.iso(NOW + timedelta(hours=YUTAO["window_hours"]))
     assert body["seller"] == "yutao" and body["source"] == "blog/post"
 
 
@@ -135,3 +135,22 @@ def test_scan_reports_without_contacting_anyone(tmp_path, capsys, monkeypatch):
     monkeypatch.setattr(sr, "_http", lambda *a, **k: pytest.fail("scan must not call the service"))
     assert sr.main(["scan", str(f)]) == 2
     assert "YuTao" in capsys.readouterr().out
+
+
+def test_a_seller_who_asked_for_mail_gets_a_notice_for_a_new_passage_only():
+    mailed = {**YUTAO, "notify": "email", "greeting": "YuTao"}
+    svc = FakeService()
+    code, out = run(svc, items=[(mailed, ITEMS[0][1])])
+    rid = sr.review_id("yutao", ITEMS[0][1])
+    assert code == 2 and "NOTIFY" in out and rid in out and "Hi YuTao" in out
+    assert "@" not in out  # the address stays off the repository and the logs
+    code, out = run(svc, items=[(mailed, ITEMS[0][1])])
+    assert code == 2 and "NOTIFY" not in out  # already filed: no second notice
+    quiet = {**YUTAO, "notify": None}
+    assert "NOTIFY" not in run(FakeService(), items=[(quiet, ITEMS[0][1])])[1]  # only if the seller asked
+
+
+def test_the_registry_never_lets_his_silence_count():
+    reg = sr.load_registry()
+    assert reg["sellers"]["yutao"]["silence_is_consent"] is False
+    assert "@" not in sr.REGISTRY.read_text(encoding="utf-8")

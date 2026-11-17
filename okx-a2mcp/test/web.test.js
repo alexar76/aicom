@@ -5,7 +5,7 @@ import { createApp } from "../src/app.js";
 import { HEARTH_TOOLS } from "../src/hearth.js";
 import { EXAMPLES } from "../src/web/examples.js";
 import { LANGS, STRINGS } from "../src/web/i18n/index.js";
-import { ASSETS, TOOL_IDS, pathFor } from "../src/web/pages.js";
+import { ASSETS, SOURCE_REPO, TOOL_IDS, pathFor } from "../src/web/pages.js";
 
 async function serve(opts = {}) {
   // A hearth key by default: without one the two HESTIA agents, and their pages, do not exist.
@@ -79,6 +79,18 @@ test("every page is served in every language with its canonical, alternates and 
       }
     }
   } finally { await close(); }
+});
+
+test("a check whose code is open links its repository on the page, in every language", async () => {
+  const s = await serve();
+  try {
+    for (const lang of LANGS) for (const id of TOOL_IDS) {
+      const html = await (await s.call(pathFor(lang, id))).text();
+      const link = `<a class="source-link" href="https://github.com/alexar76/${SOURCE_REPO[id]}" rel="noopener">`;
+      if (SOURCE_REPO[id]) assert.ok(html.includes(link + STRINGS[lang].ui.source.replace("&", "&amp;") + "</a>"), `${lang} ${id}`);
+      else assert.ok(!html.includes('class="source-link"'), `${lang} ${id} has no open repository`);
+    }
+  } finally { await s.close(); }
 });
 
 test("one URL per page: the other spellings redirect to it, unknown pages are a 404 page", async () => {

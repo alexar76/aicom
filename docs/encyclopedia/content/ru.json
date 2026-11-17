@@ -91,7 +91,7 @@
           [
             "Pulse Terminal",
             "[magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)",
-            "Дашборд ACEX капитальных рынков"
+            "Дашборд Agent Capital Exchange капитальных рынков"
           ],
           [
             "ARGUS",
@@ -364,10 +364,10 @@
       ]
     },
     {
-      "title": "Глава VI — Туманность капитала (ACEX, Lottery, Chain)",
+      "title": "Глава VI — Туманность капитала (Agent Capital Exchange, Lottery, Chain)",
       "lead": "Где agent IPO встречают лотерейные оракулы и USDC течёт через верифицированные смарт-контракты на Base.",
       "paragraphs": [
-        "**ACEX**: Agent Listing Protocol, CapShares, lending pool, PulseAMM, Proof-of-Audit, PulseDistributor. UI: Pulse Terminal `/pulse/`.",
+        "**Agent Capital Exchange**: Agent Listing Protocol, CapShares, lending pool, PulseAMM, Proof-of-Audit, PulseDistributor. UI: Pulse Terminal `/pulse/`.",
         "**Agent Lottery** — Platon + Chronos + Lumen для кинематографичных on-chain розыгрышей. Машинный UBI: десятина Hub → пул лотереи.",
         "**Живой Base MAINNET** (chainId 8453) — реальный Circle USDC. Реестр: `config/deployments/base-mainnet.json`. Журнал: `docs/onchain-journal.md`."
       ],
@@ -478,7 +478,7 @@
       "lead": "Две обсерватории, где смертные наблюдают, как дышит машинная экономика.",
       "paragraphs": [
         "**Alien Monitor** — 3D-граф экосистемы + AI-ассистент. Режим LIVE: Hub, контракты, агенты, настольные приложения, плагины. Режим UNI: симуляция на Anvil. `./scripts/deploy_alien_monitor.sh` → `/monitor/`.",
-        "**Pulse Terminal** — дашборд ACEX: CapShares, lending, AMM, audit pool. Dev: `npm run dev` → :5199.",
+        "**Pulse Terminal** — дашборд Agent Capital Exchange: CapShares, lending, AMM, audit pool. Dev: `npm run dev` → :5199.",
         "**Factory IQ** на `/iq` — самообучающиеся EV-метрики."
       ]
     },
@@ -486,7 +486,7 @@
       "title": "Глава X — Паутины связей (архитектурные разрезы)",
       "lead": "Три линзы на одну галактику — предложение, спрос и деньги.",
       "paragraphs": [
-        "**Предложение:** Discovery → пайплайн из 13 агентов → подписанные манифесты → авто-листинг на Hub → опциональный ACEX IPO.",
+        "**Предложение:** Discovery → пайплайн из 13 агентов → подписанные манифесты → авто-листинг на Hub → опциональный Agent Capital Exchange IPO.",
         "**Спрос:** ARGUS / десктоп / виджет / меш → поиск на Hub → USDC-канал → invoke → квитанция → settle.",
         "**Интеграции:** Попробуй перед покупкой. Agent IPO: `python scripts/demo_agent_ipo.py`. UNI: `./scripts/verify_uni_ecosystem.sh`."
       ],
@@ -536,7 +536,7 @@
       "paragraphs": [
         "Демо AICOM на **Base mainnet** (chainId 8453) с **реальным Circle USDC**. `AIFACTORY_CRYPTO_ENABLED=1`, адреса из `config/deployments/base-mainnet.json`.",
         "**Порядок деплоя:** Factory → Hub → Mesh → Alien Monitor. Оракулы: `./scripts/setup-oracles-platon-on-host.sh`.",
-        "**E2E пройден:** escrow channel, agent payment, lottery round (~2 USDC + ETH возвращены). ACEX deployed + verified; value-testing gated на KI-2…KI-5.",
+        "**E2E пройден:** escrow channel, agent payment, lottery round (~2 USDC + ETH возвращены). Agent Capital Exchange deployed + verified; value-testing gated на KI-2…KI-5.",
         "**Честность:** цифры UNI/Anvil — игровые деньги, не Base mainnet."
       ],
       "pre": "./scripts/deploy_ecosystem.sh\npython scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083\npython scripts/demo_agent_ipo.py"

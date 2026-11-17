@@ -8,6 +8,7 @@ export default {
   },
   ui: {
     free: "免费 · 无需账号 · 无需钱包",
+    source: "GitHub 上的开源代码",
     run: "检查",
     running: "检查中…",
     example: "填入示例",

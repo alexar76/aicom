@@ -99,7 +99,7 @@ Those six labs are **not** LIVE federation peers. Platon on the UNI map is an ob
 | Alien Monitor **UNI** | [monitor-uni.modelmarket.dev](https://monitor-uni.modelmarket.dev/) | 3D graph of the bubble · `ALIEN_MODE=universe` (factory `/monitor/` redirects here) |
 | Alien Monitor **LIVE** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | 3D graph of live money · `ALIEN_MODE=real` |
 | Production metrics | [ecosystem-status API](https://magic-ai-factory.com/api/public/ecosystem-status) · [docs](../production-metrics.md) | RPS, latency, uptime, incidents |
-| Pulse (ACEX) | [pulse.modelmarket.dev](https://pulse.modelmarket.dev/) · [factory /pulse/](https://magic-ai-factory.com/pulse/) | Capital markets UI |
+| Pulse (Agent Capital Exchange) | [pulse.modelmarket.dev](https://pulse.modelmarket.dev/) · [factory /pulse/](https://magic-ai-factory.com/pulse/) | Capital markets UI |
 | ARGUS | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Human install + landing |
 | **DIOSCURI** | [alexar76.github.io/dioscuri](https://alexar76.github.io/dioscuri/) · Telegram · Discord | Twin community agents — **[integration EN](./dioscuri-integration.md)** · **[RU](./dioscuri-integration-ru.md)** · **[ES](./dioscuri-integration-es.md)** · **[FR](./dioscuri-integration-fr.md)** · **[ZH](./dioscuri-integration-zh.md)** |
 | **THEOROS** | [alexar76.github.io/theoros](https://alexar76.github.io/theoros/) · Discord `#the-canon` | Agent Sovereignty Canon — weekly column via DIOSCURI — **[integration EN](./theoros-integration.md)** |
@@ -281,7 +281,7 @@ Analyst auto-learns layers from `STATION_CATALOG` at request time (no sync neede
 | **ATLAS** | `atlas/` | [atlas](https://github.com/alexar76/atlas) | [atlas/docs/GUIDE.md](https://github.com/alexar76/atlas/blob/main/docs/GUIDE.md) · [atlas.modelmarket.dev](https://atlas.modelmarket.dev/) |
 | **ARGUS-3** | `argus/` | [argus](https://github.com/alexar76/argus) | [wp §3.7](./whitepaper/en.md#37-argus-3) · [wiki](https://github.com/alexar76/argus/wiki) |
 | **Alien Monitor** | `alien-monitor/` | [alien-monitor](https://github.com/alexar76/alien-monitor) | [wp §3.8](./whitepaper/en.md#38-alien-monitor) · [UNI / LIVE](../uni-and-live.md) |
-| **ACEX** | `acex/` | [acex](https://github.com/alexar76/acex) | [wp §3.10](./whitepaper/en.md#310-acex--agent-capital-exchange) |
+| **Agent Capital Exchange** | `acex/` | [acex](https://github.com/alexar76/acex) | [wp §3.10](./whitepaper/en.md#310-acex--agent-capital-exchange) |
 | **Lottery** | `lottery/` | [lottery](https://github.com/alexar76/lottery) | [wp §3.11](./whitepaper/en.md#311-agent-lottery) |
 | **DIOSCURI** | `dioscuri/` | [dioscuri](https://github.com/alexar76/dioscuri) | [landing](https://alexar76.github.io/dioscuri/) · [integration](./dioscuri-integration.md) · [setup](https://github.com/alexar76/dioscuri/blob/main/docs/setup.md) |
 | **THEOROS** | `theoros/` | [theoros](https://github.com/alexar76/theoros) | [landing](https://alexar76.github.io/theoros/) · [integration](./theoros-integration.md) · [CANON.md](https://github.com/alexar76/theoros/blob/main/CANON.md) |
@@ -307,7 +307,7 @@ Visual C4 + deployment: [ecosystem-architecture.md](../ecosystem-architecture.md
 Generated from scripts/satellite-map.yaml — do not hand-edit. GitHub org: alexar76.
 Run: python3 scripts/sync_knowledge_base.py --write (55 components).
 
-- acex: ACEX — Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
+- acex: Agent Capital Exchange: listings, CapShares, lending, and AMM for AI agents. · https://alexar76.github.io/aicom/
 - ai-service-mesh: AI Service Mesh — autonomous agent discovery, verification, escrow, and payments. · https://service-mesh.modelmarket.dev/
 - aicom (profile README): AI-Factory — autonomous pipeline that designs, builds, tests, and publishes products. · https://magic-ai-factory.com/
 - aicom-landing: AI landing generator — one prompt → self-contained HTML in ~30-60s (MIT, 20 style presets). · https://magic-ai-factory.com/landing-page-generation/
@@ -353,7 +353,7 @@ Run: python3 scripts/sync_knowledge_base.py --write (55 components).
 - oracles: Verifiable AI-economy oracles — 17 signed capabilities (Platon randomness, Chronos VDF, Lumen reputation, Turing, Fourier and more) on shared oracle-core. · https://oracles.modelmarket.dev/
 - platon: Platon UMBRAL — educational cave app for oracle #1: 32D dynamical shadow oracle with live AIMarket backend and holographic cockpit. · https://oracles.modelmarket.dev/platon/umbral/
 - profile (repo alexar76) (profile README): GitHub profile README — ecosystem map for alexar76. · https://github.com/alexar76
-- pulse-terminal: Pulse Terminal — ACEX capital markets dashboard with live agent pricing. · https://magic-ai-factory.com/pulse/
+- pulse-terminal: Pulse Terminal — Agent Capital Exchange capital markets dashboard with live agent pricing. · https://magic-ai-factory.com/pulse/
 - signal-hunt: Federation-native investigation game and educational laboratory over real Hub telemetry: observe measured symptoms, commit a diagnosis, prove it with a reproducible Brier-score verdict. Live data only — no seeded anomalies. · https://hunt.modelmarket.dev
 - skopos: Fleet observability dashboard, and the CONDUCTOR of the remediation loop: it receives MOMUS's signed ticket over A2A, drives the AI-Factory to author a patch, asks MOMUS to re-test as the deploy gate, then signs a DeployOrder and publishes it for the addressed node agent to claim. It orders deploys; it never executes one. · https://skopos.modelmarket.dev
 - symmartys: Public-record facts and tools for agents that trade: EU VAT validity (VIES) with the consultation number, legal entities (GLEIF LEI), national company registers (Norway, France, Czech Republic, Finland), EU EORI numbers, domain registrations (RDAP), ECB reference rates, sanctions-list lookups (OFAC SDN, EU, and the UK list with the UN designations), business days in ~250 countries and on markets, Bitcoin-anchored timestamps (OpenTimestamps), web pages captured as evidence, and timers that call an agent back with a signed event — at a time or as a dead man's switch. Each answer is signed with its source, fetch time and SHA-256. Replaced the legacy runtime on 2026-10-29 at https://modelmarket.dev/providers/symmartys with the existing signing identity and data. The public landing and API are at https://symmartys.modelmarket.dev/ with HTTPS and automatic certificate renewal; the existing federation route remains canonical. · https://symmartys.modelmarket.dev/ · port 9351

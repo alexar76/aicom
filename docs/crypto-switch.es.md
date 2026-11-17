@@ -12,7 +12,7 @@ operando — simplemente nunca toca dinero.
 
 El monitor muestra el estado **real**, nunca uno falso:
 
-| Modo | Contexto de cadena | Nodos on-chain (chain · escrow · NFT · ACEX · lottery) |
+| Modo | Contexto de cadena | Nodos on-chain (chain · escrow · NFT · Agent Capital Exchange · lottery) |
 |------|--------------------|----------------------------------------------------------|
 | **TEST** | nunca | simulado por script |
 | **UNI** | **siempre** (Anvil local privado — nunca Base) | en vivo contra la cadena local |

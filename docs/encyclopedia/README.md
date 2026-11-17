@@ -29,7 +29,7 @@ Premium storybook-style guide to the AICOM federated autonomous-agent economy.
 4. AIMarket Hub (protocol, plugins, invoke flow)
 5. Oracle constellation (×17 math)
 6. ARGUS — human touchpoint
-7. ACEX, Lottery, Base mainnet contracts
+7. Agent Capital Exchange, Lottery, Base mainnet contracts
 8. Desktop SKUs, widget, SDKs
 9. AI Service Mesh
 10. Alien Monitor & Pulse Terminal

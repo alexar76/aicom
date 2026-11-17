@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to **AWR — Agent Work Receipt**. This file tracks the *specification* and
+All notable changes to **AWR — AIMarket Work Receipt**. This file tracks the *specification* and
 the artefacts that make it checkable; each implementation's own history lives in its
 directory.
 
@@ -15,6 +15,11 @@ document under the new one — which is why `awrVersion` is inside the signed by
 intermediary cannot re-interpret a document under a different version's rules (§3.1).
 
 ---
+
+## Unreleased
+
+- The acronym now expands as **AIMarket Work Receipt** in the text (it said "Agent Work Receipt", a generic phrase
+  an unrelated project also uses). No identifier, field or signature changes.
 
 ## Unreleased — 2026-08-02 (security fixes; W3C VC interoperability)
 

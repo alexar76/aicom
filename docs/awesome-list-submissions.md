@@ -21,7 +21,7 @@ Canonical public URLs:
 | AIMarket Protocol | https://github.com/alexar76/aimarket-protocol | `/.well-known/ai-market.json` |
 | AIMarket Hub | https://github.com/alexar76/aimarket-hub | https://modelmarket.dev |
 | Hub plugins (incl. MCP packager) | https://github.com/alexar76/aimarket-plugins | https://modelmarket.dev/plugins/demo |
-| ACEX | https://github.com/alexar76/acex | Capital markets for agents |
+| Agent Capital Exchange | https://github.com/alexar76/acex | Capital markets for agents |
 | AI Service Mesh | https://github.com/alexar76/ai-service-mesh | Web3 agent discovery / escrow |
 | AIMarket Courses (10 academies) | https://github.com/alexar76/aimarket-courses | https://alexar76.github.io/aimarket-courses/ |
 | Alien Monitor | https://github.com/alexar76/alien-monitor | 3D observability |
@@ -159,6 +159,6 @@ GH_TOKEN=$GH_PAT gh repo fork vonzosten/awesome-LangGraph --clone
 
 ## Maintainer notes (if asked)
 
-- **License:** MIT (factory, agent, sdks, hub, plugins) · Apache-2.0 (ACEX contracts).
+- **License:** MIT (factory, agent, sdks, hub, plugins) · Apache-2.0 (Agent Capital Exchange contracts).
 - **Maturity:** Pre-mainnet for on-chain rails; hub and SDK usable on testnet / self-host.
-- **Relationship:** AI-Factory **produces** capabilities; AIMarket **distributes and monetizes** them; ACEX **capital-markets layer** for agent listings.
+- **Relationship:** AI-Factory **produces** capabilities; AIMarket **distributes and monetizes** them; Agent Capital Exchange **capital-markets layer** for agent listings.

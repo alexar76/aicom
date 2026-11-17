@@ -187,6 +187,8 @@ scripts/install-claude-code-deepseek.sh
 !.cursor/rules/**
 !.cursor/skills/
 !.cursor/skills/**
+# Kilo Code local plugin/config — never public factory or satellite content.
+.kilo/
 .idea/
 .vscode/
 *.swp
@@ -315,6 +317,11 @@ artifacts/quality-audit-2026-10-24/
 artifacts/admin-vps-migration-audit-2026-11-10/
 artifacts/external-growth-openings-2026-11-10/
 artifacts/histor-migration-2026-11-10/
+artifacts/external-backlinks-2026-11-16/
+artifacts/external-code-audit-2026-11-16/
+artifacts/independent-links-2026-11-16/
+artifacts/x402-external-calls-2026-11-16/
+artifacts/x402-wallet-82ce-2026-11-16/
 # Prepared npm tarballs (2026-11-03): up to 13 MB each; SHA256SUMS and README stay tracked.
 artifacts/npm-release-2026-11-03/*.tgz
 artifacts/npm-release-argus3-0.3.6-2026-11-10/

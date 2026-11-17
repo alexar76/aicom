@@ -1,0 +1,4135 @@
+[
+ {
+  "ghsa": "GHSA-4mvj-m6j5-pmf7",
+  "cve": "CVE-2026-71428",
+  "cwes": [
+   "CWE-601",
+   "CWE-918"
+  ],
+  "pkg": [
+   "unstructured"
+  ],
+  "published": "2026-09-03",
+  "repos": [
+   "Unstructured-IO/unstructured"
+  ],
+  "py_files": 8,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 1,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-h47f-gmjp-m7rr",
+  "cve": "CVE-2026-52776",
+  "cwes": [
+   "CWE-184",
+   "CWE-918"
+  ],
+  "pkg": [
+   "compliance-trestle"
+  ],
+  "published": "2026-08-12",
+  "repos": [
+   "oscal-compass/compliance-trestle"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-xx4j-w367-7247",
+  "cve": "CVE-2026-55571",
+  "cwes": [
+   "CWE-285",
+   "CWE-306"
+  ],
+  "pkg": [
+   "djust"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "djust-org/djust"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-52cq-7v8r-62c6",
+  "cve": null,
+  "cwes": [
+   "CWE-20",
+   "CWE-306"
+  ],
+  "pkg": [
+   "gmaps-mcp"
+  ],
+  "published": "2026-05-08",
+  "repos": [
+   "arthurkatcher/google-maps-mcp",
+   "arthurkatcher/google-maps-mcp"
+  ],
+  "py_files": 5,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-jqmf-mx4f-hfr6",
+  "cve": null,
+  "cwes": [
+   "CWE-77",
+   "CWE-78",
+   "CWE-94",
+   "CWE-116",
+   "CWE-918"
+  ],
+  "pkg": [
+   "vibe-trading-ai"
+  ],
+  "published": "2026-10-02",
+  "repos": [
+   "HKUDS/Vibe-Trading"
+  ],
+  "py_files": 25,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-306-OPEN-WITHOUT-KEY": 1
+  },
+  "details": [
+   "HKUDS/Vibe-Trading:agent/api_server.py:303 VX-306-OPEN-WITHOUT-KEY require_auth"
+  ]
+ },
+ {
+  "ghsa": "GHSA-8v53-23mx-hcf9",
+  "cve": "CVE-2023-0509",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "pyload-ng"
+  ],
+  "published": "2023-01-27",
+  "repos": [
+   "pyload/pyload"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-6ww7-3frv-cqxh",
+  "cve": "CVE-2026-78682",
+  "cwes": [
+   "CWE-441",
+   "CWE-918"
+  ],
+  "pkg": [
+   "nltk"
+  ],
+  "published": "2026-09-08",
+  "repos": [
+   "nltk/nltk"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-q855-8rh5-jfgq",
+  "cve": null,
+  "cwes": [
+   "CWE-306",
+   "CWE-352"
+  ],
+  "pkg": [
+   "ha-mcp"
+  ],
+  "published": "2026-07-07",
+  "repos": [
+   "homeassistant-ai/ha-mcp"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-gfq8-hmph-9gjv",
+  "cve": "CVE-2026-55533",
+  "cwes": [
+   "CWE-287",
+   "CWE-306"
+  ],
+  "pkg": [
+   "PraisonAI"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-v2f8-6655-7grj",
+  "cve": null,
+  "cwes": [
+   "CWE-200",
+   "CWE-306",
+   "CWE-434",
+   "CWE-862",
+   "CWE-942"
+  ],
+  "pkg": [
+   "vibe-trading-ai"
+  ],
+  "published": "2026-10-02",
+  "repos": [
+   "HKUDS/Vibe-Trading"
+  ],
+  "py_files": 25,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 1,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-306-OPEN-WITHOUT-KEY": 1
+  },
+  "details": [
+   "HKUDS/Vibe-Trading:agent/api_server.py:303 VX-306-OPEN-WITHOUT-KEY require_auth"
+  ]
+ },
+ {
+  "ghsa": "GHSA-q986-4x7x-gx39",
+  "cve": "CVE-2026-57443",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "scbe-aethermoore"
+  ],
+  "published": "2026-09-25",
+  "repos": [
+   "issdandavis/SCBE-AETHERMOORE",
+   "issdandavis/SCBE-AETHERMOORE"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-h5cg-53g7-gqjw",
+  "cve": "CVE-2024-27758",
+  "cwes": [
+   "CWE-306",
+   "CWE-358",
+   "CWE-913"
+  ],
+  "pkg": [
+   "rpyc"
+  ],
+  "published": "2024-03-06",
+  "repos": [
+   "tomerfiliba-org/rpyc",
+   "tomerfiliba-org/rpyc"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-6529-c226-h328",
+  "cve": "CVE-2026-77261",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "sooperset/mcp-atlassian"
+  ],
+  "py_files": 33,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rg5q-pp8p-f7jm",
+  "cve": "CVE-2026-55537",
+  "cwes": [
+   "CWE-367",
+   "CWE-705",
+   "CWE-918"
+  ],
+  "pkg": [
+   "PraisonAI"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-h9f9-h6gm-wc85",
+  "cve": "CVE-2026-55786",
+  "cwes": [
+   "CWE-78",
+   "CWE-306"
+  ],
+  "pkg": [
+   "flyto-core"
+  ],
+  "published": "2026-07-06",
+  "repos": [
+   "flytohub/flyto-core"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-62rc-f4v9-h543",
+  "cve": "CVE-2026-1778",
+  "cwes": [
+   "CWE-295",
+   "CWE-599"
+  ],
+  "pkg": [
+   "sagemaker",
+   "sagemaker"
+  ],
+  "published": "2026-02-02",
+  "repos": [
+   "aws/sagemaker-python-sdk",
+   "aws/sagemaker-python-sdk"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-2wqp-q3c6-ccj5",
+  "cve": "CVE-2026-115886",
+  "cwes": [
+   "CWE-470",
+   "CWE-918"
+  ],
+  "pkg": [
+   "mlflow"
+  ],
+  "published": "2026-10-23",
+  "repos": [
+   "mlflow/mlflow"
+  ],
+  "py_files": 4,
+  "pre_any": 2,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-306-OPEN-WITHOUT-KEY": 2
+  },
+  "details": [
+   "mlflow/mlflow:mlflow/utils/validation.py:1090 VX-306-OPEN-WITHOUT-KEY _validate_gateway_secret_auth_config",
+   "mlflow/mlflow:mlflow/utils/validation.py:1112 VX-306-OPEN-WITHOUT-KEY _validate_gateway_secret_value"
+  ]
+ },
+ {
+  "ghsa": "GHSA-hvfh-5mj3-5f3j",
+  "cve": "CVE-2026-45019",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "chainlit"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "Chainlit/chainlit"
+  ],
+  "py_files": 10,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-c5cp-vx83-jhqx",
+  "cve": "CVE-2026-21445",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "langflow-base",
+   "langflow"
+  ],
+  "published": "2026-01-02",
+  "repos": [
+   "langflow-ai/langflow"
+  ],
+  "py_files": 15,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-2jhm-w3mp-jcwr",
+  "cve": "CVE-2026-12372",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "nltk"
+  ],
+  "published": "2026-08-10",
+  "repos": [
+   "nltk/nltk"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-7gf7-7wx4-mxmw",
+  "cve": "CVE-2010-4237",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "mercurial"
+  ],
+  "published": "2022-04-21",
+  "repos": [
+   "dscho/hg",
+   "dscho/hg"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-vwmf-pq79-vjvx",
+  "cve": "CVE-2026-33017",
+  "cwes": [
+   "CWE-94",
+   "CWE-95",
+   "CWE-306"
+  ],
+  "pkg": [
+   "langflow"
+  ],
+  "published": "2026-03-17",
+  "repos": [
+   "langflow-ai/langflow"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-gfc2-9qmw-w7vh",
+  "cve": "CVE-2026-34839",
+  "cwes": [
+   "CWE-200",
+   "CWE-306",
+   "CWE-942"
+  ],
+  "pkg": [
+   "Glances"
+  ],
+  "published": "2026-04-21",
+  "repos": [
+   "nicolargo/glances"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-73cv-556c-w3g6",
+  "cve": "CVE-2026-49257",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "mcp-pinot-server"
+  ],
+  "published": "2026-06-26",
+  "repos": [
+   "startreedata/mcp-pinot"
+  ],
+  "py_files": 9,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-75mc-3pjc-727q",
+  "cve": "CVE-2023-50263",
+  "cwes": [
+   "CWE-200",
+   "CWE-306"
+  ],
+  "pkg": [
+   "nautobot",
+   "nautobot"
+  ],
+  "published": "2023-12-13",
+  "repos": [
+   "nautobot/nautobot",
+   "nautobot/nautobot",
+   "nautobot/nautobot"
+  ],
+  "py_files": 9,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-cc6x-8cc7-9953",
+  "cve": "CVE-2024-51493",
+  "cwes": [
+   "CWE-306",
+   "CWE-620"
+  ],
+  "pkg": [
+   "OctoPrint"
+  ],
+  "published": "2024-11-05",
+  "repos": [
+   "OctoPrint/OctoPrint"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-hx8v-g79f-8w5f",
+  "cve": "CVE-2026-59823",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "litellm"
+  ],
+  "published": "2026-09-17",
+  "repos": [
+   "BerriAI/litellm"
+  ],
+  "py_files": 6,
+  "pre_any": 2,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-FWD-HEADER-TRUST": 2
+  },
+  "details": [
+   "BerriAI/litellm:litellm/proxy/auth/auth_utils.py:21 VX-FWD-HEADER-TRUST _get_request_ip_address",
+   "BerriAI/litellm:litellm/proxy/litellm_pre_call_utils.py:1215 VX-FWD-HEADER-TRUST add_litellm_data_to_request"
+  ]
+ },
+ {
+  "ghsa": "GHSA-mv8m-v9v6-5f94",
+  "cve": "CVE-2026-54548",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "kas"
+  ],
+  "published": "2026-08-26",
+  "repos": [
+   "siemens/kas"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-mh33-7rrq-662w",
+  "cve": "CVE-2019-11324",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "urllib3"
+  ],
+  "published": "2019-04-19",
+  "repos": [
+   "urllib3/urllib3"
+  ],
+  "py_files": 11,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-h88f-r7cw-8fv3",
+  "cve": "CVE-2021-38540",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "apache-airflow"
+  ],
+  "published": "2022-05-24",
+  "repos": [
+   "apache/airflow"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-pc36-qwjq-x68c",
+  "cve": "CVE-2026-105743",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "pkg": [
+   "docling",
+   "docling-slim"
+  ],
+  "published": "2026-10-07",
+  "repos": [
+   "docling-project/docling"
+  ],
+  "py_files": 9,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 1,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "docling-project/docling:docling/backend/utils/image_resource_loader.py:227 VX-918-CHECK-THEN-CONNECT ImageResourceLoader.load_image_data"
+  ]
+ },
+ {
+  "ghsa": "GHSA-4ghv-53cq-7wp3",
+  "cve": "CVE-2026-91129",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "homeassistant"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "home-assistant/core",
+   "home-assistant/core"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-vx7x-vcc2-c44g",
+  "cve": "CVE-2026-55391",
+  "cwes": [
+   "CWE-350",
+   "CWE-367",
+   "CWE-918"
+  ],
+  "pkg": [
+   "datamodel-code-generator"
+  ],
+  "published": "2026-07-28",
+  "repos": [
+   "koxudaxi/datamodel-code-generator"
+  ],
+  "py_files": 5,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 1,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "koxudaxi/datamodel-code-generator:src/datamodel_code_generator/http.py:188 VX-918-CHECK-THEN-CONNECT get_body"
+  ]
+ },
+ {
+  "ghsa": "GHSA-x9vc-9ffq-p3gj",
+  "cve": "CVE-2026-54446",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "netlicensing-mcp"
+  ],
+  "published": "2026-07-14",
+  "repos": [
+   "Labs64/NetLicensing-MCP"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-cg7w-rg45-pc59",
+  "cve": "CVE-2026-48782",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "pydantic-ai-slim",
+   "pydantic-ai",
+   "pydantic-ai",
+   "pydantic-ai-slim"
+  ],
+  "published": "2026-06-26",
+  "repos": [
+   "pydantic/pydantic-ai"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-5wf4-jqxh-8gm3",
+  "cve": "CVE-2026-77267",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "sooperset/mcp-atlassian"
+  ],
+  "py_files": 33,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rw7v-4hrq-x6r9",
+  "cve": "CVE-2026-114609",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "fpdf2"
+  ],
+  "published": "2026-10-27",
+  "repos": [
+   "py-pdf/fpdf2",
+   "py-pdf/fpdf2"
+  ],
+  "py_files": 10,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-4jc5-g844-4x33",
+  "cve": "CVE-2026-67435",
+  "cwes": [
+   "CWE-200",
+   "CWE-918"
+  ],
+  "pkg": [
+   "linuxfabrik-lib"
+  ],
+  "published": "2026-07-30",
+  "repos": [
+   "Linuxfabrik/lib"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-j9gq-w73w-9h6c",
+  "cve": "CVE-2023-44463",
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "pretix"
+  ],
+  "published": "2023-10-02",
+  "repos": [
+   "pretix/pretix"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-94jq-q5v2-76wj",
+  "cve": "CVE-2021-40828",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "software.amazon.awssdk.iotdevicesdk:aws-iot-device-sdk",
+   "aws-iot-device-sdk-v2",
+   "awsiotsdk"
+  ],
+  "published": "2021-11-24",
+  "repos": [
+   "aws/aws-iot-device-sdk-java-v2",
+   "aws/aws-iot-device-sdk-js-v2",
+   "aws/aws-iot-device-sdk-python-v2"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-w2rx-84hp-gg95",
+  "cve": "CVE-2026-70479",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-08-04",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-ww28-4m4v-cq4j",
+  "cve": "CVE-2025-49652",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "backend.ai",
+   "backend.ai"
+  ],
+  "published": "2025-06-09",
+  "repos": [
+   "lablup/backend.ai",
+   "lablup/backend.ai",
+   "lablup/backend.ai"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-j3f7-7rmc-6wqj",
+  "cve": "CVE-2021-40831",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "software.amazon.awssdk.iotdevicesdk:aws-iot-device-sdk",
+   "aws-iot-device-sdk-v2",
+   "awsiotsdk"
+  ],
+  "published": "2021-11-24",
+  "repos": [
+   "aws/aws-iot-device-sdk-java-v2",
+   "aws/aws-iot-device-sdk-js-v2",
+   "aws/aws-iot-device-sdk-python-v2"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-4pqm-j46f-795x",
+  "cve": "CVE-2026-53869",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "hermes-agent"
+  ],
+  "published": "2026-06-17",
+  "repos": [
+   "NousResearch/hermes-agent"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rrxg-g2pf-6hh4",
+  "cve": "CVE-2026-59178",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "esphome-device-builder"
+  ],
+  "published": "2026-09-14",
+  "repos": [
+   "esphome/device-builder"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-gj9m-f8ph-pmhr",
+  "cve": "CVE-2026-102895",
+  "cwes": [
+   "CWE-287",
+   "CWE-290",
+   "CWE-346"
+  ],
+  "pkg": [
+   "gpustack"
+  ],
+  "published": "2026-11-09",
+  "repos": [
+   "gpustack/gpustack"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-3mp7-vp6j-2mxx",
+  "cve": "CVE-2026-12566",
+  "cwes": [
+   "CWE-20",
+   "CWE-918"
+  ],
+  "pkg": [
+   "bbot"
+  ],
+  "published": "2026-06-18",
+  "repos": [
+   "blacklanternsecurity/bbot"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-x4rv-c3wx-4cr8",
+  "cve": "CVE-2026-114620",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "authlib"
+  ],
+  "published": "2026-10-27",
+  "repos": [
+   "authlib/authlib",
+   "authlib/authlib"
+  ],
+  "py_files": 10,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-77rc-x84q-pv4f",
+  "cve": "CVE-2018-20245",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "apache-airflow"
+  ],
+  "published": "2019-01-25",
+  "repos": [
+   "apache/airflow",
+   "apache/airflow",
+   "apache/airflow"
+  ],
+  "py_files": 5,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-82r6-8w77-94w6",
+  "cve": "CVE-2026-63374",
+  "cwes": [
+   "CWE-295",
+   "CWE-297"
+  ],
+  "pkg": [
+   "anyio"
+  ],
+  "published": "2026-09-18",
+  "repos": [
+   "agronholm/anyio"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-2gpf-2492-q9jh",
+  "cve": "CVE-2026-61435",
+  "cwes": [
+   "CWE-287",
+   "CWE-306",
+   "CWE-346"
+  ],
+  "pkg": [
+   "praisonai"
+  ],
+  "published": "2026-10-08",
+  "repos": [
+   "MervinPraison/PraisonAI",
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 23,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-gc24-px2r-5qmf",
+  "cve": "CVE-2026-25505",
+  "cwes": [
+   "CWE-306",
+   "CWE-321"
+  ],
+  "pkg": [
+   "bambuddy"
+  ],
+  "published": "2026-02-02",
+  "repos": [
+   "maziggy/bambuddy",
+   "maziggy/bambuddy"
+  ],
+  "py_files": 29,
+  "pre_any": 3,
+  "pre_class": 3,
+  "fixed_class": 0,
+  "post_class": 3,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-306-OPEN-WITHOUT-KEY": 3
+  },
+  "details": [
+   "maziggy/bambuddy:backend/app/core/auth.py:161 VX-306-OPEN-WITHOUT-KEY require_auth_if_enabled",
+   "maziggy/bambuddy:backend/app/core/auth.py:420 VX-306-OPEN-WITHOUT-KEY require_permission_if_auth_enabled",
+   "maziggy/bambuddy:backend/app/core/auth.py:420 VX-306-OPEN-WITHOUT-KEY require_permission_if_auth_enabled.permission_checker"
+  ]
+ },
+ {
+  "ghsa": "GHSA-qp2c-xqv6-phh6",
+  "cve": "CVE-2025-13030",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "django-mdeditor"
+  ],
+  "published": "2026-04-30",
+  "repos": [
+   "pylixm/django-mdeditor"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-824w-x939-6cmc",
+  "cve": "CVE-2026-54457",
+  "cwes": [
+   "CWE-552",
+   "CWE-918"
+  ],
+  "pkg": [
+   "tensorzero"
+  ],
+  "published": "2026-07-15",
+  "repos": [
+   "tensorzero/tensorzero"
+  ],
+  "py_files": 5,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-34r3-9m95-vq73",
+  "cve": "CVE-2026-87999",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-09-10",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 4,
+  "pre_any": 2,
+  "pre_class": 2,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 2
+  },
+  "details": [
+   "open-webui/open-webui:backend/open_webui/retrieval/web/utils.py:710 VX-918-CHECK-THEN-CONNECT SafePlaywrightURLLoader._intercept_navigation_sync",
+   "open-webui/open-webui:backend/open_webui/retrieval/web/utils.py:710 VX-918-CHECK-THEN-CONNECT SafePlaywrightURLLoader._intercept_navigation_sync.fetch"
+  ]
+ },
+ {
+  "ghsa": "GHSA-gmfw-g93r-vg53",
+  "cve": "CVE-2026-59715",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-07-24",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-3cv6-jpf6-8222",
+  "cve": "CVE-2026-84377",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm"
+  ],
+  "published": "2026-09-30",
+  "repos": [
+   "BerriAI/litellm",
+   "BerriAI/litellm",
+   "BerriAI/litellm"
+  ],
+  "py_files": 27,
+  "pre_any": 8,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-FWD-HEADER-TRUST": 6,
+   "VX-306-OPEN-WITHOUT-KEY": 2
+  },
+  "details": [
+   "BerriAI/litellm:litellm/proxy/auth/auth_utils.py:30 VX-FWD-HEADER-TRUST _get_request_ip_address",
+   "BerriAI/litellm:litellm/proxy/litellm_pre_call_utils.py:1757 VX-FWD-HEADER-TRUST add_litellm_data_to_request",
+   "BerriAI/litellm:litellm/proxy/auth/auth_utils.py:33 VX-FWD-HEADER-TRUST _get_request_ip_address",
+   "BerriAI/litellm:litellm/proxy/auth/auth_utils.py:1086 VX-306-OPEN-WITHOUT-KEY custom_auth_common_checks_warning",
+   "BerriAI/litellm:litellm/proxy/litellm_pre_call_utils.py:1719 VX-FWD-HEADER-TRUST add_litellm_data_to_request",
+   "BerriAI/litellm:litellm/proxy/auth/auth_utils.py:33 VX-FWD-HEADER-TRUST _get_request_ip_address",
+   "BerriAI/litellm:litellm/proxy/auth/auth_utils.py:1089 VX-306-OPEN-WITHOUT-KEY custom_auth_common_checks_warning",
+   "BerriAI/litellm:litellm/proxy/litellm_pre_call_utils.py:1791 VX-FWD-HEADER-TRUST add_litellm_data_to_request"
+  ]
+ },
+ {
+  "ghsa": "GHSA-w5f2-9q9c-ff4h",
+  "cve": "CVE-2026-105192",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "lmcache"
+  ],
+  "published": "2026-10-16",
+  "repos": [
+   "LMCache/LMCache",
+   "LMCache/LMCache",
+   "LMCache/LMCache"
+  ],
+  "py_files": 11,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-p3xv-97g8-4wmj",
+  "cve": "CVE-2013-6396",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "python-swiftclient"
+  ],
+  "published": "2022-05-17",
+  "repos": [
+   "openstack/python-swiftclient"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-86cv-9gpx-6hwj",
+  "cve": "CVE-2017-12440",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "aodh"
+  ],
+  "published": "2022-05-13",
+  "repos": [
+   "openstack/aodh",
+   "openstack/aodh"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-vg6p-v9vm-6fgj",
+  "cve": "CVE-2026-55524",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-x44h-65qv-cw74",
+  "cve": "CVE-2026-55526",
+  "cwes": [
+   "CWE-350",
+   "CWE-918"
+  ],
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-ppx3-28rw-8fpf",
+  "cve": "CVE-2026-12210",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "utcp-gql",
+   "utcp-websocket"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "universal-tool-calling-protocol/python-utcp"
+  ],
+  "py_files": 13,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-wj6g-v78p-6fx3",
+  "cve": "CVE-2026-55529",
+  "cwes": [
+   "CWE-306",
+   "CWE-346"
+  ],
+  "pkg": [
+   "PraisonAI"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-x33g-cr3x-6449",
+  "cve": "CVE-2026-102275",
+  "cwes": [
+   "CWE-345",
+   "CWE-348"
+  ],
+  "pkg": [
+   "PyJWT"
+  ],
+  "published": "2026-10-05",
+  "repos": [
+   "jpadilla/pyjwt"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-2jgc-f764-c5r2",
+  "cve": "CVE-2026-55539",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "PraisonAI"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-4wph-9vrm-6v3w",
+  "cve": "CVE-2022-4018",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "rdiffweb"
+  ],
+  "published": "2022-11-16",
+  "repos": [
+   "ikus060/rdiffweb"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-45gf-fjxp-cjpq",
+  "cve": "CVE-2026-54549",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "meta-ads-mcp"
+  ],
+  "published": "2026-07-17",
+  "repos": [
+   "pipeboard-co/meta-ads-mcp"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 3,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-535g-62r7-cx6v",
+  "cve": "CVE-2025-62607",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "nautobot-ssot"
+  ],
+  "published": "2025-10-21",
+  "repos": [
+   "nautobot/nautobot-app-ssot"
+  ],
+  "py_files": 19,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-5r34-2g38-6569",
+  "cve": "CVE-2026-55525",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-v5rc-cpwc-cfpr",
+  "cve": "CVE-2026-71303",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "lemur"
+  ],
+  "published": "2026-08-18",
+  "repos": [
+   "Netflix/lemur"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-j657-m4c4-24jq",
+  "cve": "CVE-2026-59224",
+  "cwes": [
+   "CWE-287",
+   "CWE-290"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-07-24",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-hmfx-4v44-9qw9",
+  "cve": "CVE-2026-55535",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "pkg": [
+   "PraisonAI"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-vmxc-h2x2-jmf3",
+  "cve": "CVE-2026-107289",
+  "cwes": [
+   "CWE-918",
+   "CWE-1289"
+  ],
+  "pkg": [
+   "pydantic-ai",
+   "pydantic-ai",
+   "pydantic-ai-slim",
+   "pydantic-ai-slim"
+  ],
+  "published": "2026-10-08",
+  "repos": [
+   "pydantic/pydantic-ai",
+   "pydantic/pydantic-ai"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-vpwc-v33q-mq89",
+  "cve": "CVE-2026-35523",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "strawberry-graphql"
+  ],
+  "published": "2026-04-06",
+  "repos": [
+   "strawberry-graphql/strawberry"
+  ],
+  "py_files": 18,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-4hhp-h66f-j5j7",
+  "cve": "CVE-2026-73560",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "vllm"
+  ],
+  "published": "2026-09-08",
+  "repos": [
+   "vllm-project/vllm"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rcmw-7mc7-3rj7",
+  "cve": "CVE-2026-42354",
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "sentry"
+  ],
+  "published": "2026-04-30",
+  "repos": [
+   "getsentry/sentry"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-w3j6-8j34-q43x",
+  "cve": "CVE-2010-4340",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "apache-libcloud"
+  ],
+  "published": "2022-05-17",
+  "repos": [
+   "apache/libcloud"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-4f6c-2vvp-gw82",
+  "cve": "CVE-2026-105741",
+  "cwes": [
+   "CWE-290",
+   "CWE-345"
+  ],
+  "pkg": [
+   "langflow"
+  ],
+  "published": "2026-10-07",
+  "repos": [
+   "langflow-ai/langflow",
+   "langflow-ai/langflow"
+  ],
+  "py_files": 131,
+  "pre_any": 2,
+  "pre_class": 2,
+  "fixed_class": 2,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-FWD-HEADER-TRUST": 2
+  },
+  "details": [
+   "langflow-ai/langflow:src/backend/base/langflow/api/v1/mcp_projects.py:777 VX-FWD-HEADER-TRUST get_client_ip",
+   "langflow-ai/langflow:src/backend/base/langflow/api/v1/mcp_projects.py:748 VX-FWD-HEADER-TRUST get_client_ip"
+  ]
+ },
+ {
+  "ghsa": "GHSA-hgcf-4mq8-5266",
+  "cve": "CVE-2026-77274",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "sooperset/mcp-atlassian"
+  ],
+  "py_files": 33,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-8r96-8889-qg2x",
+  "cve": "CVE-2023-48052",
+  "cwes": [
+   "CWE-295",
+   "CWE-599"
+  ],
+  "pkg": [
+   "httpie"
+  ],
+  "published": "2023-11-16",
+  "repos": [
+   "httpie/cli"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-h7x2-h6g9-p789",
+  "cve": "CVE-2026-71211",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mlflow"
+  ],
+  "published": "2026-08-05",
+  "repos": [
+   "mlflow/mlflow"
+  ],
+  "py_files": 14,
+  "pre_any": 2,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-306-OPEN-WITHOUT-KEY": 2
+  },
+  "details": [
+   "mlflow/mlflow:mlflow/server/auth/__init__.py:1479 VX-306-OPEN-WITHOUT-KEY validate_can_create_gateway_model_definition",
+   "mlflow/mlflow:mlflow/server/auth/__init__.py:1510 VX-306-OPEN-WITHOUT-KEY validate_can_update_gateway_model_definition"
+  ]
+ },
+ {
+  "ghsa": "GHSA-pgwh-4jj4-qm8v",
+  "cve": "CVE-2026-67428",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "flyto-core"
+  ],
+  "published": "2026-07-30",
+  "repos": [
+   "flytohub/flyto-core"
+  ],
+  "py_files": 17,
+  "pre_any": 3,
+  "pre_class": 2,
+  "fixed_class": 2,
+  "post_class": 1,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 2,
+   "VX-306-OPEN-WITHOUT-KEY": 1
+  },
+  "details": [
+   "flytohub/flyto-core:src/core/modules/atomic/http/get.py:116 VX-918-CHECK-THEN-CONNECT http_get",
+   "flytohub/flyto-core:src/core/modules/atomic/http/request.py:337 VX-918-CHECK-THEN-CONNECT http_request",
+   "flytohub/flyto-core:src/core/utils.py:639 VX-306-OPEN-WITHOUT-KEY assert_env_credential_endpoint_allowed"
+  ]
+ },
+ {
+  "ghsa": "GHSA-7c92-x8vg-4258",
+  "cve": "CVE-2026-61436",
+  "cwes": [
+   "CWE-287",
+   "CWE-306",
+   "CWE-347"
+  ],
+  "pkg": [
+   "praisonai"
+  ],
+  "published": "2026-10-07",
+  "repos": [
+   "MervinPraison/PraisonAI",
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 23,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-wpjr-j57x-wxfw",
+  "cve": "CVE-2020-13254",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "Django",
+   "Django"
+  ],
+  "published": "2020-06-05",
+  "repos": [
+   "django/django",
+   "django/django"
+  ],
+  "py_files": 8,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-v2wp-frmc-5q3v",
+  "cve": "CVE-2026-55166",
+  "cwes": [
+   "CWE-285",
+   "CWE-639",
+   "CWE-918"
+  ],
+  "pkg": [
+   "lemur"
+  ],
+  "published": "2026-06-25",
+  "repos": [
+   "Netflix/lemur"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-m2h6-j472-rp4c",
+  "cve": "CVE-2026-69248",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "cryptography"
+  ],
+  "published": "2026-08-03",
+  "repos": [
+   "pyca/cryptography",
+   "pyca/cryptography"
+  ],
+  "py_files": 0,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-2v95-h47v-g4x9",
+  "cve": "CVE-2026-107394",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "indico"
+  ],
+  "published": "2026-10-08",
+  "repos": [
+   "indico/indico"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-w4pr-4vjg-hffh",
+  "cve": "CVE-2022-39254",
+  "cwes": [
+   "CWE-287",
+   "CWE-322"
+  ],
+  "pkg": [
+   "matrix-nio"
+  ],
+  "published": "2022-09-30",
+  "repos": [
+   "poljar/matrix-nio"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-2679-6mx9-h9xc",
+  "cve": "CVE-2026-39987",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "marimo"
+  ],
+  "published": "2026-04-08",
+  "repos": [
+   "marimo-team/marimo"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-v4w5-p2hg-8fh6",
+  "cve": "CVE-2016-9015",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "urllib3"
+  ],
+  "published": "2022-05-17",
+  "repos": [
+   "urllib3/urllib3"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-fhq3-2gf3-8f3j",
+  "cve": "CVE-2026-44363",
+  "cwes": [
+   "CWE-295",
+   "CWE-918"
+  ],
+  "pkg": [
+   "misp-modules"
+  ],
+  "published": "2026-05-06",
+  "repos": [
+   "MISP/misp-modules"
+  ],
+  "py_files": 5,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 1,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-7g3p-92qq-8wvh",
+  "cve": "CVE-2026-55528",
+  "cwes": [
+   "CWE-306",
+   "CWE-862"
+  ],
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-4v28-j6q3-5m4r",
+  "cve": "CVE-2026-87996",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-09-10",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 2,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 0,
+  "post_class": 3,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "open-webui/open-webui:backend/open_webui/retrieval/utils.py:247 VX-918-CHECK-THEN-CONNECT _get_content_from_url_sync"
+  ]
+ },
+ {
+  "ghsa": "GHSA-96p9-rh4f-92cf",
+  "cve": "CVE-2026-84452",
+  "cwes": [
+   "CWE-306",
+   "CWE-942"
+  ],
+  "pkg": [
+   "winml-cli"
+  ],
+  "published": "2026-09-08",
+  "repos": [
+   "microsoft/winml-cli"
+  ],
+  "py_files": 10,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-c6mm-2g84-v4m7",
+  "cve": "CVE-2023-31143",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "mage-ai"
+  ],
+  "published": "2023-05-05",
+  "repos": [
+   "mage-ai/mage-ai"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-g9v5-gjwf-9rwx",
+  "cve": "CVE-2026-45361",
+  "cwes": [
+   "CWE-322"
+  ],
+  "pkg": [
+   "apache-airflow-providers-google"
+  ],
+  "published": "2026-05-26",
+  "repos": [
+   "apache/airflow"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-5f35-pq34-c87q",
+  "cve": "CVE-2023-39441",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "apache-airflow-providers-smtp",
+   "apache-airflow-providers-imap",
+   "apache-airflow"
+  ],
+  "published": "2023-08-23",
+  "repos": [
+   "apache/airflow",
+   "apache/airflow",
+   "apache/airflow"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-f3qq-49m6-rw8f",
+  "cve": "CVE-2026-70667",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "pkg": [
+   "lemur"
+  ],
+  "published": "2026-08-18",
+  "repos": [
+   "Netflix/lemur"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 1,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-8hjw-25cg-g52h",
+  "cve": "CVE-2026-55523",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 1,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-h8rc-w822-q8vq",
+  "cve": "CVE-2026-50221",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "swift"
+  ],
+  "published": "2026-06-23",
+  "repos": [
+   "openstack/swift"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-w6xv-mf6f-r5f6",
+  "cve": "CVE-2020-24714",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "scalyr-agent-2"
+  ],
+  "published": "2022-05-24",
+  "repos": [
+   "scalyr/scalyr-agent-2"
+  ],
+  "py_files": 231,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-5phf-pp7p-vc2r",
+  "cve": "CVE-2021-28363",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "urllib3"
+  ],
+  "published": "2021-03-19",
+  "repos": [
+   "urllib3/urllib3"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-5p8v-58qm-c7fp",
+  "cve": "CVE-2022-39227",
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "python-jwt"
+  ],
+  "published": "2022-09-21",
+  "repos": [
+   "davedoesdev/python-jwt",
+   "davedoesdev/python-jwt"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-jm6w-m3j8-898g",
+  "cve": "CVE-2026-33231",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "nltk"
+  ],
+  "published": "2026-03-19",
+  "repos": [
+   "nltk/nltk"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-c9hr-64h3-gxpc",
+  "cve": "CVE-2026-67424",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "flyto-core"
+  ],
+  "published": "2026-07-30",
+  "repos": [
+   "flytohub/flyto-core"
+  ],
+  "py_files": 17,
+  "pre_any": 3,
+  "pre_class": 2,
+  "fixed_class": 2,
+  "post_class": 1,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 2,
+   "VX-306-OPEN-WITHOUT-KEY": 1
+  },
+  "details": [
+   "flytohub/flyto-core:src/core/modules/atomic/http/get.py:116 VX-918-CHECK-THEN-CONNECT http_get",
+   "flytohub/flyto-core:src/core/modules/atomic/http/request.py:337 VX-918-CHECK-THEN-CONNECT http_request",
+   "flytohub/flyto-core:src/core/utils.py:639 VX-306-OPEN-WITHOUT-KEY assert_env_credential_endpoint_allowed"
+  ]
+ },
+ {
+  "ghsa": "GHSA-954p-556p-r752",
+  "cve": "CVE-2026-54690",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "datamodel-code-generator"
+  ],
+  "published": "2026-07-28",
+  "repos": [
+   "koxudaxi/datamodel-code-generator"
+  ],
+  "py_files": 24,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 1,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-frvj-c5qp-xj4w",
+  "cve": "CVE-2026-59221",
+  "cwes": [
+   "CWE-22",
+   "CWE-918"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-07-24",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-3325-v43h-43rv",
+  "cve": "CVE-2026-102904",
+  "cwes": [
+   "CWE-88",
+   "CWE-209",
+   "CWE-918"
+  ],
+  "pkg": [
+   "jupyterlab",
+   "jupyterlab"
+  ],
+  "published": "2026-10-01",
+  "repos": [
+   "jupyterlab/jupyterlab",
+   "jupyterlab/jupyterlab",
+   "jupyterlab/jupyterlab"
+  ],
+  "py_files": 12,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-5p3m-vhh6-9236",
+  "cve": null,
+  "cwes": [
+   "CWE-20",
+   "CWE-918"
+  ],
+  "pkg": [
+   "stigmem-node"
+  ],
+  "published": "2026-08-20",
+  "repos": [
+   "eidetic-labs/stigmem",
+   "eidetic-labs/stigmem"
+  ],
+  "py_files": 26,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-vg99-gr89-qhw9",
+  "cve": "CVE-2026-61668",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "DIRAC",
+   "DIRAC",
+   "DIRAC"
+  ],
+  "published": "2026-07-13",
+  "repos": [
+   "DIRACGrid/DIRAC",
+   "DIRACGrid/DIRAC",
+   "DIRACGrid/DIRAC"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-j8f7-x8jm-wmm4",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "langflow",
+   "langflow-base",
+   "lfx",
+   "lfx-docling"
+  ],
+  "published": "2026-10-06",
+  "repos": [
+   "langflow-ai/langflow"
+  ],
+  "py_files": 129,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 4,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-FWD-HEADER-TRUST": 1
+  },
+  "details": [
+   "langflow-ai/langflow:src/backend/base/langflow/api/v1/mcp_projects.py:748 VX-FWD-HEADER-TRUST get_client_ip"
+  ]
+ },
+ {
+  "ghsa": "GHSA-49xv-9743-pw8w",
+  "cve": "CVE-2026-77265",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "sooperset/mcp-atlassian"
+  ],
+  "py_files": 33,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-p3pr-8f3m-4qp8",
+  "cve": "CVE-2026-123814",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "pyload-ng"
+  ],
+  "published": "2026-10-09",
+  "repos": [
+   "pyload/pyload"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-prcq-52f8-fp44",
+  "cve": "CVE-2012-3446",
+  "cwes": [
+   "CWE-20",
+   "CWE-185",
+   "CWE-295"
+  ],
+  "pkg": [
+   "apache-libcloud"
+  ],
+  "published": "2022-05-17",
+  "repos": [
+   "apache/libcloud"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-7qfw-j7hp-v45g",
+  "cve": "CVE-2015-0219",
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "django",
+   "Django",
+   "Django"
+  ],
+  "published": "2022-05-17",
+  "repos": [
+   "django/django",
+   "django/django",
+   "django/django"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-q5h6-49gg-2wfg",
+  "cve": "CVE-2020-36245",
+  "cwes": [
+   "CWE-94",
+   "CWE-306"
+  ],
+  "pkg": [
+   "GramAddict"
+  ],
+  "published": "2022-05-24",
+  "repos": [
+   "GramAddict/bot"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-8cp3-qxj6-px34",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "utcp-http"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "universal-tool-calling-protocol/python-utcp"
+  ],
+  "py_files": 13,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-qw93-h6pf-226x",
+  "cve": "CVE-2025-32788",
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "octoprint"
+  ],
+  "published": "2025-04-22",
+  "repos": [
+   "OctoPrint/OctoPrint"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-cf6m-vc3m-7cgm",
+  "cve": "CVE-2026-8505",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "langflow"
+  ],
+  "published": "2026-10-05",
+  "repos": [
+   "langflow-ai/langflow"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-cf7p-gm2m-833m",
+  "cve": "CVE-2023-38325",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "cryptography"
+  ],
+  "published": "2023-07-14",
+  "repos": [
+   "pyca/cryptography"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-vv3m-f8x4-7377",
+  "cve": "CVE-2026-85740",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "lightrag-hku"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "HKUDS/LightRAG",
+   "HKUDS/LightRAG",
+   "HKUDS/LightRAG"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-4cc2-g9w2-fhf6",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "zeep"
+  ],
+  "published": "2026-06-19",
+  "repos": [
+   "mvantellingen/python-zeep"
+  ],
+  "py_files": 7,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-3c45-wgjp-7v9r",
+  "cve": "CVE-2014-7143",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "twisted"
+  ],
+  "published": "2019-12-17",
+  "repos": [
+   "twisted/twisted"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-9v7f-9g4p-ffgj",
+  "cve": "CVE-2026-102267",
+  "cwes": [
+   "CWE-200",
+   "CWE-345",
+   "CWE-918"
+  ],
+  "pkg": [
+   "PyJWT"
+  ],
+  "published": "2026-09-29",
+  "repos": [
+   "jpadilla/pyjwt"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-3gqm-fcw5-w839",
+  "cve": "CVE-2026-63311",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "nltk"
+  ],
+  "published": "2026-09-02",
+  "repos": [
+   "nltk/nltk"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-3qmc-cj7q-62hv",
+  "cve": "CVE-2026-48061",
+  "cwes": [
+   "CWE-348",
+   "CWE-807"
+  ],
+  "pkg": [
+   "litestar"
+  ],
+  "published": "2026-06-10",
+  "repos": [
+   "litestar-org/litestar"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rwrf-2pqf-9j8j",
+  "cve": "CVE-2026-116686",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mcp",
+   "mcp"
+  ],
+  "published": "2026-10-27",
+  "repos": [
+   "modelcontextprotocol/python-sdk",
+   "modelcontextprotocol/python-sdk"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-9qhg-99ww-9mqc",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "utcp-http"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "universal-tool-calling-protocol/python-utcp"
+  ],
+  "py_files": 13,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-qx5f-ghc2-7g5c",
+  "cve": "CVE-2026-42303",
+  "cwes": [
+   "CWE-288",
+   "CWE-306",
+   "CWE-841"
+  ],
+  "pkg": [
+   "ethyca-fides"
+  ],
+  "published": "2026-05-05",
+  "repos": [
+   "ethyca/fides",
+   "ethyca/fides"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-p6hw-wm59-3g5g",
+  "cve": "CVE-2023-38686",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "matrix-sydent"
+  ],
+  "published": "2023-07-31",
+  "repos": [
+   "matrix-org/sydent"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-w6q2-48ch-fj26",
+  "cve": "CVE-2023-25392",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "bigflow"
+  ],
+  "published": "2023-04-10",
+  "repos": [
+   "allegro/bigflow",
+   "allegro/bigflow"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-qh2x-hpf9-cf2g",
+  "cve": "CVE-2013-2255",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "python-keystoneclient",
+   "cinder",
+   "neutron",
+   "keystone"
+  ],
+  "published": "2022-05-05",
+  "repos": [
+   "openstack/cinder",
+   "openstack/keystone",
+   "openstack/neutron"
+  ],
+  "py_files": 9,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-xpmj-wjcp-6pww",
+  "cve": "CVE-2026-70666",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "lemur"
+  ],
+  "published": "2026-08-18",
+  "repos": [
+   "Netflix/lemur"
+  ],
+  "py_files": 5,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-7gwp-5pfp-969j",
+  "cve": "CVE-2026-64849",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mlflow"
+  ],
+  "published": "2026-08-17",
+  "repos": [
+   "mlflow/mlflow"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-2mmv-7rrp-g8xh",
+  "cve": "CVE-2026-22250",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "wlc"
+  ],
+  "published": "2026-01-12",
+  "repos": [
+   "WeblateOrg/wlc"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-qx36-8mw2-4r3x",
+  "cve": "CVE-2026-96747",
+  "cwes": [
+   "CWE-20",
+   "CWE-918"
+  ],
+  "pkg": [
+   "pymongo"
+  ],
+  "published": "2026-10-05",
+  "repos": [
+   "mongodb/mongo-python-driver",
+   "mongodb/mongo-python-driver"
+  ],
+  "py_files": 14,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-mr4r-hcgx-8p4h",
+  "cve": "CVE-2026-62240",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "crewai-tools"
+  ],
+  "published": "2026-07-14",
+  "repos": [
+   "crewAIInc/crewAI"
+  ],
+  "py_files": 10,
+  "pre_any": 2,
+  "pre_class": 2,
+  "fixed_class": 2,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 2
+  },
+  "details": [
+   "crewAIInc/crewAI:lib/crewai-tools/src/crewai_tools/tools/scrape_element_from_website/scrape_element_from_website.py:87 VX-918-CHECK-THEN-CONNECT ScrapeElementFromWebsiteTool._run",
+   "crewAIInc/crewAI:lib/crewai-tools/src/crewai_tools/tools/scrape_website_tool/scrape_website_tool.py:79 VX-918-CHECK-THEN-CONNECT ScrapeWebsiteTool._run"
+  ]
+ },
+ {
+  "ghsa": "GHSA-2vjq-hg5w-5gm7",
+  "cve": "CVE-2024-32977",
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "OctoPrint"
+  ],
+  "published": "2024-05-14",
+  "repos": [
+   "OctoPrint/OctoPrint"
+  ],
+  "py_files": 13,
+  "pre_any": 2,
+  "pre_class": 2,
+  "fixed_class": 2,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-FWD-HEADER-TRUST": 2
+  },
+  "details": [
+   "OctoPrint/OctoPrint:src/octoprint/server/util/flask.py:1717 VX-FWD-HEADER-TRUST get_remote_address",
+   "OctoPrint/OctoPrint:src/octoprint/server/util/sockjs.py:182 VX-FWD-HEADER-TRUST PrinterStateConnection._get_remote_address"
+  ]
+ },
+ {
+  "ghsa": "GHSA-7ww9-85pg-cv4x",
+  "cve": "CVE-2026-55534",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "PraisonAI"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-9q47-3cm2-2rp8",
+  "cve": null,
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "pyload-ng"
+  ],
+  "published": "2026-10-09",
+  "repos": [
+   "pyload/pyload"
+  ],
+  "py_files": 6,
+  "pre_any": 3,
+  "pre_class": 3,
+  "fixed_class": 2,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-FWD-HEADER-TRUST": 3
+  },
+  "details": [
+   "pyload/pyload:src/pyload/webui/app/blueprints/app_blueprint.py:86 VX-FWD-HEADER-TRUST login",
+   "pyload/pyload:src/pyload/webui/app/helpers.py:360 VX-FWD-HEADER-TRUST apikey_auth.decorated_function",
+   "pyload/pyload:src/pyload/webui/app/helpers.py:449 VX-FWD-HEADER-TRUST rate_limit.decorator.wrapper"
+  ]
+ },
+ {
+  "ghsa": "GHSA-jx74-cqjv-2c67",
+  "cve": "CVE-2026-67426",
+  "cwes": [
+   "CWE-306",
+   "CWE-522",
+   "CWE-918"
+  ],
+  "pkg": [
+   "flyto-core"
+  ],
+  "published": "2026-07-30",
+  "repos": [
+   "flytohub/flyto-core"
+  ],
+  "py_files": 17,
+  "pre_any": 3,
+  "pre_class": 3,
+  "fixed_class": 2,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 2,
+   "VX-306-OPEN-WITHOUT-KEY": 1
+  },
+  "details": [
+   "flytohub/flyto-core:src/core/modules/atomic/http/get.py:116 VX-918-CHECK-THEN-CONNECT http_get",
+   "flytohub/flyto-core:src/core/modules/atomic/http/request.py:337 VX-918-CHECK-THEN-CONNECT http_request",
+   "flytohub/flyto-core:src/core/utils.py:639 VX-306-OPEN-WITHOUT-KEY assert_env_credential_endpoint_allowed"
+  ]
+ },
+ {
+  "ghsa": "GHSA-37h2-6p4f-mp3q",
+  "cve": "CVE-2026-49471",
+  "cwes": [
+   "CWE-306",
+   "CWE-352"
+  ],
+  "pkg": [
+   "serena-agent"
+  ],
+  "published": "2026-07-08",
+  "repos": [
+   "oraios/serena"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-f248-v4qh-x2r6",
+  "cve": "CVE-2020-27589",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "blackduck"
+  ],
+  "published": "2021-04-20",
+  "repos": [
+   "blackducksoftware/hub-rest-api-python"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-v49p-m6gh-747c",
+  "cve": "CVE-2024-21543",
+  "cwes": [
+   "CWE-287",
+   "CWE-295"
+  ],
+  "pkg": [
+   "djoser"
+  ],
+  "published": "2024-12-13",
+  "repos": [
+   "sunscrapers/djoser"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rrvg-cxh4-qhrv",
+  "cve": "CVE-2026-33175",
+  "cwes": [
+   "CWE-287",
+   "CWE-290"
+  ],
+  "pkg": [
+   "oauthenticator"
+  ],
+  "published": "2026-04-03",
+  "repos": [
+   "jupyterhub/oauthenticator"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-9vhv-g5hf-m7m7",
+  "cve": "CVE-2026-102610",
+  "cwes": [
+   "CWE-78",
+   "CWE-306"
+  ],
+  "pkg": [
+   "fast-agent-mcp"
+  ],
+  "published": "2026-11-09",
+  "repos": [
+   "evalstate/fast-agent"
+  ],
+  "py_files": 96,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-3xxc-pwj6-jgrj",
+  "cve": "CVE-2026-33753",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "rfc3161-client"
+  ],
+  "published": "2026-04-08",
+  "repos": [
+   "trailofbits/rfc3161-client"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-v9m3-wfh8-5646",
+  "cve": "CVE-2026-77249",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "sooperset/mcp-atlassian"
+  ],
+  "py_files": 33,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-x698-5hjm-w2m5",
+  "cve": "CVE-2025-7346",
+  "cwes": [
+   "CWE-284",
+   "CWE-290"
+  ],
+  "pkg": [
+   "pyload-ng"
+  ],
+  "published": "2025-07-08",
+  "repos": [
+   "pyload/pyload"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-89px-ww3j-g2mm",
+  "cve": "CVE-2019-16766",
+  "cwes": [
+   "CWE-290",
+   "CWE-304"
+  ],
+  "pkg": [
+   "wagtail-2fa"
+  ],
+  "published": "2019-11-29",
+  "repos": [
+   "labd/wagtail-2fa",
+   "labd/wagtail-2fa"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-wv4w-6qv2-qqfg",
+  "cve": "CVE-2025-61783",
+  "cwes": [
+   "CWE-290",
+   "CWE-303"
+  ],
+  "pkg": [
+   "social-auth-app-django"
+  ],
+  "published": "2025-10-09",
+  "repos": [
+   "python-social-auth/social-app-django"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-fqvv-jvhr-g5jc",
+  "cve": "CVE-2026-42864",
+  "cwes": [
+   "CWE-306",
+   "CWE-918"
+  ],
+  "pkg": [
+   "firefighter-incident"
+  ],
+  "published": "2026-05-05",
+  "repos": [
+   "ManoManoTech/firefighter-incident"
+  ],
+  "py_files": 3,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rffm-9q57-q649",
+  "cve": "CVE-2026-70480",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-08-04",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 0,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-ch3g-4xvr-674q",
+  "cve": "CVE-2026-62282",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "opencve"
+  ],
+  "published": "2026-09-22",
+  "repos": [
+   "opencve/opencve"
+  ],
+  "py_files": 7,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-5x7x-4c3c-qf5w",
+  "cve": "CVE-2026-88001",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-09-09",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 4,
+  "pre_any": 2,
+  "pre_class": 2,
+  "fixed_class": 0,
+  "post_class": 2,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 2
+  },
+  "details": [
+   "open-webui/open-webui:backend/open_webui/retrieval/web/utils.py:710 VX-918-CHECK-THEN-CONNECT SafePlaywrightURLLoader._intercept_navigation_sync",
+   "open-webui/open-webui:backend/open_webui/retrieval/web/utils.py:710 VX-918-CHECK-THEN-CONNECT SafePlaywrightURLLoader._intercept_navigation_sync.fetch"
+  ]
+ },
+ {
+  "ghsa": "GHSA-8vh3-g2qg-2h2c",
+  "cve": "CVE-2026-55640",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "nextcloud-mcp-server"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "cbcoutinho/nextcloud-mcp-server"
+  ],
+  "py_files": 11,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-mjcr-rqjg-rhg3",
+  "cve": null,
+  "cwes": [
+   "CWE-290"
+  ],
+  "pkg": [
+   "datasette-indieauth"
+  ],
+  "published": "2020-11-24",
+  "repos": [
+   "simonw/datasette-indieauth"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-49f7-whx5-4256",
+  "cve": "CVE-2026-58473",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "cognee"
+  ],
+  "published": "2026-07-07",
+  "repos": [
+   "topoteretes/cognee",
+   "topoteretes/cognee",
+   "topoteretes/cognee"
+  ],
+  "py_files": 9,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rjrp-m2jw-pv9c",
+  "cve": "CVE-2026-1777",
+  "cwes": [
+   "CWE-201",
+   "CWE-295",
+   "CWE-319"
+  ],
+  "pkg": [
+   "sagemaker",
+   "sagemaker"
+  ],
+  "published": "2026-02-02",
+  "repos": [
+   "aws/sagemaker-python-sdk",
+   "aws/sagemaker-python-sdk"
+  ],
+  "py_files": 37,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-8x5v-cpv7-8jjp",
+  "cve": "CVE-2026-70485",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "open-webui"
+  ],
+  "published": "2026-08-04",
+  "repos": [
+   "open-webui/open-webui"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-99j5-fvg3-54pm",
+  "cve": "CVE-2022-3327",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "rdiffweb"
+  ],
+  "published": "2022-10-20",
+  "repos": [
+   "ikus060/rdiffweb"
+  ],
+  "py_files": 4,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-r7v3-x45f-g7hp",
+  "cve": "CVE-2026-55538",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "PraisonAI"
+  ],
+  "published": "2026-08-25",
+  "repos": [
+   "MervinPraison/PraisonAI"
+  ],
+  "py_files": 16,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-918-CHECK-THEN-CONNECT": 1
+  },
+  "details": [
+   "MervinPraison/PraisonAI:src/praisonai-agents/praisonaiagents/tools/spider_tools.py:173 VX-918-CHECK-THEN-CONNECT SpiderTools.scrape_page"
+  ]
+ },
+ {
+  "ghsa": "GHSA-j92p-c242-7hfx",
+  "cve": "CVE-2026-75597",
+  "cwes": [
+   "CWE-209",
+   "CWE-306"
+  ],
+  "pkg": [
+   "pyload-ng"
+  ],
+  "published": "2026-10-09",
+  "repos": [
+   "pyload/pyload"
+  ],
+  "py_files": 2,
+  "pre_any": 1,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {
+   "VX-FWD-HEADER-TRUST": 1
+  },
+  "details": [
+   "pyload/pyload:src/pyload/webui/app/blueprints/app_blueprint.py:76 VX-FWD-HEADER-TRUST login"
+  ]
+ },
+ {
+  "ghsa": "GHSA-g4r8-3qmh-pmch",
+  "cve": "CVE-2025-12765",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "pgadmin4"
+  ],
+  "published": "2025-11-13",
+  "repos": [
+   "pgadmin-org/pgadmin4"
+  ],
+  "py_files": 2,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-rfr2-mq9m-x2qx",
+  "cve": "CVE-2026-54691",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "datamodel-code-generator"
+  ],
+  "published": "2026-07-28",
+  "repos": [
+   "koxudaxi/datamodel-code-generator"
+  ],
+  "py_files": 24,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 1,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-c4rh-4376-gff4",
+  "cve": "CVE-2021-40830",
+  "cwes": [
+   "CWE-295"
+  ],
+  "pkg": [
+   "software.amazon.awssdk.iotdevicesdk:aws-iot-device-sdk",
+   "aws-iot-device-sdk-v2",
+   "awsiotsdk"
+  ],
+  "published": "2021-11-24",
+  "repos": [
+   "aws/aws-iot-device-sdk-java-v2",
+   "aws/aws-iot-device-sdk-js-v2",
+   "aws/aws-iot-device-sdk-python-v2"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-q5fh-2hc8-f6rq",
+  "cve": "CVE-2026-27482",
+  "cwes": [
+   "CWE-306",
+   "CWE-396"
+  ],
+  "pkg": [
+   "ray"
+  ],
+  "published": "2026-02-20",
+  "repos": [
+   "ray-project/ray"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-8988-9cw3-xx77",
+  "cve": "CVE-2026-97687",
+  "cwes": [
+   "CWE-295",
+   "CWE-440"
+  ],
+  "pkg": [
+   "urllib3"
+  ],
+  "published": "2026-09-30",
+  "repos": [
+   "urllib3/urllib3",
+   "urllib3/urllib3"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-64x5-55rw-9974",
+  "cve": "CVE-2023-40170",
+  "cwes": [
+   "CWE-79",
+   "CWE-284",
+   "CWE-306"
+  ],
+  "pkg": [
+   "jupyter-server"
+  ],
+  "published": "2023-08-29",
+  "repos": [
+   "jupyter-server/jupyter_server"
+  ],
+  "py_files": 1,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-95px-34x5-p37h",
+  "cve": "CVE-2026-68927",
+  "cwes": [
+   "CWE-918"
+  ],
+  "pkg": [
+   "mobsf"
+  ],
+  "published": "2026-08-18",
+  "repos": [
+   "MobSF/Mobile-Security-Framework-MobSF"
+  ],
+  "py_files": 25,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ },
+ {
+  "ghsa": "GHSA-w3vc-fx9p-wp4v",
+  "cve": "CVE-2024-28179",
+  "cwes": [
+   "CWE-306"
+  ],
+  "pkg": [
+   "jupyter-server-proxy",
+   "jupyter-server-proxy"
+  ],
+  "published": "2024-03-20",
+  "repos": [
+   "jupyterhub/jupyter-server-proxy",
+   "jupyterhub/jupyter-server-proxy"
+  ],
+  "py_files": 6,
+  "pre_any": 0,
+  "pre_class": 0,
+  "fixed_class": 0,
+  "post_class": 0,
+  "parse_err": 0,
+  "rules_pre": {},
+  "details": []
+ }
+]

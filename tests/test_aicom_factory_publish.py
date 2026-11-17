@@ -91,6 +91,7 @@ def test_factory_rsync_excludes_cursor_and_github():
     assert "independent" in factory_exclude_paths()
     locals_ = set(factory_local_exclude_paths())
     assert ".cursor" in locals_
+    assert ".kilo" in locals_
     assert ".github" in locals_
     assert "contracts/zk/.tools" in locals_
     assert "independent" in locals_
@@ -101,6 +102,7 @@ def test_factory_rsync_excludes_cursor_and_github():
         if args[i] == "--exclude"
     }
     assert ".cursor" in excludes
+    assert ".kilo" in excludes
     assert ".github" in excludes
     assert "contracts/zk/.tools" in excludes
     assert "data/funnel" in excludes

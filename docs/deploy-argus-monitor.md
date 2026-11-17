@@ -18,7 +18,7 @@ Two clarifications so nobody panics:
   unaffected by this switch — deploying these commits does **not** move the demo
   off UNI.
 - What the switch actually does: with crypto **ON**, the monitor's **LIVE** mode
-  binds to Base and the on-chain nodes (chain · escrow · NFT · ACEX · lottery)
+  binds to Base and the on-chain nodes (chain · escrow · NFT · Agent Capital Exchange · lottery)
   **light up**. With crypto **OFF**, LIVE still runs, but those nodes are
   honestly **greyed/disabled** and a badge "Real blockchain disabled in
   settings" appears (links to `docs/crypto-switch.*`). This is intended honest

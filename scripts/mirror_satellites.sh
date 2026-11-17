@@ -479,6 +479,9 @@ _post_rsync_satellite_hook() {
       # Economy PQC tests + hybrid signing need oracle-core with require_pq /
       # load_pq_keypair. PyPI aimarket-oracle-core lags the monorepo; CI installs
       # vendor/oracle-core when present (see skopos/.github/workflows/ci.yml).
+      # Remediation conductor imports momus.engine.remediation.escalation_for;
+      # PyPI aimarket-momus==0.2.1 lacks _CODE_CORE (code:skopos → human-governance).
+      # Until 0.2.2 is on PyPI, vendor the monorepo momus tree the same way Treasury does.
       mkdir -p "$clone/vendor"
       if [[ -d "$ROOT/oracles/core" ]]; then
         _satellite_rsync -a --delete \
@@ -488,6 +491,16 @@ _post_rsync_satellite_hook() {
         echo "  ✓ vendored oracles/core → vendor/oracle-core (CI + GHCR)"
       else
         echo "  ⚠️  oracles/core missing — PQC CI will fall back to stale PyPI"
+      fi
+      if [[ -d "$ROOT/momus" ]]; then
+        _satellite_rsync -a --delete \
+          --exclude '.venv' --exclude '__pycache__' --exclude '.pytest_cache' \
+          --exclude '*.egg-info' --exclude 'data' --exclude 'frontend/node_modules' \
+          --exclude 'frontend/dist' --exclude '.github' \
+          "$ROOT/momus/" "$clone/vendor/momus/" || return 1
+        echo "  ✓ vendored momus → vendor/momus (CI remediation / _CODE_CORE)"
+      else
+        echo "  ⚠️  momus/ missing — remediation CI will fall back to PyPI aimarket-momus"
       fi
       if [[ -f "$clone/docs/landing/index.html" ]]; then
         : > "$clone/docs/landing/.nojekyll"

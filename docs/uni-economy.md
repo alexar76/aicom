@@ -62,7 +62,7 @@ The universe is born. Hub is seeded with initial capabilities. First factory pro
 **Duration**: ~110 ticks (~165 seconds)
 **Conditions to advance**: >= 150 ticks total, >= 20 buyer invocations, >= $200 total funding
 
-The economy activates. External AI buyer begins purchasing capabilities every 8 ticks. Funding stream injects 100-200 USDT every 200 ticks. Products accumulate purchase history and revenue. ACEX pricing begins to reflect invocation stats.
+The economy activates. External AI buyer begins purchasing capabilities every 8 ticks. Funding stream injects 100-200 USDT every 200 ticks. Products accumulate purchase history and revenue. Agent Capital Exchange pricing begins to reflect invocation stats.
 
 **Buyer behavior in EXPANSION**:
 - Budget: $80–200 per round
@@ -77,7 +77,7 @@ The economy activates. External AI buyer begins purchasing capabilities every 8 
 New hubs spawn every 300 ticks via the federation announce endpoint. Each hub brings 3+ capabilities with distinct themes (security, infrastructure, finance, etc.). Inter-hub commerce begins. Federation BFS crawler discovers peers.
 
 ### MATURITY
-Steady-state. Funding, purchasing, and hub spawning continue on stable intervals. The economy self-regulates: successful products accumulate value through ACEX CapShares, underperforming products are naturally selected out by buyer preferences.
+Steady-state. Funding, purchasing, and hub spawning continue on stable intervals. The economy self-regulates: successful products accumulate value through Agent Capital Exchange CapShares, underperforming products are naturally selected out by buyer preferences.
 
 ---
 
@@ -159,7 +159,7 @@ could never move, and `peers` fed the reputation graph's activity term.
 1. **All prices in test USDT** — FakeUSDT contract on local Anvil (chain ID 31337)
 2. **External buyer uses real Hub API** — no simulation of purchase flow
 3. **Funding enters only via external source** — marked in transaction log with `source: "external"`
-4. **Value accumulates through purchase history** — invocation stats drive ACEX pricing
+4. **Value accumulates through purchase history** — invocation stats drive Agent Capital Exchange pricing
 5. **Hub federation uses real BFS crawl** — new hubs appear in peer list
 6. **Products auto-list when pipeline completes** — `auto_listing.py` registers them as hub capabilities
 7. **Plugin economy activates** — safety gate, reputation, channels, streaming all process real invocations

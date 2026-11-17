@@ -23,6 +23,7 @@ DEFAULT_RSYNC_EXCLUDES = [
     ".git",
     ".claude",
     ".cursor",
+    ".kilo",  # Kilo Code local plugin/config — IDE tooling, not public source
     ".venv",
     ".venv-*",  # local test/tool environments are not satellite or factory source
     "venv",
@@ -185,6 +186,7 @@ FACTORY_LOCAL_EXCLUDES = [
     "AGENTS.md",  # this workspace's rules for coding agents — not factory content
     ".cursor",
     ".claude",
+    ".kilo",  # Kilo Code tooling root — classify as excluded (same class as .cursor)
     ".gitea",
     ".github",  # monorepo-only mirror workflows; factory gets ci/pages/security-scan + ISSUE_TEMPLATE via publish_aicom_factory.sh
     "ecosystem-README.md",  # ecosystem-root overview — the public factory repo (alexar76/aicom) keeps its own README.md
@@ -233,6 +235,9 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/histor-rfc8785-rollout-2026-11-14",
     # HISTOR backup move kit names private hosts; blocked factory publish 2026-11-15.
     "artifacts/histor-backup-move-2026-11-14",
+    # HISTOR sandbox observer rollout/fix notes name private hosts; blocked factory
+    # publish 2026-11-17. Pattern covers dated packs; Gitea keeps the trees.
+    "artifacts/histor-observer-*",
     # Local hub release kit with a checked-in release-venv (broken symlinks trip
     # verify_mirror_secrets wc redirects and stall the factory publish). Gitea only.
     "artifacts/hub-3.17.0-2026-10-31",
@@ -246,6 +251,10 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/external-components-2026-11-10/core/bodies",
     "artifacts/external-components-2026-11-10/products/raw",
     "artifacts/external-matrix-gaps-2026-11-10/root/obsidian-readme-retry.raw",
+    # External / independent scrape primary bodies embed private host literals
+    # (factory gate 2026-11-17). Indexes and findings.json stay; Gitea keeps bodies.
+    "artifacts/external-code-audit-*/primary",
+    "artifacts/independent-links-*/primary",
     # Operator scripts and notes that name the HISTOR host (moved 2026-11-11) and the LLM
     # routing hosts. They run from the monorepo; the public factory does not need them.
     "scripts/deploy_histor.sh",

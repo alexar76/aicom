@@ -10,7 +10,7 @@ Aide-mémoire pour lancer, déplacer et vérifier la bulle UNI. Le pourquoi est 
 | Chaîne | Qui la fait tourner | Adresse vue par les conteneurs | Ce qu'elle porte |
 |---|---|---|---|
 | **Chaîne de la bulle** | conteneur `anvil-uni`, volume `anvil_uni_state` | `http://172.17.0.1:8546` | l'argent du hub : jeton `0x5fbd…0aa3`, escrow `0xe7f1…0512`, le portefeuille du hub (Anvil #1) et l'acheteur (Anvil #2) |
-| **Chaîne de démonstration** | le conteneur Alien Monitor UNI (`alien-monitor`), avec son propre Anvil | `http://172.17.0.1:8545` (via `uni-rpc-bridge`) | le monde de la carte : loterie, NFT, ACEX (PulseAMM, registre, prêts) |
+| **Chaîne de démonstration** | le conteneur Alien Monitor UNI (`alien-monitor`), avec son propre Anvil | `http://172.17.0.1:8545` (via `uni-rpc-bridge`) | le monde de la carte : loterie, NFT, Agent Capital Exchange (PulseAMM, registre, prêts) |
 
 Le hub UNI **règle sur la chaîne de la bulle** (`AIMARKET_RPC_BASE=…:8546`) et lit la loterie et le
 NFT sur la chaîne de démonstration (`ALIEN_EVM_RPC=…:8545`). La chaîne de démonstration est jetable :
@@ -56,7 +56,7 @@ le côté argent auprès des chaînes elles-mêmes :
 
 ## Quand la chaîne de démonstration change
 
-Après une réinitialisation du moniteur, les adresses de la loterie, du NFT et d'ACEX changent. Les
+Après une réinitialisation du moniteur, les adresses de la loterie, du NFT et d'Agent Capital Exchange changent. Les
 nouvelles sont dans `data/alien-monitor/universe/hub.env.snippet`. N'en prendre **que** ceci :
 
 - hub : `AIMARKET_CHARITY_LOTTERY_ADDRESS`, `LOTTERY_ADDRESS`, `HUB_LOTTERY_ADDRESS`, `AIMARKET_NFT_CONTRACT` ;

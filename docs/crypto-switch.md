@@ -11,7 +11,7 @@ accounting keep working — it just never touches money.
 
 The monitor shows the **true** state, never a faked one:
 
-| Mode | Chain context | On-chain nodes (chain · escrow · NFT · ACEX · lottery) |
+| Mode | Chain context | On-chain nodes (chain · escrow · NFT · Agent Capital Exchange · lottery) |
 |------|---------------|--------------------------------------------------------|
 | **TEST** | never | scripted/simulated |
 | **UNI** | **always** (private local Anvil — never Base) | live against the local chain |

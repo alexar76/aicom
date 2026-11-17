@@ -115,7 +115,7 @@ count the probe and refuse it under load, so a busy backend was killed for being
 | Factory `/api/health` | event loop blocked behind the trust strip | the work moved to a thread |
 | KI-3 supervisor | health probe counted and refused by the per-address limiter | probe unmetered; 403/429 read as alive |
 | Monitor | 17 satellite polls with blocking HTTP clients on the event loop | one worker thread; **deployed 2026-10-23** |
-| Hub logs | 311 tracebacks a day from ACEX ledgers that are off by configuration | one warning per ledger; same 503 answers |
+| Hub logs | 311 tracebacks a day from Agent Capital Exchange ledgers that are off by configuration | one warning per ledger; same 503 answers |
 | Director | one empty model answer threw away a whole discovery cycle | an enrichment that fails stays empty |
 
 ## Repeat it

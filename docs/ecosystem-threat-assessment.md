@@ -1,6 +1,6 @@
 # AIMarket ecosystem — security & architecture threat assessment
 
-**Scope:** AIMarket protocol/hub, ACEX capital markets, EVM escrow, federation, Alien Monitor, and
+**Scope:** AIMarket protocol/hub, Agent Capital Exchange capital markets, EVM escrow, federation, Alien Monitor, and
 the aicom factory's LLM dependency.
 **Method:** every claim below was **verified against the source**, not accepted at face value. Each
 finding carries a verdict (Confirmed / Partially mitigated / Refuted), file:line evidence, qualitative
@@ -119,7 +119,7 @@ root over the period's receipts (audited OZ/Uniswap leaf encoding from `acex_mer
 root is on-chain-verifiable); `verify_agent_revenue()` lets any auditor confirm an agent's claimed
 total is **exactly** the sum of provably-included receipts, rejecting tampered amounts, replayed
 leaves (double-counting), and cross-agent leaves — no trust in the hub. Tests:
-`tests/test_revenue_proofs.py`. **Remaining wiring:** commit a root per ACEX settlement period in
+`tests/test_revenue_proofs.py`. **Remaining wiring:** commit a root per Agent Capital Exchange settlement period in
 `acex_ipo.py` and expose `GET /reputation/revenue-root`. The ZK variant is **O-2**, designed below.
 
 #### O-2 — ZK revenue proofs (design, deferred)
@@ -228,7 +228,7 @@ The economic primitives *are* specified — `aimarket-protocol/spec.md` (channel
 `acex/protocol/spec-capital-markets.md`, `acex/protocol/proof-of-audit.md` — but there is no single
 document tying together the **reputation consensus** and **economic model** for external reviewers and
 auditors. **Shipped:** [`docs/aimarket-whitepaper.md`](aimarket-whitepaper.md) — trust model, escrow,
-federated reputation consensus, ACEX economics (revenue proofs + Sybil gate), oracle/ZK, and an
+federated reputation consensus, Agent Capital Exchange economics (revenue proofs + Sybil gate), oracle/ZK, and an
 open-problems table (O-1…O-5) that maps to the external-audit scope (KI-2).
 
 ---
@@ -247,7 +247,7 @@ open-problems table (O-1…O-5) that maps to the external-audit scope (KI-2).
 1. Threat model & trust assumptions (who can be Byzantine).
 2. Payment channels & escrow (replay protection, dispute, refund).
 3. Reputation consensus — bonds, proof-of-misbehavior, slashing, **federated synchronization**.
-4. ACEX economic model — CapShares, Proof-of-Audit, revenue proofs (F4), Sybil resistance (F7).
+4. Agent Capital Exchange economic model — CapShares, Proof-of-Audit, revenue proofs (F4), Sybil resistance (F7).
 5. Federation protocol — discovery, partial-result semantics, circuit breaking.
 6. Oracle & ZK design — revenue attestation, privacy.
 7. Liveness/continuity — LLM provider diversity.

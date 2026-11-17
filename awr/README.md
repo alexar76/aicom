@@ -1,4 +1,4 @@
-# AWR — Agent Work Receipt
+# AWR — AIMarket Work Receipt
 
 > 🌐 **English** · [Русский](docs/README.ru.md) · [Español](docs/README.es.md) · [Français](docs/README.fr.md) · [中文](docs/README.zh.md) · [Glossary](https://github.com/alexar76/aicom/blob/main/docs/localization-glossary.md)
 
@@ -237,7 +237,7 @@ code a stranger's browser runs is the code the matrix measures.
 Two things in AWR are this project's arbitrary choices rather than technical requirements, and
 they are stated plainly here so that nobody has to adopt our branding to adopt the format:
 
-**The name "AWR".** It stands for Agent Work Receipt. Nothing depends on it.
+**The name "AWR".** It stands for AIMarket Work Receipt (until 2026-11-15 the text said "Agent Work Receipt", a generic phrase another, unrelated v0.1 schema also uses). Nothing depends on it: the wire identifiers (`awr/v2`, `awr:mtl:1:…`) are unchanged.
 
 **The namespace URI `https://verify.modelmarket.dev/ns/awr/v2`.** It is a JSON-LD context
 identifier and an opaque string to a verifier: §3.1 requires that a verifier **must not

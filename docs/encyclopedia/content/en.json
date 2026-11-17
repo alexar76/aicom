@@ -91,7 +91,7 @@
           [
             "Pulse Terminal",
             "[magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)",
-            "ACEX capital-markets dashboard"
+            "Agent Capital Exchange capital-markets dashboard"
           ],
           [
             "ARGUS",
@@ -364,10 +364,10 @@
       ]
     },
     {
-      "title": "Chapter VI — Capital Nebula (ACEX, Lottery, Chain)",
+      "title": "Chapter VI — Capital Nebula (Agent Capital Exchange, Lottery, Chain)",
       "lead": "Where agent IPOs meet lottery oracles and USDC flows through verified smart contracts on Base.",
       "paragraphs": [
-        "**ACEX** (Agent Capital Exchange): Agent Listing Protocol, CapShares, lending pool, PulseAMM, Proof-of-Audit, PulseDistributor Merkle claims. UI: Pulse Terminal at `/pulse/`.",
+        "**Agent Capital Exchange**: Agent Listing Protocol, CapShares, lending pool, PulseAMM, Proof-of-Audit, PulseDistributor Merkle claims. UI: Pulse Terminal at `/pulse/`.",
         "**Agent Lottery** composes Platon + Chronos + Lumen for cinematic on-chain draws. Showcase: [lottery.modelmarket.dev](https://lottery.modelmarket.dev). Machine UBI: hub tithe → lottery pool.",
         "**Live Base MAINNET** (chainId 8453) — real Circle USDC, not testnet play-money. Canonical registry: `config/deployments/base-mainnet.json`. Human journal: `docs/onchain-journal.md`."
       ],
@@ -478,7 +478,7 @@
       "lead": "Two observatories where mortals watch the machine economy breathe.",
       "paragraphs": [
         "**Alien Monitor** — 3D ecosystem graph + AI assistant. LIVE mode shows Hub, contracts, agents, desktop SKUs, plugins as a living graph. UNI mode simulates virtual economy on Anvil. Deploy: `./scripts/deploy_alien_monitor.sh` → `/monitor/`.",
-        "**Pulse Terminal** (`apps/pulse-terminal/`) — ACEX capital-markets dashboard: CapShares, lending, AMM, audit pool, distributor claims. Dev: `npm run dev` → :5199.",
+        "**Pulse Terminal** (`apps/pulse-terminal/`) — Agent Capital Exchange capital-markets dashboard: CapShares, lending, AMM, audit pool, distributor claims. Dev: `npm run dev` → :5199.",
         "**Factory IQ** at `/iq` — self-learning EV metrics and playbook distillation for operators."
       ]
     },
@@ -486,7 +486,7 @@
       "title": "Chapter X — Connection Webs (Architecture Views)",
       "lead": "Three lenses on the same galaxy — supply, demand, and money.",
       "paragraphs": [
-        "**Supply view:** Discovery → 13-agent pipeline → signed manifests → Hub auto-listing → optional ACEX IPO (CapShares → revenue routing → PulseDistributor).",
+        "**Supply view:** Discovery → 13-agent pipeline → signed manifests → Hub auto-listing → optional Agent Capital Exchange IPO (CapShares → revenue routing → PulseDistributor).",
         "**Demand view:** ARGUS / desktop / widget / mesh agent → Hub search by intent → open USDC channel → invoke → Ed25519 receipt → settle.",
         "**Integration highlights:** Try-before-buy (widget sandbox → zero-debit invoke). Agent IPO offline demo: `python scripts/demo_agent_ipo.py`. UNI simulation: `./scripts/verify_uni_ecosystem.sh`."
       ],
@@ -536,7 +536,7 @@
       "paragraphs": [
         "The AICOM demo runs on **Base mainnet** (chainId 8453) with **real Circle USDC**. Set `AIFACTORY_CRYPTO_ENABLED=1` and addresses auto-load from `config/deployments/base-mainnet.json`. Payment recipient wallet must be set explicitly per deployment.",
         "**Deploy order:** Factory (`docker compose up -d`) → Hub (`./scripts/deploy_hub.sh`) → Mesh → Alien Monitor → verify with `docs/deploy-ecosystem.md`. Oracles host: `./scripts/setup-oracles-platon-on-host.sh`.",
-        "**E2E test completed:** escrow channel, agent payment, lottery round on mainnet (~2 USDC + ETH returned). ACEX contracts deployed + verified; value-testing gated on known issues KI-2…KI-5.",
+        "**E2E test completed:** escrow channel, agent payment, lottery round on mainnet (~2 USDC + ETH returned). Agent Capital Exchange contracts deployed + verified; value-testing gated on known issues KI-2…KI-5.",
         "**Honesty:** UNI/Anvil showcase pool figures are play-money, not Base mainnet figures."
       ],
       "pre": "# Full fleet\n./scripts/deploy_ecosystem.sh\n\n# Agent-to-agent demo\npython scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083\n\n# Agent IPO demo\npython scripts/demo_agent_ipo.py\n\n# Contract deploy reference\ncontracts/DEPLOY.md"

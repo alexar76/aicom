@@ -10,7 +10,7 @@
 | Цепочка | Кто её запускает | Адрес для контейнеров | Что на ней |
 |---|---|---|---|
 | **Цепочка пузыря** | контейнер `anvil-uni`, том `anvil_uni_state` | `http://172.17.0.1:8546` | деньги хаба: токен `0x5fbd…0aa3`, эскроу `0xe7f1…0512`, кошелёк хаба (Anvil #1) и покупатель (Anvil #2) |
-| **Демо-цепочка** | контейнер Alien Monitor UNI (`alien-monitor`), его собственная Anvil | `http://172.17.0.1:8545` (через `uni-rpc-bridge`) | мир карты: лотерея, NFT, ACEX (PulseAMM, реестр, кредитование) |
+| **Демо-цепочка** | контейнер Alien Monitor UNI (`alien-monitor`), его собственная Anvil | `http://172.17.0.1:8545` (через `uni-rpc-bridge`) | мир карты: лотерея, NFT, Agent Capital Exchange (PulseAMM, реестр, кредитование) |
 
 Хаб UNI **рассчитывается на цепочке пузыря** (`AIMARKET_RPC_BASE=…:8546`), а лотерею и NFT читает
 на демо-цепочке (`ALIEN_EVM_RPC=…:8545`). Демо-цепочка одноразовая: монитор стирает её, когда
@@ -54,7 +54,7 @@
 
 ## Когда меняется демо-цепочка
 
-После сброса у монитора меняются адреса лотереи, NFT и ACEX. Новые лежат в
+После сброса у монитора меняются адреса лотереи, NFT и Agent Capital Exchange. Новые лежат в
 `data/alien-monitor/universe/hub.env.snippet`. Брать из него **только** это:
 
 - хабу: `AIMARKET_CHARITY_LOTTERY_ADDRESS`, `LOTTERY_ADDRESS`, `HUB_LOTTERY_ADDRESS`, `AIMARKET_NFT_CONTRACT`;

@@ -110,7 +110,7 @@ root — never by trusting a `valid` flag that came with it. Two families:
   bytes32 hashes, or `types` + `values` hashed as `StandardMerkleTree` does
   (`keccak256(keccak256(abi.encode(...)))`, mixed-case addresses checked against
   EIP-55). `layout` `standard` (@openzeppelin/merkle-tree) or `layers` (pairs left to
-  right, an odd node promoted — merkletreejs, the ACEX distributor). At most 1 024 leaves:
+  right, an odd node promoted — merkletreejs, the Agent Capital Exchange distributor). At most 1 024 leaves:
   keccak256 is pure Python here.
 
 ```json
@@ -119,7 +119,7 @@ root — never by trusting a `valid` flag that came with it. Two families:
 ```
 
 Tested against the Certificate Transparency test-vector roots, the root in
-@openzeppelin/merkle-tree's README, eth-abi leaf hashes, and HISTOR's and the ACEX
+@openzeppelin/merkle-tree's README, eth-abi leaf hashes, and HISTOR's and the Agent Capital Exchange
 distributor's own trees over every index of 1–40 leaves.
 
 Through a hub, the hub's safety gate scans the input first: a standalone 16-digit

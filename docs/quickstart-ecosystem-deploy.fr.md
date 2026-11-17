@@ -254,7 +254,7 @@ sur Base mainnet avec Foundry. Les deux effectuent par défaut un dry run sans g
 pour dépenser du gaz réel.
 
 **Cœur de l'écosystème** — FakeUSDT + `AIMarketEscrow` + `AIMarketCapabilityNFT`
-(ACEX est volontairement exclu — l'audit a signalé AuditPool TWAP + PulseAMM comme HIGH) :
+(Agent Capital Exchange est volontairement exclu — l'audit a signalé AuditPool TWAP + PulseAMM comme HIGH) :
 
 ```bash
 ./scripts/deploy_ecosystem_base.sh            # dry-run (no gas)

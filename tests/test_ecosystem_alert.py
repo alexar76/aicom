@@ -2162,6 +2162,8 @@ def test_uptime_uses_the_short_timeout(monkeypatch):
                  "probe_status_page", "probe_security_posture", "probe_settlement"):
         monkeypatch.setattr(alert, name, lambda *a, **k: [])
     monkeypatch.setenv("AICOM_ALERT_UPTIME_TIMEOUT", "not-a-number")
+    monkeypatch.setenv("AICOM_ALERT_HYBRID_NODES", "")
+    monkeypatch.setattr(alert, "probe_nodes_admitted", lambda *a, **k: [])
     alert.collect("quick", hub="https://modelmarket.dev", signer="", status_url="", settlement_url="",
                   timeout=20, sellers=[], federation_hubs=[], extra_settlements=[],
                   uptime=[("attested", "https://hub.attestedmemory.net/ai-market/v2/health")])
@@ -2309,3 +2311,101 @@ def test_a_running_momus_cycle_is_quiet_until_it_looks_stuck(monkeypatch):
     monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _momus_receipt(3, status="running"), ""))
     bad = [c for c in alert.probe_momus_quality("https://x/latest.json") if not c.ok]
     assert [c.name for c in bad] == ["momus_quality_passed"] and "stuck" in bad[0].detail
+
+
+# ── Our seller nodes: hybrid signatures and admission (2026-11-15) ─────────────────────────────
+#
+# esim.* and domains.modelmarket.dev signed Ed25519 only for weeks; every hub of ours accepted it,
+# and hub.attestedmemory.net (post-quantum required) kept both pending with nothing red anywhere.
+
+HYBRID = {"algorithm": "ed25519", "public_key": "k", "value": "v",
+          "pq_algorithm": "ml-dsa-65", "pq_public_key": "pk", "pq_value": "pv"}
+CLASSIC = {"algorithm": "ed25519", "public_key": "k", "value": "v"}
+
+
+def test_a_node_that_signs_hybrid_passes(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, {"signature": HYBRID}, ""))
+    [check] = alert.probe_nodes_sign_hybrid(["https://esim.modelmarket.dev"])
+    assert check.ok and check.name == "node_signs_hybrid@esim.modelmarket.dev"
+
+
+def test_a_node_that_signs_classic_only_is_named_with_the_fix(monkeypatch):
+    def get(url, *a, **k):
+        return (200, {"signature": HYBRID if url.endswith("ai-market.json") else CLASSIC}, "")
+    monkeypatch.setattr(alert, "_get", get)
+    [check] = alert.probe_nodes_sign_hybrid(["https://domains.modelmarket.dev"])
+    assert not check.ok and check.critical
+    assert "/ai-market/v2/manifest: Ed25519 only" in check.detail
+    assert "seller_node_front.sh" in check.detail
+
+
+def test_a_node_pending_at_a_hub_is_reported_with_its_blockers(monkeypatch):
+    body = {"peers": [{"url": "https://esim.modelmarket.dev"}],
+            "pending": [{"url": "https://domains.modelmarket.dev", "status": "pending",
+                         "assay_blockers": [{"id": "manifest_signed",
+                                             "detail": "the peer signs classic-only"}]}]}
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, body, ""))
+    [check] = alert.probe_nodes_admitted(
+        ["https://hub.attestedmemory.net"],
+        ["https://esim.modelmarket.dev", "https://domains.modelmarket.dev"])
+    assert not check.ok and check.critical is False
+    assert check.name == "hub_admits_our_nodes@hub.attestedmemory.net"
+    assert "domains.modelmarket.dev (pending: manifest_signed: the peer signs classic-only)" in check.detail
+    assert "esim.modelmarket.dev" not in check.detail
+
+
+def test_all_nodes_active_is_quiet(monkeypatch):
+    body = {"peers": [{"url": "https://esim.modelmarket.dev"}, {"url": "https://domains.modelmarket.dev/"}],
+            "pending": []}
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, body, ""))
+    [check] = alert.probe_nodes_admitted(
+        ["https://modelmarket.dev"], ["https://esim.modelmarket.dev", "https://domains.modelmarket.dev"])
+    assert check.ok
+
+
+def test_admission_hubs_are_the_primary_plus_the_named_ones_once_each():
+    hubs = alert.admission_hubs_from_env(
+        "https://modelmarket.dev/", "hub.attestedmemory.net, https://modelmarket.dev,https://hub.attestedmemory.net/")
+    assert hubs == ["https://modelmarket.dev", "https://hub.attestedmemory.net"]
+
+
+def test_hybrid_nodes_default_to_our_two_sellers_and_can_be_switched_off(monkeypatch):
+    monkeypatch.delenv("AICOM_ALERT_HYBRID_NODES", raising=False)
+    assert alert.hybrid_nodes_from_env() == ["https://esim.modelmarket.dev", "https://domains.modelmarket.dev"]
+    assert alert.hybrid_nodes_from_env("") == []
+
+
+# --- the MOMUS -> SKOPOS -> AI-Factory fix loop (2026-11-16) ---------------------------------------------------------
+
+def _stats(**kw):
+    body = {"total": 16, "breaker_open": False, "fixer_refused_jobs": 0, "fixer_patched_jobs": 3}
+    body.update(kw)
+    return body
+
+
+def test_a_fixer_that_writes_patches_is_quiet(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _stats(fixer_refused_jobs=2), ""))
+    assert all(c.ok for c in alert.probe_remediation_loop("https://x/remediation/stats"))
+
+
+def test_a_fixer_that_refuses_every_ticket_pages(monkeypatch):
+    """September to 2026-11-16: every ticket refused over the post-quantum Blame, no patch at all, no alert."""
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (
+        200, _stats(fixer_refused_jobs=6, fixer_patched_jobs=0), ""))
+    bad = [c for c in alert.probe_remediation_loop("https://x/remediation/stats") if not c.ok]
+    assert [c.name for c in bad] == ["remediation_fixer_answers"]
+    assert "refused 6 job(s)" in bad[0].detail and "remediation-fixer" in bad[0].detail
+
+
+def test_a_conductor_that_does_not_count_fixer_answers_is_not_read_as_healthy(monkeypatch):
+    old = {"total": 16, "breaker_open": False}
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, old, ""))
+    bad = [c.name for c in alert.probe_remediation_loop("https://x/remediation/stats") if not c.ok]
+    assert bad == ["remediation_fixer_answers"]
+
+
+def test_an_open_breaker_and_an_unreadable_page_page(monkeypatch):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _stats(breaker_open=True), ""))
+    assert [c.name for c in alert.probe_remediation_loop("u") if not c.ok] == ["remediation_breaker_closed"]
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, "<html>", ""))
+    assert [c.name for c in alert.probe_remediation_loop("u") if not c.ok] == ["remediation_stats_published"]

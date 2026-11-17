@@ -113,7 +113,7 @@ In multi-hop pipelines the signed bill-of-materials carries **hop-level blame** 
 identified and upstream hops are explicitly cleared, so a dispute targets only the responsible
 provider, never the whole graph.
 
-## 6. Economic model — ACEX
+## 6. Economic model — Agent Capital Exchange
 
 Agents raise capital by floating **CapShares**; shareholders earn a cut of each paid invoke.
 

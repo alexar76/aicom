@@ -27,7 +27,7 @@
 
 | | Что вы получаете | Открыть |
 | --- | --- | --- |
-| **Файрвол инструментов MCP (WARDEN)** | Разовая проверка серверов из конфигурации. Для контроля утверждённых определений при работе подключите stdio-обёртку. | `npx -y @aimarket/warden@0.26.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
+| **Файрвол инструментов MCP (WARDEN)** | Разовая проверка серверов из конфигурации. Для контроля утверждённых определений при работе подключите stdio-обёртку. | `npx -y @aimarket/warden@0.27.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **Открытые данные HISTOR** | Что объявлял каждый удалённый MCP-сервер из официального реестра и каждое изменение — подписано, раз в месяц (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
 | **Бесплатные проверки** | x402-эндпоинт, MCP diff, скан WARDEN, проверка HISTOR и стоимость списка инструментов в токенах — в браузере | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Отправьте одно разрешённое показание GAIA через Hub и Metis, затем изучите подписанную квитанцию | [play.modelmarket.dev](https://play.modelmarket.dev/) · [исходный код](https://github.com/alexar76/aimarket-playground) |
@@ -56,7 +56,7 @@
 | **Опубликовать поставщика** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [полное руководство по агенту безопасности](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.ru.md) · [готовый агент](https://github.com/alexar76/themis) · процесс хостится на **[HESTIA](https://github.com/alexar76/hestia)** (хостинг-рантайм, не Hub) |
 | **Внести вклад** | [Discussions](https://github.com/alexar76/aicom/discussions) · [good first issues](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-Каталог репозиториев находится **ниже** и сгруппирован по роли каждого репозитория: Factory, Хостинг-рантайм, ядро AIMarket, разработка и подключение, шлюзы MCP, верифицируемые вычисления, физический мир, доверие и безопасность, проверяемая память, запускаемый вами клиент, ACEX, наблюдаемость, сообщество и вещание, обучение и исследование. Каждый репозиторий входит ровно в одну группу, а в его строке указана живая страница. Найти репозиторий с другой стороны поможет [указатель A–Z](#az) — второй карты сайта здесь нет.
+Каталог репозиториев находится **ниже** и сгруппирован по роли каждого репозитория: Factory, Хостинг-рантайм, ядро AIMarket, разработка и подключение, шлюзы MCP, верифицируемые вычисления, физический мир, доверие и безопасность, проверяемая память, запускаемый вами клиент, Agent Capital Exchange, наблюдаемость, сообщество и вещание, обучение и исследование. Каждый репозиторий входит ровно в одну группу, а в его строке указана живая страница. Найти репозиторий с другой стороны поможет [указатель A–Z](#az) — второй карты сайта здесь нет.
 
 Также доступны без входа: [Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -142,7 +142,7 @@ cp .env.demo .env
 | 6 | **Верификация** | когнитивный слой **METIS** · Solidity в закреплённом коммите от **BASANOS** · живые EVM-эксплойты от **DOLOS** · HTTP/федерация от **MOMUS** · сторонний MCP от **WARDEN** · **HISTOR** — что объявляли сторонние MCP-серверы, во времени · **Attested Memory** — проверяемая память, которую агенты хранят |
 | 7 | **Потребление** | **ARGUS** — клиент на стороне спроса, который действительно запускают люди и агенты · купил владельцу travel eSIM и вернул деньги, в Base ([кейс](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-ru.md)) |
 | 8 | **Расчёт** | эскроу, платёжные каналы и вознаграждения **Treasury**, выплачиваемые только после независимой верификации |
-| 9 | **Финансирование** | **ACEX** оценивает агентов, размещает их и выдаёт займы под них |
+| 9 | **Финансирование** | **Agent Capital Exchange** оценивает агентов, размещает их и выдаёт займы под них |
 | 10 | **Наблюдение** | **SKOPOS** наблюдает за флотом · **LOGOS** — за федерацией · **Alien Monitor** показывает всё в живом 3D |
 
 Ниже каждый репозиторий находится **ровно в одной** группе — соответствующей его роли в конвейере. Если
@@ -156,7 +156,7 @@ cp .env.demo .env
 
 <p align="center">
   <a href="assets/ecosystem-overview.svg">
-    <img src="assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; ACEX финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию; Attested Memory хранит проверяемую память агентов; eSIM-операторы продают агентам по x402 и приносят в Hub подписанные квитанции о доставке; SYMMARTYS продаёт через Hub справки для торговли: НДС-номера ЕС, LEI, справочные курсы ЕЦБ, проверку по санкционным спискам и доказательства метки времени; операторы доменов регистрируют агенту домен по котировке через x402 на Openprovider или Porkbun Sandbox." width="900">
+    <img src="assets/ecosystem-overview.svg" alt="Обзор экосистемы: Factory деплоит на HESTIA; HESTIA анонсирует в Hub; Oracles и METIS снабжают Hub; ARGUS потребляет; Agent Capital Exchange финансирует; SKOPOS наблюдает; MOMUS находит; Treasury платит; LOGOS анализирует федерацию; Attested Memory хранит проверяемую память агентов; eSIM-операторы продают агентам по x402 и приносят в Hub подписанные квитанции о доставке; SYMMARTYS продаёт через Hub справки для торговли: НДС-номера ЕС, LEI, справочные курсы ЕЦБ, проверку по санкционным спискам и доказательства метки времени; операторы доменов регистрируют агенту домен по котировке через x402 на Openprovider или Porkbun Sandbox." width="900">
   </a>
 </p>
 
@@ -169,7 +169,7 @@ cp .env.demo .env
 | Factory / aicom | HESTIA | scaffold · подписанный деплой в хостинг-рантайм |
 | HESTIA | Hub | явный announce (хостинг ≠ листинг) |
 | THEMIS | Hub | допуск публикации · approve / review / reject |
-| BASANOS | ACEX / contracts | сканирование Solidity · подписанный пакет гарантий |
+| BASANOS | Agent Capital Exchange / contracts | сканирование Solidity · подписанный пакет гарантий |
 | DOLOS | UNI Anvil (fork) | динамическая красная команда EVM · находки Ed25519 |
 | Oracles ×17 | Hub | подписанная верифицируемая математика |
 | GAIA | Hub | аттестованные показания физического мира |
@@ -182,7 +182,7 @@ cp .env.demo .env
 | ARGUS / агенты | eSIM-оператор | заказ по x402 прямо на кошелёк продавца · возврат за неиспользованную eSIM |
 | Кит оператора доменов | Hub | публичные котировки · Openprovider или Porkbun Sandbox, либо собственный HTTP-поставщик оператора · заказ и платёж x402 идут продавцу |
 | Агенты | Оператор доменов | x402 в USDC на Base на кошелёк получения оператора · фиксированная наценка · аккаунт регистратора остаётся у оператора |
-| Hub | ACEX | CapShares |
+| Hub | Agent Capital Exchange | CapShares |
 | SKOPOS | Factory / Hub | наблюдение за флотом |
 | MOMUS | Factory / Hub | поиск · подпись |
 | HISTOR | MCP-клиенты · Hub | подписанные метки MTL/1 · `/check` · `histor.check@v1` |
@@ -309,13 +309,13 @@ cp .env.demo .env
 | --- | --- |
 | [**argus**](https://github.com/alexar76/argus) | **ARGUS-3** — эталонный агент на стороне спроса и единственная предполагаемая точка взаимодействия с человеком: MCP под контролем WARDEN (репутация LUMEN), несколько поставщиков LLM, Telegram; нативный потребитель/поставщик AIMarket; криптовалюта **по умолчанию отключена** · [живой лендинг](https://magic-ai-factory.com/argus/) |
 
-### 📈 ACEX — рынок капитала для агентов
+### 📈 Agent Capital Exchange — рынок капитала для агентов
 <sub>Этап 9. Здесь оценивается будущий доход агента.</sub>
 
 | Репозиторий | Что это |
 | --- | --- |
 | [**acex**](https://github.com/alexar76/acex) | Agent Capital Exchange — листинги, CapShares, кредитование и AMM (Solidity) |
-| [**pulse-terminal**](https://github.com/alexar76/pulse-terminal) | Панель рынков капитала ACEX с актуальными ценами агентов |
+| [**pulse-terminal**](https://github.com/alexar76/pulse-terminal) | Панель рынков капитала Agent Capital Exchange с актуальными ценами агентов |
 
 ### 🌌 Наблюдаемость — чтение системы без изменений
 <sub>Этап 10. Все три компонента по замыслу работают только на чтение: они измеряют, но не действуют.</sub>
@@ -367,7 +367,7 @@ cp .env.demo .env
 
 | Репозиторий | Группа | Одной строкой |
 | --- | --- | --- |
-| [acex](https://github.com/alexar76/acex) | ACEX | CapShares, кредитование, AMM |
+| [acex](https://github.com/alexar76/acex) | Agent Capital Exchange | CapShares, кредитование, AMM |
 | [ai-service-mesh](https://github.com/alexar76/ai-service-mesh) | Ядро AIMarket | обнаружение, эскроу, платежи |
 | [aicom](https://github.com/alexar76/aicom) | Factory | автономный конвейер продуктов |
 | [aicom-landing](https://github.com/alexar76/aicom-landing) | Factory | быстрые маркетинговые лендинги |
@@ -407,7 +407,7 @@ cp .env.demo .env
 | [momus](https://github.com/alexar76/momus) | Доверие и безопасность | красная команда HTTP/федерации |
 | [oracles](https://github.com/alexar76/oracles) | Верифицируемые вычисления | 17 подписанных математических возможностей |
 | [platon](https://github.com/alexar76/platon) | Верифицируемые вычисления | учебная пещера для оракула №1 |
-| [pulse-terminal](https://github.com/alexar76/pulse-terminal) | ACEX | панель рынков капитала |
+| [pulse-terminal](https://github.com/alexar76/pulse-terminal) | Agent Capital Exchange | панель рынков капитала |
 | [signal-hunt](https://github.com/alexar76/signal-hunt) | Обучение и исследование | исследовательская игра + лаборатория |
 | [skopos](https://github.com/alexar76/skopos) | Наблюдаемость | nginx/Apache флота + Security Center |
 | [symmartys](https://github.com/alexar76/symmartys) | Реальная коммерция | НДС, LEI, реестры, курсы, санкции, метки времени, снимки страниц и таймеры |

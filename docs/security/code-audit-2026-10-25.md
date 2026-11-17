@@ -37,7 +37,7 @@ their counts include test credentials and false positives.
 - Solana singleton initialization requires the actual upgrade authority through
   canonical loader-owned ProgramData. Valid instruction argument/state bytes are
   preserved; initialization clients append the required account. The legacy
-  escrow Ed25519 parser now validates all instruction indexes. ACEX EVM debt
+  escrow Ed25519 parser now validates all instruction indexes. Agent Capital Exchange EVM debt
   share rounding no longer permits debt-free tiny borrows.
 - Verified Stripe refunds/disputes freeze new Hub spending atomically, including
   historical reversals on one-time migration. Balances and existing reservations
@@ -80,7 +80,7 @@ Package-specific migration notes are in `docs/sandbox-trust-model.md`,
   including old-session recovery, API outages, wrong-session refusal and replay.
   Provider-key guard and adjacent provider suites passed 17 tests.
 - SDK checks passed for TypeScript (75), Rust (54 plus doctest) and Dart (106).
-  EVM suites passed for market (148), ACEX (74) and lottery (55). Solana native
+  EVM suites passed for market (148), Agent Capital Exchange (74) and lottery (55). Solana native
   suites, SBF/IDL builds and the real disposable local-validator payment/refund
   lifecycle passed; no public-chain funds or real wallets were used.
 - Hub signed Stripe reversals/historical migration passed on SQLite and

@@ -27,7 +27,7 @@
 
 | | 你将获得 | 打开 |
 | --- | --- | --- |
-| **MCP 工具防火墙（WARDEN）** | 对已配置的服务器执行一次扫描。若要在运行时强制使用已审核的定义，请配置 stdio 代理。 | `npx -y @aimarket/warden@0.26.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
+| **MCP 工具防火墙（WARDEN）** | 对已配置的服务器执行一次扫描。若要在运行时强制使用已审核的定义，请配置 stdio 代理。 | `npx -y @aimarket/warden@0.27.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **HISTOR 开放数据** | 官方注册表中每个远程 MCP 服务器公布的内容及每次变更，已签名，每月一次（CC BY 4.0） | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
 | **免费检查** | x402 端点、MCP diff、WARDEN 扫描、HISTOR 检查和工具列表的 token 成本——在浏览器中完成 | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | 将一条 allowlist 内的 GAIA 读数经由 Hub 和 Metis 发送，然后查看签名收据 | [play.modelmarket.dev](https://play.modelmarket.dev/) · [源码](https://github.com/alexar76/aimarket-playground) |
@@ -56,7 +56,7 @@
 | **发布提供方** | `uvx create-aimarket-agent my-agent --kind data-provider --metis` · [完整安全智能体教程](https://github.com/alexar76/create-aimarket-agent/blob/main/docs/tutorials/themis.zh.md) · [完成版智能体](https://github.com/alexar76/themis) · 进程托管在 **[HESTIA](https://github.com/alexar76/hestia)**（托管运行时，不是 Hub） |
 | **参与贡献** | [Discussions](https://github.com/alexar76/aicom/discussions) · [适合首次贡献的问题](https://github.com/alexar76/aicom/labels/good%20first%20issue) · [𝕏 @build_ai_infra](https://x.com/build_ai_infra) |
 
-仓库目录位于**下方**，按各仓库扮演的角色分组——Factory、托管运行时、AIMarket 核心、构建与连接、MCP 网关、可验证计算、物理世界、信任与安全、可验证记忆、你实际运行的客户端、ACEX、可观测性、社区与传播、学习与探索。每个仓库只属于一个分组，该行同时列出其实时落地页；你也可以从任何角度通过 [A–Z 索引](#az)找到它——这里没有第二份站点地图。
+仓库目录位于**下方**，按各仓库扮演的角色分组——Factory、托管运行时、AIMarket 核心、构建与连接、MCP 网关、可验证计算、物理世界、信任与安全、可验证记忆、你实际运行的客户端、Agent Capital Exchange、可观测性、社区与传播、学习与探索。每个仓库只属于一个分组，该行同时列出其实时落地页；你也可以从任何角度通过 [A–Z 索引](#az)找到它——这里没有第二份站点地图。
 
 同样实时可用且无需登录：[Agent Arena](https://magic-ai-factory.com/arena/) · [Factory IQ](https://magic-ai-factory.com/iq) · [Pulse Terminal](https://magic-ai-factory.com/pulse/) · [Signal Hunt](https://hunt.modelmarket.dev/) · [Lottery](https://lottery.modelmarket.dev/)
 
@@ -142,7 +142,7 @@ cp .env.demo .env
 | 6 | **验证** | **METIS** 认知 · **BASANOS** 在固定提交上检查 Solidity · **DOLOS** 实时 EVM 利用 · **MOMUS** HTTP/联邦 · **WARDEN** 第三方 MCP · **HISTOR** 第三方 MCP 服务器随时间公布的内容 · **Attested Memory** 智能体保存的可验证记忆 |
 | 7 | **消费** | **ARGUS**——人类和智能体实际运行的需求侧客户端 · 它为主人购买了旅行 eSIM 并拿回了退款，交易在 Base 上（[案例](https://github.com/alexar76/argus/blob/main/docs/use-case-esim-purchase-refund-zh.md)） |
 | 8 | **结算** | 托管、支付通道和 **Treasury** 赏金，仅在独立验证后支付 |
-| 9 | **融资** | **ACEX** 为智能体定价、上架并提供抵押借贷 |
+| 9 | **融资** | **Agent Capital Exchange** 为智能体定价、上架并提供抵押借贷 |
 | 10 | **监测** | **SKOPOS** 监测机队 · **LOGOS** 监测联邦 · **Alien Monitor** 以实时 3D 呈现全部内容 |
 
 下方每个仓库都**仅出现在一个**分组中——即它在流水线中扮演的角色。如果你只知道名称，请跳转至 [A–Z 索引](#az)。
@@ -155,7 +155,7 @@ cp .env.demo .env
 
 <p align="center">
   <a href="assets/ecosystem-overview.svg">
-    <img src="assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；ACEX 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆；eSIM 运营者通过 x402 向智能体销售，并把签名的交付收据带到 Hub；SYMMARTYS 通过 Hub 出售商业查询：欧盟增值税号、LEI、欧洲央行参考汇率、制裁名单查询和时间戳证明；域名运营者按报价通过 x402 在 Openprovider 或 Porkbun Sandbox 上为智能体注册域名。" width="900">
+    <img src="assets/ecosystem-overview.svg" alt="生态系统概览：Factory 部署到 HESTIA；HESTIA 向 Hub announce；Oracles 和 METIS 向 Hub 供给；ARGUS 消费；Agent Capital Exchange 融资；SKOPOS 观测；MOMUS 发现；Treasury 付款；LOGOS 分析联邦；Attested Memory 保存可验证的智能体记忆；eSIM 运营者通过 x402 向智能体销售，并把签名的交付收据带到 Hub；SYMMARTYS 通过 Hub 出售商业查询：欧盟增值税号、LEI、欧洲央行参考汇率、制裁名单查询和时间戳证明；域名运营者按报价通过 x402 在 Openprovider 或 Porkbun Sandbox 上为智能体注册域名。" width="900">
   </a>
 </p>
 
@@ -168,7 +168,7 @@ cp .env.demo .env
 | Factory / aicom | HESTIA | scaffold · 签名部署到托管运行时 |
 | HESTIA | Hub | 显式 announce（托管 ≠ 上架） |
 | THEMIS | Hub | 发布准入 · approve / review / reject |
-| BASANOS | ACEX / contracts | Solidity 扫描 · 签名保障包 |
+| BASANOS | Agent Capital Exchange / contracts | Solidity 扫描 · 签名保障包 |
 | DOLOS | UNI Anvil（分叉） | 动态 EVM 红队 · Ed25519 发现 |
 | Oracles ×17 | Hub | 签名的可验证数学 |
 | GAIA | Hub | 具有证明（attestation）的物理世界读数 |
@@ -181,7 +181,7 @@ cp .env.demo .env
 | ARGUS / 智能体 | eSIM 运营者 | x402 订单直接付到卖家钱包 · 未使用 eSIM 的退款 |
 | 域名运营者套件 | Hub | 公开报价 · Openprovider 或 Porkbun Sandbox，或运营者自己的 HTTP 供应商 · 订单和 x402 付款交给卖家 |
 | 智能体 | 域名运营者 | 以 Base 上的 USDC x402 付到运营者的收款钱包 · 固定加价 · 注册商账户仍属于运营者 |
-| Hub | ACEX | CapShares |
+| Hub | Agent Capital Exchange | CapShares |
 | SKOPOS | Factory / Hub | 机队监测 |
 | MOMUS | Factory / Hub | 发现 · 签名 |
 | HISTOR | MCP 客户端 · Hub | 签名的 MTL/1 标签 · `/check` · `histor.check@v1` |
@@ -308,13 +308,13 @@ cp .env.demo .env
 | --- | --- |
 | [**argus**](https://github.com/alexar76/argus) | **ARGUS-3**——需求侧参考智能体，也是唯一设计给人类使用的触点：由 WARDEN 门控的 MCP（LUMEN 声誉）、多提供方 LLM、Telegram；原生 AIMarket 消费方/提供方；加密货币功能**默认关闭** · [实时落地页](https://magic-ai-factory.com/argus/) |
 
-### 📈 ACEX——智能体资本市场
+### 📈 Agent Capital Exchange——智能体资本市场
 <sub>阶段 9。智能体未来收益在这里获得定价。</sub>
 
 | 仓库 | 简介 |
 | --- | --- |
 | [**acex**](https://github.com/alexar76/acex) | Agent Capital Exchange——上架、CapShares、借贷和 AMM（Solidity） |
-| [**pulse-terminal**](https://github.com/alexar76/pulse-terminal) | 提供实时智能体定价的 ACEX 资本市场仪表板 |
+| [**pulse-terminal**](https://github.com/alexar76/pulse-terminal) | 提供实时智能体定价的 Agent Capital Exchange 资本市场仪表板 |
 
 ### 🌌 可观测性——读取系统，不做任何更改
 <sub>阶段 10。三者按设计均为只读：它们负责度量，不采取行动。</sub>
@@ -365,7 +365,7 @@ cp .env.demo .env
 
 | 仓库 | 分组 | 一句话简介 |
 | --- | --- | --- |
-| [acex](https://github.com/alexar76/acex) | ACEX | CapShares、借贷、AMM |
+| [acex](https://github.com/alexar76/acex) | Agent Capital Exchange | CapShares、借贷、AMM |
 | [ai-service-mesh](https://github.com/alexar76/ai-service-mesh) | AIMarket 核心 | 发现、托管、支付 |
 | [aicom](https://github.com/alexar76/aicom) | Factory | 自主产品流水线 |
 | [aicom-landing](https://github.com/alexar76/aicom-landing) | Factory | 快速营销落地页 |
@@ -405,7 +405,7 @@ cp .env.demo .env
 | [momus](https://github.com/alexar76/momus) | 信任与安全 | HTTP/联邦红队 |
 | [oracles](https://github.com/alexar76/oracles) | 可验证计算 | 17 项签名数学能力 |
 | [platon](https://github.com/alexar76/platon) | 可验证计算 | 预言机 #1 的教育洞穴 |
-| [pulse-terminal](https://github.com/alexar76/pulse-terminal) | ACEX | 资本市场仪表板 |
+| [pulse-terminal](https://github.com/alexar76/pulse-terminal) | Agent Capital Exchange | 资本市场仪表板 |
 | [signal-hunt](https://github.com/alexar76/signal-hunt) | 学习与探索 | 调查游戏 + 实验室 |
 | [skopos](https://github.com/alexar76/skopos) | 可观测性 | 机队 nginx/Apache + Security Center |
 | [symmartys](https://github.com/alexar76/symmartys) | 真实商业 | 增值税、LEI、登记册、汇率、制裁、时间戳、网页快照与定时器 |

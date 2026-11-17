@@ -2,7 +2,7 @@
  * AWR/2 browser verifier — verify.modelmarket.dev
  * =================================================
  *
- * Client-side verifier for AWR (Agent Work Receipt) documents, normatively
+ * Client-side verifier for AWR (AIMarket Work Receipt) documents, normatively
  * specified in `awr/SPEC.md` (AWR 2.0.0). Section references below are to that
  * document.
  *

@@ -60,6 +60,7 @@ Environment (values never come from argv — argv is world-readable in `ps`):
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
     AICOM_ALERT_QUALITY_URL      the signed MOMUS receipt for the live WARDEN build ("" = off)
+    AICOM_ALERT_REMEDIATION_URL  the SKOPOS fix loop's counts (/remediation/stats on the MOMUS panel, "" = off)
     AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off).
                                  Named one by one, so NOT filtered by the scope, e.g.
                                  https://hub.attestedmemory.net,https://independentai.network/hub
@@ -109,6 +110,7 @@ DEFAULT_SETTLEMENT = "https://verify.modelmarket.dev/settlement.json"
 DEFAULT_JOURNEY = "https://verify.modelmarket.dev/uni-journey.json"
 DEFAULT_UNI_CHAIN = "https://monitor-uni.modelmarket.dev/api/health"
 DEFAULT_QUALITY = "https://histor.modelmarket.dev/security-quality/latest.json"
+DEFAULT_REMEDIATION = "https://momus.modelmarket.dev/remediation/stats"
 # Hubs with a dedicated top-up wallet (AIMARKET_TOPUP_PAY_TO), watched by the hub itself.
 # Hubs whose deposit watcher MUST be on, by the operator's own declaration — none by default:
 # a hub with no dedicated top-up wallet is not watching on purpose, and that is no page. Only
@@ -571,6 +573,99 @@ def probe_federation(hub: str, timeout: float = 20.0, now: float | None = None,
     return checks
 
 
+def _host(url: str) -> str:
+    return (urllib.parse.urlsplit(url if "://" in url else f"https://{url}").hostname or "").lower()
+
+
+def probe_nodes_sign_hybrid(nodes: list[str], timeout: float = 15.0) -> list[Check]:
+    """Do our seller nodes sign Ed25519 + ML-DSA-65, in the well-known AND the manifest?
+
+    2026-11-15: the fronts of esim.modelmarket.dev and domains.modelmarket.dev were started without
+    AIMARKET_PQC=1 and signed Ed25519 only. Every hub of ours accepted that, so nothing here was red,
+    while hub.attestedmemory.net (which requires a post-quantum signature) kept both pending for
+    weeks. A node that falls back to classic after it has signed hybrid is worse: the ratchet on our
+    own hubs refuses a peer that withdraws its pinned ML-DSA key. The structure is checked here (a
+    `pq_value` under `ml-dsa-65`); the hubs verify the cryptography on every crawl.
+    """
+    checks: list[Check] = []
+    for url in nodes:
+        base = url.rstrip("/")
+        missing = []
+        for path in ("/.well-known/ai-market.json", "/ai-market/v2/manifest"):
+            status, body, err = _get(f"{base}{path}", timeout)
+            sig = body.get("signature") if isinstance(body, dict) else None
+            if status != 200 or not isinstance(sig, dict):
+                missing.append(f"{path}: {err or status or 'no signature'}")
+            elif not (sig.get("pq_value") and str(sig.get("pq_algorithm") or "").lower() == "ml-dsa-65"):
+                missing.append(f"{path}: Ed25519 only")
+        checks.append(Check(
+            f"node_signs_hybrid@{_host(base)}", not missing,
+            "signs Ed25519 + ML-DSA-65" if not missing
+            else "; ".join(missing) + " — recreate the front with scripts/seller_node_front.sh",
+        ))
+    return checks
+
+
+def probe_nodes_admitted(hubs: list[str], nodes: list[str], timeout: float = 20.0) -> list[Check]:
+    """Is each of our seller nodes an active peer of each named hub, not stuck in its pending list?
+
+    Not a page: a node waiting at one hub is a gap in reach, not an outage. The hub's own assay
+    blockers are quoted, so the digest says what to fix.
+    """
+    checks: list[Check] = []
+    for hub in hubs:
+        base = hub.rstrip("/")
+        status, body, err = _get(f"{base}/ai-market/v2/federation/peers", timeout)
+        if status != 200 or not isinstance(body, dict):
+            checks.append(Check(f"hub_admits_our_nodes@{_host(base)}", False,
+                                f"peers endpoint -> {err or status}", critical=False))
+            continue
+        active = {_host(str(p.get("url") or p.get("hub_url") or ""))
+                  for p in body.get("peers") or [] if isinstance(p, dict)}
+        pending = {_host(str(p.get("url") or "")): p
+                   for p in body.get("pending") or [] if isinstance(p, dict)}
+        waiting = []
+        for node in nodes:
+            host = _host(node)
+            if host == _host(base) or host in active:
+                continue
+            row = pending.get(host) or {}
+            why = "; ".join(f"{b.get('id')}: {str(b.get('detail') or '')[:120]}"
+                            for b in (row.get("assay_blockers") or [])[:2] if isinstance(b, dict))
+            waiting.append(f"{host} ({row.get('status') or 'not listed'}{': ' + why if why else ''})")
+        checks.append(Check(
+            f"hub_admits_our_nodes@{_host(base)}", not waiting,
+            f"all {len(nodes)} of our nodes are active peers" if not waiting
+            else "not admitted: " + " | ".join(waiting),
+            critical=False,
+        ))
+    return checks
+
+
+def hybrid_nodes_from_env(raw: str | None = None) -> list[str]:
+    """Our seller nodes that must sign hybrid. ``AICOM_ALERT_HYBRID_NODES`` overrides; empty = off."""
+    if raw is None:
+        raw = os.environ.get("AICOM_ALERT_HYBRID_NODES",
+                             "https://esim.modelmarket.dev,https://domains.modelmarket.dev")
+    return [p.strip() for p in raw.replace(";", ",").split(",") if p.strip()]
+
+
+def admission_hubs_from_env(primary: str, raw: str | None = None) -> list[str]:
+    """Hubs whose admission of our nodes is watched: the primary, plus hubs named one by one in
+    ``AICOM_ALERT_ADMISSION_HUBS``. Named, so not filtered by the scope — the owner asked on
+    2026-11-15 for hub.attestedmemory.net to stop refusing our nodes unnoticed."""
+    if raw is None:
+        raw = os.environ.get("AICOM_ALERT_ADMISSION_HUBS", "")
+    out = [primary.rstrip("/")]
+    for part in raw.replace(";", ",").split(","):
+        url = part.strip().rstrip("/")
+        if url and "://" not in url:
+            url = f"https://{url}"
+        if url and _host(url) not in {_host(u) for u in out}:
+            out.append(url)
+    return out
+
+
 def discover_federation_hubs(hub: str, timeout: float = 20.0,
                              scope: Scope | None = None) -> list[str]:
     """Every hub in this federation that keeps a peer index of its own.
@@ -757,6 +852,35 @@ def probe_momus_quality(url: str, timeout: float = 20.0, now: float | None = Non
         why.append(f"adversarial discovery: {discovery.get('status')}")
     return checks + [Check("momus_quality_passed", False,
                            f"run {run} {report.get('status')}: " + ("; ".join(why) or "no failing part named"))]
+
+
+def probe_remediation_loop(url: str, timeout: float = 20.0) -> list[Check]:
+    """Does the MOMUS -> SKOPOS -> AI-Factory fix loop still get patches out of the fixer?
+
+    From September to 2026-11-16 the fixer refused every ticket (it could not verify MOMUS's new
+    post-quantum signature). Each job escalated after three refusals; no counter said "the fixer
+    has not written a single patch", and it was found only when the first code findings all
+    escalated in one morning. Counts are over the conductor's 24 h window."""
+    status, body, err = _get(url, timeout)
+    if status != 200 or not isinstance(body, dict):
+        return [Check("remediation_stats_published", False, f"{url} -> {err or status}")]
+    checks = [Check("remediation_stats_published", True, f"{body.get('total', '?')} jobs on record")]
+    refused, patched = body.get("fixer_refused_jobs"), body.get("fixer_patched_jobs")
+    if not isinstance(refused, int) or not isinstance(patched, int):
+        checks.append(Check("remediation_fixer_answers", False,
+                            "the conductor does not report fixer answers (image older than 2026-11-16?)"))
+    elif refused and not patched:
+        checks.append(Check("remediation_fixer_answers", False,
+                            f"the fixer refused {refused} job(s) in 24 h and sent no patch: read "
+                            "`docker logs remediation-fixer` on admin-vps (a Blame it cannot verify, a scope "
+                            "it does not allow, a model error)"))
+    else:
+        checks.append(Check("remediation_fixer_answers", True,
+                            f"24 h: {patched} job(s) got a patch, {refused} got a refusal"))
+    checks.append(Check("remediation_breaker_closed", not body.get("breaker_open"),
+                        "the remediation circuit breaker is OPEN: the loop deploys nothing until an "
+                        "operator clears it" if body.get("breaker_open") else "breaker closed"))
+    return checks
 
 
 def probe_deposit_watch(hubs: list[str], timeout: float = 20.0, scope: Scope | None = None,
@@ -1420,6 +1544,12 @@ _EN: dict[str, tuple[str, str, str]] = {
     "hub_federation_peers": (
         "hub {t} is not serving its peer list", "hub {t} is serving its peer list again",
         "nobody can see what it indexes; usually means the hub is down"),
+    "node_signs_hybrid": (
+        "node {t} signs Ed25519 only", "node {t} signs Ed25519 + ML-DSA-65 again",
+        "hubs that require post-quantum signatures refuse it, and our own hubs refuse a node that drops a pinned ML-DSA key"),
+    "hub_admits_our_nodes": (
+        "hub {t} has not admitted some of our nodes", "hub {t} admits all our nodes again",
+        "those nodes are missing from that hub's catalogue; the detail quotes its assay blockers"),
     "hub_federation_pins_accepted": (
         "hub {t} rejected a peer's key", "hub {t} accepts every peer's key again",
         "it treats the key change as a possible takeover and keeps that peer's catalogue frozen"),
@@ -1477,6 +1607,15 @@ _EN: dict[str, tuple[str, str, str]] = {
     "momus_quality_passed": (
         "the MOMUS quality gate failed", "the MOMUS quality gate passes again",
         "HISTOR deploys and WARDEN releases are blocked — the failing part is in the detail"),
+    "remediation_stats_published": (
+        "the fix loop's counts cannot be read", "the fix loop's counts can be read again",
+        "nobody can see whether MOMUS findings still get fixed"),
+    "remediation_fixer_answers": (
+        "the fixer refuses every ticket", "the fixer writes patches again",
+        "MOMUS findings are no longer fixed: every job escalates after three refusals"),
+    "remediation_breaker_closed": (
+        "the fix loop's circuit breaker tripped", "the fix loop's circuit breaker is closed again",
+        "no fix is deployed until an operator clears the breaker (POST /remediation/breaker/clear)"),
     "uni_demo_chain_up": (
         "the UNI demo chain is down", "the UNI demo chain is up again",
         "the charity lottery and ACEX in the UNI realm do not work — see the UNI monitor's anvil.log"),
@@ -1689,6 +1828,12 @@ _RU: dict[str, tuple[str, str, str]] = {
     "hub_federation_peers": (
         "хаб {t} не отдаёт список пиров", "хаб {t} снова отдаёт список пиров",
         "не видно, кого он индексирует; обычно это значит, что хаб лежит"),
+    "node_signs_hybrid": (
+        "узел {t} подписывает только Ed25519", "узел {t} снова подписывает Ed25519 + ML-DSA-65",
+        "хабы с обязательной постквантовой подписью его не принимают, а наши хабы отвергают узел, отказавшийся от закреплённого ключа ML-DSA"),
+    "hub_admits_our_nodes": (
+        "хаб {t} не допустил часть наших узлов", "хаб {t} снова допускает все наши узлы",
+        "этих узлов нет в каталоге того хаба; в подробностях — причины из его проверки допуска"),
     "hub_federation_pins_accepted": (
         "хаб {t} отверг ключ пира", "хаб {t} снова принимает ключи всех пиров",
         "смену ключа хаб считает возможным захватом и держит каталог этого пира замороженным"),
@@ -1745,6 +1890,15 @@ _RU: dict[str, tuple[str, str, str]] = {
     "momus_quality_passed": (
         "проверка качества MOMUS провалена", "проверка качества MOMUS снова проходит",
         "деплой HISTOR и релизы WARDEN заблокированы — что именно упало, в подробностях"),
+    "remediation_stats_published": (
+        "счётчики цикла починок не читаются", "счётчики цикла починок снова читаются",
+        "не видно, чинятся ли находки MOMUS"),
+    "remediation_fixer_answers": (
+        "фиксер отклоняет все тикеты", "фиксер снова пишет патчи",
+        "находки MOMUS больше не чинятся: каждая задача уходит людям после трёх отказов"),
+    "remediation_breaker_closed": (
+        "сработал предохранитель цикла починок", "предохранитель цикла починок снова закрыт",
+        "ни одна починка не выкатывается, пока оператор не сбросит предохранитель (POST /remediation/breaker/clear)"),
     "uni_demo_chain_up": (
         "демо-цепочка UNI лежит", "демо-цепочка UNI снова работает",
         "благотворительная лотерея и ACEX в мире UNI не работают — смотри anvil.log монитора UNI"),
@@ -2296,6 +2450,7 @@ def probe_tls_expiry(names: list[str], timeout: float = 8.0,
 
 def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url: str,
             timeout: float, journey_url: str = "", uni_chain_url: str = "", quality_url: str = "",
+            remediation_url: str = "",
             deposit_hubs: list[str] | None = None,
             backup_url: str = "", backup_hosts: list[str] | None = None,
             fleet_url: str = "", fleet_token: str = "",
@@ -2331,6 +2486,9 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
                      if scope.allows(pair[1])]
     for label, url in watched_pairs:
         checks += probe_federation(url, timeout, label=label, scope=scope)
+    nodes = [n for n in hybrid_nodes_from_env() if scope.allows(n)]
+    checks += probe_nodes_sign_hybrid(nodes, min(timeout, 15.0))
+    checks += probe_nodes_admitted(admission_hubs_from_env(hub), nodes, timeout)
     # The signer answers on loopback only, so an instance running anywhere else must be
     # able to opt out (AICOM_ALERT_SIGNER_URL=""). Otherwise that one check fails forever
     # and the alerter it belongs to gets muted for being wrong, not for being noisy.
@@ -2349,6 +2507,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_uni_demo_chain(uni_chain_url, timeout)
     if quality_url.strip():
         checks += probe_momus_quality(quality_url, timeout)
+    if remediation_url.strip():
+        checks += probe_remediation_loop(remediation_url, timeout)
     # Named one by one by the owner, like the uptime URLs, so not filtered by the scope: Attested and
     # Independent stay outside it as ecosystems (2026-09-24, 2026-10-04), yet the Independent node's
     # watcher read nothing from 2026-10-08 to 10-21 while this probe skipped it. Asked on 2026-10-22
@@ -2415,6 +2575,7 @@ def main(argv: list[str] | None = None) -> int:
     journey_url = os.environ.get("AICOM_ALERT_JOURNEY_URL", DEFAULT_JOURNEY)
     uni_chain_url = os.environ.get("AICOM_ALERT_UNI_CHAIN_URL", DEFAULT_UNI_CHAIN)
     quality_url = os.environ.get("AICOM_ALERT_QUALITY_URL", DEFAULT_QUALITY)
+    remediation_url = os.environ.get("AICOM_ALERT_REMEDIATION_URL", DEFAULT_REMEDIATION)
     deposit_hubs = [h.strip() for h in os.environ.get("AICOM_ALERT_DEPOSIT_HUBS", DEFAULT_DEPOSIT_HUBS).split(",")
                     if h.strip()]
     backup_url = os.environ.get("AICOM_ALERT_BACKUP_URL", DEFAULT_BACKUP)
@@ -2457,7 +2618,8 @@ def main(argv: list[str] | None = None) -> int:
     state = load_state(args.state)
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
-                     uni_chain_url=uni_chain_url, quality_url=quality_url, deposit_hubs=deposit_hubs,
+                     uni_chain_url=uni_chain_url, quality_url=quality_url,
+                     remediation_url=remediation_url, deposit_hubs=deposit_hubs,
                      backup_url=backup_url, backup_hosts=backup_hosts,
                      fleet_url=fleet_url, fleet_token=fleet_token,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope,

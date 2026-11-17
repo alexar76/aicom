@@ -118,7 +118,7 @@ contaba esa comprobación y la rechazaba bajo carga: un backend ocupado moría p
 | `/api/health` de la fábrica | event loop bloqueado detrás de la franja de confianza | el trabajo pasó a un hilo |
 | Supervisor KI-3 | el limitador por dirección contaba y rechazaba la comprobación | comprobación sin medir; 403/429 cuenta como vivo |
 | Monitor | 17 sondeos de satélites con clientes HTTP bloqueantes en el event loop | un hilo de trabajo; **desplegado el 2026-10-23** |
-| Registros del hub | 311 trazas al día de los libros de ACEX, apagados por configuración | un aviso por libro; las mismas respuestas 503 |
+| Registros del hub | 311 trazas al día de los libros de Agent Capital Exchange, apagados por configuración | un aviso por libro; las mismas respuestas 503 |
 | Director | una respuesta vacía del modelo tiraba un ciclo de descubrimiento entero | un enriquecimiento que falla queda vacío |
 
 ## Repetirlo

@@ -973,6 +973,8 @@ satellites:
       Monitors factory / metis / oracle fleet over SSH. SECRETS: .env holds LLM keys,
       SKOPOS_DASHBOARD_PASSWORD, SKOPOS_SSH_KEY_PASSPHRASE — git-ignored and listed
       in exclude_paths above.
+      Mirror vendors oracles/core → vendor/oracle-core and momus → vendor/momus
+      (CI remediation needs monorepo escalation_for / _CODE_CORE; PyPI 0.2.1 is stale).
       GHCR: ghcr.io/alexar76/skopos.
 
   - id: atlas

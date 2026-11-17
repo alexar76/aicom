@@ -14,7 +14,7 @@ Legend: ✅ implemented · 🟡 partial / documented · ⬜ roadmap
 | Python SAST (Bandit, fail on High) | ✅ | `.github/workflows/security-scan.yml`, `scripts/run_dependency_audit.sh` |
 | Python dependency audit (pip-audit) | ✅ | same (report artifact; upgrades tracked below) |
 | npm audit (frontend + TS SDK) | ✅ | same (`--audit-level=high`, soft-fail until upgrades land) |
-| EVM static analysis (Slither) | ✅ | `.github/workflows/contracts-ci.yml` (AIMarket + ACEX) |
+| EVM static analysis (Slither) | ✅ | `.github/workflows/contracts-ci.yml` (AIMarket + Agent Capital Exchange) |
 | Dependabot | ✅ | `.github/dependabot.yml` (pip, npm×2, actions, cargo) |
 | Contract audit script + disposition template | ✅ | `scripts/run_contract_audit.sh`, `contracts/audits/audit-response.md` |
 
@@ -71,7 +71,7 @@ AIMARKET_ZK_BACKEND=groth16
 
 ---
 
-## Smart contracts (ACEX / AIMarket escrow)
+## Smart contracts (Agent Capital Exchange / AIMarket escrow)
 
 | Item | Status | Notes |
 |------|--------|-------|
@@ -117,7 +117,7 @@ AIMARKET_ZK_BACKEND=groth16
 
 ---
 
-## Federation / ACEX
+## Federation / Agent Capital Exchange
 
 | Item | Status | Notes |
 |------|--------|-------|
@@ -140,5 +140,5 @@ AIMARKET_ZK_BACKEND=groth16
 
 ## License compatibility
 
-MIT (factory, SDKs, protocol) and Apache 2.0 (hub, ACEX) are compatible for combined deployment.  
+MIT (factory, SDKs, protocol) and Apache 2.0 (hub, Agent Capital Exchange) are compatible for combined deployment.  
 Satellite mirrors inherit per-repo LICENSE; see `scripts/mirror_satellites.sh` governance copy step.

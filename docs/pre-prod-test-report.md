@@ -96,7 +96,7 @@ the unbiasable-randomness property holds under load). No errors, no 429s at this
       [`onchain-journal.md` §3f](onchain-journal.md): escrow capability channel (approve → open →
       EIP-712-signed debit → settle, **real 1.0 USDC**); lottery round 3 (open → buy → close →
       signed-beacon draw → win → claim → fee withdrawals, **real ETH**, lottery drained to 0). End
-      state: 2.0 USDC + 0.0057 ETH on `0x1218`, total gas ≈ 0.0000061 ETH. ACEX value cycle **not**
+      state: 2.0 USDC + 0.0057 ETH on `0x1218`, total gas ≈ 0.0000061 ETH. Agent Capital Exchange value cycle **not**
       run on mainnet (first deposit permanently locks 1 USDC by design; covered by 49 Foundry
       tests; audit-fix constants verified live on-chain).
 
@@ -120,7 +120,7 @@ documented tx-by-tx in [`onchain-journal.md` §3f](onchain-journal.md):
   MCP invocations** of `platon.random@v1` and the **operator received $0.10 in real USDC on-chain**
   via a freshly-deployed verified escrow `0x2F4c…fB22` — full lifecycle (prepay → metered consume →
   EIP-712 authorize → debit → settle) in [`onchain-journal.md` §3g](onchain-journal.md). Promoted to production `:9083` (Jun-13 image kept as `rollback-jun13`).
-- ✅ **ACEX** audit-fix constants verified live on-chain; value behavior covered by 49 Foundry
+- ✅ **Agent Capital Exchange** audit-fix constants verified live on-chain; value behavior covered by 49 Foundry
   tests; mainnet value cycle intentionally not run (first deposit permanently locks 1 USDC).
 
 ## Findings summary

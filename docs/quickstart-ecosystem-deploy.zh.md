@@ -251,7 +251,7 @@ curl -s https://oracles.modelmarket.dev/api/health | jq '{status, kappa, order_p
 两者默认都是免 gas 的 dry run；传入 `broadcast` 以花费真实 gas。
 
 **生态系统核心** — FakeUSDT + `AIMarketEscrow` + `AIMarketCapabilityNFT`
-（ACEX 被有意排除 — 审计将 AuditPool TWAP + PulseAMM 标为 HIGH）：
+（Agent Capital Exchange 被有意排除 — 审计将 AuditPool TWAP + PulseAMM 标为 HIGH）：
 
 ```bash
 ./scripts/deploy_ecosystem_base.sh            # dry-run (no gas)

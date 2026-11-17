@@ -1564,3 +1564,59 @@ def test_the_note_offers_an_assumption_instead_of_a_question():
     assert "assumption" in lowered or "reading you picked" in lowered
     # and it must not close the honest-refusal door the rest of the prompt opens
     assert "refusal" in lowered
+
+
+# ── 1b. hybrid (Ed25519 + ML-DSA-65) Blame, as MOMUS signs since ORACLE_PQC went on ───────────────
+@pytest.fixture
+def pq_signer(tmp_path, monkeypatch):
+    pytest.importorskip("dilithium_py")
+    monkeypatch.setenv("ORACLE_PQC", "1")
+    from momus.findings import FindingSigner
+    return FindingSigner(str(tmp_path / "momus-pq.key"))
+
+
+def test_a_hybrid_blame_verifies_when_both_halves_do(pq_signer):
+    """Measured 2026-11-16: every ticket MOMUS signed since September was refused here, so the fix loop only ever
+    ran on an August ticket. Both verifiers must accept the real hybrid document."""
+    from momus.findings import verify_document_signature
+
+    blame = _signed_ticket(pq_signer)["blame"]
+    assert blame["signature"].get("pq_value"), "the signer did not sign hybrid — the test would prove nothing"
+    body = {k: v for k, v in blame.items() if k != "signature"}
+    assert verify_document_signature(body, blame["signature"], pq_signer.pubkey) is True
+    ok, why = rf.verify_blame(blame, pq_signer.pubkey)
+    assert ok, why
+
+
+def test_a_forged_post_quantum_half_is_refused(pq_signer, tmp_path, monkeypatch):
+    blame = _signed_ticket(pq_signer)["blame"]
+    other = pytest.importorskip("dilithium_py.ml_dsa").ML_DSA_65
+    pk, sk = other.keygen()
+    forged = dict(blame["signature"])
+    body = {k: v for k, v in blame.items() if k != "signature"}
+    import base64
+    forged["pq_public_key"] = base64.b64encode(pk).decode()
+    forged["pq_value"] = base64.b64encode(other.sign(sk, rf._canonical(body).encode())).decode()
+    ok, _ = rf.verify_blame({**blame, "signature": forged}, pq_signer.pubkey)
+    assert ok  # without a pin, a valid PQ half under any key passes (the Ed25519 half is pinned) ...
+    monkeypatch.setenv(rf.MOMUS_PQ_PUBKEY_ENV, blame["signature"]["pq_public_key"])
+    ok, why = rf.verify_blame({**blame, "signature": forged}, pq_signer.pubkey)
+    assert not ok and "post-quantum key" in why   # ... with the pin, only MOMUS's own PQ key does
+    tampered = {**blame["signature"], "pq_value": blame["signature"]["pq_value"][:-8] + "AAAAAAA="}
+    assert rf.verify_blame({**blame, "signature": tampered}, pq_signer.pubkey)[0] is False
+
+
+def test_without_the_pq_library_a_hybrid_blame_is_still_refused(pq_signer, monkeypatch):
+    import builtins
+
+    blame = _signed_ticket(pq_signer)["blame"]
+    real_import = builtins.__import__
+
+    def no_dilithium(name, *a, **k):
+        if name.startswith("dilithium_py"):
+            raise ImportError(name)
+        return real_import(name, *a, **k)
+
+    monkeypatch.setattr(builtins, "__import__", no_dilithium)
+    ok, why = rf.verify_blame(blame, pq_signer.pubkey)
+    assert not ok and "cannot verify" in why

@@ -11,7 +11,7 @@ also exist as standalone GitHub repositories under `alexar76/`:
 
 | Component | Monorepo path | External mirror |
 |-----------|---------------|-----------------|
-| ACEX (capital / pricing) | [`acex/`](https://github.com/alexar76/acex/tree/main/) | `alexar76/acex` |
+| Agent Capital Exchange (capital / pricing) | [`acex/`](https://github.com/alexar76/acex/tree/main/) | `alexar76/acex` |
 | AI Service Mesh | [`ai-service-mesh/`](https://github.com/alexar76/ai-service-mesh/tree/main/) | `alexar76/ai-service-mesh` |
 
 Without an explicit canonical-source rule, any feature work risks landing
@@ -37,12 +37,12 @@ on the side that the next `scripts/mirror_satellites.sh` run will overwrite.
 - The monorepo already runs the full CI matrix (forge, anchor, pytest,
   vitest, dart test). Splitting CI ownership doubles maintenance.
 - Federation contracts (`AIMarketEscrow.sol`, payment channels, hub
-  bond) cross the ACEX / Mesh / Hub / Factory boundary; cross-cutting
+  bond) cross the Agent Capital Exchange / Mesh / Hub / Factory boundary; cross-cutting
   changes must be atomic.
 - Existing imports (`from acex.integrations.pricing import ...` in
   `aimarket_hub.capital_pricing`) already assume the monorepo layout.
 - Operators install the whole stack from `docker-compose.yml` — there is no
-  consumer that needs Mesh or ACEX as a standalone package.
+  consumer that needs Mesh or Agent Capital Exchange as a standalone package.
 
 ## Non-goals
 

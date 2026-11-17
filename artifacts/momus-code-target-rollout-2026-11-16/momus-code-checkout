@@ -1,0 +1,20 @@
+#!/bin/sh
+# A current shallow checkout of main for the remediation fixer (AIFACTORY_REMEDIATION_CODE_ROOT), read from Gitea's own
+# bare repository on this disk — no credential, no network. Every 5 min (momus-code-checkout.timer). Read-only use of
+# the Gitea repository: clone/fetch only.
+set -eu
+SRC=/var/lib/docker/volumes/gitea_gitea-data/_data/git/repositories/alexar76/aicom.git
+DST=/srv/momus-code/aicom
+# git honours safe.directory only from global/system config (not -c, not GIT_CONFIG_COUNT), and the Gitea repository
+# belongs to Gitea's user: a dedicated global config that names only that repository.
+export GIT_CONFIG_GLOBAL=/etc/momus-code-checkout.gitconfig GIT_CONFIG_NOSYSTEM=1
+printf '[safe]\n\tdirectory = %s\n' "$SRC" > "$GIT_CONFIG_GLOBAL"
+G="git"
+if [ ! -d "$DST/.git" ]; then
+  mkdir -p /srv/momus-code
+  $G clone -q --depth 1 --branch main "file://$SRC" "$DST"
+fi
+$G -C "$DST" fetch -q --depth 1 origin main
+$G -C "$DST" reset -q --hard FETCH_HEAD
+$G -C "$DST" clean -qfdx
+echo "$(date -u +%FT%TZ) $($G -C "$DST" rev-parse --short=12 HEAD)" > /srv/momus-code/checkout.stamp

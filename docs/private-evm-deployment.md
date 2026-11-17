@@ -21,7 +21,7 @@ cryptocurrency.
 
 > **Crypto / blockchain features are OFF by default and are an explicit opt-in.**
 > Enabling them (`AIFACTORY_CRYPTO_ENABLED=1`) turns on wallets, on-chain
-> settlement, payment channels, lottery, and ACEX on-chain trading.
+> settlement, payment channels, lottery, and Agent Capital Exchange on-chain trading.
 >
 > - **You operate the chain and own the compliance.** Running a token, processing
 >   payments, custody of keys, KYC/AML, securities/lottery/gambling law, and tax
@@ -148,7 +148,7 @@ export OPERATOR_KEY=0x... ORACLE_SIGNER_KEY=0x... TREASURY_KEY=0x... SPONSOR_KEY
 2. Deploy the contracts with Foundry (`contracts/DEPLOY.md`): `AIMarketEscrow`,
    `AIMarketCapabilityNFT`, a stablecoin (`contracts/evm/src/FakeUSDT.sol` for a
    test token, or wire a real one), `lottery/contracts/AIAgentLottery.sol`, and
-   (optional) the ACEX leg (`PulseAMM`, registry, lending/collateral pools).
+   (optional) the Agent Capital Exchange leg (`PulseAMM`, registry, lending/collateral pools).
 3. Record each deployed address into the env vars from §2 / §5 / §6.
 4. Set the settlement wallet (§3); confirm it is not a placeholder.
 5. Fund the operator/relayer keys with native gas on your chain.

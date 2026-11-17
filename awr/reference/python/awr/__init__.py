@@ -1,6 +1,6 @@
 """AWR/2 reference implementation.
 
-AWR (Agent Work Receipt) defines three signed, self-contained W3C Verifiable Credentials
+AWR (AIMarket Work Receipt) defines three signed, self-contained W3C Verifiable Credentials
 -- ``WorkReceipt``, ``VerificationVerdict``, ``BlameAttestation`` -- secured with an
 ``eddsa-jcs-2022`` Data Integrity proof over an RFC 8785 canonicalization and issued by a
 ``did:key``.  Verification needs no network, no registry and no issuer-specific software.

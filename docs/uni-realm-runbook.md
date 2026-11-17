@@ -10,7 +10,7 @@ A cheat sheet for running, moving and checking the UNI bubble. The why is in
 | Chain | Who runs it | Address seen by containers | What lives on it |
 |---|---|---|---|
 | **Bubble chain** | container `anvil-uni`, volume `anvil_uni_state` | `http://172.17.0.1:8546` | the hub's money: token `0x5fbd…0aa3`, escrow `0xe7f1…0512`, the hub wallet (Anvil #1) and the buyer (Anvil #2) |
-| **Demo chain** | the Alien Monitor UNI container (`alien-monitor`), its own Anvil | `http://172.17.0.1:8545` (via `uni-rpc-bridge`) | the map's world: lottery, NFT, ACEX (PulseAMM, registry, lending) |
+| **Demo chain** | the Alien Monitor UNI container (`alien-monitor`), its own Anvil | `http://172.17.0.1:8545` (via `uni-rpc-bridge`) | the map's world: lottery, NFT, Agent Capital Exchange (PulseAMM, registry, lending) |
 
 The UNI hub **settles on the bubble chain** (`AIMARKET_RPC_BASE=…:8546`) and reads the lottery and
 NFT on the demo chain (`ALIEN_EVM_RPC=…:8545`). The demo chain is disposable: the monitor wipes it
@@ -54,7 +54,7 @@ side against the chains themselves:
 
 ## When the demo chain changes
 
-After a monitor reset the lottery, NFT and ACEX addresses change. The new ones are in
+After a monitor reset the lottery, NFT and Agent Capital Exchange addresses change. The new ones are in
 `data/alien-monitor/universe/hub.env.snippet`. Take **only** these from it:
 
 - hub: `AIMARKET_CHARITY_LOTTERY_ADDRESS`, `LOTTERY_ADDRESS`, `HUB_LOTTERY_ADDRESS`, `AIMARKET_NFT_CONTRACT`;

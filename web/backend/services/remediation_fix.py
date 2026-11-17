@@ -226,14 +226,62 @@ def scope_map() -> dict[str, list[str]]:
     )
 
 
+#: Source areas whose code findings (MOMUS's `code` target, component `code:<area>`) the fixer may patch. Opt-in per
+#: area, like every scope here: an area not listed is refused, whatever the ticket says.
+CODE_AREAS_ENV = "AIFACTORY_REMEDIATION_CODE_AREAS"
+_CODE_TITLE = re.compile(r"^(?P<path>[A-Za-z0-9_][A-Za-z0-9_./-]*): VX-[A-Z0-9-]+ in \S+")
+
+
+def code_scope(ticket: dict[str, Any]) -> list[str]:
+    """The one file a code finding may patch, or [] when it may patch nothing.
+
+    A code finding names a FILE, which the rest of this module refuses to take from a ticket. Here the path is
+    read from the part of the ticket MOMUS SIGNED — the Blame summary opens with the finding's title,
+    `<path>: <rule> in <function>` — never from the unsigned evidence. It must lie inside the ticket's own area
+    (`code:<area>` -> `<area>/...`), the area must be enabled on this host, and the denylist still applies.
+    """
+    component = str((ticket or {}).get("component") or "")
+    if not component.startswith("code:"):
+        return []
+    area = component[len("code:"):]
+    allowed = {a.strip() for a in str(os.environ.get(CODE_AREAS_ENV, "")).split(",") if a.strip()}
+    if not area or area not in allowed:
+        return []
+    summary = str(((ticket or {}).get("blame") or {}).get("summary") or "")
+    m = _CODE_TITLE.match(summary)
+    if not m:
+        return []
+    path = m.group("path")
+    parts = path.split("/")
+    if ".." in parts or "" in parts or parts[0] != area or len(parts) < 2:
+        return []
+    if path_is_denied(path) or read_is_denied(path):
+        return []
+    return [path]
+
+
 def app_root() -> str:
     return os.environ.get("AIFACTORY_APP_ROOT", "/app")
+
+
+#: Where code findings read source: a checkout of the branch MOMUS scans (main), kept current by the host. Separate
+#: from AIFACTORY_APP_ROOT on purpose — the service components (and the PRAXIS drill) keep the tree they had.
+CODE_ROOT_ENV = "AIFACTORY_REMEDIATION_CODE_ROOT"
+
+
+def code_root() -> str:
+    return os.environ.get(CODE_ROOT_ENV) or app_root()
 
 
 # ── ticket authenticity ───────────────────────────────────────────────────────
 def _canonical(body: dict[str, Any]) -> str:
     """Byte-identical to momus.findings.FindingSigner._canon_str."""
     return json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+
+
+#: Optional pin of MOMUS's ML-DSA-65 public key (base64). The Ed25519 half is always checked against the pinned
+#: classical key; with this set, the post-quantum half must come from MOMUS's own PQ key as well.
+MOMUS_PQ_PUBKEY_ENV = "AIFACTORY_REMEDIATION_MOMUS_PQ_PUBKEY"
 
 
 def verify_blame(blame: dict[str, Any], momus_pubkey: str) -> tuple[bool, str]:
@@ -253,16 +301,34 @@ def verify_blame(blame: dict[str, Any], momus_pubkey: str) -> tuple[bool, str]:
     value = str(sig.get("value") or "")
     if not value:
         return False, "ticket carries no signed Blame attestation"
-    if sig.get("pq_value"):
-        # oracle_core refuses a post-quantum signature it cannot check rather than ignoring it, and
-        # so must this: silently verifying only the classical half would downgrade the guarantee.
-        return False, "Blame carries a post-quantum signature this service cannot verify"
     body = {k: v for k, v in (blame or {}).items() if k != "signature"}
+    canonical = _canonical(body).encode()
     try:
         pub = Ed25519PublicKey.from_public_bytes(base64.b64decode(momus_pubkey))
-        pub.verify(base64.b64decode(value), _canonical(body).encode())
+        pub.verify(base64.b64decode(value), canonical)
     except (InvalidSignature, ValueError, TypeError):
         return False, "Blame signature does not verify under the configured MOMUS key"
+    if sig.get("pq_value"):
+        # MOMUS signs hybrid (Ed25519 + ML-DSA-65) since ORACLE_PQC went on in September, and every ticket since
+        # then was refused here — the loop only ever ran on an August ticket. Both halves must verify, exactly as
+        # oracle_core.signing.Signer.verify_signature_object does: a present PQ signature that cannot be checked
+        # (library missing, other algorithm, a PQ key other than the pinned one) is a refusal, never a pass.
+        try:
+            from dilithium_py.ml_dsa import ML_DSA_65
+        except ImportError:
+            return False, "Blame carries a post-quantum signature this service cannot verify"
+        if sig.get("pq_algorithm") != "ml-dsa-65":
+            return False, "Blame post-quantum signature uses an unexpected algorithm"
+        presented = str(sig.get("pq_public_key") or "")
+        pinned = str(os.environ.get(MOMUS_PQ_PUBKEY_ENV, "")).strip()
+        if pinned and presented != pinned:
+            return False, "Blame post-quantum key is not the configured MOMUS key"
+        try:
+            ok = bool(ML_DSA_65.verify(base64.b64decode(presented), canonical, base64.b64decode(sig["pq_value"])))
+        except Exception:  # noqa: BLE001 - any malformed field is a failed verification
+            ok = False
+        if not ok:
+            return False, "Blame post-quantum signature does not verify"
     return True, "Blame verified"
 
 
@@ -283,7 +349,7 @@ def check_ticket(ticket: dict[str, Any]) -> tuple[str, str]:
         raise FixRefused("Blame finding_id disagrees with the ticket")
     if blame.get("component") != component:
         raise FixRefused("Blame component disagrees with the ticket")
-    if component not in scope_map():
+    if component not in scope_map() and not code_scope(ticket):
         raise FixRefused(
             f"'{component}' has no patch scope on this host — autonomous authoring is enabled "
             f"per component, and this one was never enabled", config_error=True)
@@ -349,11 +415,13 @@ def _audit_once() -> None:
         logger.info("no credential-looking file is readable inside this container")
 
 
-def _read_scope(component: str) -> dict[str, str]:
+def _read_scope(component: str, ticket: dict[str, Any] | None = None) -> dict[str, str]:
     _audit_once()
-    root = os.path.realpath(app_root())
+    code = component.startswith("code:") and component not in scope_map()
+    root = os.path.realpath(code_root() if code else app_root())
     out: dict[str, str] = {}
-    for rel in scope_map()[component]:
+    paths = scope_map().get(component) or (code_scope(ticket or {}) if component.startswith("code:") else [])
+    for rel in paths:
         path = os.path.realpath(os.path.join(root, rel))
         if not (path == root or path.startswith(root + os.sep)):
             raise FixRefused(f"scope entry '{rel}' escapes the application root", config_error=True)
@@ -739,7 +807,7 @@ def _reference_block(criterion: str, already_shown: set[str], named=None) -> str
 
 def build_prompt(ticket: dict[str, Any], files: dict[str, str], previous_failure: str = "",
                  attempt: int = 1, max_attempts: int = 3,
-                 declared: set[str] | None = None) -> str:
+                 declared: set[str] | None = None, guide: str = "") -> str:
     listing = "\n\n".join(
         f"=== FILE: {rel} ===\n{text}" for rel, text in sorted(files.items()))
     ladder = (f"\nThis is ATTEMPT {attempt} of {max_attempts}. After the last one the finding "
@@ -773,7 +841,7 @@ RULES
   a rule against new dependencies is not a rule against using the ones the service already has.
 - Keep the module's existing style and comment density.
 - You may only modify the files listed below. There is no way to create or delete files.
-
+{guide}
 OUTPUT
 Return a single JSON object and nothing else:
 {{"summary": "<one line, imperative, <=72 chars>",
@@ -983,6 +1051,21 @@ def _declared_dependencies(scope_paths: list[str]) -> set[str]:
                     continue
                 found |= _requirement_names(name, text)
     return found
+
+
+#: Markers that tell a scanner to look away. A person may write one, with a reason, after reading the code; an
+#: automated fix may not — it would be the fixer accepting its own finding.
+_SILENCING = re.compile(r"vx-ok:|nosemgrep|noqa:\s*S\d|# nosec\b")
+
+
+def added_silencing_marks(before: dict[str, str], rewrites: dict[str, str]) -> str:
+    """The first silencing marker a rewrite adds (not present in the file before), or ""."""
+    for rel, after in rewrites.items():
+        old = {line.strip() for line in (before.get(rel) or "").splitlines()}
+        for line in (after or "").splitlines():
+            if _SILENCING.search(line) and line.strip() not in old:
+                return line.strip()[:120]
+    return ""
 
 
 def first_unbound_name(before: dict[str, str], rewrites: dict[str, str]) -> str:
@@ -1304,7 +1387,7 @@ async def author_fix(ticket: dict[str, Any], *, llm_router: Any,
     if llm_router is None:
         raise FixRefused("no LLM router is configured on this build", config_error=True)
 
-    before = _read_scope(component)
+    before = _read_scope(component, ticket) if component.startswith("code:") else _read_scope(component)
     # Explicitly, BEFORE the call, mirroring the pipeline's own guard chain. Relying on the router's
     # internal check alone would book the spend first and refuse afterwards.
     assert_product_within_budget(COST_PRODUCT_ID)
@@ -1335,7 +1418,11 @@ async def author_fix(ticket: dict[str, Any], *, llm_router: Any,
         cfg.model_override = stronger
         logger.info("remediation attempt %d: escalating to %s", attempt, stronger)
     declared = _declared_dependencies(list(before))
-    prompt = build_prompt(ticket, before, previous_failure, attempt, declared=declared)
+    guide = ""
+    if component.startswith("code:"):
+        from .remediation_code_guides import guide_block
+        guide = guide_block(ticket, code_root(), read_is_denied, redact_secrets)
+    prompt = build_prompt(ticket, before, previous_failure, attempt, declared=declared, guide=guide)
     council = council_target(attempt)
     used_model = ""
     try:
@@ -1365,6 +1452,19 @@ async def author_fix(ticket: dict[str, Any], *, llm_router: Any,
             "the model's answer was cut off by the output limit before it finished — return "
             "ONLY the files you actually changed, and keep each one as short as the fix allows")
     summary, rewrites = parse_reply(reply, set(before))
+    silenced = added_silencing_marks(before, rewrites)
+    if silenced:
+        # 2026-11-16: asked to fix a check-then-connect finding, the model added only `# vx-ok: ...` and the gate
+        # passed it. A fix that switches the check off is not a fix; the next attempt is told so.
+        raise FixRefused("the patch adds a marker that silences the check instead of fixing the code "
+                         f"({silenced}); fix the code itself — `vx-ok` and `nosemgrep` are a person's decision")
+    if component.startswith("code:"):
+        # The finding's own rule on the rewrite, as MOMUS's gate will run it: a rewrite that still matches costs
+        # a branch, a push and a gate round trip to learn what this says in milliseconds.
+        from .remediation_code_guides import still_matches
+        left = still_matches(ticket, before, rewrites, code_root())
+        if left:
+            raise FixRefused(f"the rewrite still matches the finding's rule — {left}")
     unbound = first_unbound_name(before, rewrites)
     if unbound:
         raise FixRefused(f"the patch uses a name it does not define — {unbound}")

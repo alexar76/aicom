@@ -10,7 +10,7 @@ Chuleta para ejecutar, trasladar y comprobar la burbuja UNI. El porqué está en
 | Cadena | Quién la ejecuta | Dirección para los contenedores | Qué vive en ella |
 |---|---|---|---|
 | **Cadena de la burbuja** | contenedor `anvil-uni`, volumen `anvil_uni_state` | `http://172.17.0.1:8546` | el dinero del hub: token `0x5fbd…0aa3`, escrow `0xe7f1…0512`, la cartera del hub (Anvil #1) y el comprador (Anvil #2) |
-| **Cadena de demostración** | el contenedor Alien Monitor UNI (`alien-monitor`), con su propio Anvil | `http://172.17.0.1:8545` (vía `uni-rpc-bridge`) | el mundo del mapa: lotería, NFT, ACEX (PulseAMM, registro, préstamos) |
+| **Cadena de demostración** | el contenedor Alien Monitor UNI (`alien-monitor`), con su propio Anvil | `http://172.17.0.1:8545` (vía `uni-rpc-bridge`) | el mundo del mapa: lotería, NFT, Agent Capital Exchange (PulseAMM, registro, préstamos) |
 
 El hub UNI **liquida en la cadena de la burbuja** (`AIMARKET_RPC_BASE=…:8546`) y lee la lotería y el
 NFT en la cadena de demostración (`ALIEN_EVM_RPC=…:8545`). La cadena de demostración es desechable:
@@ -55,7 +55,7 @@ la parte del dinero contra las propias cadenas:
 
 ## Cuando cambia la cadena de demostración
 
-Tras un reinicio del monitor cambian las direcciones de la lotería, el NFT y ACEX. Las nuevas están
+Tras un reinicio del monitor cambian las direcciones de la lotería, el NFT y Agent Capital Exchange. Las nuevas están
 en `data/alien-monitor/universe/hub.env.snippet`. Tomar de ahí **solo** esto:
 
 - hub: `AIMARKET_CHARITY_LOTTERY_ADDRESS`, `LOTTERY_ADDRESS`, `HUB_LOTTERY_ADDRESS`, `AIMARKET_NFT_CONTRACT`;

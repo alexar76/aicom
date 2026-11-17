@@ -30,7 +30,7 @@ Surfaces publiques :
 | **Agent Lottery** | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | Consommateur canonique d'oracles + démo d'UBI machine |
 | **Démos de l'écosystème** | [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) | Vue d'ensemble de la stack en direct |
 | **Monitor** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | Visualiseur 3D de l'écosystème |
-| **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Tableau de bord des marchés de capitaux ACEX |
+| **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Tableau de bord des marchés de capitaux Agent Capital Exchange |
 | **Landing ARGUS** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Installation + entrée utilisateur |
 | **Âtre HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) | Runtime hébergé et isolé — pas le catalogue du Hub |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [landing](https://alexar76.github.io/attested-memory/) | Mémoire vérifiable pour agents IA |
@@ -219,7 +219,7 @@ flowchart TB
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | installer via le landing Factory | `argus` |
 | [`alien-monitor/`](https://github.com/alexar76/alien-monitor) | **Alien Monitor** | `/monitor/` · `:9100` | `alien-monitor` |
 | [`apps/pulse-terminal/`](https://github.com/alexar76/pulse-terminal) | **Pulse Terminal** | `/pulse/` · `:5199` | avec `acex` |
-| [`acex/`](https://github.com/alexar76/acex) | couche capital **ACEX** | contrats + Pulse API | `acex` |
+| [`acex/`](https://github.com/alexar76/acex) | couche capital **Agent Capital Exchange** | contrats + Pulse API | `acex` |
 | [`lottery/`](https://github.com/alexar76/lottery) | **Agent Lottery** | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | `lottery` |
 | [`contracts/`](../../../contracts/) | **Escrow, NFT, vérificateur ZK** | Base mainnet (voir le journal) | `contracts` |
 | [`aimarket-widget/`](https://github.com/alexar76/aimarket-widget/tree/main/) | **Widget embed** | [modelmarket.dev/widget/](https://modelmarket.dev/widget/demo) | `aimarket-widget` |
@@ -371,7 +371,7 @@ flowchart TB
 |------|----------------|--------------------|
 | **Commerce** | Découvrir → canal → invoke → reçu → régler | Hub, plugins, contrats, SDK |
 | **Contrôle** | Enregistrer l'agent → apparier l'intention → preflight → séquestre → invoke | Mesh, orchestrateur Factory |
-| **Capital** | Lister → auditer → trader → prêter → pulse | ACEX, Pulse Terminal |
+| **Capital** | Lister → auditer → trader → prêter → pulse | Agent Capital Exchange, Pulse Terminal |
 | **Observation** | Métriques en direct, flux de transactions, assistant IA | Alien Monitor, Prometheus |
 
 ---
@@ -570,13 +570,13 @@ Bibliothèque **`oracle-core`** partagée. Chaque oracle émet des artefacts sig
 
 ![Flux de transactions — flux d'activité en direct](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/06-transaction-flow.png)
 
-### 3.9 Pulse Terminal (UI ACEX)
+### 3.9 Pulse Terminal (UI Agent Capital Exchange)
 
-**Rôle :** Tableau de bord WebSocket pour les marchés de capitaux ACEX — prix des CapShares, profondeur des pools de prêt, statut des pools d'audit, annonces d'agents. Déployé aux côtés de Monitor via `deploy_alien_monitor.sh`.
+**Rôle :** Tableau de bord WebSocket pour les marchés de capitaux Agent Capital Exchange — prix des CapShares, profondeur des pools de prêt, statut des pools d'audit, annonces d'agents. Déployé aux côtés de Monitor via `deploy_alien_monitor.sh`.
 
 **URL :** [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)
 
-### 3.10 ACEX — Agent Capital Exchange
+### 3.10 Agent Capital Exchange
 
 **Rôle :** Couche capital étendant la spéc du protocole (pas le code du hub) — annonces ALP, CapShares, AgentNotes, prêt LiquidityMesh, Pulse AMM, staking (jalonnement) Proof-of-Audit. S'intègre uniquement en HTTP/JSON + contrats on-chain.
 
@@ -639,7 +639,7 @@ Bibliothèque **`oracle-core`** partagée. Chaque oracle émet des artefacts sig
 | **aimarket-escrow** | `contracts/solana/` | Canaux USDC Solana |
 | **PlonkVerifier** | `contracts/zk/` | Preuves ZK de validité des entrées ; le Hub appelle `verifyProof` à `AIMARKET_ZK_VERIFIER_CONTRACT` |
 | **AIAgentLottery** | `lottery/contracts/` | Loterie d'agents pondérée par la réputation |
-| **Stack ACEX** | `acex/contracts/evm/` | Vault, registre, prêt, AMM, pool d'audit |
+| **Stack Agent Capital Exchange** | `acex/contracts/evm/` | Vault, registre, prêt, AMM, pool d'audit |
 
 Runbook de déploiement : [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md). Registre : [`config/deployments/base-mainnet.json`](../../../config/deployments/base-mainnet.json).
 
@@ -772,7 +772,7 @@ Ne jamais faire fonctionner les deux rails sur le même dépôt : le `usedAmount
 
 Les oracles sont des produits de première classe de la place de marché — la même boucle découvrir → canal → invoke → régler. L'**Agent Lottery** est le consommateur de référence qui compose Platon + Chronos + Lumen en un seul tirage vérifiable, payant par appel depuis l'opex ([`oracles/docs/en.md`](https://github.com/alexar76/oracles/blob/main/docs/en.md)).
 
-### 4.5 Preuves de revenus ACEX
+### 4.5 Preuves de revenus Agent Capital Exchange
 
 Les valorisations de CapShares requièrent un revenu d'invoke prouvable — le hub engage une **racine de Merkle sur les reçus payés** par période ([`revenue_proofs.py`](https://github.com/alexar76/aimarket-hub/blob/main/aimarket_hub/revenue_proofs.py)). Les actionnaires vérifient sans faire confiance aux assertions du hub.
 
@@ -789,7 +789,7 @@ Démo en direct sur **Base mainnet (chainId 8453)** — USDC réel, contrats vé
 | AIAgentLottery | Loterie pondérée par la réputation (ETH natif) |
 | AIMarketEscrow | Canaux de paiement USDC |
 | AIMarketCapabilityNFT | NFT de justificatifs de capacité |
-| Stack ACEX (×5) | Vault, registre, prêt, AMM, pool d'audit |
+| Stack Agent Capital Exchange (×5) | Vault, registre, prêt, AMM, pool d'audit |
 | PulseDistributor | Récompenses Pulse |
 | PlonkVerifier | Preuves ZK |
 
@@ -1000,7 +1000,7 @@ Fusion YAML en couches : [`docs/configuration.md`](../../configuration.md)
 | Hub `:9083` | `deploy_hub.sh` · manifeste à `/.well-known/ai-market.json` |
 | `MESH_HUB_URL` | Upstream de découverte Mesh (défaut `http://127.0.0.1:9083`) |
 | `MESH_ENV`, `MESH_CORS_ORIGINS` | Runtime Mesh + CORS du tableau de bord |
-| Monitor `:9100`, Pulse `:5199` | Alien Monitor + terminal ACEX |
+| Monitor `:9100`, Pulse `:5199` | Alien Monitor + terminal Agent Capital Exchange |
 | LOGOS `:9460` | API analytique en lecture seule ; tableau [logos.modelmarket.dev](https://logos.modelmarket.dev/) |
 | `LOGOS_HUB_URL`, `LOGOS_MOMUS_URL`, `LOGOS_SKOPOS_URL`, `LOGOS_TREASURY_URL` | Sources analytiques explicites |
 | `BASE_RPC_URL`, `AIMARKET_ESCROW_EVM_ADDRESS` | Sondage de chaîne en mode LIVE |
@@ -1056,7 +1056,7 @@ Depuis [`ROADMAP.md`](../../../ROADMAP.md) :
 - **v0.2.x** — matrice de compatibilité (hub ↔ SDK ↔ widget), vecteurs de test négatifs.
 - **v1.0** — gel RFC, codes d'erreur versionnés, suite de conformité tierce.
 
-### 9.3 ACEX Phase 2+
+### 9.3 Agent Capital Exchange Phase 2+
 
 [`acex/README.md`](https://github.com/alexar76/acex/blob/main/README.md) :
 
@@ -1083,7 +1083,7 @@ Documentés dans [`docs/aimarket-whitepaper.md`](../../aimarket-whitepaper.md) �
 - Oracle de litige décentralisé (O-1).
 - Collusion de hubs à l'échelle de la fédération.
 - Durcissement crypto des oracles (KI-6) : audit externe VDF/signature, vérification formelle, gel du protocole PQC hybride.
-- Test de valeur ACEX sur les contrats redéployés (bases TWAP à fenêtre temporelle).
+- Test de valeur Agent Capital Exchange sur les contrats redéployés (bases TWAP à fenêtre temporelle).
 - mTLS entre le Mesh et les agents enregistrés (Phase 2).
 
 ---

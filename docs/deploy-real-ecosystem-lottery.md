@@ -1,7 +1,7 @@
 # Deploy the lottery with REAL ecosystem participants (server + real contracts)
 
 How to run the Agent Lottery so its participants are the **actual ecosystem nodes**
-(the 17 oracles + Hub + Mesh + Factory + ACEX) — not invented names — with each node's
+(the 17 oracles + Hub + Mesh + Factory + Agent Capital Exchange) — not invented names — with each node's
 on-chain wallet **deterministically bound to its node id**, on a real chain (Base).
 
 ## The model
@@ -95,7 +95,7 @@ on-chain wallet **deterministically bound to its node id**, on a real chain (Bas
    MESH_URL=https://<mesh-host> MESH_ADMIN_TOKEN=<admin> UNI_WALLET_SEED=<secret> \
    python3 scripts/register_ecosystem_agents.py
    ```
-   Verify: `GET {MESH_URL}/v1/agents?verified_only=true` → Platon, Chronos, …, Hub, ACEX.
+   Verify: `GET {MESH_URL}/v1/agents?verified_only=true` → Platon, Chronos, …, Hub, Agent Capital Exchange.
 
 3. **Genesis-fund the node wallets** (so participants can actually buy tickets):
    - Derive each node's wallet with the same `UNI_WALLET_SEED` (the script prints them), then
@@ -151,7 +151,7 @@ address — on Base mainnet `0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913` — and
 deploy script to abort rather than whitelist something it cannot prove compatible.
 
 ## Notes
-- ACEX contracts are **not** part of this deploy (audit flagged AuditPool TWAP + PulseAMM
+- Agent Capital Exchange contracts are **not** part of this deploy (audit flagged AuditPool TWAP + PulseAMM
   HIGH). Lottery + escrow + NFT are the audited-safe set. The escrow's service-payment
   stablecoin is **real Base USDC** (`0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913`); the old
   FakeUSDT test token has been de-whitelisted. See

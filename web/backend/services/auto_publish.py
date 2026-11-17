@@ -407,7 +407,7 @@ def _publish_fullstack_to_vercel(product_id: str, general: dict[str, Any]) -> di
     env["XDG_CACHE_HOME"] = str(data / ".cache")
     env["XDG_CONFIG_HOME"] = str(data / ".local")
     env["XDG_DATA_HOME"] = str(data / ".local" / "share")
-    cmd = [vercel_bin, str(bundle_dir), "--prod", "--yes", "--token", token]
+    cmd = [vercel_bin, str(bundle_dir), "--prod", "--yes"]   # token from env VERCEL_TOKEN, never argv
     if env.get("VERCEL_ORG_ID"):
         cmd.extend(["--scope", env["VERCEL_ORG_ID"]])
     timeout = int(os.environ.get("AIFACTORY_AUTO_PUBLISH_TIMEOUT_SEC", "900"))
@@ -582,7 +582,8 @@ def try_publish_after_devops(product_id: str) -> dict[str, Any]:
                 err = "vercel CLI not found on PATH (npm i -g vercel)"
                 _write_result(out_path, product_id, provider, ok=False, error=err)
                 return {"ok": False, "error": err}
-            cmd = [vercel_bin, str(code_dir), "--prod", "--yes", "--token", token]
+            # The CLI reads VERCEL_TOKEN from env (set above); an argv token shows in every process listing on the host.
+            cmd = [vercel_bin, str(code_dir), "--prod", "--yes"]
             if env.get("VERCEL_ORG_ID"):
                 cmd.extend(["--scope", env["VERCEL_ORG_ID"]])
 
@@ -597,7 +598,8 @@ def try_publish_after_devops(product_id: str) -> dict[str, Any]:
                 err = "netlify CLI not found on PATH"
                 _write_result(out_path, product_id, provider, ok=False, error=err)
                 return {"ok": False, "error": err}
-            cmd = [netlify_bin, "deploy", "--prod", "--dir", str(code_dir), "--auth", auth]
+            env["NETLIFY_AUTH_TOKEN"] = auth   # read by the CLI from env, kept out of argv
+            cmd = [netlify_bin, "deploy", "--prod", "--dir", str(code_dir)]
             site = str(general.get("auto_publish_netlify_site_id") or "").strip()
             if site:
                 cmd.extend(["--site", site])

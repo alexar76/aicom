@@ -34,7 +34,7 @@ This is a **demonstration deployment with small real funds** (~2 USDC + ~0.006 E
 
 > **LIVE set — redeployed 2026-07-26** from `0x1218…Ad0a` (fairness-rework lottery + fresh escrow/NFT/ACEX/ZK).
 > Earlier deployments (2026-06-18 / 06-19) remain in §2–§2b as historical record and are **superseded**.
-> The five **ACEX** contracts below were redeployed **2026-10-13** from the source the 2026-10-08
+> The five **Agent Capital Exchange** contracts below were redeployed **2026-10-13** from the source the 2026-10-08
 > live-vs-source audit found newer than the chain (§9); the 2026-08-22 set they replace (§2d) held
 > no funds and is superseded. The **escrow and lottery
 > were redeployed 2026-09-04** for the audit fixes in §5, and the rail was switched over the same
@@ -50,12 +50,12 @@ This is a **demonstration deployment with small real funds** (~2 USDC + ~0.006 E
 | 1 | **AIAgentLottery** | [`0xEcB3A0…75af4`](https://basescan.org/address/0xEcB3A01b44C5b78210F72768C446c3E4E6175af4) | native-ETH work-seat lottery (paid tickets off) |
 | 2 | **AIMarketEscrow** (V2) | [`0xa4cb6ef7…1B2Eb`](https://basescan.org/address/0xa4cb6ef73B982B847fB06Ec75540d05D0311B2Eb) | USDC payment channels for capability invocation — AIMarketEscrowV2 since 2026-10-08 (§7) |
 | 3 | **AIMarketCapabilityNFT** | [`0x544dcdd8…35a281`](https://basescan.org/address/0x544dcdd8B01A7ee1444bf89A5381aA981735a281) | capability/credential NFTs |
-| 4 | **AgentCollateralVault** | [`0xdAa073ED…42081c`](https://basescan.org/address/0xdAa073EDCA17328188Afe5A83394Fc7b5E42081c) | ACEX — agent collateral custody |
-| 5 | **AgentListingRegistry** | [`0x3636A636…89acC9`](https://basescan.org/address/0x3636A636262940Ff4E49aC1BCf34b958F589acC9) | ACEX — credit-listing registry |
-| 6 | **AgentLendingPool** | [`0x51a61d25…2d9C3d`](https://basescan.org/address/0x51a61d25b799C17A012eB671e3EDe2569E2d9C3d) | ACEX — lending pool |
-| 7 | **PulseAMM** | [`0x0A70AA84…559E47`](https://basescan.org/address/0x0A70AA84903ecB2E0aF5c435AFd9EDd178559E47) | ACEX — pulse AMM (allow-listed pool creation) |
-| 8 | **AgentAuditPool** | [`0xE0C711Ef…8a6160`](https://basescan.org/address/0xE0C711Ef82F9C97eefBF4C0e715de1b09F8a6160) | ACEX — audit staking pool |
-| 9 | **PulseDistributor** | [`0x325aC681…e38596`](https://basescan.org/address/0x325aC681FDd14c23DE074c15ac2Ed07702e38596) | ACEX — pulse reward distribution |
+| 4 | **AgentCollateralVault** | [`0xdAa073ED…42081c`](https://basescan.org/address/0xdAa073EDCA17328188Afe5A83394Fc7b5E42081c) | Agent Capital Exchange — agent collateral custody |
+| 5 | **AgentListingRegistry** | [`0x3636A636…89acC9`](https://basescan.org/address/0x3636A636262940Ff4E49aC1BCf34b958F589acC9) | Agent Capital Exchange — credit-listing registry |
+| 6 | **AgentLendingPool** | [`0x51a61d25…2d9C3d`](https://basescan.org/address/0x51a61d25b799C17A012eB671e3EDe2569E2d9C3d) | Agent Capital Exchange — lending pool |
+| 7 | **PulseAMM** | [`0x0A70AA84…559E47`](https://basescan.org/address/0x0A70AA84903ecB2E0aF5c435AFd9EDd178559E47) | Agent Capital Exchange — pulse AMM (allow-listed pool creation) |
+| 8 | **AgentAuditPool** | [`0xE0C711Ef…8a6160`](https://basescan.org/address/0xE0C711Ef82F9C97eefBF4C0e715de1b09F8a6160) | Agent Capital Exchange — audit staking pool |
+| 9 | **PulseDistributor** | [`0x325aC681…e38596`](https://basescan.org/address/0x325aC681FDd14c23DE074c15ac2Ed07702e38596) | Agent Capital Exchange — pulse reward distribution |
 | 10 | **PlonkVerifier** | [`0x1914D8a0…9B8e85c5`](https://basescan.org/address/0x1914D8a04dd65c6d8C888B98A31757F79B8e85c5) | ZK proof verifier (oracle proofs) |
 | 11 | **BountySplitter** | [`0x89A618F6…A63426`](https://basescan.org/address/0x89A618F66767101B96977e536797838661A63426) | MOMUS red-team bounty settlement — one pool per finding, split across finder/fixer/conductor |
 
@@ -64,7 +64,7 @@ This is a **demonstration deployment with small real funds** (~2 USDC + ~0.006 E
 (6 decimals — escrow/service payments). No fake token is used anywhere.
 
 > Full redeploy txs + real-money E2E for this set: **§2c** (deploys) and **§3h** (tests).
-> ACEX audit redeploy: **§2d** (2026-08-22); ACEX source-gap redeploy: **§9** (2026-10-13).
+> Agent Capital Exchange audit redeploy: **§2d** (2026-08-22); Agent Capital Exchange source-gap redeploy: **§9** (2026-10-13).
 
 ### Contract map
 
@@ -121,16 +121,16 @@ All deployed by `0x1218` on 2026-06-18 (blocks 47496541+). Roles set at deploy �
 | PlonkVerifier | [`0xb11af6f3…0ACf65`](https://basescan.org/address/0xb11af6f387aCD57E6AECDa222D0108e6380ACf65) | no ctor args |
 | BountySplitter | [`0x236215…38b57e`](https://basescan.org/tx/0x2362155832058672436c804e767d8ae540edfea9c796358519cef2549238b57e) | ctor: initialTokens=[USDC] → USDC whitelisted at deploy. Block 49701100, gas 937 951, cost ≈ 0.0000047 ETH. Owner = `0x1218` (the **Treasury** operator, deliberately NOT the MOMUS scanner key). Verified on-chain: `owner()`=`0x1218…Ad0a`, `tokenWhitelisted(USDC)`=true, `MAX_POOL`=100 000e6, `EXPIRY`=30 days. **Re-verified 2026-08-08** against Base mainnet: 3 702 bytes of code, `owner()`=`0x1218…Ad0a`, `MAX_POOL`=100 000e6, `EXPIRY`=2 592 000 s, `tokenWhitelisted(USDC)`=true, balance **0 ETH / 0 USDC** — nothing has ever settled through it and nothing is locked in it, which is the expected state while settlement runs on UNI. The role split is not a contract constant: pools are keyed by `roleId = keccak256("finder"\|"fixer"\|"conductor")` and the 50/35/15 shares are applied by the Treasury when it funds a pool. |
 
-**ACEX wiring** (operator): `vault.setRegistry` [`0xcc9fcd…68d14`](https://basescan.org/tx/0xcc9fcd4018c1a73b8f4d175ee45118181fa93f649e171d3e8e0f7a7c1fe68d14), `vault.setLendingPool` [`0x3a2f9e…009a2d`](https://basescan.org/tx/0x3a2f9ebdf6be9167d977e36e49828eec7e343463a79510785d47d4396e009a2d), `registry.setAuditPool` [`0xf3e55b…6fd29018`](https://basescan.org/tx/0xf3e55b6829c7e224ad8028e88565c1ebe6004746c189c81eac44f1276fd29018). Wiring verified on-chain (vault↔registry↔lending↔auditpool↔amm all linked).
+**Agent Capital Exchange wiring** (operator): `vault.setRegistry` [`0xcc9fcd…68d14`](https://basescan.org/tx/0xcc9fcd4018c1a73b8f4d175ee45118181fa93f649e171d3e8e0f7a7c1fe68d14), `vault.setLendingPool` [`0x3a2f9e…009a2d`](https://basescan.org/tx/0x3a2f9ebdf6be9167d977e36e49828eec7e343463a79510785d47d4396e009a2d), `registry.setAuditPool` [`0xf3e55b…6fd29018`](https://basescan.org/tx/0xf3e55b6829c7e224ad8028e88565c1ebe6004746c189c81eac44f1276fd29018). Wiring verified on-chain (vault↔registry↔lending↔auditpool↔amm all linked).
 
-> The ACEX rows above (4–8) were **superseded by the 2026-06-19 redeploy** — see §2b. The original
-> addresses/txs here are kept as the historical record; the live ACEX is the redeployed set.
+> The Agent Capital Exchange rows above (4–8) were **superseded by the 2026-06-19 redeploy** — see §2b. The original
+> addresses/txs here are kept as the historical record; the live Agent Capital Exchange is the redeployed set.
 
 ---
 
-## 2b. ACEX redeploy — audit fixes (2026-06-19, Base mainnet) ♻️
+## 2b. Agent Capital Exchange redeploy — audit fixes (2026-06-19, Base mainnet) ♻️
 
-Why: the in-repo security audit found 1 critical + 5 high issues in ACEX (spot/low-volume baseline
+Why: the in-repo security audit found 1 critical + 5 high issues in Agent Capital Exchange (spot/low-volume baseline
 manipulation, AMM-drain oracle, first-depositor share inflation, default-compensation rounding).
 All were fixed in source (49 Foundry tests) and the stack was redeployed from `0x1218` and
 **source-verified on Basescan**. Block **47,554,183**; total gas **10,518,113** (~0.000147 ETH).
@@ -157,14 +157,14 @@ AuditPool baseline → default path is time-gated by the 1-day TWAP observation 
 Two agents are real ecosystem node wallets, derived deterministically from a **secret seed**
 (the `0x1218` private key) + node id — `keccak256("ailottery-uni-wallet|"+seed+"|"+agentId)`:
 - **AI-Factory** `0x9787F81f5bc6d096Cfe884Dc8c29950b57A8ecd1`
-- **ACEX agent** `0x88A7Df339C333fE75Db1a4e2a55551e6a8009b30`
+- **Agent Capital Exchange agent** `0x88A7Df339C333fE75Db1a4e2a55551e6a8009b30`
 
 ### 3a. Funding (operator → agents)
 | Action | Tx |
 |---|---|
 | `0x1218` → AI-Factory: **1.0 USDC** (channel deposit) | [`0x38fc92…365fb1`](https://basescan.org/tx/0x38fc926192e9f6d9d7f772d4b2b2f7616062fa7dc1d396389e0137c908365fb1) |
 | `0x1218` → AI-Factory: 0.0008 ETH (gas) | [`0xae4efb…482db5e2ef`](https://basescan.org/tx/0xae4efbf6bb10dc40601b65837ee073db36e3c5814d5769bedbfede482db5e2ef) |
-| `0x1218` → ACEX agent: 0.0008 ETH (gas) | [`0x01e124…f7eb497b`](https://basescan.org/tx/0x01e124642f5bab115b778398a9d02d407a9a68f75478ea96c109e8baf7eb497b) |
+| `0x1218` → Agent Capital Exchange agent: 0.0008 ETH (gas) | [`0x01e124…f7eb497b`](https://basescan.org/tx/0x01e124642f5bab115b778398a9d02d407a9a68f75478ea96c109e8baf7eb497b) |
 
 ### 3b. Capability-payment channel (the core protocol rule) — real USDC
 | # | Who | Call | Params | Effect | Tx |
@@ -186,14 +186,14 @@ Pool = 2 tickets × 0.000003 ETH = **0.000006 ETH**, split 80/12/8 → prize 0.0
 |--:|---|---|---|---|
 | 1 | `0x1218` (operator) | `openRound()` | opens **round 2**, 120s entry window | [`0x807a63…e5c97f`](https://basescan.org/tx/0x807a63452c55bd9b67cc8723a2af12649c7ca85f0daf8b056e24653568e5c97f) |
 | 2 | AI-Factory | `buyTickets(2, 1)` | msg.value = 0.000003 ETH (exact) | [`0x9a99f2…d1bca53f`](https://basescan.org/tx/0x9a99f25708d9338b331a753347edd81149506c8c228ab170315fa249d1bca53f) |
-| 3 | ACEX agent | `buyTickets(2, 1)` | msg.value = 0.000003 ETH | [`0x5ae93a…a7aeda7b`](https://basescan.org/tx/0x5ae93a5208e2ba9702dccc43ecf99fbf2ed2d5c238b683b9ed69c749a7aeda7b) |
+| 3 | Agent Capital Exchange agent | `buyTickets(2, 1)` | msg.value = 0.000003 ETH | [`0x5ae93a…a7aeda7b`](https://basescan.org/tx/0x5ae93a5208e2ba9702dccc43ecf99fbf2ed2d5c238b683b9ed69c749a7aeda7b) |
 | 4 | `0x1218` (operator) | `closeEntries(2, commit)` | commit = keccak256(platonRandom) — **commit-reveal** anti-grinding | [`0x6d23de…d131266`](https://basescan.org/tx/0x6d23de9f1c5a955b865bfe3522a8b08c248725e8d50a2036d1030f9d7d131266) |
 | 5 | `0x1218` (oracle-signer) | `fulfillDraw(2, platonRandom, 0, sig, vdf)` | **EIP-712 `DrawBeacon` signed by the oracle-signer**; reveals platonRandom; winner = reputation-weighted; round **Settled** | [`0x53e4d7…26ca672`](https://basescan.org/tx/0x53e4d73fcaf066c6d7df21dfca1758e47985e8ccdad1f0ef6fe583e6226ca672) |
-| 6 | ACEX agent (winner) | `claimPrize(2)` | winner pulls the 0.0000048 ETH prize | [`0x8477a5…c7b879eed`](https://basescan.org/tx/0x8477a5254301949e318a352d2eab9dab10a6d8f4a5932df77262930c7b879eed) |
+| 6 | Agent Capital Exchange agent (winner) | `claimPrize(2)` | winner pulls the 0.0000048 ETH prize | [`0x8477a5…c7b879eed`](https://basescan.org/tx/0x8477a5254301949e318a352d2eab9dab10a6d8f4a5932df77262930c7b879eed) |
 
 > **Where the prize went (important):** `claimPrize` paid the **0.0000048 ETH** prize to the
-> **winner's wallet — the ACEX _agent_ EOA `0x88A7Df339C333fE75Db1a4e2a55551e6a8009b30`**. Note
-> this is the lottery-participant node wallet, **not** the ACEX credit-exchange contracts (those
+> **winner's wallet — the Agent Capital Exchange _agent_ EOA `0x88A7Df339C333fE75Db1a4e2a55551e6a8009b30`**. Note
+> this is the lottery-participant node wallet, **not** the Agent Capital Exchange credit-exchange contracts (those
 > hold no value). In **recovery (§3e)** that prize was swept — together with the rest of the
 > agent's ETH — back to **`0x1218`**. So the prize ends on `0x1218`; the agent wallet keeps only
 > ~0.00003 ETH gas dust (and is itself derived from the `0x1218` seed, so still under `0x1218`'s
@@ -209,16 +209,16 @@ Pool = 2 tickets × 0.000003 ETH = **0.000006 ETH**, split 80/12/8 → prize 0.0
 | `withdrawOpex(0x1218, 0.00000072 ETH)` (treasury) | [`0xd05bc2…3696983`](https://basescan.org/tx/0xd05bc245c8517ac8e310f9551767e142678183fa3c9beb845ebc53fe73696983) |
 | `withdrawOperatorFee(0x1218, 0.00000048 ETH)` (treasury) | [`0xda971f…fd579384`](https://basescan.org/tx/0xda971f649df4d1f641d4286eced36ff764ddcd3081687e6d60586e40fd579384) |
 | sweep AI-Factory USDC (0.30) → `0x1218` | [`0xdaf063…95d34d41c`](https://basescan.org/tx/0xdaf063cdec2f8d7a6d016a2c9e6bcaea0ad7b7ec7498ec05403df8a95d34d41c) |
-| sweep ACEX USDC (0.30) → `0x1218` | [`0x32673b…8dc8e3eec`](https://basescan.org/tx/0x32673be52a38b109454e088e9d4c03399b1dd25c8c5662f0baaf5808dc8e3eec) |
+| sweep Agent Capital Exchange USDC (0.30) → `0x1218` | [`0x32673b…8dc8e3eec`](https://basescan.org/tx/0x32673be52a38b109454e088e9d4c03399b1dd25c8c5662f0baaf5808dc8e3eec) |
 | sweep AI-Factory ETH → `0x1218` | [`0x621312…6ab21b70`](https://basescan.org/tx/0x62131283287a1e0c0643a5530282c8c01ca63ead3e5d63e7388003b86ab21b70) |
-| sweep ACEX ETH → `0x1218` | [`0x0a1a72…482274850`](https://basescan.org/tx/0x0a1a721ffb7644500ce0959a0f7e183ac1bc5e2562d6d29f089a032482274850) |
+| sweep Agent Capital Exchange ETH → `0x1218` | [`0x0a1a72…482274850`](https://basescan.org/tx/0x0a1a721ffb7644500ce0959a0f7e183ac1bc5e2562d6d29f089a032482274850) |
 
 ### 3f. Re-verification cycle — fresh real-money run (2026-06-20) + how we get paid
 
 A second, independent live run on **2026-06-20**, executed directly from `0x1218` (here `0x1218`
 plays **both** the consumer/depositor **and** the hub/operator, so every dollar nets back to it and
 the only real cost is gas). This re-proves the money rails against the *currently deployed*
-contracts (the audit-fixed ACEX redeploy of §2b) and answers **"how do we receive money?"**.
+contracts (the audit-fixed Agent Capital Exchange redeploy of §2b) and answers **"how do we receive money?"**.
 
 **Capability-payment channel — real USDC** (channel `0x09d4b1…e063ef`, deposit **1.00 USDC**):
 
@@ -266,8 +266,8 @@ Tested the hub's payment surface as an external paying consumer (`hub :9083`):
   gap** on the hub container, tracked as a finding. (The oracle-gateway MCP → live oracle-family
   path returns valid signed output — see test report §4 — but that path is currently unmetered.)
 
-#### ACEX value flow — verified on mainnet (constants) + run in full in emulation
-On **Base mainnet** the audit-fixed ACEX redeploy (§2b) is verified by reading the fixed constants
+#### Agent Capital Exchange value flow — verified on mainnet (constants) + run in full in emulation
+On **Base mainnet** the audit-fixed Agent Capital Exchange redeploy (§2b) is verified by reading the fixed constants
 live: `AgentLendingPool.MIN_FIRST_DEPOSIT = 2e6`, `MINIMUM_LIQUIDITY = 1e6`, `PulseAMM.MIN_RESERVE =
 1000`, `AgentAuditPool.MIN_OBSERVATION_WINDOW = 86400` (1-day TWAP window). A full *mainnet* value
 cycle is deliberately **not** run (it needs ≥10,000 USDC `MIN_STAKE` and the first lending deposit
@@ -352,7 +352,7 @@ external returns $0.90 [`0x34c0cc…e4b33cbee393`](https://basescan.org/tx/0x34c
 | Token | Used for | Flow during the test | End state |
 |---|---|---|---|
 | **ETH** (native) | gas; lottery tickets + prizes | `0x1218` → agents (gas) → tickets into lottery pool → prize to winner + opex/operator to treasury → swept back | all on `0x1218` (agents hold ~0.00003 ETH dust) |
-| **USDC** (real) | escrow capability payments; agent↔agent | `0x1218` → AI-Factory → escrow channel (debit 0.40 → hub, refund 0.60) → AI-Factory → ACEX (0.30) → swept back | **2.0 USDC, 100% on `0x1218`** |
+| **USDC** (real) | escrow capability payments; agent↔agent | `0x1218` → AI-Factory → escrow channel (debit 0.40 → hub, refund 0.60) → AI-Factory → Agent Capital Exchange (0.30) → swept back | **2.0 USDC, 100% on `0x1218`** |
 
 **End state (verified on-chain): `0x1218` holds 2.0 USDC + ~0.005 ETH. Lottery contract drained to 0 ETH. Round 2 Settled, prize claimed. Nothing stranded.** Agent wallets are themselves derived from the `0x1218` seed, so the dust remains under `0x1218`'s control.
 
@@ -451,9 +451,9 @@ Lottery ctor: ticket `0.000003 ETH`, splits 80/12/8, entry window **30s**, `minD
 
 ---
 
-## 2d. ACEX redeploy — security audit fixes (2026-08-22, Base mainnet) ♻️
+## 2d. Agent Capital Exchange redeploy — security audit fixes (2026-08-22, Base mainnet) ♻️
 
-Why: the 2026-08 ecosystem audit found **two criticals** in ACEX, both reproduced with
+Why: the 2026-08 ecosystem audit found **two criticals** in Agent Capital Exchange, both reproduced with
 Foundry PoCs before anything was changed.
 
 1. **Collateral double-pledge.** `issueAgentNotes` had no caller check *at all* and never
@@ -551,7 +551,7 @@ Channel id `0xd3fb37b4…ceb000`.
 |---|---|---|
 | `nft.mint(0x1218, capId, productId, 10, 4000)` | mints entitlement NFT (10 calls @ $0.004) | [`0x3f59b2…3c4f77`](https://basescan.org/tx/0x3f59b25ce8fe3557c639e1d2c5c6153d82a6c1e9453d125c8eaa241fa83c4f77) |
 
-### ACEX
+### Agent Capital Exchange
 
 Stack redeployed and wired (§2c). Full mainnet value cycle still deferred (needs ≥10k USDC
 `MIN_STAKE` + 1-day TWAP) — same policy as §3f; constants verified via Foundry suite.
@@ -901,7 +901,7 @@ and `contracts/evm`; BASANOS re-scan of `lottery` / `acex` / `core` reports no
 Both contracts were redeployed on Base mainnet (chain 8453) to ship fixes from the
 2026-09-04 ecosystem security audit. **Nothing was migrated: both superseded contracts read
 0 USDC and 0 ETH immediately before the deploy**, so the old set was abandoned rather than
-drained — the same precedent as the ACEX redeploy in §2d.
+drained — the same precedent as the Agent Capital Exchange redeploy in §2d.
 
 | Contract | New address | Superseded |
 |---|---|---|
@@ -1287,9 +1287,9 @@ and moving it is a separate decision — so this is the record of the gap, not i
 | BountySplitter (`0x89A618F6…63426`) | 2026-08-08 (broadcast commit d3ef8222, before the file's first commit 2053c3ace) | 58527b245 (09-12): credits the measured amount, gates `decimals()==6`, resets `fundedAt` on top-up. Holds 0 USDC; nothing has settled through it. |
 | AIMarketCapabilityNFT (`0x544dcdd8…35a281`) | 2026-07-26 (§2c) | e55fe3ccf (08-05): `nonReentrant` on `mint` / `consumeCall` (M16). |
 | AIAgentLottery | 2026-09-11 | Its broadcast names commit 9011cb60b, which is not in this repository's object database; the bytecode cannot be traced to a commit here. |
-| ACEX set (2026-08-22) | — | No broadcast JSON was kept for that deploy, so its provenance rests on this journal's §2d alone. |
+| Agent Capital Exchange set (2026-08-22) | — | No broadcast JSON was kept for that deploy, so its provenance rests on this journal's §2d alone. |
 
-**2026-10-13:** the four ACEX rows above (AgentAuditPool, PulseAMM, AgentListingRegistry /
+**2026-10-13:** the four Agent Capital Exchange rows above (AgentAuditPool, PulseAMM, AgentListingRegistry /
 AgentCollateralVault) are closed — the set was redeployed from this source (§9).
 
 ---
@@ -1414,10 +1414,10 @@ the Independent hub 3.15.16 and the settlement sweep were already V2-aware (`isR
 ten-word `getChannel`). `GET /hub/ai-market/v2/health` → `payment_ready: true`; the sweep ran clean.
 Rollback: `config.py.pre-20261013-v2` and `escrow-bridge.env.pre-20261013-v2` beside the live files.
 
-## 9. ACEX redeployed from current source, 2026-10-13 📌
+## 9. Agent Capital Exchange redeployed from current source, 2026-10-13 📌
 
-Owner: "Разворачивать ли ACEX заново …?" → "Да, развернуть заново". The 2026-10-08 audit above found
-the live ACEX set (§2d, 2026-08-22) older than its source in four rows; this deploy closes them.
+Owner: "Разворачивать ли Agent Capital Exchange заново …?" → "Да, развернуть заново". The 2026-10-08 audit above found
+the live Agent Capital Exchange set (§2d, 2026-08-22) older than its source in four rows; this deploy closes them.
 What the chain gains:
 
 - **AgentAuditPool** takes its TWAP from PulseAMM's price × time accumulator, so a price counts for as
@@ -1433,7 +1433,7 @@ What the chain gains:
   open item; the share token is created by the registry, so it ships inside the registry bytecode).
 
 **Nothing was migrated: all five superseded contracts read 0 USDC and 0 ETH immediately before the
-switch.** `PulseDistributor` (owner-only constructor, no ACEX pointers), the lottery, escrow, NFT,
+switch.** `PulseDistributor` (owner-only constructor, no Agent Capital Exchange pointers), the lottery, escrow, NFT,
 verifier and BountySplitter keep their addresses.
 
 | Contract | New address | Superseded (2026-08-22) |
@@ -1477,5 +1477,5 @@ not on Sourcify).
 
 No listing, pool or collateral exists on the new set, and none existed on the old one (its registry's
 nonce was still 1, so it never created a share or note token; its lending pool had 0 shares and 0 debt):
-ACEX on Base is deployed, wired and verified, not value-tested. The consumers read the addresses from
+Agent Capital Exchange on Base is deployed, wired and verified, not value-tested. The consumers read the addresses from
 `config/deployments/base-mainnet.json` (regenerated by `scripts/sync_deployment_addresses.py`).

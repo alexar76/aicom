@@ -18,7 +18,7 @@ Source of truth: **private/dev monorepo `aicom`**. Public GitHub mirrors are **s
 |-------|---------------|----------------|-------|
 | **Desktop** | `desktop-integrations/*` + `packages/` | `alexar76/aimarket-desktop` | All 8 SKUs in one Melos workspace; **no** embedded SDK |
 | **SDKs** | `aimarket-sdks/` (dart, typescript, rust) | `alexar76/aimarket-sdks` | **Separate repo** — pub.dev / npm / crates.io |
-| **Pulse Terminal** | `apps/pulse-terminal/` | `alexar76/pulse-terminal` | ACEX dashboard; WebSocket pricing UI |
+| **Pulse Terminal** | `apps/pulse-terminal/` | `alexar76/pulse-terminal` | Agent Capital Exchange dashboard; WebSocket pricing UI |
 | **Capital** | `acex/` | `alexar76/acex` | Contracts + protocol; Terminal is **not** inside acex |
 | **Mesh** | `ai-service-mesh/` | `alexar76/ai-service-mesh` | Standalone orchestration layer |
 | **Commerce** | `aimarket-hub/` | `alexar76/aimarket-hub` | Hub API, federation |
@@ -222,7 +222,7 @@ Markdown release notes grouped by: Desktop, SDKs, Pulse Terminal, ACEX, Mesh, Hu
 | `desktop-integrations/*` | 8 Flutter desktop/web SKUs |
 | `desktop-integrations/<app>/language-packs/` | Per-app i18n JSON (canonical) |
 | `aimarket-sdks/` | Dart + TypeScript + Rust SDKs |
-| `apps/pulse-terminal/` | ACEX Pulse Terminal UI |
+| `apps/pulse-terminal/` | Agent Capital Exchange Pulse Terminal UI |
 | `acex/` | Agent Capital Exchange |
 | `ai-service-mesh/` | Mesh orchestration |
 | `aimarket-hub/` | Commerce hub |

@@ -92,7 +92,7 @@
 > **[`docs/hosted-mcp-endpoint.md`](docs/hosted-mcp-endpoint.md)**
 
 > ### 🔴 Live on Base **MAINNET** (demo) — not a testnet
-> The full contract suite — escrow, lottery, capability-NFT, **ACEX** (vault/registry/lending/AMM/
+> The full contract suite — escrow, lottery, capability-NFT, **Agent Capital Exchange** (vault/registry/lending/AMM/
 > audit-pool), and the ZK verifier — is **deployed and source-verified on Base MAINNET**
 > (chainId **8453**, real **USDC** + **ETH**, small demo sums). **Every deploy + transaction is
 > documented, with Basescan links, in → [`docs/onchain-journal.md`](docs/onchain-journal.md).**
@@ -178,7 +178,7 @@ calibration. The number should climb.
 | 🧿 **LOGOS** | Read-only federation analytics — measured settlement volume, rolling z-score anomalies, cross-source correlations, guarded NL assistant | [live](https://logos.modelmarket.dev/) · [landing](https://alexar76.github.io/logos/) · [`logos`](https://github.com/alexar76/logos) |
 | 🛰️ **SKOPOS** | Fleet observability — nginx/Apache analytics, Security Center, AI analyst | [live](https://skopos.modelmarket.dev/) · [`skopos`](https://github.com/alexar76/skopos) |
 | 🔌 **aimarket-mcp** | Shared MCP: `web_fetch` · `web_search` · `metis_verify` | [Glama](https://glama.ai/mcp/servers/alexar76/aimarket-mcp) · [`aimarket-mcp`](https://github.com/alexar76/aimarket-mcp) |
-| 📈 **Pulse (ACEX)** | CapShare NAV · Proof-of-Audit · live pricing | [live](https://magic-ai-factory.com/pulse/) · [`pulse-terminal`](https://github.com/alexar76/pulse-terminal) |
+| 📈 **Pulse (Agent Capital Exchange)** | CapShare NAV · Proof-of-Audit · live pricing | [live](https://magic-ai-factory.com/pulse/) · [`pulse-terminal`](https://github.com/alexar76/pulse-terminal) |
 
 **Experiment, not a product.** 🎰 **Lottery**: a verifiable draw among the demo agents on a private test chain ("machine UBI" for mesh agents). Nobody plays for money: paid tickets are off on Base and the live lottery held 0 ETH on 2026-11-11; it is not paused (the contract paused on 2026-11-05 is a superseded one). [demo](https://lottery.modelmarket.dev/) · [`lottery`](https://github.com/alexar76/lottery)
 
@@ -818,7 +818,7 @@ flowchart TB
 | **LinkedIn Profile Coach** | [`linked-in-profile-coach`](https://github.com/alexar76/linked-in-profile-coach) (`coach/` in monorepo) | **Example integrated app** — same class as desktop SKUs (Flutter + AIMarket SDK), focused on **LinkedIn profile improvement** · [linked-in-profile-coach](https://github.com/alexar76/linked-in-profile-coach) |
 | **Dart SDK** | [`aimarket-sdks/dart`](https://github.com/alexar76/aimarket-sdks/tree/main/dart) | Consumer SDK for desktop apps |
 | **Widget** | [`aimarket-widget`](https://github.com/alexar76/aimarket-widget) | Drop-in search + invoke |
-| **ACEX** | [`acex`](https://github.com/alexar76/acex) | Agent Listing Protocol · CapShares · **Proof-of-Audit** · Pulse Terminal |
+| **Agent Capital Exchange** | [`acex`](https://github.com/alexar76/acex) | Agent Listing Protocol · CapShares · **Proof-of-Audit** · Pulse Terminal |
 | **ARGUS** 🛡️ (demand-side agent) | [`argus`](https://github.com/alexar76/argus) | WARDEN MCP firewall + AIMarket consumer/provider; runs fully autonomously, crypto opt-in. [Landing](https://magic-ai-factory.com/argus/) · [README](https://github.com/alexar76/argus#readme) |
 | **WARDEN** 🧱 (MCP firewall, library) | [`warden`](https://github.com/alexar76/warden) | The gate chain extracted from ARGUS as a **zero-dependency** package, so a host can vet third-party MCP servers without adopting an agent: static scan → signed threat feed → origin → tool-def pinning, returning a recorded verdict. ARGUS is its reference host; MOMUS publishes into its feed · `npm i @aimarket/warden` |
 | **HESTIA** 🔥 (hearth) | [`hestia`](https://github.com/alexar76/hestia) | Isolated hosted runtime for capability providers — not Hub, not Factory, not a job board. Signed deploy; empty roster ≠ empty market · [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [landing](https://alexar76.github.io/hestia/) |

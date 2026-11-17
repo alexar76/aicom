@@ -244,7 +244,7 @@ Se mantiene **separado** de la orquestación de contenedores. Estos despliegan c
 Base mainnet con Foundry. Ambos hacen por defecto un dry run sin gas; pasa `broadcast` para gastar gas real.
 
 **Núcleo del ecosistema** — FakeUSDT + `AIMarketEscrow` + `AIMarketCapabilityNFT`
-(ACEX se excluye a propósito — la auditoría marcó AuditPool TWAP + PulseAMM como HIGH):
+(Agent Capital Exchange se excluye a propósito — la auditoría marcó AuditPool TWAP + PulseAMM como HIGH):
 
 ```bash
 ./scripts/deploy_ecosystem_base.sh            # dry-run (no gas)

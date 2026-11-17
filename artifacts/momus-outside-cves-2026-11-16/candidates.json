@@ -1,0 +1,3115 @@
+[
+ {
+  "ghsa": "GHSA-gj9m-f8ph-pmhr",
+  "cve": "CVE-2026-102895",
+  "cwes": [
+   "CWE-287",
+   "CWE-290",
+   "CWE-346"
+  ],
+  "published": "2026-11-09T22:15:27Z",
+  "severity": "critical",
+  "summary": "GPUStack: Authentication bypass via trusted loopback source (reverse-proxy TCP peer or X-GPUStack-Real-IP header) grants unauthenticated admin",
+  "pkg": [
+   "gpustack"
+  ],
+  "commits": [
+   "https://github.com/gpustack/gpustack/commit/53f42a6a553542974396d16a4ff6b12bcbedb48d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-9q47-3cm2-2rp8",
+  "cve": null,
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2026-10-09T17:09:12Z",
+  "severity": "medium",
+  "summary": "pyLoad: Rate-Limit Bypass and Audit-Log Spoofing via Trusted Client-Controlled `X-Forwarded-For` Header",
+  "pkg": [
+   "pyload-ng"
+  ],
+  "commits": [
+   "https://github.com/pyload/pyload/commit/5dc6b628e2d8b9f42dde82f396e5b7a2b513f6d1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4f6c-2vvp-gw82",
+  "cve": "CVE-2026-105741",
+  "cwes": [
+   "CWE-290",
+   "CWE-345"
+  ],
+  "published": "2026-10-07T16:18:23Z",
+  "severity": "high",
+  "summary": "Langflow: IP Spoofing Bypass via `X-Forwarded-For` Allowing Remote Configuration Write",
+  "pkg": [
+   "langflow"
+  ],
+  "commits": [
+   "https://github.com/langflow-ai/langflow/commit/1f39a4b9d62c9dfa1b21fa7f85e23a180c351b72",
+   "https://github.com/langflow-ai/langflow/commit/94859df33acd70b2a1f816e26d68f5e89a7e5639"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-j657-m4c4-24jq",
+  "cve": "CVE-2026-59224",
+  "cwes": [
+   "CWE-287",
+   "CWE-290"
+  ],
+  "published": "2026-07-24T20:49:57Z",
+  "severity": "high",
+  "summary": "Open WebUI: Terminal proxy forwards a spoofable, integrity-unbound user identity to the upstream (X-User-Id header and ws_terminal session_id query injection)",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/5f3a628a8d291bb5d33e1a0b0c89fb62a2927934"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rcmw-7mc7-3rj7",
+  "cve": "CVE-2026-42354",
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2026-04-30T20:44:24Z",
+  "severity": "critical",
+  "summary": "Sentry's improper authentication on SAML SSO process allows user identity linking",
+  "pkg": [
+   "sentry"
+  ],
+  "commits": [
+   "https://github.com/getsentry/sentry/commit/0c67558ae7fe08738912d4c5233b53ead048da3b"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rrvg-cxh4-qhrv",
+  "cve": "CVE-2026-33175",
+  "cwes": [
+   "CWE-287",
+   "CWE-290"
+  ],
+  "published": "2026-04-03T21:35:37Z",
+  "severity": "high",
+  "summary": "Auth0OAuthenticator has an Authentication Bypass via Unverified Email Claims",
+  "pkg": [
+   "oauthenticator"
+  ],
+  "commits": [
+   "https://github.com/jupyterhub/oauthenticator/commit/f0c7002dc36e41efae0f674033cf7888a21d96f9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-wv4w-6qv2-qqfg",
+  "cve": "CVE-2025-61783",
+  "cwes": [
+   "CWE-290",
+   "CWE-303"
+  ],
+  "published": "2025-10-09T17:08:05Z",
+  "severity": "medium",
+  "summary": "Python Social Auth - Django has unsafe account association ",
+  "pkg": [
+   "social-auth-app-django"
+  ],
+  "commits": [
+   "https://github.com/python-social-auth/social-app-django/commit/10c80e2ebabeccd4e9c84ad0e16e1db74148ed4c"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-x698-5hjm-w2m5",
+  "cve": "CVE-2025-7346",
+  "cwes": [
+   "CWE-284",
+   "CWE-290"
+  ],
+  "published": "2025-07-08T21:36:52Z",
+  "severity": "high",
+  "summary": "pyLoad is vulnerable to attacks that bypass localhost restrictions, enabling the creation of arbitrary packages",
+  "pkg": [
+   "pyload-ng"
+  ],
+  "commits": [
+   "https://github.com/pyload/pyload/commit/f4e2d12416ba2dfac7b036d5c8d6dab5461b9840"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-qw93-h6pf-226x",
+  "cve": "CVE-2025-32788",
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2025-04-22T16:49:43Z",
+  "severity": "medium",
+  "summary": "OctoPrint Authenticated Reverse Proxy Page Authentication Bypass",
+  "pkg": [
+   "octoprint"
+  ],
+  "commits": [
+   "https://github.com/OctoPrint/OctoPrint/commit/41ff431014edfa18ca1a01897b10463934dc7fc2"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2vjq-hg5w-5gm7",
+  "cve": "CVE-2024-32977",
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2024-05-14T20:13:47Z",
+  "severity": "high",
+  "summary": "OctoPrint has an Authentication Bypass via X-Forwarded-For Header when autologinLocal is enabled",
+  "pkg": [
+   "OctoPrint"
+  ],
+  "commits": [
+   "https://github.com/OctoPrint/OctoPrint/commit/5afbec8d23508edc25b0f1bdef1620580136add4"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-j9gq-w73w-9h6c",
+  "cve": "CVE-2023-44463",
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2023-10-02T21:30:17Z",
+  "severity": "medium",
+  "summary": "pretix potential IP address spoofing vulnerability",
+  "pkg": [
+   "pretix"
+  ],
+  "commits": [
+   "https://github.com/pretix/pretix/commit/ccdce2ccb8207b82501af3c03f50abc0f819b469"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-5p8v-58qm-c7fp",
+  "cve": "CVE-2022-39227",
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2022-09-21T21:33:22Z",
+  "severity": "critical",
+  "summary": "python-jwt vulnerable to token forgery with new claims",
+  "pkg": [
+   "python-jwt"
+  ],
+  "commits": [
+   "https://github.com/davedoesdev/python-jwt/commit/6c5075469847b9e8b6e5336077d989d77a4d2bf1",
+   "https://github.com/davedoesdev/python-jwt/commit/88ad9e67c53aa5f7c43ec4aa52ed34b7930068c9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-7qfw-j7hp-v45g",
+  "cve": "CVE-2015-0219",
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2022-05-17T03:20:54Z",
+  "severity": "medium",
+  "summary": "Django WSGI Header Spoofing Vulnerability",
+  "pkg": [
+   "django",
+   "Django",
+   "Django"
+  ],
+  "commits": [
+   "https://github.com/django/django/commit/41b4bc73ee0da7b2e09f4af47fc1fd21144c710f",
+   "https://github.com/django/django/commit/4f6fffc1dc429f1ad428ecf8e6620739e8837450",
+   "https://github.com/django/django/commit/d7597b31d5c03106eeba4be14a33b32a5e25f4ee"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-mjcr-rqjg-rhg3",
+  "cve": null,
+  "cwes": [
+   "CWE-290"
+  ],
+  "published": "2020-11-24T21:21:04Z",
+  "severity": "critical",
+  "summary": "Implementation trusts the \"me\" field returned by the authorization server without verifying it",
+  "pkg": [
+   "datasette-indieauth"
+  ],
+  "commits": [
+   "https://github.com/simonw/datasette-indieauth/commit/376c8804c6b0811852049229a24336fe5eb6a439"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-89px-ww3j-g2mm",
+  "cve": "CVE-2019-16766",
+  "cwes": [
+   "CWE-290",
+   "CWE-304"
+  ],
+  "published": "2019-11-29T17:05:59Z",
+  "severity": "medium",
+  "summary": "2FA bypass in Wagtail through new device path",
+  "pkg": [
+   "wagtail-2fa"
+  ],
+  "commits": [
+   "https://github.com/labd/wagtail-2fa/commit/13b12995d35b566df08a17257a23863ab6efb0ca",
+   "https://github.com/labd/wagtail-2fa/commit/a6711b29711729005770ff481b22675b35ff5c81"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-8988-9cw3-xx77",
+  "cve": "CVE-2026-97687",
+  "cwes": [
+   "CWE-295",
+   "CWE-440"
+  ],
+  "published": "2026-09-30T14:46:04Z",
+  "severity": "high",
+  "summary": "urllib3: HTTPS proxy TLS configuration may be ignored or overridden",
+  "pkg": [
+   "urllib3"
+  ],
+  "commits": [
+   "https://github.com/urllib3/urllib3/commit/07408cec79d1856d81bb42c74a904a24fdb9e465",
+   "https://github.com/urllib3/urllib3/commit/b6447295fff7b38fdffc67e0df9712d60cef3cc3"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-82r6-8w77-94w6",
+  "cve": "CVE-2026-63374",
+  "cwes": [
+   "CWE-295",
+   "CWE-297"
+  ],
+  "published": "2026-09-18T17:17:18Z",
+  "severity": "critical",
+  "summary": "AnyIO: TLSStream IDNA 2003 host name encoding enables potential TLS certificate spoofing",
+  "pkg": [
+   "anyio"
+  ],
+  "commits": [
+   "https://github.com/agronholm/anyio/commit/68f58915f82d9be8109ebbbd8f5d70577d43f2ce"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-mv8m-v9v6-5f94",
+  "cve": "CVE-2026-54548",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2026-08-26T14:18:24Z",
+  "severity": "low",
+  "summary": "kas Persistently Disables SSH Host Key Checking",
+  "pkg": [
+   "kas"
+  ],
+  "commits": [
+   "https://github.com/siemens/kas/commit/1c1e861c9f241ce082b86bef6bedc7da9b676294"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-m2h6-j472-rp4c",
+  "cve": "CVE-2026-69248",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2026-08-03T21:26:57Z",
+  "severity": "medium",
+  "summary": "python-cryptography verifier accepts wildcard DNS names allowing escape from permittedSubtrees",
+  "pkg": [
+   "cryptography"
+  ],
+  "commits": [
+   "https://github.com/pyca/cryptography/commit/4d035a4225965edeffd312079a510ef25fcfdcb2",
+   "https://github.com/pyca/cryptography/commit/286c89128"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-vg99-gr89-qhw9",
+  "cve": "CVE-2026-61668",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2026-07-13T18:37:51Z",
+  "severity": "high",
+  "summary": "DIRAC: Pilot code downloaded over unverified HTTPS connection",
+  "pkg": [
+   "DIRAC",
+   "DIRAC",
+   "DIRAC"
+  ],
+  "commits": [
+   "https://github.com/DIRACGrid/DIRAC/commit/68029dfb5ddd8b1e4106851f8e37370aa80ac7ae",
+   "https://github.com/DIRACGrid/DIRAC/commit/92e2e26c63b964b8499bee5e9c2e2821a36eac56",
+   "https://github.com/DIRACGrid/DIRAC/commit/b332c437d064f66ee46f5b45a90a9f7c4bace38d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-fhq3-2gf3-8f3j",
+  "cve": "CVE-2026-44363",
+  "cwes": [
+   "CWE-295",
+   "CWE-918"
+  ],
+  "published": "2026-05-06T22:31:03Z",
+  "severity": "medium",
+  "summary": "misp-modules has unsafe remote resource fetching in expansion",
+  "pkg": [
+   "misp-modules"
+  ],
+  "commits": [
+   "https://github.com/MISP/misp-modules/commit/52cda9caa003cafe87e14ae3721db5e16f6f111a"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-3xxc-pwj6-jgrj",
+  "cve": "CVE-2026-33753",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2026-04-08T15:00:23Z",
+  "severity": "medium",
+  "summary": "rfc3161-client Has Improper Certificate Validation",
+  "pkg": [
+   "rfc3161-client"
+  ],
+  "commits": [
+   "https://github.com/trailofbits/rfc3161-client/commit/4f7d372297b4fba7b0119e9f954e4495ec0592c0"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rjrp-m2jw-pv9c",
+  "cve": "CVE-2026-1777",
+  "cwes": [
+   "CWE-201",
+   "CWE-295",
+   "CWE-319"
+  ],
+  "published": "2026-02-02T23:33:32Z",
+  "severity": "high",
+  "summary": "SageMaker Python SDK has Exposed HMAC",
+  "pkg": [
+   "sagemaker",
+   "sagemaker"
+  ],
+  "commits": [
+   "https://github.com/aws/sagemaker-python-sdk/commit/708c7b2f4135ecaec55973d098f3dbe98b657933",
+   "https://github.com/aws/sagemaker-python-sdk/commit/fb0d789db4fd5fecde5509963939369f4c7ce63b"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-62rc-f4v9-h543",
+  "cve": "CVE-2026-1778",
+  "cwes": [
+   "CWE-295",
+   "CWE-599"
+  ],
+  "published": "2026-02-02T23:24:50Z",
+  "severity": "high",
+  "summary": "SageMaker Python SDK has Insecure TLS Configuration",
+  "pkg": [
+   "sagemaker",
+   "sagemaker"
+  ],
+  "commits": [
+   "https://github.com/aws/sagemaker-python-sdk/commit/5e7a3efa7bec0a161194ffa0cef346dda93bf2c6",
+   "https://github.com/aws/sagemaker-python-sdk/commit/c8098958910f7db78d07037425debfd4d44a6964"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2mmv-7rrp-g8xh",
+  "cve": "CVE-2026-22250",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2026-01-12T16:13:33Z",
+  "severity": "low",
+  "summary": "Weblate command-line client susceptible to SSL verification skip",
+  "pkg": [
+   "wlc"
+  ],
+  "commits": [
+   "https://github.com/WeblateOrg/wlc/commit/a513864ec4daad00146e6d6e039559726e256fa3"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-g4r8-3qmh-pmch",
+  "cve": "CVE-2025-12765",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2025-11-13T15:30:30Z",
+  "severity": "high",
+  "summary": "pgAdmin has vulnerability in LDAP authentication mechanism that allows bypassing TLS certificate verification",
+  "pkg": [
+   "pgadmin4"
+  ],
+  "commits": [
+   "https://github.com/pgadmin-org/pgadmin4/commit/09d2b7eeb0e330df73b1aef0cba57788fde52b6b"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-v49p-m6gh-747c",
+  "cve": "CVE-2024-21543",
+  "cwes": [
+   "CWE-287",
+   "CWE-295"
+  ],
+  "published": "2024-12-13T06:30:58Z",
+  "severity": "high",
+  "summary": "djoser Authentication Bypass",
+  "pkg": [
+   "djoser"
+  ],
+  "commits": [
+   "https://github.com/sunscrapers/djoser/commit/d33c3993c0c735f23cbedc60fa59fce69354f19d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-8r96-8889-qg2x",
+  "cve": "CVE-2023-48052",
+  "cwes": [
+   "CWE-295",
+   "CWE-599"
+  ],
+  "published": "2023-11-16T18:30:31Z",
+  "severity": "high",
+  "summary": "HTTPie allows attackers to eavesdrop on communications between the host and server via a man-in-the-middle attack",
+  "pkg": [
+   "httpie"
+  ],
+  "commits": [
+   "https://github.com/httpie/cli/commit/7f03c52d2237440c5a672296ce6955aae4ed4f09"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-5f35-pq34-c87q",
+  "cve": "CVE-2023-39441",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2023-08-23T18:30:34Z",
+  "severity": "medium",
+  "summary": "Apache Airflow missing Certificate Validation",
+  "pkg": [
+   "apache-airflow-providers-smtp",
+   "apache-airflow-providers-imap",
+   "apache-airflow"
+  ],
+  "commits": [
+   "https://github.com/apache/airflow/commit/38fc9cd823feafd8ec61d5d5c7eddb9e9162f755",
+   "https://github.com/apache/airflow/commit/3bd8f020e8b7bdeb7f618bdbdfb3557f117b29d3",
+   "https://github.com/apache/airflow/commit/dbacacbd4d476da757de148a4e747924c34fd7fe"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-p6hw-wm59-3g5g",
+  "cve": "CVE-2023-38686",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2023-07-31T22:03:44Z",
+  "severity": "critical",
+  "summary": "Sydent does not verify email server certificates",
+  "pkg": [
+   "matrix-sydent"
+  ],
+  "commits": [
+   "https://github.com/matrix-org/sydent/commit/1cd748307c6b168b66154e6c4db715d4b9551261"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-cf7p-gm2m-833m",
+  "cve": "CVE-2023-38325",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2023-07-14T21:31:08Z",
+  "severity": "high",
+  "summary": "cryptography mishandles SSH certificates",
+  "pkg": [
+   "cryptography"
+  ],
+  "commits": [
+   "https://github.com/pyca/cryptography/commit/1ca7adc97b76a9dfbd3d850628b613eb93b78fc3"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-w6q2-48ch-fj26",
+  "cve": "CVE-2023-25392",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2023-04-10T15:30:26Z",
+  "severity": "medium",
+  "summary": "Allegro Tech BigFlow vulnerable to Missing SSL Certificate Validation",
+  "pkg": [
+   "bigflow"
+  ],
+  "commits": [
+   "https://github.com/allegro/bigflow/commit/4ce197ff99bd38693dea59ab5e9b781fbcef4276",
+   "https://github.com/allegro/bigflow/commit/7e956661f76907594e8c82e8fb0af76dbea2a0fc"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-8v53-23mx-hcf9",
+  "cve": "CVE-2023-0509",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2023-01-27T00:30:18Z",
+  "severity": "high",
+  "summary": "Improper Certificate Validation in pyload-ng",
+  "pkg": [
+   "pyload-ng"
+  ],
+  "commits": [
+   "https://github.com/pyload/pyload/commit/a9098bdf7406e6faf9df3da6ff2d584e90c13bbb"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-w6xv-mf6f-r5f6",
+  "cve": "CVE-2020-24714",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2022-05-24T17:26:55Z",
+  "severity": "critical",
+  "summary": "Scalyr Agent Missing SSL Certificate Validation",
+  "pkg": [
+   "scalyr-agent-2"
+  ],
+  "commits": [
+   "https://github.com/scalyr/scalyr-agent-2/commit/96d5f5bec734c7a0e7c64654cdb7aacc81fdc867"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-w3j6-8j34-q43x",
+  "cve": "CVE-2010-4340",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2022-05-17T05:39:24Z",
+  "severity": "high",
+  "summary": "Apache Libcloud does not verify SSL certificates for HTTPS connections",
+  "pkg": [
+   "apache-libcloud"
+  ],
+  "commits": [
+   "https://github.com/apache/libcloud/commit/87ee61e6ba03a43dcefea2ce180988bec066b6fd"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-prcq-52f8-fp44",
+  "cve": "CVE-2012-3446",
+  "cwes": [
+   "CWE-20",
+   "CWE-185",
+   "CWE-295"
+  ],
+  "published": "2022-05-17T05:19:14Z",
+  "severity": "medium",
+  "summary": "Apache Libcloud vulnerable to certificate impersonation",
+  "pkg": [
+   "apache-libcloud"
+  ],
+  "commits": [
+   "https://github.com/apache/libcloud/commit/f2af5502dae3ac63e656dd1b7d5f29cc82ded401"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-p3xv-97g8-4wmj",
+  "cve": "CVE-2013-6396",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2022-05-17T04:52:37Z",
+  "severity": "critical",
+  "summary": "Python Swift client is vulnerable to Missing SSL Certificate Check",
+  "pkg": [
+   "python-swiftclient"
+  ],
+  "commits": [
+   "https://github.com/openstack/python-swiftclient/commit/b182112719ab87942472e44aa3446ea0eb19a289"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-v4w5-p2hg-8fh6",
+  "cve": "CVE-2016-9015",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2022-05-17T03:05:04Z",
+  "severity": "medium",
+  "summary": "Urllib3 Incorrect Certificate Validation",
+  "pkg": [
+   "urllib3"
+  ],
+  "commits": [
+   "https://github.com/urllib3/urllib3/commit/c32cdbc16a9634fa0f8c829d1270301570158715"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-qh2x-hpf9-cf2g",
+  "cve": "CVE-2013-2255",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2022-05-05T00:28:57Z",
+  "severity": "medium",
+  "summary": "OpenStack Keystone and other components vulnerable to Improper Certificate Validation",
+  "pkg": [
+   "python-keystoneclient",
+   "cinder",
+   "neutron",
+   "keystone"
+  ],
+  "commits": [
+   "https://github.com/openstack/cinder/commit/0f9652d92e175a1f7dc3c2a37ab444b8f189375a",
+   "https://github.com/openstack/keystone/commit/5bd4c2984d329625a2a8442b316fa235dbb88a3d",
+   "https://github.com/openstack/neutron/commit/7255e056092f034daaeb4246a812900645d46911",
+   "https://github.com/openstack/python-keystoneclient/commit/20e166fd8a943ee3f91ba362a47e9c14c7cc5f4c"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-7gf7-7wx4-mxmw",
+  "cve": "CVE-2010-4237",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2022-04-21T01:57:44Z",
+  "severity": "medium",
+  "summary": "Mercurial Improper Certificate Validation vulnerability",
+  "pkg": [
+   "mercurial"
+  ],
+  "commits": [
+   "https://github.com/dscho/hg/commit/4ea63fb25ceeeaaa4cd1026f733b7ea7672c30b3",
+   "https://github.com/dscho/hg/commit/89baabf4fb7abf30ef6fdcf3d455a7893e5cc145"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-c4rh-4376-gff4",
+  "cve": "CVE-2021-40830",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2021-11-24T21:12:04Z",
+  "severity": "high",
+  "summary": "Improper certificate management in AWS IoT Device SDK v2",
+  "pkg": [
+   "software.amazon.awssdk.iotdevicesdk:aws-iot-device-sdk",
+   "aws-iot-device-sdk-v2",
+   "awsiotsdk"
+  ],
+  "commits": [
+   "https://github.com/aws/aws-iot-device-sdk-java-v2/commit/67950ad2a02f2f9355c310b69dc9226b017f32f2",
+   "https://github.com/aws/aws-iot-device-sdk-js-v2/commit/53a36e3ac203291494120604d416b6de59177cac",
+   "https://github.com/aws/aws-iot-device-sdk-python-v2/commit/0450ce68add7e3d05c6d781ecdac953c299c053a"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-94jq-q5v2-76wj",
+  "cve": "CVE-2021-40828",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2021-11-24T21:02:24Z",
+  "severity": "medium",
+  "summary": "Improper certificate management in AWS IoT Device SDK v2",
+  "pkg": [
+   "software.amazon.awssdk.iotdevicesdk:aws-iot-device-sdk",
+   "aws-iot-device-sdk-v2",
+   "awsiotsdk"
+  ],
+  "commits": [
+   "https://github.com/aws/aws-iot-device-sdk-java-v2/commit/67950ad2a02f2f9355c310b69dc9226b017f32f2",
+   "https://github.com/aws/aws-iot-device-sdk-js-v2/commit/4be41394f1aee979e6f4b012fcb01eecabd0c08d",
+   "https://github.com/aws/aws-iot-device-sdk-python-v2/commit/fd4c0ba04b35eab9e20c635af5548fcc5a92d8be"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-j3f7-7rmc-6wqj",
+  "cve": "CVE-2021-40831",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2021-11-24T20:35:03Z",
+  "severity": "high",
+  "summary": "Improper certificate management in AWS IoT Device SDK v2",
+  "pkg": [
+   "software.amazon.awssdk.iotdevicesdk:aws-iot-device-sdk",
+   "aws-iot-device-sdk-v2",
+   "awsiotsdk"
+  ],
+  "commits": [
+   "https://github.com/aws/aws-iot-device-sdk-java-v2/commit/46375e9b1bfb34109b9ff3b1eff9c770f9daa186",
+   "https://github.com/aws/aws-iot-device-sdk-js-v2/commit/22f1989f5bdb0bdd9c912a5a2d255ee6c0854f68",
+   "https://github.com/aws/aws-iot-device-sdk-python-v2/commit/5aef82573202309063eb540b72cee0e565f85a2d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-f248-v4qh-x2r6",
+  "cve": "CVE-2020-27589",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2021-04-20T16:29:41Z",
+  "severity": "high",
+  "summary": "Improper Certificate Validation in blackduck",
+  "pkg": [
+   "blackduck"
+  ],
+  "commits": [
+   "https://github.com/blackducksoftware/hub-rest-api-python/commit/0a25777117515b8b4ff287a98f57837a8c6bdbdb"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-5phf-pp7p-vc2r",
+  "cve": "CVE-2021-28363",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2021-03-19T19:42:11Z",
+  "severity": "medium",
+  "summary": "Using default SSLContext for HTTPS requests in an HTTPS proxy doesn't verify certificate hostname for proxy connection",
+  "pkg": [
+   "urllib3"
+  ],
+  "commits": [
+   "https://github.com/urllib3/urllib3/commit/8d65ea1ecf6e2cdc27d42124e587c1b83a3118b0"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-wpjr-j57x-wxfw",
+  "cve": "CVE-2020-13254",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2020-06-05T16:20:44Z",
+  "severity": "high",
+  "summary": "Data leakage via cache key collision in Django",
+  "pkg": [
+   "Django",
+   "Django"
+  ],
+  "commits": [
+   "https://github.com/django/django/commit/07e59caa02831c4569bbebb9eb773bdd9cb4b206",
+   "https://github.com/django/django/commit/84b2da5552e100ae3294f564f6c862fef8d0e693"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-3c45-wgjp-7v9r",
+  "cve": "CVE-2014-7143",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2019-12-17T22:52:34Z",
+  "severity": "high",
+  "summary": "Python Twisted trustRoot is not respected in HTTP client",
+  "pkg": [
+   "twisted"
+  ],
+  "commits": [
+   "https://github.com/twisted/twisted/commit/3b5942252f5f3e45862a0e12b266ab29e243cc33"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-mh33-7rrq-662w",
+  "cve": "CVE-2019-11324",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2019-04-19T16:55:10Z",
+  "severity": "high",
+  "summary": "Improper Certificate Validation in urllib3",
+  "pkg": [
+   "urllib3"
+  ],
+  "commits": [
+   "https://github.com/urllib3/urllib3/commit/1efadf43dc63317cd9eaa3e0fdb9e05ab07254b1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-77rc-x84q-pv4f",
+  "cve": "CVE-2018-20245",
+  "cwes": [
+   "CWE-295"
+  ],
+  "published": "2019-01-25T16:19:19Z",
+  "severity": "high",
+  "summary": "Improper Certificate Validation in Apache Airflow",
+  "pkg": [
+   "apache-airflow"
+  ],
+  "commits": [
+   "https://github.com/apache/airflow/commit/28abf87bd173cc4cedc57f553118470e5745a968",
+   "https://github.com/apache/airflow/commit/66d0d05ea0802aec407e0ef5435a962080db0926",
+   "https://github.com/apache/airflow/commit/d8d0e8c59203f793f81d47d5adb1362df0b5d8d1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-9vhv-g5hf-m7m7",
+  "cve": "CVE-2026-102610",
+  "cwes": [
+   "CWE-78",
+   "CWE-306"
+  ],
+  "published": "2026-11-09T22:01:34Z",
+  "severity": "medium",
+  "summary": "fast-agent: `fast-agent serve` binds HTTP to 0.0.0.0 with no authentication by default; with --shell this is unauthenticated remote command execution",
+  "pkg": [
+   "fast-agent-mcp"
+  ],
+  "commits": [
+   "https://github.com/evalstate/fast-agent/commit/ba99f89c3ec7f1ef1c8b1ebce381c12b60dfea29"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-w5f2-9q9c-ff4h",
+  "cve": "CVE-2026-105192",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-10-16T20:08:44Z",
+  "severity": "critical",
+  "summary": "LMCache: Remote code execution via unsafe deserialization in multiprocess mode transport",
+  "pkg": [
+   "lmcache"
+  ],
+  "commits": [
+   "https://github.com/LMCache/LMCache/commit/160b6dec469edb765efd1fad42aca5a438b08bb5",
+   "https://github.com/LMCache/LMCache/commit/62f74c417dfe1ba56761733fd25dc8209a192f20",
+   "https://github.com/LMCache/LMCache/commit/767c7e367bbdc357c445cf7bd2ed259cff8d5865"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-j92p-c242-7hfx",
+  "cve": "CVE-2026-75597",
+  "cwes": [
+   "CWE-209",
+   "CWE-306"
+  ],
+  "published": "2026-10-09T16:40:30Z",
+  "severity": "medium",
+  "summary": "pyLoad: Unauthenticated access to /web/<path:filename> bypasses authentication on sensitive templates and leaks internal error details via exception attribute typo",
+  "pkg": [
+   "pyload-ng"
+  ],
+  "commits": [
+   "https://github.com/pyload/pyload/commit/e80c940cd604e60d93e3164429d4fc4aac54468d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2gpf-2492-q9jh",
+  "cve": "CVE-2026-61435",
+  "cwes": [
+   "CWE-287",
+   "CWE-306",
+   "CWE-346"
+  ],
+  "published": "2026-10-08T19:36:26Z",
+  "severity": "high",
+  "summary": "PraisonAI: Call API localhost-only authentication bypass via spoofed Host header",
+  "pkg": [
+   "praisonai"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2a855c470077c7d2e2479a575f7ef7f548d51c33",
+   "https://github.com/MervinPraison/PraisonAI/commit/846568c7a5d8ce9e71e56e4c213f027c04909753"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-7c92-x8vg-4258",
+  "cve": "CVE-2026-61436",
+  "cwes": [
+   "CWE-287",
+   "CWE-306",
+   "CWE-347"
+  ],
+  "published": "2026-10-07T14:07:10Z",
+  "severity": "high",
+  "summary": "PraisonAI: AgentMail webhook mode accepts forged unsigned message.received events and invokes agents",
+  "pkg": [
+   "praisonai"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2a855c470077c7d2e2479a575f7ef7f548d51c33",
+   "https://github.com/MervinPraison/PraisonAI/commit/846568c7a5d8ce9e71e56e4c213f027c04909753"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-cf6m-vc3m-7cgm",
+  "cve": "CVE-2026-8505",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-10-05T22:31:22Z",
+  "severity": "critical",
+  "summary": "Langflow: Unauthenticated Flow Execution via Webhook Authentication Bypass",
+  "pkg": [
+   "langflow"
+  ],
+  "commits": [
+   "https://github.com/langflow-ai/langflow/commit/cb6f7508dda83ead9c3e4417e96e4b5bd9a260c3"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-v2f8-6655-7grj",
+  "cve": null,
+  "cwes": [
+   "CWE-200",
+   "CWE-306",
+   "CWE-434",
+   "CWE-862",
+   "CWE-942"
+  ],
+  "published": "2026-10-02T22:44:26Z",
+  "severity": "critical",
+  "summary": "Vibe-Trading FastAPI endpoints permit unauthenticated access, file upload, and an RCE chain",
+  "pkg": [
+   "vibe-trading-ai"
+  ],
+  "commits": [
+   "https://github.com/HKUDS/Vibe-Trading/commit/9454d4a27a763b80e1d6eb5763b86c88e9e4e714"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-q986-4x7x-gx39",
+  "cve": "CVE-2026-57443",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-09-25T21:48:03Z",
+  "severity": "high",
+  "summary": "SCBE-AETHERMOORE Unauthenticated AetherBrowser Ops API Exposes Operator Email Digests",
+  "pkg": [
+   "scbe-aethermoore"
+  ],
+  "commits": [
+   "https://github.com/issdandavis/SCBE-AETHERMOORE/commit/ca833795e01eab060e92572e5f667c0c136b8c1e",
+   "https://github.com/issdandavis/SCBE-AETHERMOORE/commit/de7779b722c501dbcf4eae95dd51bb3984506fb1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rrxg-g2pf-6hh4",
+  "cve": "CVE-2026-59178",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-09-14T18:08:57Z",
+  "severity": "critical",
+  "summary": "ESPHome Device Builder: Renamed auth env vars silently disable dashboard authentication on upgrade",
+  "pkg": [
+   "esphome-device-builder"
+  ],
+  "commits": [
+   "https://github.com/esphome/device-builder/commit/9e294f729c3eb7334bb57b9fc49b75b728052f52"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-96p9-rh4f-92cf",
+  "cve": "CVE-2026-84452",
+  "cwes": [
+   "CWE-306",
+   "CWE-942"
+  ],
+  "published": "2026-09-08T21:27:59Z",
+  "severity": "high",
+  "summary": "Windows ML CLI: CORS misconfig enables localhost RCE",
+  "pkg": [
+   "winml-cli"
+  ],
+  "commits": [
+   "https://github.com/microsoft/winml-cli/commit/f4073e0ef4700a25b623487e7e45c421ca0b9993"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-xx4j-w367-7247",
+  "cve": "CVE-2026-55571",
+  "cwes": [
+   "CWE-285",
+   "CWE-306"
+  ],
+  "published": "2026-08-25T16:06:31Z",
+  "severity": "high",
+  "summary": "djust authentication bypass: a login_required / on_mount LiveView mount redirect does not close the WebSocket, allowing an unauthenticated client to dispatch event-handler calls",
+  "pkg": [
+   "djust"
+  ],
+  "commits": [
+   "https://github.com/djust-org/djust/commit/1ae8aa9246b80477de7ddc4d90319a3b267bef04"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-8vh3-g2qg-2h2c",
+  "cve": "CVE-2026-55640",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-08-25T16:04:15Z",
+  "severity": "critical",
+  "summary": "nextcloud-mcp-server: Unauthenticated `POST /webhooks/nextcloud` allows arbitrary vector data deletion when `WEBHOOK_SECRET` is unset ( default )",
+  "pkg": [
+   "nextcloud-mcp-server"
+  ],
+  "commits": [
+   "https://github.com/cbcoutinho/nextcloud-mcp-server/commit/4fc2b10945108cf1008ec9698291de6706ffcb73"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-gfq8-hmph-9gjv",
+  "cve": "CVE-2026-55533",
+  "cwes": [
+   "CWE-287",
+   "CWE-306"
+  ],
+  "published": "2026-08-25T15:15:54Z",
+  "severity": "high",
+  "summary": "PraisonAI: Authentication fail-open in Recipe server allows unauthenticated access when API key or JWT auth is configured without a secret",
+  "pkg": [
+   "PraisonAI"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2jgc-f764-c5r2",
+  "cve": "CVE-2026-55539",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-08-25T15:14:27Z",
+  "severity": "high",
+  "summary": "PraisonAI: [Auth Bypass] PraisonAI async Jobs API (`/api/v1/runs`) has no authentication \u2014 unauthenticated job execution, result theft, cancel and delete",
+  "pkg": [
+   "PraisonAI"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-r7v3-x45f-g7hp",
+  "cve": "CVE-2026-55538",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-08-25T14:56:59Z",
+  "severity": "high",
+  "summary": "PraisonAI: [Auth Bypass] `praisonai serve agents --api-key` is silently ignored \u2014 agent-invocation routes (`POST /agents`, `POST /agents/{agent_name}`) run unauthenticated",
+  "pkg": [
+   "PraisonAI"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-7ww9-85pg-cv4x",
+  "cve": "CVE-2026-55534",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-08-25T14:42:25Z",
+  "severity": "high",
+  "summary": "PraisonAI serve agents --api-key is ignored, allowing unauthenticated remote agent execution",
+  "pkg": [
+   "PraisonAI"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-7g3p-92qq-8wvh",
+  "cve": "CVE-2026-55528",
+  "cwes": [
+   "CWE-306",
+   "CWE-862"
+  ],
+  "published": "2026-08-25T14:31:52Z",
+  "severity": "high",
+  "summary": "praisonaiagents: AgentServer declares auth_token but never enforces it on any route",
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-wj6g-v78p-6fx3",
+  "cve": "CVE-2026-55529",
+  "cwes": [
+   "CWE-306",
+   "CWE-346"
+  ],
+  "published": "2026-08-25T14:26:26Z",
+  "severity": "medium",
+  "summary": "PraisonAI has an origin validation bypass in MCP HTTP Stream transport that allows browser-mediated unauthenticated tool execution on local MCP server",
+  "pkg": [
+   "PraisonAI"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-jx74-cqjv-2c67",
+  "cve": "CVE-2026-67426",
+  "cwes": [
+   "CWE-306",
+   "CWE-522",
+   "CWE-918"
+  ],
+  "published": "2026-07-30T14:47:41Z",
+  "severity": "critical",
+  "summary": "Flyto2 Core: Unauthenticated flyto-verification /run: callback_url SSRF and internal runner-secret exfiltration",
+  "pkg": [
+   "flyto-core"
+  ],
+  "commits": [
+   "https://github.com/flytohub/flyto-core/commit/0a0a528520ec18f5a21f1ddf858a71cc1edfb6e9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-gmfw-g93r-vg53",
+  "cve": "CVE-2026-59715",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-07-24T16:59:44Z",
+  "severity": "low",
+  "summary": "Open WebUI: Unauthenticated WebSocket Access to Collaborative Document Handlers (ydoc:awareness:update, ydoc:document:leave)",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/22f2fe1ffb66c993dad1e0b2b35514acaed2370e"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-x9vc-9ffq-p3gj",
+  "cve": "CVE-2026-54446",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-07-14T20:47:19Z",
+  "severity": "high",
+  "summary": "NetLicensing-MCP: Unauthenticated Use of Server-Side NetLicensing API Key in HTTP Mode",
+  "pkg": [
+   "netlicensing-mcp"
+  ],
+  "commits": [
+   "https://github.com/Labs64/NetLicensing-MCP/commit/fbbb1d5ff88eb5400ec933a84e75601ebee48927"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-37h2-6p4f-mp3q",
+  "cve": "CVE-2026-49471",
+  "cwes": [
+   "CWE-306",
+   "CWE-352"
+  ],
+  "published": "2026-07-08T21:12:08Z",
+  "severity": "high",
+  "summary": "Serena: Unauthenticated Flask dashboard on fixed port enables DNS rebinding \u2192 memory poisoning \u2192 RCE",
+  "pkg": [
+   "serena-agent"
+  ],
+  "commits": [
+   "https://github.com/oraios/serena/commit/016ccbe1c095a3eed7967737ac1d4df2754f5d96"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-q855-8rh5-jfgq",
+  "cve": null,
+  "cwes": [
+   "CWE-306",
+   "CWE-352"
+  ],
+  "published": "2026-07-07T23:41:21Z",
+  "severity": "medium",
+  "summary": "ha-mcp: Add-on settings and policy routes are reachable without authentication at the bare root path",
+  "pkg": [
+   "ha-mcp"
+  ],
+  "commits": [
+   "https://github.com/homeassistant-ai/ha-mcp/commit/9f5b085ad4a7b38b067c9da0dc5b45462c4d796e"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-49f7-whx5-4256",
+  "cve": "CVE-2026-58473",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-07-07T21:31:36Z",
+  "severity": "critical",
+  "summary": "Cognee allows non-superusers to overwrite global LLM configuration",
+  "pkg": [
+   "cognee"
+  ],
+  "commits": [
+   "https://github.com/topoteretes/cognee/commit/d10b1b77e2157c6238fd4d1acb1923a048991699",
+   "https://github.com/topoteretes/cognee/commit/10971db1b0bd97e88f96bd2a9ffb3edb7b22bcd0",
+   "https://github.com/topoteretes/cognee/commit/ebcf82412d0954f5c5018444f7eee8d96fee5113"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-h9f9-h6gm-wc85",
+  "cve": "CVE-2026-55786",
+  "cwes": [
+   "CWE-78",
+   "CWE-306"
+  ],
+  "published": "2026-07-06T17:41:03Z",
+  "severity": "high",
+  "summary": "flyto-core has Unauthenticated Command Execution via HTTP MCP `execute_module`",
+  "pkg": [
+   "flyto-core"
+  ],
+  "commits": [
+   "https://github.com/flytohub/flyto-core/commit/db7f116b1d3c5dcf94aded00d14118f81f3e225e"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-73cv-556c-w3g6",
+  "cve": "CVE-2026-49257",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-06-26T21:05:43Z",
+  "severity": "critical",
+  "summary": "mcp-pinot: Unauthenticated tool invocation via default oauth_enabled=False + host 0.0.0.0 bind",
+  "pkg": [
+   "mcp-pinot-server"
+  ],
+  "commits": [
+   "https://github.com/startreedata/mcp-pinot/commit/1c7d3f9cd384854bf72c127d230bdb32299475ad"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4pqm-j46f-795x",
+  "cve": "CVE-2026-53869",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-06-17T21:34:38Z",
+  "severity": "high",
+  "summary": "Hermes Agent contains a DNS rebinding vulnerability in WebSocket endpoints that allows remote attackers to bypass Host and Origin validation",
+  "pkg": [
+   "hermes-agent"
+  ],
+  "commits": [
+   "https://github.com/NousResearch/hermes-agent/commit/d9ec90585cf7616b5972e44cf8d92bb569fc3feb"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-52cq-7v8r-62c6",
+  "cve": null,
+  "cwes": [
+   "CWE-20",
+   "CWE-306"
+  ],
+  "published": "2026-05-08T16:32:29Z",
+  "severity": "high",
+  "summary": "gmaps-mcp's unauthenticated HTTP transport allows unlimited Google Maps API calls at operator expense",
+  "pkg": [
+   "gmaps-mcp"
+  ],
+  "commits": [
+   "https://github.com/arthurkatcher/google-maps-mcp/commit/00d872507c78e8116bbf9de7be7cd112945c0fd8",
+   "https://github.com/arthurkatcher/google-maps-mcp/commit/3ae32643da469f962e67e8ef9726cd4d9bf4587d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-qx5f-ghc2-7g5c",
+  "cve": "CVE-2026-42303",
+  "cwes": [
+   "CWE-288",
+   "CWE-306",
+   "CWE-841"
+  ],
+  "published": "2026-05-05T21:11:37Z",
+  "severity": "medium",
+  "summary": "Ethyca Fides has a Privacy Request Identity Verification Bypass Vulnerability via Duplicate Detection",
+  "pkg": [
+   "ethyca-fides"
+  ],
+  "commits": [
+   "https://github.com/ethyca/fides/commit/0e320b20934eb5af3a3d5127dba2691605d7ff37",
+   "https://github.com/ethyca/fides/commit/e7a6527b0f9fdc9887b86a89bb5453e7421882dd"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-fqvv-jvhr-g5jc",
+  "cve": "CVE-2026-42864",
+  "cwes": [
+   "CWE-306",
+   "CWE-918"
+  ],
+  "published": "2026-05-05T18:21:17Z",
+  "severity": "critical",
+  "summary": "FireFighter has unauthenticated SSRF in its Raid jira_bot endpoint that allows IAM credential theft",
+  "pkg": [
+   "firefighter-incident"
+  ],
+  "commits": [
+   "https://github.com/ManoManoTech/firefighter-incident/commit/2586679e6f32c12d223668b73e98f4c4de7b771f"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-qp2c-xqv6-phh6",
+  "cve": "CVE-2025-13030",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-04-30T06:30:30Z",
+  "severity": "low",
+  "summary": "django-mdeditor is Missing Authentication for Critical Function",
+  "pkg": [
+   "django-mdeditor"
+  ],
+  "commits": [
+   "https://github.com/pylixm/django-mdeditor/commit/3e80f9edcabc5d2fc136b05a501964b8a5e97cfe"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-gfc2-9qmw-w7vh",
+  "cve": "CVE-2026-34839",
+  "cwes": [
+   "CWE-200",
+   "CWE-306",
+   "CWE-942"
+  ],
+  "published": "2026-04-21T15:14:40Z",
+  "severity": "high",
+  "summary": "Glances: Cross-Origin Information Disclosure via Unauthenticated REST API (/api/4) due to Permissive CORS",
+  "pkg": [
+   "Glances"
+  ],
+  "commits": [
+   "https://github.com/nicolargo/glances/commit/fdfb977b1d91b5e410bc06c4e19f8bedb0005ce9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2679-6mx9-h9xc",
+  "cve": "CVE-2026-39987",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-04-08T21:50:58Z",
+  "severity": "critical",
+  "summary": "Marimo: Pre-Auth Remote Code Execution via Terminal WebSocket Authentication Bypass",
+  "pkg": [
+   "marimo"
+  ],
+  "commits": [
+   "https://github.com/marimo-team/marimo/commit/c24d4806398f30be6b12acd6c60d1d7c68cfd12a"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-vpwc-v33q-mq89",
+  "cve": "CVE-2026-35523",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-04-06T18:00:26Z",
+  "severity": "high",
+  "summary": "strawberry-graphql: Authentication bypass via legacy graphql-ws WebSocket subprotocol",
+  "pkg": [
+   "strawberry-graphql"
+  ],
+  "commits": [
+   "https://github.com/strawberry-graphql/strawberry/commit/0977a4e6b41b7cfe3e9d8ba84a43458a2b0c54c2"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-jm6w-m3j8-898g",
+  "cve": "CVE-2026-33231",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-03-19T12:42:20Z",
+  "severity": "high",
+  "summary": "Unauthenticated remote shutdown in nltk.app.wordnet_app",
+  "pkg": [
+   "nltk"
+  ],
+  "commits": [
+   "https://github.com/nltk/nltk/commit/bbaae83db86a0f49e00f5b0db44a7254c268de9b"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-vwmf-pq79-vjvx",
+  "cve": "CVE-2026-33017",
+  "cwes": [
+   "CWE-94",
+   "CWE-95",
+   "CWE-306"
+  ],
+  "published": "2026-03-17T20:05:05Z",
+  "severity": "critical",
+  "summary": "Unauthenticated Remote Code Execution in Langflow via Public Flow Build Endpoint",
+  "pkg": [
+   "langflow"
+  ],
+  "commits": [
+   "https://github.com/langflow-ai/langflow/commit/73b6612e3ef25fdae0a752d75b0fabd47328d4f0"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-q5fh-2hc8-f6rq",
+  "cve": "CVE-2026-27482",
+  "cwes": [
+   "CWE-306",
+   "CWE-396"
+  ],
+  "published": "2026-02-20T21:15:25Z",
+  "severity": "medium",
+  "summary": "Ray dashboard DELETE endpoints allow unauthenticated browser-triggered DoS (Serve shutdown / job deletion)",
+  "pkg": [
+   "ray"
+  ],
+  "commits": [
+   "https://github.com/ray-project/ray/commit/0fda8b824cdc9dc6edd763bb28dfd7d1cc9b02a4"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-gc24-px2r-5qmf",
+  "cve": "CVE-2026-25505",
+  "cwes": [
+   "CWE-306",
+   "CWE-321"
+  ],
+  "published": "2026-02-02T21:21:14Z",
+  "severity": "critical",
+  "summary": "Bambuddy Uses Hardcoded Secret Key + Many API Endpoints do not Require Authentication",
+  "pkg": [
+   "bambuddy"
+  ],
+  "commits": [
+   "https://github.com/maziggy/bambuddy/commit/a82f9278d2d587b7042a0858aab79fd8b6e3add9",
+   "https://github.com/maziggy/bambuddy/commit/c31f2968889c855f1ffacb700c2c9970deb2a6fb"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-c5cp-vx83-jhqx",
+  "cve": "CVE-2026-21445",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2026-01-02T21:11:50Z",
+  "severity": "high",
+  "summary": "Langflow Missing Authentication on Critical API Endpoints",
+  "pkg": [
+   "langflow-base",
+   "langflow"
+  ],
+  "commits": [
+   "https://github.com/langflow-ai/langflow/commit/3fed9fe1b5658f2c8656dbd73508e113a96e486a"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-535g-62r7-cx6v",
+  "cve": "CVE-2025-62607",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2025-10-21T21:46:35Z",
+  "severity": "medium",
+  "summary": "Nautobot Single Source of Truth (SSoT) has an unauthenticated ServiceNow configuration URL",
+  "pkg": [
+   "nautobot-ssot"
+  ],
+  "commits": [
+   "https://github.com/nautobot/nautobot-app-ssot/commit/1530d25cdeb929641ec47644f9a0a1d9d41e1cb8"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-ww28-4m4v-cq4j",
+  "cve": "CVE-2025-49652",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2025-06-09T18:32:17Z",
+  "severity": "critical",
+  "summary": "BackendAI Missing Authentication for Critical Function",
+  "pkg": [
+   "backend.ai",
+   "backend.ai"
+  ],
+  "commits": [
+   "https://github.com/lablup/backend.ai/commit/37fc8f70f9bad2dd01fe2e288f9006e96f9914ed",
+   "https://github.com/lablup/backend.ai/commit/b6d3ddd9e285a7ce59722a37585b9298681eb82f",
+   "https://github.com/lablup/backend.ai/commit/d7704f506e319acff205d91bfca6e2ca92939983"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-cc6x-8cc7-9953",
+  "cve": "CVE-2024-51493",
+  "cwes": [
+   "CWE-306",
+   "CWE-620"
+  ],
+  "published": "2024-11-05T15:08:57Z",
+  "severity": "medium",
+  "summary": "OctoPrint has API key access in settings without reauthentication",
+  "pkg": [
+   "OctoPrint"
+  ],
+  "commits": [
+   "https://github.com/OctoPrint/OctoPrint/commit/9bc80d782d72881b16e20873dcd0b8314324c70c"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-w3vc-fx9p-wp4v",
+  "cve": "CVE-2024-28179",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2024-03-20T15:22:02Z",
+  "severity": "critical",
+  "summary": "Jupyter Server Proxy's Websocket Proxying does not require authentication",
+  "pkg": [
+   "jupyter-server-proxy",
+   "jupyter-server-proxy"
+  ],
+  "commits": [
+   "https://github.com/jupyterhub/jupyter-server-proxy/commit/764e499f61a87641916a7a427d4c4b1ac3f321a9",
+   "https://github.com/jupyterhub/jupyter-server-proxy/commit/bead903b7c0354b6efd8b4cde94b89afab653e03"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-h5cg-53g7-gqjw",
+  "cve": "CVE-2024-27758",
+  "cwes": [
+   "CWE-306",
+   "CWE-358",
+   "CWE-913"
+  ],
+  "published": "2024-03-06T17:05:30Z",
+  "severity": "high",
+  "summary": "RPyC's missing security check results in code execution when using numpy.array on the server-side.",
+  "pkg": [
+   "rpyc"
+  ],
+  "commits": [
+   "https://github.com/tomerfiliba-org/rpyc/commit/9f45f8269d4106905db61d82cd529cacdb178911",
+   "https://github.com/tomerfiliba-org/rpyc/commit/bba1d3562e6f9f1256ec64048cc23001c0bb7516"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-75mc-3pjc-727q",
+  "cve": "CVE-2023-50263",
+  "cwes": [
+   "CWE-200",
+   "CWE-306"
+  ],
+  "published": "2023-12-13T13:35:48Z",
+  "severity": "low",
+  "summary": "Unauthenticated db-file-storage views",
+  "pkg": [
+   "nautobot",
+   "nautobot"
+  ],
+  "commits": [
+   "https://github.com/nautobot/nautobot/commit/458280c359a4833a20da294eaf4b8d55edc91cee",
+   "https://github.com/nautobot/nautobot/commit/5e2ba9e8ac0840b1c44eb1a8ea3c0bd2c68e4f80",
+   "https://github.com/nautobot/nautobot/commit/7c4cf3137f45f1541f09f2f6a7f8850cd3a2eaee"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-64x5-55rw-9974",
+  "cve": "CVE-2023-40170",
+  "cwes": [
+   "CWE-79",
+   "CWE-284",
+   "CWE-306"
+  ],
+  "published": "2023-08-29T23:34:09Z",
+  "severity": "medium",
+  "summary": "cross-site inclusion (XSSI) of files in jupyter-server",
+  "pkg": [
+   "jupyter-server"
+  ],
+  "commits": [
+   "https://github.com/jupyter-server/jupyter_server/commit/87a4927272819f0b1cae1afa4c8c86ee2da002fd"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-c6mm-2g84-v4m7",
+  "cve": "CVE-2023-31143",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2023-05-05T23:10:44Z",
+  "severity": "high",
+  "summary": "Mage-ai missing user authentication",
+  "pkg": [
+   "mage-ai"
+  ],
+  "commits": [
+   "https://github.com/mage-ai/mage-ai/commit/f63cd00f6a3be372397d37a4c9a49bfaf50d7650"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4wph-9vrm-6v3w",
+  "cve": "CVE-2022-4018",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2022-11-16T19:00:32Z",
+  "severity": "low",
+  "summary": "Rdiffweb vulnerable to Missing Authentication for Critical Function",
+  "pkg": [
+   "rdiffweb"
+  ],
+  "commits": [
+   "https://github.com/ikus060/rdiffweb/commit/f2a32f2a9f3fb8be1a9432ac3d81d3aacdb13095"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-99j5-fvg3-54pm",
+  "cve": "CVE-2022-3327",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2022-10-20T12:00:17Z",
+  "severity": "critical",
+  "summary": "Rdiffweb is missing authentication for critical function",
+  "pkg": [
+   "rdiffweb"
+  ],
+  "commits": [
+   "https://github.com/ikus060/rdiffweb/commit/f2a32f2a9f3fb8be1a9432ac3d81d3aacdb13095"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-h88f-r7cw-8fv3",
+  "cve": "CVE-2021-38540",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2022-05-24T19:14:00Z",
+  "severity": "critical",
+  "summary": "Missing Authentication for Critical Function in Apache Airflow",
+  "pkg": [
+   "apache-airflow"
+  ],
+  "commits": [
+   "https://github.com/apache/airflow/commit/bcec1df703cd4a01520a90c3f801cca6f97d9bfd"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-q5h6-49gg-2wfg",
+  "cve": "CVE-2020-36245",
+  "cwes": [
+   "CWE-94",
+   "CWE-306"
+  ],
+  "published": "2022-05-24T17:42:31Z",
+  "severity": "high",
+  "summary": "GramAddict bot uses dependency with reverse tcp backdoor",
+  "pkg": [
+   "GramAddict"
+  ],
+  "commits": [
+   "https://github.com/GramAddict/bot/commit/b9d11691b2fb13749c3cd0f75c70ee31242053ce"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-86cv-9gpx-6hwj",
+  "cve": "CVE-2017-12440",
+  "cwes": [
+   "CWE-306"
+  ],
+  "published": "2022-05-13T01:42:42Z",
+  "severity": "high",
+  "summary": "Openstack Aodh can be used to launder Keystone trusts",
+  "pkg": [
+   "aodh"
+  ],
+  "commits": [
+   "https://github.com/openstack/aodh/commit/149d3ad2193b4d17df801f82a0a6be62dba564db",
+   "https://github.com/openstack/aodh/commit/92182de328d1f088c5f5a68326d2b207b21e06ea"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-g9v5-gjwf-9rwx",
+  "cve": "CVE-2026-45361",
+  "cwes": [
+   "CWE-322"
+  ],
+  "published": "2026-05-26T13:30:40Z",
+  "severity": "high",
+  "summary": "Apache Airflow providers-google's `ComputeEngineSSHHook` disables SSH host-key verification by default",
+  "pkg": [
+   "apache-airflow-providers-google"
+  ],
+  "commits": [
+   "https://github.com/apache/airflow/commit/120dbed3462cedcb980aac022c587ba434249eb1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-w4pr-4vjg-hffh",
+  "cve": "CVE-2022-39254",
+  "cwes": [
+   "CWE-287",
+   "CWE-322"
+  ],
+  "published": "2022-09-30T22:56:17Z",
+  "severity": "high",
+  "summary": "When matrix-nio receives forwarded room keys, the receiver doesn't check if it requested the key from the forwarder",
+  "pkg": [
+   "matrix-nio"
+  ],
+  "commits": [
+   "https://github.com/poljar/matrix-nio/commit/b1cbf234a831daa160673defd596e6450e9c29f0"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-x33g-cr3x-6449",
+  "cve": "CVE-2026-102275",
+  "cwes": [
+   "CWE-345",
+   "CWE-348"
+  ],
+  "published": "2026-10-05T23:44:03Z",
+  "severity": "medium",
+  "summary": "PyJWT accepts inconsistent OKP x/d JWKs, causing public/private key identity confusion",
+  "pkg": [
+   "PyJWT"
+  ],
+  "commits": [
+   "https://github.com/jpadilla/pyjwt/commit/3cd9ceec33ced359decbad75b413ad668ae6332c"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-3qmc-cj7q-62hv",
+  "cve": "CVE-2026-48061",
+  "cwes": [
+   "CWE-348",
+   "CWE-807"
+  ],
+  "published": "2026-06-10T19:12:10Z",
+  "severity": "medium",
+  "summary": "Litestar: AllowedHostsMiddleware bypasses host validation via client-controlled X-Forwarded-Host header",
+  "pkg": [
+   "litestar"
+  ],
+  "commits": [
+   "https://github.com/litestar-org/litestar/commit/6930a20ceb543912cd651b42deae5b9f3637a262"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rwrf-2pqf-9j8j",
+  "cve": "CVE-2026-116686",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-10-27T21:05:29Z",
+  "severity": "medium",
+  "summary": "Model Context Protocol Python SDK: Client fetched server-chosen $ref URLs while validating tool results against output schemas",
+  "pkg": [
+   "mcp",
+   "mcp"
+  ],
+  "commits": [
+   "https://github.com/modelcontextprotocol/python-sdk/commit/5ebdfed4060d8e5b11b8e2348f86bad4d1fb8836",
+   "https://github.com/modelcontextprotocol/python-sdk/commit/6705402e246dc4eb1fcdf4d9902b78d3c9c36e1b"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-x4rv-c3wx-4cr8",
+  "cve": "CVE-2026-114620",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-10-27T15:39:18Z",
+  "severity": "medium",
+  "summary": "Authlib: Unvalidated request_uri fetch in JWT-secured authorization request (JAR) leading to SSRF",
+  "pkg": [
+   "authlib"
+  ],
+  "commits": [
+   "https://github.com/authlib/authlib/commit/6563f6f7a8c2f71d2f85ee7511d72a4fbae3acc0",
+   "https://github.com/authlib/authlib/commit/891e3f10ae5989176211f8be35dcc7cd40aa92c6"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rw7v-4hrq-x6r9",
+  "cve": "CVE-2026-114609",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-10-27T14:43:16Z",
+  "severity": "medium",
+  "summary": "fpdf2 implicitly loads external URLs and local image paths when rendering attacker-controlled content",
+  "pkg": [
+   "fpdf2"
+  ],
+  "commits": [
+   "https://github.com/py-pdf/fpdf2/commit/0d27190a8c907e02ebe9cd881471a14d0622b432",
+   "https://github.com/py-pdf/fpdf2/commit/6e23f610b7946e96e9a5dd0535dcbfbe7ac1397d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2wqp-q3c6-ccj5",
+  "cve": "CVE-2026-115886",
+  "cwes": [
+   "CWE-470",
+   "CWE-918"
+  ],
+  "published": "2026-10-23T22:07:26Z",
+  "severity": "medium",
+  "summary": "MLflow: SSRF on unauthenticated MLflow servers via third-party scorer kwargs in the scorer invoke, register, and GenAI evaluate endpoints",
+  "pkg": [
+   "mlflow"
+  ],
+  "commits": [
+   "https://github.com/mlflow/mlflow/commit/bac30b4148c4f40045b4d4db07ae60ab3838803f"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-p3pr-8f3m-4qp8",
+  "cve": "CVE-2026-123814",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-10-09T17:09:03Z",
+  "severity": "medium",
+  "summary": "pyLoad WindowsPhoneNotify addon: non-admin SETTINGS user triggers SSRF via unguarded http.client notification host",
+  "pkg": [
+   "pyload-ng"
+  ],
+  "commits": [
+   "https://github.com/pyload/pyload/commit/989a551d2ae0c00b0d2c7baf6d850180c9b46559"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2v95-h47v-g4x9",
+  "cve": "CVE-2026-107394",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-10-08T22:09:55Z",
+  "severity": "medium",
+  "summary": "Indico: Incomplete Server-Side Request Forgery (SSRF) check",
+  "pkg": [
+   "indico"
+  ],
+  "commits": [
+   "https://github.com/indico/indico/commit/44540e70ab4e20a12f14ddba5218a33749a86736"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-vmxc-h2x2-jmf3",
+  "cve": "CVE-2026-107289",
+  "cwes": [
+   "CWE-918",
+   "CWE-1289"
+  ],
+  "published": "2026-10-08T16:48:06Z",
+  "severity": "medium",
+  "summary": "Pydantic AI: SSRF cloud-metadata blocklist bypass via IPv6 zone identifiers",
+  "pkg": [
+   "pydantic-ai",
+   "pydantic-ai",
+   "pydantic-ai-slim",
+   "pydantic-ai-slim"
+  ],
+  "commits": [
+   "https://github.com/pydantic/pydantic-ai/commit/02157e1b87bd45d3f2e111ce07afdf89f9fb0e5b",
+   "https://github.com/pydantic/pydantic-ai/commit/4da70591460f51a8c4f128eaeef70a33340dbd55"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-pc36-qwjq-x68c",
+  "cve": "CVE-2026-105743",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "published": "2026-10-07T20:42:19Z",
+  "severity": "medium",
+  "summary": "Docling has SSRF guard bypass in remote resource fetching (DNS rebinding / multi-record resolution; no IP validation in HTML render mode)",
+  "pkg": [
+   "docling",
+   "docling-slim"
+  ],
+  "commits": [
+   "https://github.com/docling-project/docling/commit/5e469137f275ffc443306a30d12a3a45bceb80fb"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-j8f7-x8jm-wmm4",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-10-06T13:39:57Z",
+  "severity": "medium",
+  "summary": "Langflow: SSRF in URL-taking components (protection disabled by default / warn-only, not applied to RSS, SearXNG, Web Search, Home Assistant, Glean, Docling)",
+  "pkg": [
+   "langflow",
+   "langflow-base",
+   "lfx",
+   "lfx-docling"
+  ],
+  "commits": [
+   "https://github.com/langflow-ai/langflow/commit/94859df33acd70b2a1f816e26d68f5e89a7e5639"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-qx36-8mw2-4r3x",
+  "cve": "CVE-2026-96747",
+  "cwes": [
+   "CWE-20",
+   "CWE-918"
+  ],
+  "published": "2026-10-05T23:46:53Z",
+  "severity": "medium",
+  "summary": "PyMongo: PYTHON-5990 Forced Unix domain socket connection via a .sock KMS endpoint in client-side field level encryption",
+  "pkg": [
+   "pymongo"
+  ],
+  "commits": [
+   "https://github.com/mongodb/mongo-python-driver/commit/44119d0f9dfa0224d84b03be702a6d9a5ef1dea7",
+   "https://github.com/mongodb/mongo-python-driver/commit/640dd2383a1a2fb1a10e5222d50ebc0b22a61bd7"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-jqmf-mx4f-hfr6",
+  "cve": null,
+  "cwes": [
+   "CWE-77",
+   "CWE-78",
+   "CWE-94",
+   "CWE-116",
+   "CWE-918"
+  ],
+  "published": "2026-10-02T22:44:03Z",
+  "severity": "critical",
+  "summary": "Vibe-Trading LLM-callable tools permit command execution, code injection, and SSRF",
+  "pkg": [
+   "vibe-trading-ai"
+  ],
+  "commits": [
+   "https://github.com/HKUDS/Vibe-Trading/commit/9454d4a27a763b80e1d6eb5763b86c88e9e4e714"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-3325-v43h-43rv",
+  "cve": "CVE-2026-102904",
+  "cwes": [
+   "CWE-88",
+   "CWE-209",
+   "CWE-918"
+  ],
+  "published": "2026-10-01T15:21:17Z",
+  "severity": "medium",
+  "summary": "JupyterLab: Argument injection in JupyterLab extension uninstall exposes server-readable files and internal URLs",
+  "pkg": [
+   "jupyterlab",
+   "jupyterlab"
+  ],
+  "commits": [
+   "https://github.com/jupyterlab/jupyterlab/commit/9e1951e57da499ca66ef5e0caf68e71ad2e3d1a5",
+   "https://github.com/jupyterlab/jupyterlab/commit/a274a8276b9185d03efd4c3c20713d3137ac49e6",
+   "https://github.com/jupyterlab/jupyterlab/commit/e277bc958e737130ac47b6c5078d08b29298828f"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-3cv6-jpf6-8222",
+  "cve": "CVE-2026-84377",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-30T21:11:25Z",
+  "severity": "medium",
+  "summary": "LiteLLM: Authenticated SSRF and provider-credential exfiltration via unvalidated request-body routing parameters",
+  "pkg": [
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm",
+   "litellm"
+  ],
+  "commits": [
+   "https://github.com/BerriAI/litellm/commit/473f72e63a9777d793fbbf57194d8ec4fb97bc1b",
+   "https://github.com/BerriAI/litellm/commit/820f247a6abba55cd87d130bef7bba7be3b29d37",
+   "https://github.com/BerriAI/litellm/commit/c898d341c02299cf2506d0d8e84cc67953043593"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-9v7f-9g4p-ffgj",
+  "cve": "CVE-2026-102267",
+  "cwes": [
+   "CWE-200",
+   "CWE-345",
+   "CWE-918"
+  ],
+  "published": "2026-09-29T23:15:00Z",
+  "severity": "high",
+  "summary": "PyJWT: PyJWKClient follows redirects when fetching JWKS",
+  "pkg": [
+   "PyJWT"
+  ],
+  "commits": [
+   "https://github.com/jpadilla/pyjwt/commit/0a795b8e1f6ef08f634aa7086fc41cc6d5ce3e56"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4ghv-53cq-7wp3",
+  "cve": "CVE-2026-91129",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T20:40:51Z",
+  "severity": "medium",
+  "summary": "Home Assistant: mDNS Server-Side Request Forgery",
+  "pkg": [
+   "homeassistant"
+  ],
+  "commits": [
+   "https://github.com/home-assistant/core/commit/0f3c7ca2772b605c0f3c09c88f35e527ea6ea560",
+   "https://github.com/home-assistant/core/commit/815c708d19aa0c7f59f9ee318b613a5e481a42b3"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-vv3m-f8x4-7377",
+  "cve": "CVE-2026-85740",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T20:40:25Z",
+  "severity": "high",
+  "summary": "lightrag-hku: SSRF via IPv6-transition address bypass (NAT64, IPv4-compatible, 6to4) of the native-markdown image-download guard",
+  "pkg": [
+   "lightrag-hku"
+  ],
+  "commits": [
+   "https://github.com/HKUDS/LightRAG/commit/9207e7fd10cf6df3cf26e3dd1921490b34a2f132",
+   "https://github.com/HKUDS/LightRAG/commit/a25862177a9b00e0edb870778a42b4155924de09",
+   "https://github.com/HKUDS/LightRAG/commit/c598545aa0084a427bcb19a84ade5e0ec31fa673"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-v9m3-wfh8-5646",
+  "cve": "CVE-2026-77249",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T20:36:31Z",
+  "severity": "medium",
+  "summary": "MCP Atlassian:  Incomplete fix for GHSA-7r34-79r5-rcc9: redirect-based SSRF via unhooked requests session in Jira user-permission lookup",
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "commits": [
+   "https://github.com/sooperset/mcp-atlassian/commit/b041733473f95119dd539542a43c280737a8e460"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-hgcf-4mq8-5266",
+  "cve": "CVE-2026-77274",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T20:36:22Z",
+  "severity": "high",
+  "summary": "MCP Atlassian: SSRF Protection Bypass",
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "commits": [
+   "https://github.com/sooperset/mcp-atlassian/commit/b041733473f95119dd539542a43c280737a8e460"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-5wf4-jqxh-8gm3",
+  "cve": "CVE-2026-77267",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T20:36:17Z",
+  "severity": "high",
+  "summary": "mcp-atlassian has an incomplete SSRF remediation",
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "commits": [
+   "https://github.com/sooperset/mcp-atlassian/commit/b041733473f95119dd539542a43c280737a8e460"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-6529-c226-h328",
+  "cve": "CVE-2026-77261",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T20:35:13Z",
+  "severity": "high",
+  "summary": "MCP Atlassian: SSRF redirect protection missing for basic-auth and OAuth authentication branches",
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "commits": [
+   "https://github.com/sooperset/mcp-atlassian/commit/b041733473f95119dd539542a43c280737a8e460"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-49xv-9743-pw8w",
+  "cve": "CVE-2026-77265",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T20:35:08Z",
+  "severity": "medium",
+  "summary": "MCP Atlassian: SSRF via DNS Rebinding in Header-Based Authentication Flow",
+  "pkg": [
+   "mcp-atlassian"
+  ],
+  "commits": [
+   "https://github.com/sooperset/mcp-atlassian/commit/b041733473f95119dd539542a43c280737a8e460"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-ch3g-4xvr-674q",
+  "cve": "CVE-2026-62282",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-22T19:48:05Z",
+  "severity": "medium",
+  "summary": "OpenCVE: Server-Side Request Forgery (SSRF) in notifications",
+  "pkg": [
+   "opencve"
+  ],
+  "commits": [
+   "https://github.com/opencve/opencve/commit/0af7f894debc95c67fa53e7ba5a6cdecb10c34f0"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-hx8v-g79f-8w5f",
+  "cve": "CVE-2026-59823",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-17T14:51:21Z",
+  "severity": "medium",
+  "summary": "LiteLLM Proxy has server-side request forgery via the `user_config` request parameter",
+  "pkg": [
+   "litellm"
+  ],
+  "commits": [
+   "https://github.com/BerriAI/litellm/commit/47214be317f45a2d2ac08258362e0481411eb427"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4v28-j6q3-5m4r",
+  "cve": "CVE-2026-87996",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "published": "2026-09-10T15:10:12Z",
+  "severity": "high",
+  "summary": "Open WebUI: SSRF into internal services via DNS rebinding in the Playwright web loader",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/27402ff210bfa253445720920dfb86b15a00327b"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-34r3-9m95-vq73",
+  "cve": "CVE-2026-87999",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-10T15:09:36Z",
+  "severity": "high",
+  "summary": "Open WebUI: Any authenticated user can reach the Azure platform channel via server-side web fetch",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/e3e4bd87df6fc629e7e22081d980d55a7632b8b7"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-5x7x-4c3c-qf5w",
+  "cve": "CVE-2026-88001",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-09T23:54:08Z",
+  "severity": "medium",
+  "summary": "Open WebUI: Server-side fetches reach blocked and internal hosts via unvalidated HTTP redirect targets",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/e3e4bd87df6fc629e7e22081d980d55a7632b8b7"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4hhp-h66f-j5j7",
+  "cve": "CVE-2026-73560",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-08T20:42:00Z",
+  "severity": "medium",
+  "summary": "vLLM: SSRF + arbitrary local file read in MiMoV2OmniMultiModalProcessor `_fetch_image` and audio loader bypass MediaConnector protections",
+  "pkg": [
+   "vllm"
+  ],
+  "commits": [
+   "https://github.com/vllm-project/vllm/commit/54503ecec0f3ac31e5ecfc5f28652e4cc42307b5"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-6ww7-3frv-cqxh",
+  "cve": "CVE-2026-78682",
+  "cwes": [
+   "CWE-441",
+   "CWE-918"
+  ],
+  "published": "2026-09-08T16:41:40Z",
+  "severity": "high",
+  "summary": "NLTK: pathsec SSRF protection can be bypassed when a proxy is configured",
+  "pkg": [
+   "nltk"
+  ],
+  "commits": [
+   "https://github.com/nltk/nltk/commit/767333a005a1cd3d82d2029215f2dbe66a5844d9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4mvj-m6j5-pmf7",
+  "cve": "CVE-2026-71428",
+  "cwes": [
+   "CWE-601",
+   "CWE-918"
+  ],
+  "published": "2026-09-03T17:02:46Z",
+  "severity": "critical",
+  "summary": "unstructured: Server-Side Request Forgery in the URL-based partitioning",
+  "pkg": [
+   "unstructured"
+  ],
+  "commits": [
+   "https://github.com/Unstructured-IO/unstructured/commit/445c95735c4045057f51f399bc04c657751923bd"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-3gqm-fcw5-w839",
+  "cve": "CVE-2026-63311",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-09-02T15:39:39Z",
+  "severity": "medium",
+  "summary": "NLTK: SSRF Fail-Open in validate_network_url() via DNS Resolution Failure",
+  "pkg": [
+   "nltk"
+  ],
+  "commits": [
+   "https://github.com/nltk/nltk/commit/4a820afa58810cd05049b6c6eae306694d6cfe65"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-hvfh-5mj3-5f3j",
+  "cve": "CVE-2026-45019",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-25T19:21:40Z",
+  "severity": "high",
+  "summary": "Chainlist has SSRF via MCP SSE and streamable-http transports that allows unauthenticated internal network access",
+  "pkg": [
+   "chainlit"
+  ],
+  "commits": [
+   "https://github.com/Chainlit/chainlit/commit/0565fd0eccb915fce159929598b053ed79f6e0c9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-8cp3-qxj6-px34",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-25T15:57:03Z",
+  "severity": "high",
+  "summary": "utcp-http has an OAuth2 `tokenUrl` Trust Boundary Bypass in OpenAPI Conversion",
+  "pkg": [
+   "utcp-http"
+  ],
+  "commits": [
+   "https://github.com/universal-tool-calling-protocol/python-utcp/commit/fc3268e2a62e1181f91a63faf0a9bcee7639db29"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-ppx3-28rw-8fpf",
+  "cve": "CVE-2026-12210",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-25T15:52:30Z",
+  "severity": "medium",
+  "summary": "utcp-gql SSRF: CVE-2026-44661 fix not applied to the GraphQL and WebSocket plugins",
+  "pkg": [
+   "utcp-gql",
+   "utcp-websocket"
+  ],
+  "commits": [
+   "https://github.com/universal-tool-calling-protocol/python-utcp/commit/fc3268e2a62e1181f91a63faf0a9bcee7639db29"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-9qhg-99ww-9mqc",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-25T15:48:51Z",
+  "severity": "high",
+  "summary": "utcp-http SSRF: HTTP tool invocation follows redirects without re-validating the target",
+  "pkg": [
+   "utcp-http"
+  ],
+  "commits": [
+   "https://github.com/universal-tool-calling-protocol/python-utcp/commit/fc3268e2a62e1181f91a63faf0a9bcee7639db29"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-hmfx-4v44-9qw9",
+  "cve": "CVE-2026-55535",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "published": "2026-08-25T15:02:04Z",
+  "severity": "medium",
+  "summary": "PraisonAI vulnerable to Server-Side Request Forgery via DNS rebinding bypass in webhook_url validation",
+  "pkg": [
+   "PraisonAI"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rg5q-pp8p-f7jm",
+  "cve": "CVE-2026-55537",
+  "cwes": [
+   "CWE-367",
+   "CWE-705",
+   "CWE-918"
+  ],
+  "published": "2026-08-25T14:59:44Z",
+  "severity": "high",
+  "summary": "PraisonAI: Webhook SSRF via DNS fail-open in `JobSubmitRequest.validate_webhook_url()` \u2014 bypass of CVE-2026-40114",
+  "pkg": [
+   "PraisonAI"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-vg6p-v9vm-6fgj",
+  "cve": "CVE-2026-55524",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "published": "2026-08-25T14:43:19Z",
+  "severity": "high",
+  "summary": "praisonaiagents vulnerable to SSRF in web_crawl tool via redirect-following and DNS rebinding (validate-then-fetch gap)",
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-x44h-65qv-cw74",
+  "cve": "CVE-2026-55526",
+  "cwes": [
+   "CWE-350",
+   "CWE-918"
+  ],
+  "published": "2026-08-25T14:37:26Z",
+  "severity": "high",
+  "summary": "praisonaiagents has an SSRF protection bypass in `spider_tools._host_is_blocked()` via DNS-resolved hostnames (`127.0.0.1.nip.io`)",
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-8hjw-25cg-g52h",
+  "cve": "CVE-2026-55523",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-25T14:18:40Z",
+  "severity": "high",
+  "summary": "praisonaiagents has a `web_crawl` SSRF protection bypass via unchecked redirect targets",
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-5r34-2g38-6569",
+  "cve": "CVE-2026-55525",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-25T14:05:38Z",
+  "severity": "high",
+  "summary": "praisonaiagents web_crawl vulnerable to SSRF via redirect-following",
+  "pkg": [
+   "praisonaiagents"
+  ],
+  "commits": [
+   "https://github.com/MervinPraison/PraisonAI/commit/2f9677abb2ea68eab864ee8b6a828fd0141612e1"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-5p3m-vhh6-9236",
+  "cve": null,
+  "cwes": [
+   "CWE-20",
+   "CWE-918"
+  ],
+  "published": "2026-08-20T18:30:50Z",
+  "severity": "medium",
+  "summary": "stigmem-node has blind SSRF via unvalidated webhook subscription delivery_address",
+  "pkg": [
+   "stigmem-node"
+  ],
+  "commits": [
+   "https://github.com/eidetic-labs/stigmem/commit/11637401d50629fef040382aee5af4571842c152",
+   "https://github.com/eidetic-labs/stigmem/commit/2ff5be29291d1c042e00d57c5f9ef93650cc90e0"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-v5rc-cpwc-cfpr",
+  "cve": "CVE-2026-71303",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-18T20:51:21Z",
+  "severity": "high",
+  "summary": "Lemur: Incomplete fix for GHSA-v2wp-frmc-5q3v -- ACME authority update endpoint allows non-admin to replace `acme_url` with internal IP, bypassing allowlist",
+  "pkg": [
+   "lemur"
+  ],
+  "commits": [
+   "https://github.com/Netflix/lemur/commit/edca0390f930344d65ff4ca37a669c2320e3dfad"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-f3qq-49m6-rw8f",
+  "cve": "CVE-2026-70667",
+  "cwes": [
+   "CWE-367",
+   "CWE-918"
+  ],
+  "published": "2026-08-18T20:51:12Z",
+  "severity": "medium",
+  "summary": "Lemur: SSRF protection in certificate revocation checking bypassable via HTTP redirects and DNS rebinding (incomplete fix for GHSA-54vg-pfh7-jq95)",
+  "pkg": [
+   "lemur"
+  ],
+  "commits": [
+   "https://github.com/Netflix/lemur/commit/ed504a830f38a83825b1570302e9f38d6553938a"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-xpmj-wjcp-6pww",
+  "cve": "CVE-2026-70666",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-18T20:51:07Z",
+  "severity": "high",
+  "summary": "Lemur: Server-Side Request Forgery via the ACME client following server-controlled URLs",
+  "pkg": [
+   "lemur"
+  ],
+  "commits": [
+   "https://github.com/Netflix/lemur/commit/6dcb19b6d6004e97796d6a0344b130b2ba57f050"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-95px-34x5-p37h",
+  "cve": "CVE-2026-68927",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-18T18:01:03Z",
+  "severity": "low",
+  "summary": "MobSF has SSRF port restriction bypass in assetlinks_check",
+  "pkg": [
+   "mobsf"
+  ],
+  "commits": [
+   "https://github.com/MobSF/Mobile-Security-Framework-MobSF/commit/62563ca429a75b3e5d47a13b958e1d2e7d5e2bbf"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-7gwp-5pfp-969j",
+  "cve": "CVE-2026-64849",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-17T21:58:51Z",
+  "severity": "critical",
+  "summary": "MLflow: Unauthenticated full-read SSRF in webhook delivery: _validate_webhook_url bypassed via unvalidated HTTP redirects (and DNS rebinding)",
+  "pkg": [
+   "mlflow"
+  ],
+  "commits": [
+   "https://github.com/mlflow/mlflow/commit/ba949522477cbd5915aa55d29b0cfad7d5ddf939"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-h47f-gmjp-m7rr",
+  "cve": "CVE-2026-52776",
+  "cwes": [
+   "CWE-184",
+   "CWE-918"
+  ],
+  "published": "2026-08-12T15:21:17Z",
+  "severity": "high",
+  "summary": "compliance-trestle has an URLSecurityValidator SSRF allowlist bypass via IPv4-mapped IPv6 and 0.0.0.0",
+  "pkg": [
+   "compliance-trestle"
+  ],
+  "commits": [
+   "https://github.com/oscal-compass/compliance-trestle/commit/d107cd16efe8eb15d46be3c1d97f1ec73d32447c"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-2jhm-w3mp-jcwr",
+  "cve": "CVE-2026-12372",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-10T00:31:42Z",
+  "severity": "low",
+  "summary": "NLTK network URL validation permits SSRF to RFC 6598 shared-address-space hosts",
+  "pkg": [
+   "nltk"
+  ],
+  "commits": [
+   "https://github.com/nltk/nltk/commit/4a820afa58810cd05049b6c6eae306694d6cfe65"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-h7x2-h6g9-p789",
+  "cve": "CVE-2026-71211",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-05T09:31:18Z",
+  "severity": "high",
+  "summary": " MLflow AI Gateway permits SSRF through an unvalidated api_base",
+  "pkg": [
+   "mlflow"
+  ],
+  "commits": [
+   "https://github.com/mlflow/mlflow/commit/96b7d900e14227e0821981409d86f5fb6c59b386"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-8x5v-cpv7-8jjp",
+  "cve": "CVE-2026-70485",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-04T19:59:36Z",
+  "severity": "high",
+  "summary": "Open WebUI: Any authenticated user can reach internal services and cloud metadata via NAT64-encoded URLs",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/1717b493d83c86afa82aa8bc50139250852dd2f3"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rffm-9q57-q649",
+  "cve": "CVE-2026-70480",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-04T19:54:57Z",
+  "severity": "medium",
+  "summary": "Open WebUI: Client-side SSRF via unrestricted external resource loading in Vega/Vega-Lite chart rendering",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/5278eb906ebecefc6538a19bc86df09d997e43e6"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-w2rx-84hp-gg95",
+  "cve": "CVE-2026-70479",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-08-04T19:40:48Z",
+  "severity": "high",
+  "summary": "Open WebUI: SSRF into internal services via unvalidated sub-resource requests in the Playwright web loader",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/bef63a2ae915571d50d2722a635e8bfa753d7877"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-c9hr-64h3-gxpc",
+  "cve": "CVE-2026-67424",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-07-30T14:48:16Z",
+  "severity": "high",
+  "summary": "Flyto2 Core: Guarded HTTP modules follow redirects into internal space without per-hop SSRF revalidation",
+  "pkg": [
+   "flyto-core"
+  ],
+  "commits": [
+   "https://github.com/flytohub/flyto-core/commit/0a0a528520ec18f5a21f1ddf858a71cc1edfb6e9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-pgwh-4jj4-qm8v",
+  "cve": "CVE-2026-67428",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-07-30T14:48:05Z",
+  "severity": "high",
+  "summary": "Flyto2 Core: Multiple HTTP-family modules fetch client-controlled URLs without the SSRF guard their siblings apply (SSRF to internal/metadata)",
+  "pkg": [
+   "flyto-core"
+  ],
+  "commits": [
+   "https://github.com/flytohub/flyto-core/commit/0a0a528520ec18f5a21f1ddf858a71cc1edfb6e9"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4jc5-g844-4x33",
+  "cve": "CVE-2026-67435",
+  "cwes": [
+   "CWE-200",
+   "CWE-918"
+  ],
+  "published": "2026-07-30T14:46:13Z",
+  "severity": "medium",
+  "summary": "linuxfabrik-lib: fetch() forwards credential headers across a cross-origin redirect",
+  "pkg": [
+   "linuxfabrik-lib"
+  ],
+  "commits": [
+   "https://github.com/Linuxfabrik/lib/commit/6573ff9347e541200305d278d2663d2e54e052ff"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-vx7x-vcc2-c44g",
+  "cve": "CVE-2026-55391",
+  "cwes": [
+   "CWE-350",
+   "CWE-367",
+   "CWE-918"
+  ],
+  "published": "2026-07-28T21:45:48Z",
+  "severity": "high",
+  "summary": "datamodel-code-generator vulnerable to SSRF protection bypass via DNS rebinding",
+  "pkg": [
+   "datamodel-code-generator"
+  ],
+  "commits": [
+   "https://github.com/koxudaxi/datamodel-code-generator/commit/25c8b7e497419eb20b230fa3318c04f9bebc5a6f"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-954p-556p-r752",
+  "cve": "CVE-2026-54690",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-07-28T21:42:22Z",
+  "severity": "high",
+  "summary": "datamodel-code-generator vulnerable to SSRF via JSON-Schema `$ref` to HTTP URL (silent by default)",
+  "pkg": [
+   "datamodel-code-generator"
+  ],
+  "commits": [
+   "https://github.com/koxudaxi/datamodel-code-generator/commit/5fdba4a09f2d7a9996a504975b7ef7d63e3715bb"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-rfr2-mq9m-x2qx",
+  "cve": "CVE-2026-54691",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-07-28T21:30:18Z",
+  "severity": "high",
+  "summary": "datamodel-code-generator vulnerable to SSRF via --url: no host/IP validation, follows redirects",
+  "pkg": [
+   "datamodel-code-generator"
+  ],
+  "commits": [
+   "https://github.com/koxudaxi/datamodel-code-generator/commit/5fdba4a09f2d7a9996a504975b7ef7d63e3715bb"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-frvj-c5qp-xj4w",
+  "cve": "CVE-2026-59221",
+  "cwes": [
+   "CWE-22",
+   "CWE-918"
+  ],
+  "published": "2026-07-24T21:05:51Z",
+  "severity": "high",
+  "summary": "open-webui terminal proxy path traversal guard bypass via 9x encoded traversal",
+  "pkg": [
+   "open-webui"
+  ],
+  "commits": [
+   "https://github.com/open-webui/open-webui/commit/05098d25a58d03738e01c4e85e8852c3b4ad849c"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-45gf-fjxp-cjpq",
+  "cve": "CVE-2026-54549",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-07-17T18:47:31Z",
+  "severity": "high",
+  "summary": "meta-ads-mcp: Server-Side Request Forgery (SSRF) in `upload_ad_image` via Unrestricted `image_url` Fetch",
+  "pkg": [
+   "meta-ads-mcp"
+  ],
+  "commits": [
+   "https://github.com/pipeboard-co/meta-ads-mcp/commit/7d9926336bbdac6285a988d043c4ccfe126c94c5"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-824w-x939-6cmc",
+  "cve": "CVE-2026-54457",
+  "cwes": [
+   "CWE-552",
+   "CWE-918"
+  ],
+  "published": "2026-07-15T21:59:40Z",
+  "severity": "high",
+  "summary": "TensorZero Gateway: Arbitrary file read and SSRF in internal object storage endpoint",
+  "pkg": [
+   "tensorzero"
+  ],
+  "commits": [
+   "https://github.com/tensorzero/tensorzero/commit/0abbc838bae3394fe7491dad7009670d4e3b6cf8"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-mr4r-hcgx-8p4h",
+  "cve": "CVE-2026-62240",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-07-14T00:31:04Z",
+  "severity": "high",
+  "summary": "crewai-tools SSRF redirect bypass exposes internal services",
+  "pkg": [
+   "crewai-tools"
+  ],
+  "commits": [
+   "https://github.com/crewAIInc/crewAI/commit/5d4851eac797cafc45b726f65747fe2c9520fc42"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-cg7w-rg45-pc59",
+  "cve": "CVE-2026-48782",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-06-26T19:17:56Z",
+  "severity": "medium",
+  "summary": "pydantic-ai: SSRF blocklist bypass via IPv4-compatible, SIIT/IVI, and local NAT64 IPv6 addresses (incomplete fix of CVE-2026-46678)",
+  "pkg": [
+   "pydantic-ai-slim",
+   "pydantic-ai",
+   "pydantic-ai",
+   "pydantic-ai-slim"
+  ],
+  "commits": [
+   "https://github.com/pydantic/pydantic-ai/commit/1add06179ba4de259f7ab977620b697b7209f7e4"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-v2wp-frmc-5q3v",
+  "cve": "CVE-2026-55166",
+  "cwes": [
+   "CWE-285",
+   "CWE-639",
+   "CWE-918"
+  ],
+  "published": "2026-06-25T22:07:19Z",
+  "severity": "critical",
+  "summary": "Lemur: ACME SSRF + creator-equality IDOR lead to AWS IAM/PKI compromise",
+  "pkg": [
+   "lemur"
+  ],
+  "commits": [
+   "https://github.com/Netflix/lemur/commit/872f6e282542352f2bf3f6e2bcc504ab81e1843d"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-h8rc-w822-q8vq",
+  "cve": "CVE-2026-50221",
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-06-23T18:31:44Z",
+  "severity": "medium",
+  "summary": "OpenStack Swift vulnerable to authenticated server-side request forgery",
+  "pkg": [
+   "swift"
+  ],
+  "commits": [
+   "https://github.com/openstack/swift/commit/75b050fdb1d1a6096f3765faa3b2059e28065d13"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-4cc2-g9w2-fhf6",
+  "cve": null,
+  "cwes": [
+   "CWE-918"
+  ],
+  "published": "2026-06-19T22:10:26Z",
+  "severity": "medium",
+  "summary": "Zeep: Server-Side Request Forgery (SSRF)",
+  "pkg": [
+   "zeep"
+  ],
+  "commits": [
+   "https://github.com/mvantellingen/python-zeep/commit/83eb07bc6c84d841329d4f88856fecdba86f753e"
+  ],
+  "withdrawn": null
+ },
+ {
+  "ghsa": "GHSA-3mp7-vp6j-2mxx",
+  "cve": "CVE-2026-12566",
+  "cwes": [
+   "CWE-20",
+   "CWE-918"
+  ],
+  "published": "2026-06-18T15:03:25Z",
+  "severity": "low",
+  "summary": "BBOT: Server-Side Request Forgery (SSRF) in docker_pull module via WWW-Authenticate realm parsing",
+  "pkg": [
+   "bbot"
+  ],
+  "commits": [
+   "https://github.com/blacklanternsecurity/bbot/commit/c2f4bc0f4"
+  ],
+  "withdrawn": null
+ }
+]

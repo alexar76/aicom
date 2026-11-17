@@ -98,6 +98,17 @@ def state(record: dict[str, Any], seller: dict[str, Any], now: datetime) -> str:
     return "approved_by_silence" if seller.get("silence_is_consent") and passed else "waiting"
 
 
+def notice(seller: dict[str, Any], title: str, source: str, rid: str) -> str:
+    """The e-mail a seller who asked for notices gets when a new passage is filed. The owner sends it;
+    the address is kept off the repository, in ~/.config/seller-review/contacts.json."""
+    return (f"NOTIFY  e-mail {seller['name']} (address: contacts.json \"{seller['id']}\"), one paragraph per line:\n"
+            f"  Subject: New passage for your review: {title or source}\n"
+            f"  Hi {seller.get('greeting', '')}, a new passage that names your services next to a number is on your "
+            f"review page (the private link we sent you): \"{title or source}\", entry {rid}. "
+            f"Nothing in it is published before you answer OK there.\n"
+            f"  Alex — modelmarket.dev")
+
+
 def iso(t: datetime) -> str:
     return t.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -112,7 +123,8 @@ def review(source: str, title: str, items: list[tuple[dict[str, Any], str]], reg
         rid = review_id(seller["id"], excerpt)
         try:
             status, rec = http("GET", f"{reg['api']}/requests/{rid}")
-            if status == 404:
+            created = status == 404
+            if created:
                 status, rec = http("POST", f"{reg['api']}/requests", {
                     "seller": seller["id"], "excerpt": excerpt, "title": title, "source": source,
                     "not_before": iso(now + timedelta(hours=seller["window_hours"]))})
@@ -123,6 +135,8 @@ def review(source: str, title: str, items: list[tuple[dict[str, Any], str]], reg
                   file=out)
             worst = max(worst, 3)
             continue
+        if created and seller.get("notify") == "email":
+            print(notice(seller, title, source, rid), file=out)
         st = state(rec, seller, now)
         if st in ("approved", "approved_by_silence"):
             how = "answered OK" if st == "approved" else f"no answer by {rec['not_before']} (agreed: silence is OK)"

@@ -328,7 +328,7 @@ Combine pattern: `docker compose -f docker-compose.yml -f <overlay> up -d` (add 
 | **aimarket-mcp** | Shared MCP gateway: `web_fetch` · `web_search` · `metis_verify` | `9090` (`127.0.0.1`) | `--full` |
 | **aicom-landing** | Standalone AI landing-page generator service | `3847` (`127.0.0.1`) | `--full` |
 | **relay-scout-fix** | Relay Scout — autonomous Python health watchdog | `8000` | `--full` |
-| **apps/pulse-terminal** | Pulse (ACEX) terminal — CapShare NAV · Proof-of-Audit · live pricing | `5199` (host-net) | `--full` (built/run via `alien-monitor/docker-compose.prod.yml`, no own compose) |
+| **apps/pulse-terminal** | Pulse (Agent Capital Exchange) terminal — CapShare NAV · Proof-of-Audit · live pricing | `5199` (host-net) | `--full` (built/run via `alien-monitor/docker-compose.prod.yml`, no own compose) |
 
 **Notes:**
 - **Port collisions across separate deploys** (never co-run in the same stack): `8090` is used by both ai-service-mesh mesh-api and the lottery relayer; `8080` by both Metis coordinator and Platon frontend; `9090` by both Prometheus and aimarket-mcp (MCP binds loopback). Flag if co-deploying.

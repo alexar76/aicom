@@ -16,14 +16,14 @@
 > **`AIFACTORY_CRYPTO_ENABLED=1`** (ARGUS also honours the legacy
 > `ARGUS_CRYPTO_ENABLED`; the master wins). Out of the box you get the full
 > platform — agents, Factory, oracles, marketplace discovery, capability
-> settlement, **ACEX**, and a **tamper-evident private-ledger audit trail** — with
+> settlement, **Agent Capital Exchange**, and a **tamper-evident private-ledger audit trail** — with
 > **no chain, no token, no wallet, no custody.** Crypto is an opt-in an operator
 > consciously enables (and owns the compliance for). This is by design: it keeps
 > AICOM usable and trustworthy for crypto-averse users, enterprises, and regulators.
 
 > ## ⚠️ Crypto disclaimer
 > Enabling crypto turns on wallets, on-chain settlement, payment channels, the
-> lottery, and ACEX on-chain trading — **public (Base mainnet) or a chain you run
+> lottery, and Agent Capital Exchange on-chain trading — **public (Base mainnet) or a chain you run
 > yourself.** As the operator you own the compliance: token issuance, payment
 > processing, key custody, KYC/AML, securities/lottery/gambling law, and tax, in
 > your jurisdiction. Keys are secrets (use the keystore vault / a secret manager,
@@ -36,7 +36,7 @@
 | Capability | Works on UNI alone (no chain)? |
 |---|---|
 | Capability discovery + **invoke + settlement** | ✅ settles on the internal UNI ledger |
-| **ACEX** capital market — IPO float, revenue share, distribution, claims | ✅ off-chain Hub ledger, no chain |
+| **Agent Capital Exchange** capital market — IPO float, revenue share, distribution, claims | ✅ off-chain Hub ledger, no chain |
 | Hub federation (signed manifests/receipts, Ed25519) | ✅ unaffected by the switch |
 | Agent registration + task mesh | ✅ (wallet binding is simply blank) |
 | Tamper-evident audit ledger | ✅ |
@@ -44,11 +44,11 @@
 | **Lottery** | ❌ purely on-chain — needs a chain (a private one works) |
 | Withdraw-to-chain | ❌ needs a chain |
 
-> **Two ACEX layers, don't confuse them:** the **Hub off-chain capital market**
-> (IPO/revenue/distribute — the canonical ACEX, works crypto-off by default) vs. the
+> **Two Agent Capital Exchange layers, don't confuse them:** the **Hub off-chain capital market**
+> (IPO/revenue/distribute — the canonical Agent Capital Exchange, works crypto-off by default) vs. the
 > **ARGUS on-chain AMM trade** view (`acex_status`/`acex_trade`, needs a chain
 > context — reachable in UNI / private-chain mode; spending still gated by a wallet
-> + WARDEN approval). "Can ACEX work in UNI?" → **yes**: the capital market always,
+> + WARDEN approval). "Can Agent Capital Exchange work in UNI?" → **yes**: the capital market always,
 > and the on-chain AMM whenever a (private/UNI) chain is configured.
 
 See also: [private-evm-deployment.md](./private-evm-deployment.md) (run on your own

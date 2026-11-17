@@ -131,7 +131,7 @@ Deploy: `ALIEN_PUBLIC_READ=1`, `ALIEN_ENV=production` в `docker-compose.prod.ym
 | S-M6 | Mesh UI writes по Origin only (`MESH_ALLOW_UI_WRITES`) | `api.py` ~291 | открыто |
 | S-M7 | Hub→Factory invoke без mutual TLS / hub identity | `api.py`, `ai_market_protocol_v1.py` | открыто |
 | S-M8 | `/api/public/ecosystem-status` — операционная сводка публично | `public_ecosystem_status.py` | by design |
-| S-M9 | ACEX revenue proofs shipped, on-chain settlement wiring неполный | `revenue_proofs.py`, threat assessment F4 | открыто |
+| S-M9 | Agent Capital Exchange revenue proofs shipped, on-chain settlement wiring неполный | `revenue_proofs.py`, threat assessment F4 | открыто |
 
 ### Low
 
@@ -250,7 +250,7 @@ flowchart TB
 9. Rate limit telemetry; slim public metrics endpoint.
 10. ~~Исправить порты hub в docs~~.
 11. Prometheus в ecosystem deploy или graceful degrade в Monitor LIVE.
-12. ACEX revenue root wiring (threat assessment P0).
+12. Agent Capital Exchange revenue root wiring (threat assessment P0).
 
 ---
 
@@ -305,7 +305,7 @@ curl -s https://modelmarket.dev/ai-market/v2/stats/live | jq .summary
 
 | Документ | Содержание |
 |----------|------------|
-| [`ecosystem-threat-assessment.md`](./ecosystem-threat-assessment.md) | On-chain, federation, ACEX |
+| [`ecosystem-threat-assessment.md`](./ecosystem-threat-assessment.md) | On-chain, federation, Agent Capital Exchange |
 | [`security.md`](./security.md) | Factory CSRF, demo, prod guard |
 | [`production-metrics.md`](./production-metrics.md) | Публичные SLO |
 | [`deploy-ecosystem.md`](./deploy-ecosystem.md) | Порядок deploy |

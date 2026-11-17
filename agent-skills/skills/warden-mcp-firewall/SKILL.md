@@ -49,4 +49,4 @@ Typical flow: obtain the other server's `tools/list` → `vet_mcp_server` (or `s
 
 ## Crypto off
 
-Do not lead with USDC, Base, ACEX, or lottery.
+Do not lead with USDC, Base, Agent Capital Exchange, or lottery.

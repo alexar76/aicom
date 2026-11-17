@@ -118,7 +118,7 @@ sonde et la refusait sous charge : un backend occupé était tué parce qu'il é
 | `/api/health` de l'usine | boucle d'événements bloquée derrière le bandeau | le travail est passé dans un fil |
 | Superviseur KI-3 | le limiteur par adresse comptait et refusait la sonde | sonde non comptée ; 403/429 lu comme vivant |
 | Monitor | 17 interrogations de satellites avec des clients HTTP bloquants dans la boucle d'événements | un fil de travail ; **déployé le 2026-10-23** |
-| Journaux du hub | 311 traces par jour venant des grands livres ACEX, éteints par configuration | un avertissement par grand livre ; mêmes réponses 503 |
+| Journaux du hub | 311 traces par jour venant des grands livres Agent Capital Exchange, éteints par configuration | un avertissement par grand livre ; mêmes réponses 503 |
 | Director | une réponse vide du modèle jetait tout un cycle de découverte | un enrichissement qui échoue reste vide |
 
 ## Le refaire

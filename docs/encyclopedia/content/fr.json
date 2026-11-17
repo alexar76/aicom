@@ -91,7 +91,7 @@
           [
             "Pulse Terminal",
             "[magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)",
-            "Tableau de bord ACEX des marchés de capitaux"
+            "Tableau de bord Agent Capital Exchange des marchés de capitaux"
           ],
           [
             "ARGUS",
@@ -364,10 +364,10 @@
       ]
     },
     {
-      "title": "Chapitre VI — Nébuleuse du capital (ACEX, Lottery, Chain)",
+      "title": "Chapitre VI — Nébuleuse du capital (Agent Capital Exchange, Lottery, Chain)",
       "lead": "Là où les IPO d'agents rencontrent les oracles de loterie et où l'USDC circule dans des contrats intelligents vérifiés sur Base.",
       "paragraphs": [
-        "**ACEX** (Agent Capital Exchange) : Agent Listing Protocol, CapShares, pool de prêt, PulseAMM, Proof-of-Audit, réclamations Merkle PulseDistributor. UI : Pulse Terminal à `/pulse/`.",
+        "**Agent Capital Exchange** : Agent Listing Protocol, CapShares, pool de prêt, PulseAMM, Proof-of-Audit, réclamations Merkle PulseDistributor. UI : Pulse Terminal à `/pulse/`.",
         "**Agent Lottery** compose Platon + Chronos + Lumen pour des tirages on-chain cinématiques. Vitrine : [lottery.modelmarket.dev](https://lottery.modelmarket.dev). revenu de base machine : dîme du hub → cagnotte de loterie.",
         "**Base MAINNET en direct** (chainId 8453) — véritable USDC Circle, pas de la fausse monnaie de testnet. Registre canonique : `config/deployments/base-mainnet.json`. Journal humain : `docs/onchain-journal.md`."
       ],
@@ -478,7 +478,7 @@
       "lead": "Deux observatoires où les mortels regardent respirer l'économie machine.",
       "paragraphs": [
         "**Alien Monitor** — graphe 3D de l'écosystème + assistant IA. Le mode LIVE montre Hub, contrats, agents, SKU desktop, plugins comme un graphe vivant. Le mode UNI simule une économie virtuelle sur Anvil. Déploiement : `./scripts/deploy_alien_monitor.sh` → `/monitor/`.",
-        "**Pulse Terminal** (`apps/pulse-terminal/`) — tableau de bord ACEX des marchés de capitaux : CapShares, prêt, AMM, pool d'audit, réclamations du distributeur. Dev : `npm run dev` → :5199.",
+        "**Pulse Terminal** (`apps/pulse-terminal/`) — tableau de bord Agent Capital Exchange des marchés de capitaux : CapShares, prêt, AMM, pool d'audit, réclamations du distributeur. Dev : `npm run dev` → :5199.",
         "**Factory IQ** à `/iq` — métriques EV auto-apprenantes et distillation de playbook pour les opérateurs."
       ]
     },
@@ -486,7 +486,7 @@
       "title": "Chapitre X — Toiles de connexion (vues d'architecture)",
       "lead": "Trois lentilles sur la même galaxie — offre, demande et argent.",
       "paragraphs": [
-        "**Vue offre :** Discovery → pipeline à 13 agents → manifestes signés → auto-référencement Hub → IPO ACEX optionnelle (CapShares → routage des revenus → PulseDistributor).",
+        "**Vue offre :** Discovery → pipeline à 13 agents → manifestes signés → auto-référencement Hub → IPO Agent Capital Exchange optionnelle (CapShares → routage des revenus → PulseDistributor).",
         "**Vue demande :** ARGUS / desktop / widget / agent du maillage → recherche Hub par intention → ouverture d'un canal USDC → invoke → reçu Ed25519 → règlement.",
         "**Points forts d'intégration :** Essai avant achat (sandbox du widget → invoke à débit zéro). Démo IPO d'agent hors ligne : `python scripts/demo_agent_ipo.py`. Simulation UNI : `./scripts/verify_uni_ecosystem.sh`."
       ],
@@ -536,7 +536,7 @@
       "paragraphs": [
         "La démo AICOM tourne sur **Base mainnet** (chainId 8453) avec du **véritable USDC Circle**. Réglez `AIFACTORY_CRYPTO_ENABLED=1` et les adresses se chargent automatiquement depuis `config/deployments/base-mainnet.json`. Le portefeuille destinataire du paiement doit être défini explicitement par déploiement.",
         "**Ordre de déploiement :** Factory (`docker compose up -d`) → Hub (`./scripts/deploy_hub.sh`) → Mesh → Alien Monitor → vérifier avec `docs/deploy-ecosystem.md`. Hôte des oracles : `./scripts/setup-oracles-platon-on-host.sh`.",
-        "**Test E2E terminé :** canal de séquestre, paiement d'agent, tour de loterie sur mainnet (~2 USDC + ETH retournés). Contrats ACEX déployés + vérifiés ; les tests de valeur sont conditionnés aux problèmes connus KI-2…KI-5.",
+        "**Test E2E terminé :** canal de séquestre, paiement d'agent, tour de loterie sur mainnet (~2 USDC + ETH retournés). Contrats Agent Capital Exchange déployés + vérifiés ; les tests de valeur sont conditionnés aux problèmes connus KI-2…KI-5.",
         "**Honnêteté :** les chiffres de la cagnotte vitrine UNI/Anvil sont de la fausse monnaie, pas des chiffres de Base mainnet."
       ],
       "pre": "# Flotte complète\n./scripts/deploy_ecosystem.sh\n\n# Démo agent-à-agent\npython scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083\n\n# Démo IPO d'agent\npython scripts/demo_agent_ipo.py\n\n# Référence de déploiement des contrats\ncontracts/DEPLOY.md"

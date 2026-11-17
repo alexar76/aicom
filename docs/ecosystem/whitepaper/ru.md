@@ -30,7 +30,7 @@ AICOM — это **федеративная экономика автономн�
 | **Agent Lottery** | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | Канонический потребитель оракулов + демо машинного UBI |
 | **Демо экосистемы** | [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) | Обзор живого стека |
 | **Monitor** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | 3D-визуализатор экосистемы |
-| **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Дашборд капитальных рынков ACEX |
+| **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Дашборд капитальных рынков Agent Capital Exchange |
 | **Лендинг ARGUS** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | Установка и вход для пользователя |
 | **Очаг HESTIA** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [лендинг](https://alexar76.github.io/hestia/) | Изолированный hosted-runtime — не каталог Hub |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [лендинг](https://alexar76.github.io/attested-memory/) | Проверяемая память для ИИ-агентов |
@@ -219,7 +219,7 @@ flowchart TB
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | установка через лендинг Factory | `argus` |
 | [`alien-monitor/`](https://github.com/alexar76/alien-monitor) | **Alien Monitor** | `/monitor/` · `:9100` | `alien-monitor` |
 | [`apps/pulse-terminal/`](https://github.com/alexar76/pulse-terminal) | **Pulse Terminal** | `/pulse/` · `:5199` | вместе с `acex` |
-| [`acex/`](https://github.com/alexar76/acex) | **ACEX** капитальный слой | контракты + Pulse API | `acex` |
+| [`acex/`](https://github.com/alexar76/acex) | **Agent Capital Exchange** капитальный слой | контракты + Pulse API | `acex` |
 | [`lottery/`](https://github.com/alexar76/lottery) | **Agent Lottery** | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | `lottery` |
 | [`contracts/`](../../../contracts/) | **Эскроу, NFT, ZK-верификатор** | Base mainnet (см. журнал) | `contracts` |
 | [`aimarket-widget/`](https://github.com/alexar76/aimarket-widget/tree/main/) | **Embed-виджет** | [modelmarket.dev/widget/](https://modelmarket.dev/widget/demo) | `aimarket-widget` |
@@ -364,7 +364,7 @@ flowchart TB
 |-----------|-----------------|---------------|
 | **Коммерция** | Discover → channel → invoke → receipt → settle | Hub, плагины, контракты, SDK |
 | **Управление** | Регистрация агента → сопоставление намерения → preflight → эскроу → invoke | Mesh, оркестратор Factory |
-| **Капитал** | Листинг → аудит → торговля → кредитование → pulse | ACEX, Pulse Terminal |
+| **Капитал** | Листинг → аудит → торговля → кредитование → pulse | Agent Capital Exchange, Pulse Terminal |
 | **Наблюдение** | Живые метрики, поток транзакций, ИИ-ассистент | Alien Monitor, Prometheus |
 
 ---
@@ -557,13 +557,13 @@ ARGUS фильтрует discover по `ARGUS_MIN_HUB_TRUST` (по умолча�
 
 ![Поток транзакций — живой поток активности](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/06-transaction-flow.png)
 
-### 3.9 Pulse Terminal (UI ACEX)
+### 3.9 Pulse Terminal (UI Agent Capital Exchange)
 
-**Роль:** WebSocket-дашборд для капитальных рынков ACEX — цены CapShare, глубина пула кредитования, статус audit pool, листинги агентов. Разворачивается вместе с Monitor через `deploy_alien_monitor.sh`.
+**Роль:** WebSocket-дашборд для капитальных рынков Agent Capital Exchange — цены CapShare, глубина пула кредитования, статус audit pool, листинги агентов. Разворачивается вместе с Monitor через `deploy_alien_monitor.sh`.
 
 **URL:** [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)
 
-### 3.10 ACEX — Agent Capital Exchange
+### 3.10 Agent Capital Exchange
 
 **Роль:** Капитальный слой, расширяющий спецификацию протокола (не код хаба) — листинги ALP, CapShares, AgentNotes, кредитование LiquidityMesh, Pulse AMM, стейкинг Proof-of-Audit. Интегрируется только через HTTP/JSON + ончейн-контракты.
 
@@ -624,7 +624,7 @@ ARGUS фильтрует discover по `ARGUS_MIN_HUB_TRUST` (по умолча�
 | **aimarket-escrow** | `contracts/solana/` | USDC-каналы Solana |
 | **PlonkVerifier** | `contracts/zk/` | ZK-доказательства валидности входа; Hub вызывает `verifyProof` по адресу из `AIMARKET_ZK_VERIFIER_CONTRACT` |
 | **AIAgentLottery** | `lottery/contracts/` | Лотерея агентов с взвешиванием репутации |
-| **Стек ACEX** | `acex/contracts/evm/` | Vault, registry, lending, AMM, audit pool |
+| **Стек Agent Capital Exchange** | `acex/contracts/evm/` | Vault, registry, lending, AMM, audit pool |
 
 Ранбук деплоя: [`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md). Реестр: [`config/deployments/base-mainnet.json`](../../../config/deployments/base-mainnet.json).
 
@@ -757,7 +757,7 @@ sequenceDiagram
 
 Оракулы — полноценные продукты маркетплейса, тот же цикл discover → channel → invoke → settle. **Agent Lottery** — эталонный потребитель, композирующий Platon + Chronos + Lumen в один верифицируемый розыгрыш, оплачивая за вызов из opex ([`oracles/docs/en.md`](https://github.com/alexar76/oracles/blob/main/docs/en.md)).
 
-### 4.5 Доказательства выручки ACEX
+### 4.5 Доказательства выручки Agent Capital Exchange
 
 Оценки CapShare требуют доказуемой выручки от invoke — хаб коммитит **Merkle root по оплаченным квитанциям** за период ([`revenue_proofs.py`](https://github.com/alexar76/aimarket-hub/blob/main/aimarket_hub/revenue_proofs.py)). Акционеры верифицируют без доверия к утверждениям хаба.
 
@@ -774,7 +774,7 @@ sequenceDiagram
 | AIAgentLottery | Лотерея с взвешиванием репутации (нативный ETH) |
 | AIMarketEscrow | USDC платёжные каналы |
 | AIMarketCapabilityNFT | NFT-удостоверения возможностей |
-| Стек ACEX (×5) | Vault, registry, lending, AMM, audit pool |
+| Стек Agent Capital Exchange (×5) | Vault, registry, lending, AMM, audit pool |
 | PulseDistributor | Награды Pulse |
 | PlonkVerifier | ZK-доказательства |
 
@@ -987,7 +987,7 @@ curl -s http://127.0.0.1:9100/api/health
 | Hub `:9083` | `deploy_hub.sh` · манифест на `/.well-known/ai-market.json` |
 | `MESH_HUB_URL` | Upstream discovery Mesh (по умолчанию `http://127.0.0.1:9083`) |
 | `MESH_ENV`, `MESH_CORS_ORIGINS` | Рантайм Mesh + CORS дашборда |
-| Monitor `:9100`, Pulse `:5199` | Alien Monitor + терминал ACEX |
+| Monitor `:9100`, Pulse `:5199` | Alien Monitor + терминал Agent Capital Exchange |
 | LOGOS `:9460` | Read-only API аналитики; dashboard [logos.modelmarket.dev](https://logos.modelmarket.dev/) |
 | `LOGOS_HUB_URL`, `LOGOS_MOMUS_URL`, `LOGOS_SKOPOS_URL`, `LOGOS_TREASURY_URL` | Явно заданные источники аналитики |
 | `BASE_RPC_URL`, `AIMARKET_ESCROW_EVM_ADDRESS` | Опрос цепи в режиме LIVE |
@@ -1042,7 +1042,7 @@ Monitor загружает родительский `aicom/.env`. Конфиг A
 - **v0.2.x** — матрица совместимости (hub ↔ SDK ↔ widget), негативные тестовые векторы.
 - **v1.0** — заморозка RFC, версионированные коды ошибок, сторонний conformance suite.
 
-### 9.3 ACEX Фаза 2+
+### 9.3 Agent Capital Exchange Фаза 2+
 
 [`acex/README.md`](https://github.com/alexar76/acex/blob/main/README.md):
 
@@ -1068,7 +1068,7 @@ Monitor загружает родительский `aicom/.env`. Конфиг A
 
 - Децентрализованный оракул споров (O-1).
 - Сговор хабов при масштабе федерации.
-- Value-testing ACEX на передеплоенных контрактах (TWAP-базовые линии с временным гейтом).
+- Value-testing Agent Capital Exchange на передеплоенных контрактах (TWAP-базовые линии с временным гейтом).
 - mTLS между Mesh и зарегистрированными агентами (Фаза 2).
 
 ---

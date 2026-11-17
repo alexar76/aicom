@@ -8,6 +8,7 @@ export default {
   },
   ui: {
     free: "Gratis · sin cuenta · sin monedero",
+    source: "Código abierto en GitHub",
     run: "Comprobar",
     running: "Comprobando…",
     example: "Cargar un ejemplo",

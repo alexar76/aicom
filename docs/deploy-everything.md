@@ -123,7 +123,7 @@ Core is Factory + Hub + Mesh + Monitor: 6 long-lived containers, one LLM key, 8 
 | 8090 | `mesh-api` | Service Mesh API — topology/registry the Monitor's mesh contour reads. |
 | 8091 | `mesh-dashboard` | Mesh UI. Its nginx is given a config pointing at `http://mesh-api:8090`; without one it renders an empty shell (see [risks](#troubleshooting)). |
 | 9100 | `alien-monitor` | The showpiece: live universe, reputation graph, contours, ARGUS run panel. At `/monitor/`. |
-| 5199 | `pulse-terminal` | Pulse (ACEX) terminal — CapShare NAV, Proof-of-Audit, live pricing. |
+| 5199 | `pulse-terminal` | Pulse (Agent Capital Exchange) terminal — CapShare NAV, Proof-of-Audit, live pricing. |
 | 3847 | `aicom-landing` | Standalone AI landing-page generator. |
 | — | `data-init` | One-shot: chowns the `./data` bind mount, exits. `app` waits on it. |
 

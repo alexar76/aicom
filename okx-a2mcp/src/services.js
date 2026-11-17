@@ -134,6 +134,28 @@ function checkTool(t, i) {
   return null;
 }
 
+// WARDEN quotes the scanned text back: the matched span and, since 0.27.0, the clause around it
+// (`… signature (<rule>) at "<span>" in "<clause>".`, or `… <rule note> — at "<span>" …`), and the
+// threat feed names its matched pattern (`… (matched "<pattern>" in the tool definition, …)`). This
+// gateway's answers are read by crawlers and models, and a quoted instruction is still an
+// instruction, so a finding keeps only what precedes the first such marker: the tool name, the
+// field and the rule. Cutting at the FIRST marker is what makes it safe: the span and clause come
+// after the real marker, and a marker an attacker plants earlier (in a tool or parameter name) only
+// cuts more. The quoted text is not escaped for '"', so parsing from the end could be steered.
+const EVIDENCE_MARKERS = [[') at "', 1], [' \u2014 at "', 0], [' (matched "', 0]];
+
+export function withoutEvidence(message) {
+  const text = String(message ?? "");
+  let cut = -1;
+  for (const [marker, keep] of EVIDENCE_MARKERS) {
+    const i = text.indexOf(marker);
+    if (i !== -1 && (cut === -1 || i + keep < cut)) cut = i + keep;
+  }
+  if (cut === -1) return text;
+  const head = text.slice(0, cut).trimEnd();
+  return head.endsWith(".") ? head : `${head}.`;
+}
+
 function wardenScan() {
   const warden = new Warden({ gates: [new StaticScanGate(), new ThreatGate(new ThreatFeed({}))], policy: POLICY });
   const service = {
@@ -170,7 +192,7 @@ function wardenScan() {
         allowedTools: v.allowedTools,
         findings: v.findings.map((f) => ({
           gate: f.gate, code: f.code, severity: f.severity, tool: f.tool ?? null,
-          advisory: Boolean(f.advisory), message: f.message,
+          advisory: Boolean(f.advisory), message: withoutEvidence(f.message),
         })),
       },
       scope: "tool definitions only: static rules + built-in threat list; origin and pinning are host state and not checked",

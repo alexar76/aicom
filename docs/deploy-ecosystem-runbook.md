@@ -297,7 +297,7 @@ grep -q '^ALIEN_API_TOKEN=' .env && ./scripts/deploy_alien_monitor.sh
 
 - `/supply/stake` — on-chain verify (S-H4)
 - Prometheus не в `deploy_ecosystem.sh` — LIVE monitor без prom metrics (C-M3)
-- ACEX on-chain settlement wiring (P2)
+- Agent Capital Exchange on-chain settlement wiring (P2)
 
 Детали: [`ecosystem-audit-report.md`](./ecosystem-audit-report.md).
 

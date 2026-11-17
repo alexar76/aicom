@@ -4,9 +4,18 @@
     "yutao": {
       "name": "YuTao — Insight and PriorSeal",
       "asked": "alexar76/aimarket-hub#23, issuecomment-6854476512, 2026-11-13T13:34:47Z: 'We will review any proposed aggregate text and every attributed Insight or PriorSeal number before publication.'",
-      "patterns": ["\\bInsight\\b", "oracleinsight", "PriorSeal", "priorseal", "imokokok"],
-      "window_hours": 72,
-      "silence_is_consent": false
+      "patterns": [
+        "\\bInsight\\b",
+        "oracleinsight",
+        "PriorSeal",
+        "priorseal",
+        "imokokok"
+      ],
+      "window_hours": 0,
+      "silence_is_consent": false,
+      "answered": "E-mail to our contact address, 2026-11-15 16:21 owner time: send the private link to the address he wrote from; notices by e-mail; wait for his explicit approval, 72 hours without an answer is not approval; a changed number stays a new item; the vet402 links may remain. Approves nothing by itself. window_hours is 0 so his page shows no 'not before' date that could read as a deadline.",
+      "notify": "email",
+      "greeting": "YuTao"
     }
   }
 }

@@ -11,6 +11,13 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
 
 ## [Unreleased]
 
+### Releases prepared on 2026-11-16
+
+- **MOMUS 0.2.2** (tree ready; PyPI upload blocked 2026-11-16 — keychain `pypi-api-token` → twine
+  403 Invalid auth on upload.pypi.org). Includes `_CODE_CORE` (`code:skopos` → human-governance) and
+  the code-target scanner from 37b010c34. Until a live `PYPI_API_TOKEN` publishes 0.2.2, skopos
+  satellite CI installs mirrored `vendor/momus` (same real tree) instead of stale PyPI 0.2.1.
+
 ### Releases prepared on 2026-11-11
 
 - **Hub 3.20.0** (PyPI `aimarket-hub`). It ships the hub entries below that are not marked with an earlier version:
@@ -239,7 +246,7 @@ recorded in [`pyproject.toml`](pyproject.toml) is the source of truth.
   - factory backend: with `UVICORN_WORKERS > 1` only one worker (a `flock` holder) runs the background loops; KI-3 crash telemetry gets its own file instead of being overwritten by the next start's log rotation; the supervisor's `/api/health` probe is no longer counted or throttled by the per-address limiter, which answered it 403 under load and got a busy backend killed, and a 403/429 reads as alive;
   - hub: `Idempotency-Key` on paid invokes (credits rail and ledger channels) — a retry after a timeout replays the first answer instead of paying again (migration 061); `aimarket-hub/scripts/load_money_path.py` puts the money path under load and audits the ledger afterwards;
   - `scripts/check_ki4_ownership.py` measures KI-4 (owner, pending owner, escrow USDC) on Base; `escrow-signer/deploy/signer-hub-only.sh` narrows the signer forward to the hub container (installed on factory-vps 2026-10-23).
-- **Performance, from the 2026-10-23 public load test** (tables before and after in `docs/load-testing.md`, five languages): the pipeline worker no longer re-parses the YAML config for every product on every cycle (92% of its CPU in a live profile; ~89% of a core → 16%); the storefront grid assesses each product once per request, prunes `node_modules` from its HTML walk and reuses a built grid for 30 s (median 7.3 s → 0.22 s at 20 users); the trust strip reads products only instead of all 3,510 tasks and is cached a minute off the event loop (4.7 s → 0.18 s), which also brings factory `/api/health` p95 from 3.8 s to 0.43 s; the hub logs one warning per ACEX ledger that is off by configuration instead of 311 tracebacks a day; the director keeps a discovery cycle when one enrichment gets an empty model answer; the monitor runs its blocking satellite polls in a worker thread (written and tested, not yet deployed).
+- **Performance, from the 2026-10-23 public load test** (tables before and after in `docs/load-testing.md`, five languages): the pipeline worker no longer re-parses the YAML config for every product on every cycle (92% of its CPU in a live profile; ~89% of a core → 16%); the storefront grid assesses each product once per request, prunes `node_modules` from its HTML walk and reuses a built grid for 30 s (median 7.3 s → 0.22 s at 20 users); the trust strip reads products only instead of all 3,510 tasks and is cached a minute off the event loop (4.7 s → 0.18 s), which also brings factory `/api/health` p95 from 3.8 s to 0.43 s; the hub logs one warning per Agent Capital Exchange ledger that is off by configuration instead of 311 tracebacks a day; the director keeps a discovery cycle when one enrichment gets an empty model answer; the monitor runs its blocking satellite polls in a worker thread (written and tested, not yet deployed).
 - **Hub 3.16.0, from an independent review of the approvals, push and card top-up work** (each pinned by a test that fails without its fix):
   - one owner approval paid for any number of routed calls: a peer answering below its catalogue price made the hub release the fee hold and debit the smaller fee, and the release handed the approval back although the call was charged — it now stays spent with the debit;
   - an owner was asked to approve calls the mandate's own `perCall`, `perDay`, `total` or product limit would refuse — those are now `402 mandate_limit` before any request is opened;

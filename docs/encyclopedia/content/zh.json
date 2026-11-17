@@ -91,7 +91,7 @@
           [
             "Pulse Terminal",
             "[magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)",
-            "ACEX 资本市场仪表盘"
+            "Agent Capital Exchange 资本市场仪表盘"
           ],
           [
             "ARGUS",
@@ -364,10 +364,10 @@
       ]
     },
     {
-      "title": "第六章——资本星云(ACEX、Lottery、Chain)",
+      "title": "第六章——资本星云(Agent Capital Exchange、Lottery、Chain)",
       "lead": "在这里,智能体 IPO 遇见彩票预言机,USDC 流经 Base 上经过验证的智能合约。",
       "paragraphs": [
-        "**ACEX**(Agent Capital Exchange):Agent Listing Protocol、CapShares、借贷池、PulseAMM、Proof-of-Audit、PulseDistributor Merkle 领取。UI:位于 `/pulse/` 的 Pulse Terminal。",
+        "**Agent Capital Exchange**:Agent Listing Protocol、CapShares、借贷池、PulseAMM、Proof-of-Audit、PulseDistributor Merkle 领取。UI:位于 `/pulse/` 的 Pulse Terminal。",
         "**Agent Lottery** 组合 Platon + Chronos + Lumen 实现电影级的链上开奖。展示:[lottery.modelmarket.dev](https://lottery.modelmarket.dev)。机器全民基本收入:hub 什一税 → 彩票奖池。",
         "**实时 Base 主网**(chainId 8453)——真实的 Circle USDC,而非测试网的玩具钱。权威注册表:`config/deployments/base-mainnet.json`。人类日志:`docs/onchain-journal.md`。"
       ],
@@ -478,7 +478,7 @@
       "lead": "两座观测台,凡人在此观看机器经济的呼吸。",
       "paragraphs": [
         "**Alien Monitor**——3D 生态系统图谱 + AI 助手。LIVE 模式将 Hub、合约、智能体、桌面 SKU、插件呈现为一张活的图谱。UNI 模式在 Anvil 上模拟虚拟经济。部署:`./scripts/deploy_alien_monitor.sh` → `/monitor/`。",
-        "**Pulse Terminal**(`apps/pulse-terminal/`)——ACEX 资本市场仪表盘:CapShares、借贷、AMM、审计池、分发器领取。开发:`npm run dev` → :5199。",
+        "**Pulse Terminal**(`apps/pulse-terminal/`)——Agent Capital Exchange 资本市场仪表盘:CapShares、借贷、AMM、审计池、分发器领取。开发:`npm run dev` → :5199。",
         "**Factory IQ** 位于 `/iq`——面向运营者的自学习 EV 指标与 playbook 蒸馏。"
       ]
     },
@@ -486,7 +486,7 @@
       "title": "第十章——连接之网(架构视图)",
       "lead": "同一个星系的三重视角——供给、需求与资金。",
       "paragraphs": [
-        "**供给视图:** Discovery → 13 智能体流水线 → 已签名清单 → Hub 自动上架 → 可选的 ACEX IPO(CapShares → 收入路由 → PulseDistributor)。",
+        "**供给视图:** Discovery → 13 智能体流水线 → 已签名清单 → Hub 自动上架 → 可选的 Agent Capital Exchange IPO(CapShares → 收入路由 → PulseDistributor)。",
         "**需求视图:** ARGUS / 桌面 / widget / 网格智能体 → 按意图在 Hub 搜索 → 开通 USDC 通道 → invoke → Ed25519 收据 → 结算。",
         "**集成亮点:** 先试后买(widget 沙箱 → 零扣款 invoke)。智能体 IPO 离线演示:`python scripts/demo_agent_ipo.py`。UNI 模拟:`./scripts/verify_uni_ecosystem.sh`。"
       ],
@@ -536,7 +536,7 @@
       "paragraphs": [
         "AICOM 演示运行在 **Base 主网**(chainId 8453)上,使用**真实的 Circle USDC**。设置 `AIFACTORY_CRYPTO_ENABLED=1`,地址会从 `config/deployments/base-mainnet.json` 自动加载。收款钱包必须在每次部署时显式设置。",
         "**部署顺序:** Factory(`docker compose up -d`)→ Hub(`./scripts/deploy_hub.sh`)→ Mesh → Alien Monitor → 用 `docs/deploy-ecosystem.md` 验证。预言机主机:`./scripts/setup-oracles-platon-on-host.sh`。",
-        "**E2E 测试已完成:** 主网上的托管通道、智能体支付、彩票轮次(约 2 USDC + ETH 已退回)。ACEX 合约已部署并验证;价值测试因已知问题 KI-2…KI-5 而受限。",
+        "**E2E 测试已完成:** 主网上的托管通道、智能体支付、彩票轮次(约 2 USDC + ETH 已退回)。Agent Capital Exchange 合约已部署并验证;价值测试因已知问题 KI-2…KI-5 而受限。",
         "**诚实说明:** UNI/Anvil 展示奖池的数字是玩具钱,并非 Base 主网的数字。"
       ],
       "pre": "# 完整机队\n./scripts/deploy_ecosystem.sh\n\n# 智能体对智能体演示\npython scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083\n\n# 智能体 IPO 演示\npython scripts/demo_agent_ipo.py\n\n# 合约部署参考\ncontracts/DEPLOY.md"

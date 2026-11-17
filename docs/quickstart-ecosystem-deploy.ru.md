@@ -253,7 +253,7 @@ Base mainnet через Foundry. Обе по умолчанию выполняю
 чтобы потратить реальный газ.
 
 **Ядро экосистемы** — FakeUSDT + `AIMarketEscrow` + `AIMarketCapabilityNFT`
-(ACEX намеренно исключён — аудит пометил AuditPool TWAP + PulseAMM как HIGH):
+(Agent Capital Exchange намеренно исключён — аудит пометил AuditPool TWAP + PulseAMM как HIGH):
 
 ```bash
 ./scripts/deploy_ecosystem_base.sh            # dry-run (no gas)

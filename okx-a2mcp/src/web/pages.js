@@ -17,6 +17,8 @@ export const NEARBY_SENSORS_PATH = "/tools/nearby-sensors";
 export const TOOL_IDS = ["tool-list-cost", "x402-check", "mcp-diff", "warden-scan", "histor-check"];
 /** Services that also have a free A2MCP door for agents (src/services.js). */
 const FREE_FOR_AGENTS = new Set(["warden-scan", "histor-check", "tool-list-cost"]);
+// Where a check's code lives, shown on its page: the open repository is how a reader finds and follows it.
+export const SOURCE_REPO = { "warden-scan": "warden", "histor-check": "histor", "tool-list-cost": "histor" };
 /** Services with no paid x402 twin: the agents' section shows only the free door. */
 const NOT_SOLD = new Set(["tool-list-cost"]);
 
@@ -257,7 +259,7 @@ export function renderTool(lang, id, { origin, verification = "" }) {
 <span class="eyebrow">${esc(tt.eyebrow)}</span>
 <h1><span class="grad">${esc(tt.h1)}</span></h1>
 <p class="tagline">${esc(tt.lead)}</p>
-<p class="free-line"><span class="pill free">${esc(t.ui.free)}</span></p>
+<p class="free-line"><span class="pill free">${esc(t.ui.free)}</span>${SOURCE_REPO[id] ? ` <a class="source-link" href="https://github.com/alexar76/${SOURCE_REPO[id]}" rel="noopener">${esc(t.ui.source)}</a>` : ""}</p>
 </header>
 <form id="check" class="tool-form" novalidate>
 ${formFor(id, tt)}

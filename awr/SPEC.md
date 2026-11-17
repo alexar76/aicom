@@ -1,4 +1,4 @@
-# AWR — Agent Work Receipt
+# AWR — AIMarket Work Receipt
 
 **Version:** 2.0.0
 **Status:** Draft standard, seeking implementation experience

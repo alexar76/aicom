@@ -30,7 +30,7 @@ AICOM 是一个**联邦式自主智能体经济体**，围绕供给侧工厂、�
 | **Agent Lottery** | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | 预言机的典范消费方 + 机器 UBI 演示 |
 | **生态系统演示** | [modeldev.modelmarket.dev](https://modeldev.modelmarket.dev) | 实时技术栈概览 |
 | **Monitor** | [monitor.modelmarket.dev/](https://monitor.modelmarket.dev/) | 3D 生态系统可视化器 |
-| **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | ACEX 资本市场仪表盘 |
+| **Pulse Terminal** | [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/) | Agent Capital Exchange 资本市场仪表盘 |
 | **ARGUS 落地页** | [magic-ai-factory.com/argus/](https://magic-ai-factory.com/argus/) | 安装 + 用户入口 |
 | **HESTIA 炉灶** | [hestia.modelmarket.dev](https://hestia.modelmarket.dev) · [落地页](https://alexar76.github.io/hestia/) | 隔离托管运行时 — 不是 Hub 目录 |
 | **Attested Memory** | [attestedmemory.net](https://attestedmemory.net/) · [落地页](https://alexar76.github.io/attested-memory/) | 面向 AI 智能体的可验证记忆 |
@@ -219,7 +219,7 @@ flowchart TB
 | [`argus/`](https://github.com/alexar76/argus) | **ARGUS-3** | 通过 Factory 落地页安装 | `argus` |
 | [`alien-monitor/`](https://github.com/alexar76/alien-monitor) | **Alien Monitor** | `/monitor/` · `:9100` | `alien-monitor` |
 | [`apps/pulse-terminal/`](https://github.com/alexar76/pulse-terminal) | **Pulse Terminal** | `/pulse/` · `:5199` | 与 `acex` 一起 |
-| [`acex/`](https://github.com/alexar76/acex) | **ACEX** 资本层 | 合约 + Pulse API | `acex` |
+| [`acex/`](https://github.com/alexar76/acex) | **Agent Capital Exchange** 资本层 | 合约 + Pulse API | `acex` |
 | [`lottery/`](https://github.com/alexar76/lottery) | **Agent Lottery** | [lottery.modelmarket.dev](https://lottery.modelmarket.dev) | `lottery` |
 | [`contracts/`](../../../contracts/) | **Escrow、NFT、ZK verifier** | Base mainnet（见日志） | `contracts` |
 | [`aimarket-widget/`](https://github.com/alexar76/aimarket-widget/tree/main/) | **嵌入式挂件** | [modelmarket.dev/widget/](https://modelmarket.dev/widget/demo) | `aimarket-widget` |
@@ -371,7 +371,7 @@ flowchart TB
 |-------|----------------|---------------|
 | **商业** | 发现 → 通道 → 调用 → 收据 → 结算 | Hub、插件、合约、SDK |
 | **控制** | 注册智能体 → 匹配意图 → 预检 → 托管 → 调用 | Mesh、Factory 编排器 |
-| **资本** | 上架 → 审计 → 交易 → 借贷 → pulse | ACEX、Pulse Terminal |
+| **资本** | 上架 → 审计 → 交易 → 借贷 → pulse | Agent Capital Exchange、Pulse Terminal |
 | **观测** | 实时指标、交易流、AI 助手 | Alien Monitor、Prometheus |
 
 ---
@@ -570,13 +570,13 @@ Hub `PluginRegistry` 中可通过 pip 安装的钩子：`aimarket-safety`、`aim
 
 ![交易流 — 实时活动流](https://github.com/alexar76/alien-monitor/blob/main/docs/screenshots/06-transaction-flow.png)
 
-### 3.9 Pulse Terminal（ACEX UI）
+### 3.9 Pulse Terminal（Agent Capital Exchange UI）
 
-**角色：** 面向 ACEX 资本市场的 WebSocket 仪表盘 —— CapShare 价格、借贷池深度、审计池状态、智能体上架。通过 `deploy_alien_monitor.sh` 与 Monitor 一同部署。
+**角色：** 面向 Agent Capital Exchange 资本市场的 WebSocket 仪表盘 —— CapShare 价格、借贷池深度、审计池状态、智能体上架。通过 `deploy_alien_monitor.sh` 与 Monitor 一同部署。
 
 **URL：** [magic-ai-factory.com/pulse/](https://magic-ai-factory.com/pulse/)
 
-### 3.10 ACEX — Agent Capital Exchange
+### 3.10 Agent Capital Exchange
 
 **角色：** 扩展协议规范的资本层（非 Hub 代码） —— ALP 上架、CapShares、AgentNotes、LiquidityMesh 借贷、Pulse AMM、Proof-of-Audit 质押。仅在 HTTP/JSON + 链上合约层面集成。
 
@@ -639,7 +639,7 @@ Hub `PluginRegistry` 中可通过 pip 安装的钩子：`aimarket-safety`、`aim
 | **aimarket-escrow** | `contracts/solana/` | Solana USDC 通道 |
 | **PlonkVerifier** | `contracts/zk/` | ZK 输入有效性证明；Hub 在 `AIMARKET_ZK_VERIFIER_CONTRACT` 处调用 `verifyProof` |
 | **AIAgentLottery** | `lottery/contracts/` | 声誉加权的智能体彩票 |
-| **ACEX stack** | `acex/contracts/evm/` | Vault、registry、借贷、AMM、审计池 |
+| **Agent Capital Exchange stack** | `acex/contracts/evm/` | Vault、registry、借贷、AMM、审计池 |
 
 部署手册：[`contracts/DEPLOY.md`](../../../contracts/DEPLOY.md)。注册表：[`config/deployments/base-mainnet.json`](../../../config/deployments/base-mainnet.json)。
 
@@ -768,7 +768,7 @@ sequenceDiagram
 
 预言机是一等交易市场产品 —— 同样的 发现 → 通道 → 调用 → 结算 循环。**Agent Lottery** 是把 Platon + Chronos + Lumen 组合成一次可验证开奖的参考消费方，从运营开支中按每次调用付费（[`oracles/docs/en.md`](https://github.com/alexar76/oracles/blob/main/docs/en.md)）。
 
-### 4.5 ACEX 收入证明
+### 4.5 Agent Capital Exchange 收入证明
 
 CapShare 估值需要可证明的调用收入 —— Hub 每个周期提交**基于已付收据的 Merkle 根**（[`revenue_proofs.py`](https://github.com/alexar76/aimarket-hub/blob/main/aimarket_hub/revenue_proofs.py)）。股东无需信任 Hub 的断言即可验证。
 
@@ -785,7 +785,7 @@ CapShare 估值需要可证明的调用收入 —— Hub 每个周期提交**基
 | AIAgentLottery | 声誉加权的彩票（原生 ETH） |
 | AIMarketEscrow | USDC 支付通道 |
 | AIMarketCapabilityNFT | 能力凭证 NFT |
-| ACEX stack（×5） | Vault、registry、借贷、AMM、审计池 |
+| Agent Capital Exchange stack（×5） | Vault、registry、借贷、AMM、审计池 |
 | PulseDistributor | Pulse 奖励 |
 | PlonkVerifier | ZK 证明 |
 
@@ -996,7 +996,7 @@ Monitor 部署：[`docs/deploy-argus-monitor.md`](../../deploy-argus-monitor.md)
 | Hub `:9083` | `deploy_hub.sh` · 清单位于 `/.well-known/ai-market.json` |
 | `MESH_HUB_URL` | Mesh 发现上游（默认 `http://127.0.0.1:9083`） |
 | `MESH_ENV`、`MESH_CORS_ORIGINS` | Mesh 运行时 + 仪表盘 CORS |
-| Monitor `:9100`、Pulse `:5199` | Alien Monitor + ACEX 终端 |
+| Monitor `:9100`、Pulse `:5199` | Alien Monitor + Agent Capital Exchange 终端 |
 | LOGOS `:9460` | 只读分析 API；仪表板 [logos.modelmarket.dev](https://logos.modelmarket.dev/) |
 | `LOGOS_HUB_URL`、`LOGOS_MOMUS_URL`、`LOGOS_SKOPOS_URL`、`LOGOS_TREASURY_URL` | 明确配置的分析数据源 |
 | `BASE_RPC_URL`、`AIMARKET_ESCROW_EVM_ADDRESS` | LIVE 模式链轮询 |
@@ -1052,7 +1052,7 @@ Monitor 加载父级 `aicom/.env`。ARGUS 配置：`~/.argus/argus.config.json`�
 - **v0.2.x** — 兼容性矩阵（hub ↔ SDK ↔ widget）、负向测试向量。
 - **v1.0** — RFC 冻结、版本化错误码、第三方一致性套件。
 
-### 9.3 ACEX 第 2+ 阶段
+### 9.3 Agent Capital Exchange 第 2+ 阶段
 
 [`acex/README.md`](https://github.com/alexar76/acex/blob/main/README.md)：
 
@@ -1079,7 +1079,7 @@ Monitor 加载父级 `aicom/.env`。ARGUS 配置：`~/.argus/argus.config.json`�
 - 去中心化争议预言机（O-1）。
 - 联邦规模下的 Hub 合谋。
 - 预言机加密加固（KI-6）：外部 VDF/签名审计、形式化验证、混合 PQC 协议冻结。
-- 在重新部署的合约上进行 ACEX 价值测试（有时间门控的 TWAP 基线）。
+- 在重新部署的合约上进行 Agent Capital Exchange 价值测试（有时间门控的 TWAP 基线）。
 - Mesh 与已注册智能体之间的 mTLS（第 2 阶段）。
 
 ---

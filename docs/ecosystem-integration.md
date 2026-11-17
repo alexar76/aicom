@@ -1,4 +1,4 @@
-# Ecosystem integration — Factory → Hub → ACEX → Widget → UNI
+# Ecosystem integration — Factory → Hub → Agent Capital Exchange → Widget → UNI
 
 This document describes **cross-repo flows** that tie the AI-Factory monorepo and satellites into one product surface, not isolated folders.
 
@@ -8,7 +8,7 @@ This document describes **cross-repo flows** that tie the AI-Factory monorepo an
 
 1. AI-Factory completes a product → capability manifest ✅
 2. AIMarket Hub auto-lists (`auto_listing` / factory bridge) ✅
-3. ACEX CapShares listing + Pulse Terminal live quote ✅
+3. Agent Capital Exchange CapShares listing + Pulse Terminal live quote ✅
 4. Invoke revenue routed to share holders ✅
 
 Off-chain reference ledger (`aimarket_hub/acex_ipo.py`) mirrors the on-chain
@@ -50,17 +50,17 @@ python scripts/demo_agent_to_agent.py --hub http://127.0.0.1:9083
 
 Uses `aimarket-agent` (`AIMarketAgent.run`) — same protocol surface as production agents.
 
-### Agent IPO (factory → hub → ACEX)
+### Agent IPO (factory → hub → Agent Capital Exchange)
 
 When the factory ships a product and the hub auto-lists it, the product is floated
-as an ACEX CapShares listing, and every **paid** invoke routes a configurable slice
+as an Agent Capital Exchange CapShares listing, and every **paid** invoke routes a configurable slice
 of revenue into a distributable pool that holders claim. Sandbox trials (`price == 0`)
 accrue nothing.
 
 | Layer | Path | Role |
 |-------|------|------|
-| Factory→Hub | `aimarket_hub/auto_listing.py` | Lists caps, then floats on ACEX if `ACEX_AUTO_IPO=1` |
-| ACEX ledger | `aimarket_hub/acex_ipo.py` | Listing + CapShares cap table + revenue pool (micro-USD, exact pro-rata) |
+| Factory→Hub | `aimarket_hub/auto_listing.py` | Lists caps, then floats on Agent Capital Exchange if `ACEX_AUTO_IPO=1` |
+| Agent Capital Exchange ledger | `aimarket_hub/acex_ipo.py` | Listing + CapShares cap table + revenue pool (micro-USD, exact pro-rata) |
 | Revenue routing | `aimarket_hub/api.py` `/invoke` | Paid invoke → `accrue_revenue(product_id, price)` |
 | Float / inspect | `POST /…/capital/ipo`, `GET /…/capital/listings[/{id}]` | Admin-gated float; open cap-table reads |
 | Distribute / claim | `POST /…/capital/listings/{id}/distribute`, `GET /…/capital/holdings` | Pro-rata payout + holder positions |
@@ -86,7 +86,7 @@ Env (hub):
 python scripts/demo_agent_ipo.py
 ```
 
-### Proof-of-Audit (factory → hub → ACEX)
+### Proof-of-Audit (factory → hub → Agent Capital Exchange)
 
 Staked auditor economics mirror `AgentAuditPool`: a slice of each **paid** invoke funds auditor rewards; Pulse Terminal shows cover, aggregate score, and default risk per listing.
 
@@ -154,6 +154,6 @@ See also `docs/uni-economy.md`, `docs/uni-troubleshooting.md`.
 1. Hub unit tests: `cd aimarket-hub && pytest tests/test_sandbox.py tests/test_acex_ipo.py tests/test_acex_audit.py tests/test_acex_ipo_api.py tests/test_api.py -q`
 2. Widget: hard-refresh storefront; confirm Try free decrements quota
 3. Agent demo: `demo_agent_to_agent.py` exit 0
-4. Agent IPO demo: `demo_agent_ipo.py` exit 0 (factory → hub → ACEX reconciles)
+4. Agent IPO demo: `demo_agent_ipo.py` exit 0 (factory → hub → Agent Capital Exchange reconciles)
 5. UNI: `verify_uni_ecosystem.sh` — `blockchain_ready`, bootstrap, buyer rounds, capital pricing/listings
 6. Update this doc when adding a new cross-repo contract

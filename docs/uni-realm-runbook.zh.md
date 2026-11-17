@@ -9,7 +9,7 @@
 | 链 | 由谁运行 | 容器看到的地址 | 链上内容 |
 |---|---|---|---|
 | **气泡链** | 容器 `anvil-uni`，卷 `anvil_uni_state` | `http://172.17.0.1:8546` | hub 的资金：代币 `0x5fbd…0aa3`、托管合约 `0xe7f1…0512`、hub 钱包（Anvil #1）和买家（Anvil #2） |
-| **演示链** | Alien Monitor UNI 容器（`alien-monitor`）自带的 Anvil | `http://172.17.0.1:8545`（经 `uni-rpc-bridge`） | 地图世界：彩票、NFT、ACEX（PulseAMM、注册表、借贷） |
+| **演示链** | Alien Monitor UNI 容器（`alien-monitor`）自带的 Anvil | `http://172.17.0.1:8545`（经 `uni-rpc-bridge`） | 地图世界：彩票、NFT、Agent Capital Exchange（PulseAMM、注册表、借贷） |
 
 UNI hub **在气泡链上结算**（`AIMARKET_RPC_BASE=…:8546`），在演示链上读取彩票和 NFT（`ALIEN_EVM_RPC=…:8545`）。演示链是一次性的：状态超过 64 MB 时监视器会清空它，并把自己的合约重新部署到新地址。资金从不放在那里。
 
@@ -40,7 +40,7 @@ UNI hub **在气泡链上结算**（`AIMARKET_RPC_BASE=…:8546`），在演示�
 
 ## 演示链变化时
 
-监视器重置后，彩票、NFT 和 ACEX 的地址会变。新地址在 `data/alien-monitor/universe/hub.env.snippet` 中。**只**从中取以下内容：
+监视器重置后，彩票、NFT 和 Agent Capital Exchange 的地址会变。新地址在 `data/alien-monitor/universe/hub.env.snippet` 中。**只**从中取以下内容：
 
 - hub：`AIMARKET_CHARITY_LOTTERY_ADDRESS`、`LOTTERY_ADDRESS`、`HUB_LOTTERY_ADDRESS`、`AIMARKET_NFT_CONTRACT`；
 - ARGUS-UNI：`argus/.env` 中的 `ARGUS_UNI_*` 各行，然后执行 `docker compose up -d argus-uni`。

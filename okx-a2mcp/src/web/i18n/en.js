@@ -11,6 +11,7 @@ export default {
   },
   ui: {
     free: "Free · no account · no wallet",
+    source: "Open source on GitHub",
     run: "Check",
     running: "Checking…",
     example: "Load an example",

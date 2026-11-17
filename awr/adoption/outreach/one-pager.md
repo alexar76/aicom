@@ -1,6 +1,6 @@
 DRAFT — NOT SENT. Requires the maintainer to review and send.
 
-# AWR/2 — Agent Work Receipt
+# AWR/2 — AIMarket Work Receipt
 
 A signed, offline-verifiable claim about work an AI system performed. Draft standard, MIT,
 `awr/SPEC.md` v2.0.0.

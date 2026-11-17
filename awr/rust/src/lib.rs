@@ -1,4 +1,4 @@
-//! An independent implementation of **AWR/2** (Agent Work Receipt), written from
+//! An independent implementation of **AWR/2** (AIMarket Work Receipt), written from
 //! `awr/SPEC.md` version 2.0.0 alone.
 //!
 //! Module map:

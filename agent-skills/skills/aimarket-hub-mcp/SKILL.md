@@ -80,7 +80,7 @@ A few trial invokes per caller, then **402**. Trust the live number: `free_trial
 
 ## Crypto off
 
-First-screen and skill copy stay install/URL/tools. Trial then paid is fine. Do not lead with USDC, Base, ACEX, or lottery.
+First-screen and skill copy stay install/URL/tools. Trial then paid is fine. Do not lead with USDC, Base, Agent Capital Exchange, or lottery.
 
 ## Do not
 

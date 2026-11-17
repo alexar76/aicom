@@ -13,7 +13,7 @@ toucher à l'argent.
 
 Le moniteur affiche l'état **réel**, jamais un état falsifié :
 
-| Mode | Contexte de chaîne | Nœuds on-chain (chain · escrow · NFT · ACEX · lottery) |
+| Mode | Contexte de chaîne | Nœuds on-chain (chain · escrow · NFT · Agent Capital Exchange · lottery) |
 |------|--------------------|--------------------------------------------------------|
 | **TEST** | jamais | scripté/simulé |
 | **UNI** | **toujours** (Anvil local privé — jamais Base) | en direct sur la chaîne locale |

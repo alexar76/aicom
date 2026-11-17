@@ -7,6 +7,7 @@
 import { readFileSync } from "node:fs";
 import { HEARTH_TOOLS } from "./hearth.js";
 import { HUB_TOOLS } from "./hub.js";
+import { STATIC_SCAN_RULESET_VERSION, WARDEN_VERSION } from "./services.js";
 
 const BASE_MAINNET = "eip155:8453";
 
@@ -155,7 +156,9 @@ const LISTING = {
       },
       required: ["tools"],
     },
-    output: { status: "ok", service: "warden-scan", engine: { package: "@aimarket/warden@0.21.0", ruleset: { version: "16" } },
+    // The installed engine, so the advertised example never lags the scanner that answers.
+    output: { status: "ok", service: "warden-scan",
+              engine: { package: `@aimarket/warden@${WARDEN_VERSION}`, ruleset: { version: STATIC_SCAN_RULESET_VERSION } },
               verdict: { allow: true, score: 1, findings: [] } },
     outputSchema: WARDEN_SCAN_SCHEMA,
   },
