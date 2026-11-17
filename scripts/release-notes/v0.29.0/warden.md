@@ -29,4 +29,4 @@ Checks for this build:
 | Tests | 1908 of 1908 |
 | Red team, Claude Code profile | 0 of 28 attacks delivered; field regressions 0 of 4 |
 | Doc version pins (`check-doc-versions --release`) | pass |
-| MOMUS release gate | recorded in the monorepo evidence folder when the run passes |
+| MOMUS release gate | passed, run `20261117T085628`: 8,244 development attacks, 362 benign, 24 + 24 held out, 14 new candidates, 0 missed and 0 false positives in each; behaviour 72 of 72 |
