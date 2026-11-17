@@ -27,7 +27,7 @@
 
 | | Lo que obtienes | Abrir |
 | --- | --- | --- |
-| **Cortafuegos de herramientas MCP (WARDEN)** | Analiza una vez los servidores configurados. Para aplicar las definiciones revisadas durante el uso, configura el proxy stdio. | `npx -y @aimarket/warden@0.27.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
+| **Cortafuegos de herramientas MCP (WARDEN)** | Analiza una vez los servidores configurados. Para aplicar las definiciones revisadas durante el uso, configura el proxy stdio. | `npx -y @aimarket/warden@0.28.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **Datos abiertos de HISTOR** | Lo que anunció cada servidor MCP remoto del registro oficial y cada cambio, firmado, cada mes (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [DOI de Zenodo](https://doi.org/10.5281/zenodo.23512759) |
 | **Comprobaciones gratuitas** | Endpoint x402, MCP diff, escaneo WARDEN, consulta HISTOR y coste en tokens de la lista de herramientas — en el navegador | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Envía una lectura GAIA incluida en la allowlist a través de Hub y Metis; después inspecciona el recibo firmado | [play.modelmarket.dev](https://play.modelmarket.dev/) · [código fuente](https://github.com/alexar76/aimarket-playground) |
