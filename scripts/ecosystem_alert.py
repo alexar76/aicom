@@ -71,6 +71,8 @@ Environment (values never come from argv — argv is world-readable in `ps`):
     AICOM_ALERT_SKOPOS_URL       SKOPOS's read-only findings export, for every host's disk
                                  and whether it still reports ("" = off)
     AICOM_ALERT_SKOPOS_TOKEN     SKOPOS's export token (X-Skopos-Export-Token; secret)
+    AICOM_ALERT_SKOPOS_HOSTS     expected SKOPOS server names, comma-separated. Missing
+                                 hosts page even if absent from both export lists.
     AICOM_ALERT_HEARTBEAT_HOURS  digest interval when all is well (default 24)
     AICOM_ALERT_FLAP             consecutive failures before paging (default 2)
 
@@ -84,6 +86,7 @@ import base64
 import calendar
 import datetime
 import email.utils
+import fcntl
 import http.client
 import ipaddress
 import json
@@ -1014,7 +1017,8 @@ def _newer_iso(a: str, b: str, now: float) -> bool:
     return ha is not None and (hb is None or ha < hb)
 
 
-def probe_fleet(url: str, token: str, timeout: float = 20.0, now: float | None = None) -> list[Check]:
+def probe_fleet(url: str, token: str, timeout: float = 20.0, now: float | None = None,
+                expected_hosts: list[str] | None = None) -> list[Check]:
     """Is a host running out of disk, or no longer reporting?
 
     On 2026-10-13 the root disk of admin-vps sat full for half an hour: a leaked cache
@@ -1031,12 +1035,17 @@ def probe_fleet(url: str, token: str, timeout: float = 20.0, now: float | None =
     # Every enrolled agent and its last ACCEPTED report. A host whose reports are refused has
     # no snapshot and no disk row, so reading documents alone never sees it: on 2026-10-13 a
     # deploy dropped four hosts from SKOPOS's servers.yaml and they sat refused for two hours.
-    agents = {str(a["server"])[:60]: a.get("last_seen_at") for a in body.get("agents") or []
-              if isinstance(a, dict) and a.get("server")}
+    enrolled = body.get("agents")
+    if not isinstance(enrolled, list):
+        enrolled = []
+    agents = {str(a["server"])[:60]: a.get("last_seen_at")
+              for a in enrolled if isinstance(a, dict) and a.get("server")}
+    present = set(agents)
     for doc in documents:
         if not isinstance(doc, dict) or not doc.get("server"):
             continue
         host = str(doc["server"])[:60]
+        present.add(host)
         disks = doc.get("disks") if isinstance(doc.get("disks"), list) else None
         disk_age = _hours_since_iso(str(doc.get("disks_observed_at") or ""), now) if disks is not None else None
         if disk_age is not None:
@@ -1065,6 +1074,8 @@ def probe_fleet(url: str, token: str, timeout: float = 20.0, now: float | None =
         age = _hours_since_iso(str(seen or ""), now)
         checks.append(Check(f"host_reporting[{host}]", age is not None and age <= DISK_REPORT_STALE_HOURS,
                             "no report accepted yet" if age is None else f"last report {age * 60:.0f} min ago"))
+    for host in sorted(set(expected_hosts or []) - present):
+        checks.append(Check(f"host_reporting[{host}]", False, "missing from the SKOPOS export"))
     return checks
 
 
@@ -1439,7 +1450,8 @@ def _iso(ts: float) -> str:
 
 
 def decide(checks: list[Check], state: dict[str, Any], *, flap: int,
-           heartbeat_hours: float, now: float) -> tuple[list[str], list[str], bool]:
+           heartbeat_hours: float, now: float, prune_missing: bool = True
+           ) -> tuple[list[str], list[str], bool]:
     """Pure: (newly broken, newly recovered, digest due). Mutates `state` in place.
 
     `flap` consecutive failures are required before a check is considered broken, so a
@@ -1466,18 +1478,20 @@ def decide(checks: list[Check], state: dict[str, Any], *, flap: int,
             row["failures"] = 0
             row["alerted"] = False
             row.pop("since", None)
+            row.pop("critical", None)
         else:
             if not int(row.get("failures", 0)):
                 row["since"] = _iso(now)
             row["failures"] = int(row.get("failures", 0)) + 1
+            row["critical"] = check.critical
             if not row.get("alerted") and row["failures"] >= flap and check.critical:
                 row["alerted"] = True
                 broke.append(check.name)
-    # A check that stopped being produced (mode changed, probe removed) must not stay
-    # "alerted" forever, or its recovery can never be reported.
-    for name in list(state["checks"]):
-        if name not in seen:
-            state["checks"].pop(name, None)
+    # Only a full run may retire a check that has vanished. Quick runs never
+    # observe some checks, so their absence says nothing about the last failure.
+    if prune_missing:
+        for name in state["checks"].keys() - seen:
+            del state["checks"][name]
 
     if broke or fixed:
         state["last_alert"] = _iso(now)
@@ -2090,6 +2104,10 @@ def format_message(checks: list[Check], broke: list[str], fixed: list[str],
     by_name = {c.name: c for c in checks}
     rows = (state or {}).get("checks", {})
     down = [c for c in checks if not c.ok and c.critical]
+    last_failed = {name for name, row in rows.items()
+                   if name not in by_name and row.get("failures")
+                   and row.get("critical", row.get("alerted"))}
+    down += [Check(name, False, "") for name in sorted(last_failed)]
     warnings = [c for c in checks if not c.ok and not c.critical]
     still_open = [c for c in down if c.name not in broke]
     lines: list[str] = []
@@ -2135,11 +2153,13 @@ def format_message(checks: list[Check], broke: list[str], fixed: list[str],
         for c in still_open[:6]:
             fail, _back, impact = _describe(c.name, hub, lang)
             paged = rows.get(c.name, {}).get("alerted")
+            previous = (" · по последней проверке" if lang == "ru" else " · last observed") if c.name in last_failed else ""
             lines.append(f"✖ {_cap(fail)} — {_open_for(rows.get(c.name), now, lang)}"
-                         + ("" if paged else p["unconfirmed"]))
+                         + ("" if paged else p["unconfirmed"]) + previous)
             if digest and impact:
                 lines.append(p["impact"] + impact)
-            lines.append(p["evidence"] + c.detail[:160])
+            if c.detail:
+                lines.append(p["evidence"] + c.detail[:160])
         if len(still_open) > 6:
             lines.append(p["more"].format(n=len(still_open) - 6))
 
@@ -2453,7 +2473,7 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
             remediation_url: str = "",
             deposit_hubs: list[str] | None = None,
             backup_url: str = "", backup_hosts: list[str] | None = None,
-            fleet_url: str = "", fleet_token: str = "",
+            fleet_url: str = "", fleet_token: str = "", fleet_hosts: list[str] | None = None,
             federation_hubs: list[str] | None = None,
             sellers: list[str] | None = None, scope: Scope | None = None,
             wallet_history: dict[str, Any] | None = None,
@@ -2520,7 +2540,7 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
     # Every host we run, not filtered by the scope: a full disk on the PingBlip box stops the
     # backups of all the others, whatever the game it serves.
     if fleet_url.strip() and fleet_token.strip():
-        checks += probe_fleet(fleet_url, fleet_token, timeout)
+        checks += probe_fleet(fleet_url, fleet_token, timeout, expected_hosts=fleet_hosts)
     checks += probe_security_posture(hub, min(timeout, 10.0))
     for label, url in watched_pairs:
         checks += probe_security_posture(url, min(timeout, 10.0), label=label)
@@ -2564,6 +2584,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--state", default=os.environ.get("AICOM_ALERT_STATE", DEFAULT_STATE))
     args = parser.parse_args(argv)
 
+    if args.dry_run or args.send_test:
+        return _run(args)
+    # Quick and full share their failure counts, wallet samples and delivery
+    # state. Hold the lock over the whole read, probe, send and write cycle.
+    try:
+        os.makedirs(os.path.dirname(os.path.abspath(args.state)), exist_ok=True)
+        lock = open(f"{args.state}.lock", "a", encoding="utf-8")
+    except OSError as exc:
+        print(f"error: cannot open the alerter state lock: {exc}", file=sys.stderr)
+        return 2
+    with lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return _run(args)
+
+
+def _run(args: argparse.Namespace) -> int:
     token = (os.environ.get("AICOM_ALERT_TELEGRAM_TOKEN")
              or os.environ.get("TELEGRAM_BOT_TOKEN") or "").strip()
     chat = (os.environ.get("AICOM_ALERT_TELEGRAM_CHAT")
@@ -2583,6 +2619,8 @@ def main(argv: list[str] | None = None) -> int:
                     if h.strip()]
     fleet_url = os.environ.get("AICOM_ALERT_SKOPOS_URL", DEFAULT_SKOPOS_EXPORT)
     fleet_token = os.environ.get("AICOM_ALERT_SKOPOS_TOKEN", "")
+    fleet_hosts = [h.strip() for h in os.environ.get("AICOM_ALERT_SKOPOS_HOSTS", "").split(",")
+                   if h.strip()]
     heartbeat_hours = float(os.environ.get("AICOM_ALERT_HEARTBEAT_HOURS", "24") or 24)
     flap = max(1, int(os.environ.get("AICOM_ALERT_FLAP", "2") or 2))
     lang = (os.environ.get("AICOM_ALERT_LANG") or "en").strip().lower()
@@ -2621,12 +2659,13 @@ def main(argv: list[str] | None = None) -> int:
                      uni_chain_url=uni_chain_url, quality_url=quality_url,
                      remediation_url=remediation_url, deposit_hubs=deposit_hubs,
                      backup_url=backup_url, backup_hosts=backup_hosts,
-                     fleet_url=fleet_url, fleet_token=fleet_token,
+                     fleet_url=fleet_url, fleet_token=fleet_token, fleet_hosts=fleet_hosts,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope,
                      wallet_history=state.setdefault("wallets", {}))
     heartbeat_before = state.get("last_heartbeat", "")
     broke, fixed, heartbeat = decide(checks, state, flap=flap,
-                                     heartbeat_hours=heartbeat_hours, now=now)
+                                     heartbeat_hours=heartbeat_hours, now=now,
+                                     prune_missing=args.mode == "full")
     message = format_message(checks, broke, fixed, heartbeat,
                              host=host, hub=hub, when=when, lang=lang, state=state,
                              scope=scope, delivery=state.get("delivery"),

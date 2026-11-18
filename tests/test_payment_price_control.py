@@ -71,7 +71,7 @@ def test_create_payment_ignores_client_amount(pay_client, monkeypatch):
         json={
             "product_id": "prod-9388c62f0666",
             "chain": "base",
-            "token": "USDT",
+            "token": "USDC",
             "amount": 0.01,
         },
     )
@@ -92,7 +92,7 @@ def test_confirm_payment_rejects_tampered_server_quote(pay_client, monkeypatch):
     create = client.post(
         "/api/payment/create",
         headers=auth,
-        json={"product_id": "prod-9388c62f0666", "chain": "base", "token": "USDT"},
+        json={"product_id": "prod-9388c62f0666", "chain": "base", "token": "USDC"},
     )
     assert create.status_code == 200
     payment_id = create.json()["payment_id"]

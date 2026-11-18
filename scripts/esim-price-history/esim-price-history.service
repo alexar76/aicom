@@ -1,0 +1,17 @@
+[Unit]
+Description=Record wholesale eSIM price changes from the esim-node catalogue snapshot
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/aicom/esim-price-history/esim_price_history.py record
+Nice=10
+TimeoutStartSec=120
+# Reads the node's snapshot and asks it for one quote on localhost; writes only its own folder.
+ProtectSystem=strict
+ReadWritePaths=/var/lib/aicom/esim-price-history
+ProtectHome=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+IPAddressDeny=any
+IPAddressAllow=localhost

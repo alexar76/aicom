@@ -1,0 +1,730 @@
+{
+  "observed_utc": "2026-11-18T14:23:49.044994+00:00",
+  "links": [
+    {
+      "url": "https://modelmarket.dev",
+      "cards": [
+        "adsb-overflight",
+        "agent-spend-desk",
+        "answer-evidence-pack",
+        "campus-nowcast",
+        "capability-15",
+        "capability-bakeoff",
+        "capability-sla-pack",
+        "cyclone-watch",
+        "desk-presets",
+        "england-river-gauge",
+        "finland-winter-lane",
+        "fire-hotspot",
+        "flood-hydrology",
+        "geomag-window",
+        "ireland-synoptic",
+        "nearest-read",
+        "nordic-ais",
+        "observability-attest",
+        "pv-irradiance-record",
+        "rhine-nl-gauge",
+        "route-integrity",
+        "sensor-publisher",
+        "situation-brief",
+        "smoke-operations",
+        "tsunami-cap",
+        "usace-reservoir",
+        "water-intake-evidence",
+        "weather-risk"
+      ],
+      "status": 200,
+      "final": "https://modelmarket.dev",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://iot.modelmarket.dev",
+      "cards": [
+        "adsb-overflight",
+        "cyclone-watch",
+        "england-river-gauge",
+        "finland-winter-lane",
+        "gnss-jamming-alert",
+        "ireland-synoptic",
+        "nordic-ais",
+        "parametric-trigger",
+        "rhine-nl-gauge",
+        "sensor-publisher",
+        "tsunami-cap",
+        "usace-reservoir",
+        "water-intake-evidence",
+        "weather-risk"
+      ],
+      "status": 200,
+      "final": "https://iot.modelmarket.dev",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev",
+      "cards": [
+        "campus-nowcast",
+        "desk-presets",
+        "nearest-read",
+        "sensor-publisher",
+        "situation-brief",
+        "verified-watchbox",
+        "weather-risk"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=fire,weather",
+      "cards": [
+        "fire-hotspot"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=fire,weather",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/docs",
+      "cards": [
+        "campus-nowcast",
+        "desk-presets",
+        "fire-hotspot",
+        "flood-hydrology",
+        "geomag-window",
+        "observability-attest",
+        "pv-irradiance-record",
+        "route-integrity",
+        "smoke-operations",
+        "verified-watchbox"
+      ],
+      "status": 200,
+      "final": "https://atlas.modelmarket.dev/docs",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://emberlinedesk.com/",
+      "cards": [
+        "emberline-desk",
+        "fire-hotspot",
+        "verified-watchbox"
+      ],
+      "status": 200,
+      "final": "https://emberlinedesk.com/",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/api/v1/watchboxes",
+      "cards": [
+        "verified-watchbox"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/api/v1/watchboxes",
+      "content_type": "application/json",
+      "get_status": 401
+    },
+    {
+      "url": "https://emberlinedesk.com/sample",
+      "cards": [
+        "emberline-desk"
+      ],
+      "status": 200,
+      "final": "https://emberlinedesk.com/sample",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=flood,river",
+      "cards": [
+        "flood-hydrology"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=flood,river",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://tideline.modelmarket.dev/",
+      "cards": [
+        "flood-hydrology",
+        "tideline-desk"
+      ],
+      "status": 200,
+      "final": "https://tideline.modelmarket.dev/",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=ais",
+      "cards": [
+        "nordic-ais"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=ais",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://seamark.modelmarket.dev/",
+      "cards": [
+        "nordic-ais",
+        "seamark-desk"
+      ],
+      "status": 200,
+      "final": "https://seamark.modelmarket.dev/",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=tsunami",
+      "cards": [
+        "tsunami-cap"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=tsunami",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://plinth.modelmarket.dev/",
+      "cards": [
+        "campus-nowcast",
+        "plinth-desk"
+      ],
+      "status": 200,
+      "final": "https://plinth.modelmarket.dev/",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=jamming",
+      "cards": [
+        "gnss-jamming-alert"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=jamming",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://verify.modelmarket.dev",
+      "cards": [
+        "answer-evidence-pack",
+        "awr-receipts",
+        "capability-bakeoff",
+        "capability-sla-pack",
+        "evidence-export"
+      ],
+      "status": 200,
+      "final": "https://verify.modelmarket.dev",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://modelmarket.dev/widget/demo",
+      "cards": [
+        "hub-embed"
+      ],
+      "status": 200,
+      "final": "https://modelmarket.dev/widget/demo",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://magic-ai-factory.com/argus/",
+      "cards": [
+        "agent-spend-desk",
+        "contract-drift-desk",
+        "warden-mcp"
+      ],
+      "status": 200,
+      "final": "https://magic-ai-factory.com/argus/",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://metis.modelmarket.dev",
+      "cards": [
+        "answer-evidence-pack",
+        "homepage",
+        "metis-answers"
+      ],
+      "status": 200,
+      "final": "https://metis.modelmarket.dev",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://magic-ai-factory.com",
+      "cards": [
+        "factory-oneshot",
+        "homepage"
+      ],
+      "status": 200,
+      "final": "https://magic-ai-factory.com",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://lottery.modelmarket.dev",
+      "cards": [
+        "fair-draw"
+      ],
+      "status": 200,
+      "final": "https://lottery.modelmarket.dev",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://momus.modelmarket.dev",
+      "cards": [
+        "momus-gate"
+      ],
+      "status": 200,
+      "final": "https://momus.modelmarket.dev",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=cyclone",
+      "cards": [
+        "cyclone-watch"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=cyclone",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=adsb",
+      "cards": [
+        "adsb-overflight"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=adsb",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=spacewx,geomag",
+      "cards": [
+        "geomag-window"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=spacewx,geomag",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=solar,atmosphere",
+      "cards": [
+        "pv-irradiance-record"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=solar,atmosphere",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://solrecord.modelmarket.dev/",
+      "cards": [
+        "pv-irradiance-record",
+        "solrecord-desk"
+      ],
+      "status": 200,
+      "final": "https://solrecord.modelmarket.dev/",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=smoke,air",
+      "cards": [
+        "smoke-operations"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=smoke,air",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=gnss,jamming,ais",
+      "cards": [
+        "route-integrity"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=gnss,jamming,ais",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=radar,alerts",
+      "cards": [
+        "observability-attest"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=radar,alerts",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=river",
+      "cards": [
+        "england-river-gauge",
+        "rhine-nl-gauge"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=river",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=reservoir",
+      "cards": [
+        "usace-reservoir"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=reservoir",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=weather",
+      "cards": [
+        "ireland-synoptic"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=weather",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://logos.modelmarket.dev",
+      "cards": [
+        "agent-spend-desk",
+        "capability-sla-pack"
+      ],
+      "status": 200,
+      "final": "https://logos.modelmarket.dev",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://themis.modelmarket.dev",
+      "cards": [
+        "capability-bakeoff",
+        "contract-drift-desk"
+      ],
+      "status": 405,
+      "final": "https://themis.modelmarket.dev/ui/",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://github.com/alexar76/warden",
+      "cards": [
+        "contract-drift-desk"
+      ],
+      "status": 200,
+      "final": "https://github.com/alexar76/warden",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=river,weather",
+      "cards": [
+        "water-intake-evidence"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=river,weather",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/?layers=aviation,road",
+      "cards": [
+        "finland-winter-lane"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/?layers=aviation,road",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://play.modelmarket.dev/start?role=provider",
+      "cards": [
+        "homepage"
+      ],
+      "status": 405,
+      "final": "https://play.modelmarket.dev/start?role=provider",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://play.modelmarket.dev/start?role=consumer",
+      "cards": [
+        "homepage"
+      ],
+      "status": 405,
+      "final": "https://play.modelmarket.dev/start?role=consumer",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://oracles.modelmarket.dev",
+      "cards": [
+        "homepage"
+      ],
+      "status": 200,
+      "final": "https://oracles.modelmarket.dev",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://monitor.modelmarket.dev",
+      "cards": [
+        "homepage"
+      ],
+      "status": 200,
+      "final": "https://monitor.modelmarket.dev",
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://histor.modelmarket.dev/s/236eb5f0481cc99c",
+      "cards": [
+        "homepage"
+      ],
+      "status": 405,
+      "final": "https://histor.modelmarket.dev/s/236eb5f0481cc99c",
+      "content_type": "text/html; charset=utf-8",
+      "get_status": 200
+    },
+    {
+      "url": "https://tienda.textokit.store/.well-known/x402",
+      "cards": [
+        "homepage"
+      ],
+      "status": 200,
+      "final": "https://tienda.textokit.store/.well-known/x402",
+      "content_type": "application/json"
+    },
+    {
+      "url": "https://tienda.textokit.store/api/x402-ping",
+      "cards": [
+        "homepage"
+      ],
+      "status": 402,
+      "final": "https://tienda.textokit.store/api/x402-ping",
+      "content_type": "application/json"
+    },
+    {
+      "url": "https://use.modelmarket.dev/ideas.html?id=fire-hotspot",
+      "cards": [
+        "homepage"
+      ],
+      "status": 200,
+      "final": "https://use.modelmarket.dev/ideas.html?id=fire-hotspot",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://use.modelmarket.dev/ideas.html?id=verified-watchbox",
+      "cards": [
+        "homepage"
+      ],
+      "status": 200,
+      "final": "https://use.modelmarket.dev/ideas.html?id=verified-watchbox",
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://atlas.modelmarket.dev/api/v1/products",
+      "cards": [
+        "homepage"
+      ],
+      "status": 405,
+      "final": "https://atlas.modelmarket.dev/api/v1/products",
+      "content_type": "application/json",
+      "get_status": 200
+    }
+  ],
+  "catalog_search": {
+    "atlas.fire.weather@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.fire.weather%40v1",
+      "matches": [
+        {
+          "product_id": "atlas.products",
+          "capability_id": "atlas.fire.weather@v1",
+          "source_hub": "https://atlas.modelmarket.dev",
+          "price_per_call_usd": 0.08,
+          "credits_eligible": false,
+          "routed_price_usd": 0.0808
+        }
+      ]
+    },
+    "atlas.nearest.read@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.nearest.read%40v1",
+      "matches": [
+        {
+          "product_id": "atlas.products",
+          "capability_id": "atlas.nearest.read@v1",
+          "source_hub": "https://atlas.modelmarket.dev",
+          "price_per_call_usd": 0.03,
+          "credits_eligible": false,
+          "routed_price_usd": 0.0303
+        }
+      ]
+    },
+    "atlas.pv.irradiance.record@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.pv.irradiance.record%40v1",
+      "matches": [
+        {
+          "product_id": "atlas.products",
+          "capability_id": "atlas.pv.irradiance.record@v1",
+          "source_hub": "https://atlas.modelmarket.dev",
+          "price_per_call_usd": 0.15,
+          "credits_eligible": false,
+          "routed_price_usd": 0.1515
+        }
+      ]
+    },
+    "atlas.situation.brief@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.situation.brief%40v1",
+      "matches": [
+        {
+          "product_id": "atlas.products",
+          "capability_id": "atlas.situation.brief@v1",
+          "source_hub": "https://atlas.modelmarket.dev",
+          "price_per_call_usd": 0.06,
+          "credits_eligible": false,
+          "routed_price_usd": 0.0606
+        }
+      ]
+    },
+    "atlas.watchbox.check@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.watchbox.check%40v1",
+      "matches": [
+        {
+          "product_id": "atlas.products",
+          "capability_id": "atlas.watchbox.check@v1",
+          "source_hub": "https://atlas.modelmarket.dev",
+          "price_per_call_usd": 0.02,
+          "credits_eligible": false,
+          "routed_price_usd": 0.0202
+        }
+      ]
+    },
+    "gaia.ais.public.read@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=gaia.ais.public.read%40v1",
+      "matches": [
+        {
+          "product_id": "gaia.gateway",
+          "capability_id": "gaia.ais.public.read@v1",
+          "source_hub": "https://iot.modelmarket.dev",
+          "price_per_call_usd": 0.002,
+          "credits_eligible": false,
+          "routed_price_usd": 0.00202
+        }
+      ]
+    },
+    "gaia.cyclone.read@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=gaia.cyclone.read%40v1",
+      "matches": [
+        {
+          "product_id": "gaia.gateway",
+          "capability_id": "gaia.cyclone.read@v1",
+          "source_hub": "https://iot.modelmarket.dev",
+          "price_per_call_usd": 0.002,
+          "credits_eligible": false,
+          "routed_price_usd": 0.00202
+        }
+      ]
+    },
+    "gaia.reservoir.read@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=gaia.reservoir.read%40v1",
+      "matches": [
+        {
+          "product_id": "gaia.gateway",
+          "capability_id": "gaia.reservoir.read@v1",
+          "source_hub": "https://iot.modelmarket.dev",
+          "price_per_call_usd": 0.001,
+          "credits_eligible": false,
+          "routed_price_usd": 0.00101
+        }
+      ]
+    },
+    "gaia.river.read@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=gaia.river.read%40v1",
+      "matches": [
+        {
+          "product_id": "gaia.gateway",
+          "capability_id": "gaia.river.read@v1",
+          "source_hub": "https://iot.modelmarket.dev",
+          "price_per_call_usd": 0.001,
+          "credits_eligible": false,
+          "routed_price_usd": 0.00101
+        }
+      ]
+    },
+    "gaia.weather.read@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=gaia.weather.read%40v1",
+      "matches": [
+        {
+          "product_id": "gaia.gateway",
+          "capability_id": "gaia.weather.read@v1",
+          "source_hub": "https://iot.modelmarket.dev",
+          "price_per_call_usd": 0.001,
+          "credits_eligible": false,
+          "routed_price_usd": 0.00101
+        }
+      ]
+    },
+    "atlas.geomag.window@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.geomag.window%40v1",
+      "matches": [
+        {
+          "capability_id": "atlas.geomag.window@v1",
+          "product_id": "atlas.products",
+          "price_per_call_usd": 0.05,
+          "routed_price_usd": 0.0505,
+          "source_hub": "https://atlas.modelmarket.dev",
+          "credits_eligible": false,
+          "offerable": true,
+          "route_status": "live",
+          "access_mode": "paid"
+        }
+      ]
+    },
+    "atlas.observability.attest@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.observability.attest%40v1",
+      "matches": [
+        {
+          "capability_id": "atlas.observability.attest@v1",
+          "product_id": "atlas.products",
+          "price_per_call_usd": 0.1,
+          "routed_price_usd": 0.101,
+          "source_hub": "https://atlas.modelmarket.dev",
+          "credits_eligible": false,
+          "offerable": true,
+          "route_status": "live",
+          "access_mode": "paid"
+        }
+      ]
+    },
+    "atlas.route.integrity@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.route.integrity%40v1",
+      "matches": [
+        {
+          "capability_id": "atlas.route.integrity@v1",
+          "product_id": "atlas.products",
+          "price_per_call_usd": 0.25,
+          "routed_price_usd": 0.2525,
+          "source_hub": "https://atlas.modelmarket.dev",
+          "credits_eligible": false,
+          "offerable": true,
+          "route_status": "live",
+          "access_mode": "paid"
+        }
+      ]
+    },
+    "atlas.smoke.operations@v1": {
+      "url": "https://modelmarket.dev/ai-market/v2/search?intent=atlas.smoke.operations%40v1",
+      "matches": [
+        {
+          "capability_id": "atlas.smoke.operations@v1",
+          "product_id": "atlas.products",
+          "price_per_call_usd": 0.12,
+          "routed_price_usd": 0.1212,
+          "source_hub": "https://atlas.modelmarket.dev",
+          "credits_eligible": false,
+          "offerable": true,
+          "route_status": "live",
+          "access_mode": "paid"
+        }
+      ]
+    }
+  }
+}

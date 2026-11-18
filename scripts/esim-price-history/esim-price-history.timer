@@ -1,0 +1,10 @@
+[Unit]
+Description=Every 5 minutes (UTC): record wholesale eSIM price changes
+
+[Timer]
+OnCalendar=*-*-* *:00/5:00 UTC
+AccuracySec=30s
+Persistent=false
+
+[Install]
+WantedBy=timers.target

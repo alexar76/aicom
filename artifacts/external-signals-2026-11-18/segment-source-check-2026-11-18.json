@@ -1,0 +1,575 @@
+{
+  "observed_utc": "2026-11-18T14:47:26.276542+00:00",
+  "sources": {
+    "agentavow_files": {
+      "source_url": "https://api.github.com/repos/AgentAvow/AgentAvow/pulls/272/files",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/AgentAvow/AgentAvow/pulls/272/files",
+      "server_date": "Wed, 18 Nov 2026 13:49:23 GMT",
+      "truncated": false,
+      "evidence": [
+        {
+          "filename": "docs/standards/tool-manifest-digest-vectors-v1/README.md",
+          "links_from_added_lines": [
+            "https://mcp.deepwiki.com/mcp`",
+            "https://histor.modelmarket.dev/datasets/2026-10-26/",
+            "https://github.com/AgentAvow/AgentAvow/issues/240",
+            "https://histor.modelmarket.dev/datasets/interop-digests-2026-10-31/"
+          ]
+        }
+      ]
+    },
+    "agentavow_scanner": {
+      "source_url": "https://api.github.com/repos/AgentAvow/AgentAvow/pulls/273",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/AgentAvow/AgentAvow/pulls/273",
+      "server_date": "Wed, 18 Nov 2026 13:49:24 GMT",
+      "truncated": false,
+      "evidence": {
+        "html_url": "https://github.com/AgentAvow/AgentAvow/pull/273",
+        "title": "Scanner sends MCP-Protocol-Version after initialize",
+        "state": "closed",
+        "created_at": "2026-11-10T19:15:11Z",
+        "merged": true,
+        "merged_at": "2026-11-10T19:47:10Z",
+        "updated_at": "2026-11-10T19:47:10Z",
+        "body": "Every request after `initialize` now carries the version the server negotiated (falls back to the requested 2025-06-18 if the answer is missing or not a date). MCP 2025-06-18 Streamable HTTP requires it, and both tool gates (Python and JS) already send it.\n\nWithout the header a server can assume 2025-03-26 and serve tools without `outputSchema` or `title`; HISTOR found two live servers that do (isitabizday.com, mcp.apollographql.com), noted on #240. The issuer then signed a thinner definition than a spec-following client, or our own gate, is served.\n\nEffect: any server that fell back shows one digest change on its next scan, so a watch on it fires one drift alert. DeepWiki is unaffected (HISTOR reproduced its signed digests).\n\nTests: `tests/test_mcp_protocol_version_header.py` (header on every post-initialize request across all sessions of a scan, negotiated version carried, malformed answers including a CRLF value fall back).",
+        "author": "kenneives"
+      }
+    },
+    "crawlcheck_registry": {
+      "source_url": "https://api.github.com/repos/modelcontextprotocol/registry/issues/comments/6861222120",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/modelcontextprotocol/registry/issues/comments/6861222120",
+      "server_date": "Wed, 18 Nov 2026 13:49:23 GMT",
+      "truncated": false,
+      "evidence": {
+        "html_url": "https://github.com/modelcontextprotocol/registry/issues/82#issuecomment-6861222120",
+        "title": null,
+        "state": null,
+        "created_at": "2026-11-13T18:15:52Z",
+        "merged": null,
+        "merged_at": null,
+        "updated_at": "2026-11-13T18:15:52Z",
+        "body": "Confirming from the CrawlCheck side, with one update to the numbers above.\n\nThe 70-vector figure was for commit `7568d46`, before the three vectors on the order of refusal codes existed. We changed our code to follow section 10 (every entry is checked before any value is written) instead of asking for the text to allow either code. Results against the vectors at `aca5812`:\n\n| Implementation | Version | Result |\n|---|---|---|\n| JavaScript SDK | `@crawlcheck/sdk` 1.15.1 (npm) | 73 of 73 |\n| Python SDK | `crawlcheck` 1.16.1 (PyPI) | 73 of 73 |\n| Lockfile endpoint (`POST /api/v1/mcp/lock`) | deployed 13 Nov 2026 | 73 of 73 |\n\nThe SDK runs used the packages as installed from the registries. The endpoint figure is its digest function run over the vector file, not 73 live requests. Source: https://github.com/emmanuelorta/crawlcheck-core at `31771a9`.\n\nSigned lockfiles now carry `tool_set_digest` (this text) beside the older `jcs_v1`. `jcs_v1` stays for existing verifiers and is described as a bounded form, as section 8.1 asks: https://crawlcheck.io/spec/mcp-lockfile\n\nDisclosure: I maintain CrawlCheck and co-edit the text. This comment was drafted with AI assistance.",
+        "author": "emmanuelorta"
+      }
+    },
+    "owan": {
+      "source_url": "https://api.github.com/repos/OWASP/MCP-Security-Testing-Guide/pulls/21",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/OWASP/MCP-Security-Testing-Guide/pulls/21",
+      "server_date": "Wed, 18 Nov 2026 13:49:24 GMT",
+      "truncated": false,
+      "evidence": {
+        "html_url": "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/21",
+        "title": "Add MCPSTG-SUPP-06: Test signed and publicly logged tool-manifest revisions",
+        "state": "open",
+        "created_at": "2026-10-24T23:22:37Z",
+        "merged": false,
+        "merged_at": null,
+        "updated_at": "2026-11-11T08:31:07Z",
+        "body": "## Gap\r\n\r\nSection 3.13 covers rug pulls well, but the tool-manifest pinning it describes ([What to snapshot](https://github.com/OWASP/MCP-Security-Testing-Guide/blob/main/03.%20MCP%20Threats%20and%20Attack%20Patterns/3.13-supply-chain.md#what-to-snapshot)) is local trust-on-first-use: each client hashes whatever `tools/list` returned the first time it connected. No test checks whether manifest revisions are signed by the expected publisher and recorded in a public, append-only transparency log.\r\n\r\nThat leaves three gaps:\r\n\r\n1. **First use is unverified.** If the server is malicious at first contact, the pin locks the malicious manifest in.\r\n2. **First use happens per machine.** Every laptop and CI runner pins separately, so a server can show the reviewer one manifest and a target another, and every local pin still passes. Only a shared log lets clients compare what they were served (split-view detection, as in Certificate Transparency).\r\n3. **A legitimate update looks the same as a rug pull.** A changed hash says something moved, not who published the new revision.\r\n\r\nThe local hash plus stop-and-ask in What to snapshot stays the baseline control; SUPP-06 grades it Secure, and re-approval is scored under SUPP-05. SUPP-06 proposes signed, logged revisions as an addition on top of it.\r\n\r\n## What changed\r\n\r\n- **New test `MCPSTG-SUPP-06`** (Medium, Hybrid), written in full to the `test-case-format.md` template. Six lab cases: an unsigned manifest at first use, a signed and logged revision (the positive control), a signed but unlogged revision, a revision from the wrong signer, a split view across two equally-authorized clients, and runtime drift with no new log entry. Three verdicts: Secure (the hash-and-ask baseline, or full signature and log verification), Insecure (the client claims to verify and then accepts a bad envelope), and Not tested (neither control present, or the positive control fails; label per #52). Includes a canonical-form procedure (RFC 8785 JCS + SHA-256), a synthetic envelope example (explicitly non-standard), and pseudocode for the admission check.\r\n- **New subsection** \"Local pins are trust-on-first-use\" under *Rug pulls and tool-description drift*.\r\n- **Provenance and signing:** a new mechanism-table row, plus a note that package provenance covers the package bytes but not the `tools/list` a remote server returns at runtime.\r\n- **Control matrix** row for malicious servers, rug pulls, and provenance. The drift list, test chains, and the 3.05 rug-pull `Tests:` line now reference SUPP-06.\r\n- **Appendix D:** placeholders `<TEST_USER_B>`, `<LAB_PUBLISHER_IDENTITY>`, `<LAB_OTHER_IDENTITY>`, `<LAB_TLOG>`.\r\n- **Appendix F:** a \"Transparency-log client\" tool category.\r\n- **Test count** updated to 81 in README, the chapter 3 overview, and `test-case-format.md`.\r\n- New references [30]–[33]: RFC 8785, RFC 9162, Sigstore Rekor, and SEP-3140 (closed 22 Sep 2026 without merge; may return through a working group).\r\n\r\n## Scope\r\n\r\nApplies to both local stdio and remote HTTP servers. Remote servers are the main case, because their `tools/list` can change without any package publish, so package provenance does not cover it. For local servers it matters when descriptions are generated at runtime or loaded from the network.\r\n\r\n## Severity\r\n\r\nMedium until a signing mechanism exists. The 2026-07-28 spec defines no signature, digest, or log field for tool definitions, and the MCP Registry does not record or sign them. A hash-and-ask client is graded Secure against the baseline; only a client with neither control is Not tested.\r\n\r\n## Review notes\r\n\r\n- All examples are synthetic and lab-only, using placeholders per `CONTRIBUTING.md`. The test explicitly says never to write lab entries to a public transparency log.\r\n- Mappings: OWASP MCP04:2025 (and MCP03:2025), CWE-347, CWE-494, and MITRE ATLAS AML.T0010.005. CWE-347 is used instead of CWE-345, which MITRE marks as Discouraged for mapping.\r\n- #16 and #19 also change the test count and the 3.05 `Tests:` line, so whichever merges second will need a count bump.\r\n- SUPP-01 to SUPP-05 are still the generic template text. I've left them untouched here to keep this PR reviewable, and can follow up with separate PRs that make them concrete in the same style.\r\n\r\nAddresses the review request from @vermava.",
+        "author": "intelligent-ears"
+      }
+    },
+    "factory_fork": {
+      "source_url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory",
+      "server_date": "Wed, 18 Nov 2026 13:49:23 GMT",
+      "truncated": false,
+      "evidence": {
+        "html_url": "https://github.com/th3artfuldodger/enterprise-factory",
+        "fork": true,
+        "created_at": "2026-09-24T21:50:30Z",
+        "updated_at": "2026-11-05T14:29:24Z",
+        "pushed_at": "2026-10-14T20:06:17Z",
+        "stargazers_count": 0,
+        "forks_count": 0,
+        "parent": "https://github.com/alexar76/aicom",
+        "source": "https://github.com/alexar76/aicom"
+      }
+    },
+    "warden_feedback": {
+      "source_url": "https://api.github.com/repos/alexar76/warden/issues/14/comments?per_page=30",
+      "status": 200,
+      "final_url": "https://api.github.com/repos/alexar76/warden/issues/14/comments?per_page=30",
+      "server_date": "Wed, 18 Nov 2026 13:49:23 GMT",
+      "truncated": false,
+      "evidence": [
+        {
+          "author": "minia2auk",
+          "at": "2026-11-14T22:19:24Z",
+          "url": "https://github.com/alexar76/warden/issues/14#issuecomment-6885083121",
+          "body": "Clause-scoped veto is the right shape — thanks for going with a guard rather than either of my two options. The \"veto on the same-clause secret context\" framing is stricter than what I proposed and it keeps the A–D set intact.\n\nOne refinement worth considering before 0.27.0 ships: the veto keys on a request verb being present in the clause, but it does not look at that verb's *object*. `\"Paste your bytecode and get the mnemonic of each opcode\"` blocks because `paste` is in the request-verb list — yet the object of `paste` there is the tool's input (bytecode), not the secret. The requests you a"
+        },
+        {
+          "author": "minia2auk",
+          "at": "2026-11-16T12:23:26Z",
+          "url": "https://github.com/alexar76/warden/issues/14#issuecomment-6916312417",
+          "body": "Re-ran the A–D set against `@aimarket/warden@0.27.0` (installed with `--ignore-scripts`, `StaticScanGate`, `blockAtSeverity: \"high\"`), plus the verb-object cases from my follow-up:\n\n```\nA \"…returns hex, mnemonic and description…\"          -> clear   (was block on 0.26.1)\nB \"…returns hex, opcode name and description…\"       -> clear\nC \"Returns the mnemonic for an opcode\"               -> clear   (was block)\nD \"Provide your mnemonic to derive the address\"      -> BLOCK   at \"mnemonic\" in \"Provide your mnemonic to derive the address\"\nE \"Paste your bytecode and get the mnemonic of each opcode\"\n   "
+        },
+        {
+          "author": "minia2auk",
+          "at": "2026-11-16T16:07:24Z",
+          "url": "https://github.com/alexar76/warden/issues/14#issuecomment-6921796533",
+          "body": "Confirmed from the npm side: `dist-tags.latest` is still `0.27.0` (published 2026-11-15T07:21Z), so ruleset 21 exists only in source. One consequence worth naming: the `npx @aimarket/warden scan` path resolves 0.27.0, and that is what most callers will pin — so nobody on npm can see the seed-phrase fix until the next release, and an upgrade of that pin will silently change verdicts.\n\nWhich leads to a suggestion for ruleset 21's ship: put the ruleset id in the scan result envelope (top level, not per finding). The clause output tells me *where* a verdict came from; it doesn't tell me *which rul"
+        },
+        {
+          "author": "minia2auk",
+          "at": "2026-11-17T08:21:19Z",
+          "url": "https://github.com/alexar76/warden/issues/14#issuecomment-6942683007",
+          "body": "Re-ran the full set against `@aimarket/warden@0.28.0` (installed with `--ignore-scripts`). Ruleset ref from the package:\n\n```\n{\"version\":\"23\",\"digest\":\"sha256-J12lNmUUNTNkzbkKeYxmAHSVgmUlrWt3+NvDp4+9i1g=\"}\n```\n\nThat matches the digest you posted, so we are looking at the same rule table.\n\n**A–K + the seed-phrase case** — `StaticScanGate.evaluate()`, `policy.blockAtSeverity: \"high\"`, one synthetic tool per description; `clear` = zero findings, `BLOCK` = one high finding on `TOOL_DEF_SECRET_REQUEST`:\n\n```\nA \"...returns hex, mnemonic and description...\"                                 -> clear\nB "
+        }
+      ]
+    },
+    "gdb_witness": {
+      "source_url": "https://witness.gdbsecurity.com/logs",
+      "status": 200,
+      "final_url": "https://witness.gdbsecurity.com/logs",
+      "server_date": "Wed, 18 Nov 2026 13:49:26 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "Witnessed logs — witness.gdbsecurity.com"
+      },
+      "links": [],
+      "text_samples": [
+        "s witness Witnessed logs Grouped by what each log makes transparent. \"Consistent\" on a certificate log and \"Consistent\" on a key directory are the same strength of claim about very different obje",
+        "at each log makes transparent. \"Consistent\" on a certificate log and \"Consistent\" on a key directory are the same strength of claim about very different objects, and how far a log can be checked ",
+        " Checked Size Root Last seen Audited Sampled Checkpoint signal.org/kt Consistent 1,254,167,541 c23da057a159ea66… 7s ago — — fetch apple.com/kt/top-level-tree Consistent 1,956,720 b2ddf37d92ae73f3",
+        "67,541 c23da057a159ea66… 7s ago — — fetch apple.com/kt/top-level-tree Consistent 1,956,720 b2ddf37d92ae73f3… 5s ago — — fetch whatsapp.kt/v2 history 722,606–1,435,334 · 712,725 epochs · 0 gaps · ",
+        " ago 1,611 1,611 fetch Certificate transparency 69 logs most checked: Consistent (69) Append-only logs of issued TLS certificates. Consistent is the honest ceiling here: these are entry logs with",
+        "checked: Consistent (69) Append-only logs of issued TLS certificates. Consistent is the honest ceiling here: these are entry logs with no mutable map, so being append-only is the whole constructi",
+        "Checkpoint coachandhorses2026h2.staging.certificate.transparency.goog Consistent 4,679,751,193 0a3e95e978589fe0… 5s ago — — fetch log.twig.ct.letsencrypt.org/2026h2 Consistent 2,144,395,145 eea61",
+        "0a3e95e978589fe0… 5s ago — — fetch log.twig.ct.letsencrypt.org/2026h2 Consistent 2,144,395,145 eea616ae64fa9292… 8s ago — — fetch parcelyard2026h2.prod.certificate.transparency.goog Consistent 1,",
+        " 8s ago — — fetch parcelyard2026h2.prod.certificate.transparency.goog Consistent 1,660,223,995 8c99377602525be2… 7s ago — — fetch plumbersarms2026h2.prod.certificate.transparency.goog Consistent ",
+        "s ago — — fetch plumbersarms2026h2.prod.certificate.transparency.goog Consistent 1,659,710,207 4e82bb5dfe91c30b… 5s ago — — fetch halloumi2026h2a.log.ct.ipng.ch Consistent 1,311,020,959 f352df7a1",
+        "207 4e82bb5dfe91c30b… 5s ago — — fetch halloumi2026h2a.log.ct.ipng.ch Consistent 1,311,020,959 f352df7a15258c5d… 2s ago — — fetch log.sycamore.ct.letsencrypt.org/2027h1 Consistent 1,294,657,102 d",
+        "df7a15258c5d… 2s ago — — fetch log.sycamore.ct.letsencrypt.org/2027h1 Consistent 1,294,657,102 d37e3964422b56ad… 7s ago — — fetch gouda2026h2.log.ct.ipng.ch Consistent 1,261,260,935 2b86203d48487"
+      ]
+    },
+    "criba": {
+      "source_url": "https://criba.cribalo.com/",
+      "status": 200,
+      "final_url": "https://criba.cribalo.com/",
+      "server_date": "Wed, 18 Nov 2026 13:49:23 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "criba — MCP and A2A traffic identification",
+        "canonical": "https://criba.cribalo.com/",
+        "og:url": "https://criba.cribalo.com/",
+        "og:title": "criba — know who's really behind your AI traffic"
+      },
+      "links": [
+        {
+          "href": "https://histor.modelmarket.dev",
+          "rel": "noopener nofollow"
+        }
+      ],
+      "text_samples": [
+        "ama.ai initialize (declares tasks capability), tools/list mcp histor (modelmarket.dev) histor.modelmarket.dev server/discover, tools/list; UA says read-only mcp plug.directory plug.directory server/di",
+        " (declares tasks capability), tools/list mcp histor (modelmarket.dev) histor.modelmarket.dev server/discover, tools/list; UA says read-only mcp plug.directory plug.directory server/discover, tools/list mcp m"
+      ]
+    },
+    "dangmua": {
+      "source_url": "https://dangmua.com/blog/claude-message-threads-beta-cuts-request-size-not-your-bill",
+      "status": 200,
+      "final_url": "https://dangmua.com/blog/claude-message-threads-beta-cuts-request-size-not-your-bill",
+      "server_date": "Wed, 18 Nov 2026 13:49:23 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "Claude Message Threads Beta: Faster, Not Cheaper | DangMua",
+        "canonical": "https://dangmua.com/blog/claude-message-threads-beta-cuts-request-size-not-your-bill",
+        "og:title": "Claude Message Threads Beta: Faster, Not Cheaper | DangMua",
+        "og:url": "https://dangmua.com/blog/claude-message-threads-beta-cuts-request-size-not-your-bill",
+        "article:published_time": "2026-11-03T11:17:18.000Z"
+      },
+      "links": [],
+      "text_samples": []
+    },
+    "worldprogramming": {
+      "source_url": "https://www.worldprogramming.org/posts/six-of-16-common-mcp-servers-cant-be-read-from-outside-one-of-the-others-changed-19-times-in-a-month-tegekt",
+      "status": 200,
+      "final_url": "https://www.worldprogramming.org/posts/six-of-16-common-mcp-servers-cant-be-read-from-outside-one-of-the-others-changed-19-times-in-a-month-tegekt",
+      "server_date": "Wed, 18 Nov 2026 13:49:25 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "Six of 16 common MCP servers can't be read from outside. One of the others changed 19 times in a month — WPS",
+        "canonical": "https://www.worldprogramming.org/posts/six-of-16-common-mcp-servers-cant-be-read-from-outside-one-of-the-others-changed-19-times-in-a-month-tegekt",
+        "og:title": "Six of 16 common MCP servers can't be read from outside. One of the others changed 19 times in a month",
+        "og:url": "https://www.worldprogramming.org/posts/six-of-16-common-mcp-servers-cant-be-read-from-outside-one-of-the-others-changed-19-times-in-a-month-tegekt"
+      },
+      "links": [
+        {
+          "href": "https://histor.modelmarket.dev",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "href": "https://modelmarket.dev/blog/six-of-16-common-mcp-servers-cant-be-read-from-outside/changes-by-server.svg",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "href": "https://modelmarket.dev/blog/six-of-16-common-mcp-servers-cant-be-read-from-outside/firecrawl-timeline.svg",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "href": "https://modelmarket.dev/blog/same-mcp-version-different-tool-description-who-signed-it/",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "href": "https://www.npmjs.com/package/@aimarket/warden",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "href": "https://modelmarket.dev/blog/six-of-16-common-mcp-servers-cant-be-read-from-outside/stack-audit-data-2026-11-11.zip",
+          "rel": "noopener noreferrer"
+        },
+        {
+          "href": "https://dev.to/alexar76/six-of-16-common-mcp-servers-cant-be-read-from-outside-one-of-the-others-changed-19-times-in-a-1dh4",
+          "rel": "noopener"
+        }
+      ],
+      "text_samples": [
+        "erver_id , since = sys . argv [ 1 ] , sys . argv [ 2 ] api = \"https://histor.modelmarket.dev/api/v1\" url = f \"{api}/changes?watch={server_id}&limit=200\" # newest first rows = json . load ( urllib . request .",
+        " fullscreen mode A server's id is on its HISTOR page, or from https://histor.modelmarket.dev/api/v1/servers?q=<name> . The numbers move as servers change; the output above is from 11 November. For what HISTO"
+      ]
+    },
+    "lupariel": {
+      "source_url": "https://lupariel.com/x402/",
+      "status": 200,
+      "final_url": "https://lupariel.com/x402/",
+      "server_date": "Wed, 18 Nov 2026 13:49:24 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "x402: APIs que cobran por request HTTP 402 | LupaRiel",
+        "canonical": "https://lupariel.com/x402/",
+        "og:title": "x402: APIs que cobran por request HTTP 402 | LupaRiel",
+        "og:url": "https://lupariel.com/x402/"
+      },
+      "links": [],
+      "text_samples": [
+        "ra $0.03/consulta Base y Solana (USDC) RRL 3 2026-11-14 AIMarket Hub (modelmarket.dev) modelmarket.dev/x402/x402-check x402 Producción Desarrollo / Herramientas x402 $0.003 (x402-check verificado) Bas",
+        " Base y Solana (USDC) RRL 3 2026-11-14 AIMarket Hub (modelmarket.dev) modelmarket.dev/x402/x402-check x402 Producción Desarrollo / Herramientas x402 $0.003 (x402-check verificado) Base (USDC) RRL 3 20"
+      ]
+    },
+    "stork": {
+      "source_url": "https://www.stork.ai/mcp/dev-modelmarket-mcp-security",
+      "status": 200,
+      "final_url": "https://www.stork.ai/mcp/dev-modelmarket-mcp-security",
+      "server_date": "Wed, 18 Nov 2026 06:29:38 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "MCP security checks — WARDEN and HISTOR - MCP Server | Stork.AI",
+        "author": "Stork.AI",
+        "canonical": "https://www.stork.ai/mcp/dev-modelmarket-mcp-security",
+        "og:title": "MCP security checks — WARDEN and HISTOR - MCP Server",
+        "og:url": "https://www.stork.ai/mcp/dev-modelmarket-mcp-security"
+      },
+      "links": [
+        {
+          "href": "https://modelmarket.dev/tools/",
+          "rel": "noopener noreferrer"
+        }
+      ],
+      "text_samples": [
+        "vers\": { \"mcp-security-checks---warden-and-histor\": { \"url\": \"https://modelmarket.dev/tools/mcp/security\" } } } Maintain MCP security checks — WARDEN and HISTOR , or spotted a wrong detail on this pag"
+      ]
+    },
+    "mcpbeat": {
+      "source_url": "https://mcpbeat.com/mcp-servers/modelmarket/mcp-security/",
+      "status": 403
+    },
+    "protocolprobe": {
+      "source_url": "https://protocolprobe.com/mcp/servers/dev.modelmarket/mcp-security",
+      "status": 403
+    },
+    "odel": {
+      "source_url": "https://odel.app/modules/alexar76/attested-memory",
+      "status": 200,
+      "final_url": "https://odel.app/modules/alexar76/attested-memory",
+      "server_date": "Wed, 18 Nov 2026 13:49:27 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "Attested Memory Market - Odel Module Marketplace",
+        "canonical": "https://odel.app/modules/alexar76/attested-memory",
+        "og:title": "Attested Memory Market - Odel",
+        "og:url": "https://odel.app/modules/alexar76/attested-memory"
+      },
+      "links": [
+        {
+          "href": "https://github.com/alexar76/attested-memory#readme",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/actions/workflows/ci.yml",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/actions/workflows/pages.yml",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://alexar76.github.io/attested-memory/",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://attestedmemory.net/",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/tree/main/clients/python",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/LICENSE",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/aicom",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/issues",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/pulls",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/production-postgres.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://modelmarket.dev",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/memory-market/",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/truth-layer/",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/provenance-ledger/",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/mcp.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/payments.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/integrations/alien-monitor/README.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/architecture.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/capabilities.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/security.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/monetization.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory/blob/main/docs/security-audit-2026-09-06.md",
+          "rel": "noopener noreferrer nofollow"
+        },
+        {
+          "href": "https://github.com/alexar76/attested-memory",
+          "rel": "noopener noreferrer nofollow"
+        }
+      ],
+      "text_samples": [
+        " One MCP server. MCP server: One MCP server. Attested Memory Market @ alexar76 MCP server · External Attestable memory, truth, provenance. Hybrid Ed25519 + ML-DSA-65 receipts; USDC settlement o",
+        "e the Hub directly through its production MCP endpoint at https://hub.attestedmemory.net/mcp . It exposes market_search and market_invoke ; search results include a ready-to-copy max_price_usd , and the ",
+        "ent's public HTTPS origin before starting. The bootstrap announces to modelmarket.dev and independentai.network ; operators of those roots must still approve and pin the peer. See Alien Monitor integr",
+        "and contributions Developed in the AIMarket monorepo and published as alexar76/attested-memory . The published repository also carries the three product shells built on this Hub under apps/ : P",
+        "oint answered on 8 Nov 2026 Registry verified the namespace io.github.alexar76 Repository reachable, not archived Assessed by AI Jev Harmful 8 % First-party 93 % High impact 100 % Adult content",
+        "make mistakes: a guide, not a check. Requirements Runs Remote, on hub.attestedmemory.net Transport Streamable HTTP Sign-in None Credentials None asked Clients Any MCP client https://hub.attestedmemory.ne",
+        "ign-in None Credentials None asked Clients Any MCP client https://hub.attestedmemory.net/mcp The publisher’s server itself; Odel doesn’t run it. Added to your modules, Odel fronts it with one address. De",
+        "ge Python GitHub 0 stars · 0 forks · 0 issues Registry name io.github.alexar76/attested-memory alexar76/attested-memory attestedmemory.net Registry listing Tags AI memory MCP gateways & tool hu",
+        "· 0 forks · 0 issues Registry name io.github.alexar76/attested-memory alexar76/attested-memory attestedmemory.net Registry listing Tags AI memory MCP gateways & tool hubs Self-hosting & homelab",
+        "stry name io.github.alexar76/attested-memory alexar76/attested-memory attestedmemory.net Registry listing Tags AI memory MCP gateways & tool hubs Self-hosting & homelab Agent payments Similar All MCP ser",
+        "ts it. Free Free to use. Similar modules More in AI memory More from @alexar76 Browse AI memory MCP server: One MCP server. Claude Flow @ruvnet · External 81.7k 81,654 GitHub stars. AI orchestr",
+        "er: served from their own domain, namespace checked by the registry. @alexar76 · External Check, diff and history of MCP tool definitions, from a public signed log of 88k+ servers. 4% 4% chance"
+      ]
+    },
+    "vouch": {
+      "source_url": "https://vouch-protocol.com/agent-trust-index/",
+      "status": 200,
+      "final_url": "https://vouch-protocol.com/agent-trust-index/",
+      "server_date": "Wed, 18 Nov 2026 13:49:24 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "Agent Trust Index - Vouch Protocol - Vouch Protocol",
+        "canonical": "https://index.vouch-protocol.com",
+        "og:title": "98.7% of AI agents cannot prove who they are",
+        "og:url": "https://vouch-protocol.com/agent-trust-index/"
+      },
+      "links": [],
+      "text_samples": [
+        "ter-feed.fly.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket/domains modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket/emporion modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket",
+        "modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket/emporion modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket/mcp-security modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelma",
+        "lmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket/mcp-security modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket/weather modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.pages.wayrec",
+        " modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.modelmarket/weather modelmarket.dev did:web, Ed25519 (JWK) A 100 dev.pages.wayreceipt/wayreceipt wayreceipt.pages.dev did:key, key A 100 eco.reeco/ree",
+        "et/audit www.agentready.market did:web, Ed25519 (JWK) A 100 io.github.alexar76/aimarket-hub modelmarket.dev did:web, Ed25519 (JWK) A 100 io.github.alexar76/attested-memory hub.attestedmemory.ne",
+        "y.market did:web, Ed25519 (JWK) A 100 io.github.alexar76/aimarket-hub modelmarket.dev did:web, Ed25519 (JWK) A 100 io.github.alexar76/attested-memory hub.attestedmemory.net did:web, Ed25519 (JWK) A 10",
+        "6/aimarket-hub modelmarket.dev did:web, Ed25519 (JWK) A 100 io.github.alexar76/attested-memory hub.attestedmemory.net did:web, Ed25519 (JWK) A 100 io.github.ariffazil/arifos mcp.arif-fazil.com ",
+        "v did:web, Ed25519 (JWK) A 100 io.github.alexar76/attested-memory hub.attestedmemory.net did:web, Ed25519 (JWK) A 100 io.github.ariffazil/arifos mcp.arif-fazil.com did:web, Ed25519 (JWK) A 100 io.github."
+      ]
+    },
+    "x402_list": {
+      "source_url": "https://x402-list.com/services/aimarket",
+      "status": 200,
+      "final_url": "https://x402-list.com/services/aimarket",
+      "server_date": "Wed, 18 Nov 2026 13:49:33 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "AIMarket | x402 Data API | x402 List",
+        "canonical": "https://x402-list.com/services/aimarket",
+        "og:title": "AIMarket | x402 Data API | x402 List",
+        "og:url": "https://x402-list.com/services/aimarket"
+      },
+      "links": [
+        {
+          "href": "https://modelmarket.dev",
+          "rel": "nofollow noopener external"
+        }
+      ],
+      "text_samples": [
+        "sparency log, WARDEN tool-definition scan). Compare: all weather APIs modelmarket.dev ↗ Summary Price per request $0.001 to $0.03 USDC, 6 endpoints Networks Base paid in USDC Uptime 30d 99.7% monitore",
+        "iance 14/14 x402 checks pass Call it x402 v2 x402 v2 Base URL https://modelmarket.dev Payment x402 v2, header channel $ curl -i -X POST 'https:/ / modelmarket.dev/ x402/ air-quality-now' An unpaid req",
+        "rket.dev Payment x402 v2, header channel $ curl -i -X POST 'https:/ / modelmarket.dev/ x402/ air-quality-now' An unpaid request returns HTTP 402 with the payment terms. Sign a payment authorization, t",
+        "n retry with the PAYMENT-SIGNATURE header. Endpoints 6 paid routes on modelmarket.dev Route Network Price Captured POST / x402/ air-quality-now Base $0.001 since 10-04 POST / x402/ fair-random Base $0",
+        "55:8453\", \"maxTimeoutSeconds\": 300 } ], \"resource\": { \"url\": \"https://modelmarket.dev/x402/weather-now\", \"tags\": [ \"weather\", \"iot\", \"data\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmarket.dev/.we",
+        ": [ \"weather\", \"iot\", \"data\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png\", \"mimeType\": \"application/json\", \"description\": \"Current weather at a place",
+        "55:8453\", \"maxTimeoutSeconds\": 300 } ], \"resource\": { \"url\": \"https://modelmarket.dev/x402/air-quality-now\", \"tags\": [ \"air-quality\", \"pm2.5\", \"data\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmark",
+        "ir-quality\", \"pm2.5\", \"data\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png\", \"mimeType\": \"application/json\", \"description\": \"Current air quality at a p",
+        "55:8453\", \"maxTimeoutSeconds\": 300 } ], \"resource\": { \"url\": \"https://modelmarket.dev/x402/nearby-sensors\", \"tags\": [ \"sensors\", \"geo\", \"data\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmarket.dev/",
+        ": [ \"sensors\", \"geo\", \"data\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png\", \"mimeType\": \"application/json\", \"description\": \"The nearest live public se",
+        "55:8453\", \"maxTimeoutSeconds\": 300 } ], \"resource\": { \"url\": \"https://modelmarket.dev/x402/fair-random\", \"tags\": [ \"randomness\", \"vrf\", \"fairness\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmarket.",
+        "ndomness\", \"vrf\", \"fairness\", \"signed-receipt\" ], \"iconUrl\": \"https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.png\", \"mimeType\": \"application/json\", \"description\": \"Verifiable random bytes fo"
+      ]
+    },
+    "atlas": {
+      "source_url": "https://atlas.infoharmoni.com/s/modelmarket.dev/",
+      "status": 200,
+      "final_url": "https://atlas.infoharmoni.com/s/modelmarket.dev/",
+      "server_date": "Wed, 18 Nov 2026 13:49:25 GMT",
+      "truncated": false,
+      "meta": {
+        "title": "modelmarket.dev — how this x402 seller is doing · Infoharmoni Atlas2026-11-08: 55 paid calls (30 d)2026-11-10: 46 paid calls (30 d)2026-11-11: 56 paid calls (30 d)2026-11-12: 58 paid calls (30 d)2026-11-13: 57 paid calls (30 d)2026-11-14: 56 paid calls (30 d)2026-11-15: 56 paid calls (30 d)2026-11-16: 60 paid calls (30 d)2026-11-17: 61 paid calls (30 d)",
+        "canonical": "https://atlas.infoharmoni.com/s/modelmarket.dev/",
+        "og:title": "modelmarket.dev — how this x402 seller is doing · Infoharmoni Atlas",
+        "og:url": "https://atlas.infoharmoni.com/s/modelmarket.dev/"
+      },
+      "links": [],
+      "text_samples": [
+        " modelmarket.dev — how this x402 seller is doing · Infoharmoni Atlas Skip to the record Infoharmoni Atlas x402 Base Search the reco",
+        " Docs Company About Contact Receipts Pro Sellers / crypto & markets / modelmarket.dev mo modelmarket.dev WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding wit",
+        " Contact Receipts Pro Sellers / crypto & markets / modelmarket.dev mo modelmarket.dev WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding with the matched text ",
+        "onships — over x402 on Base: GET https://ausrine-who.onrender.com/who/modelmarket.dev , a tenth of a cent a call, paid in USDC by the agent itself. A refusal is never charged. $ curl https://ausrine-w",
+        "refusal is never charged. $ curl https://ausrine-who.onrender.com/who/modelmarket.dev 402 Payment Required → the agent pays $0.001 in USDC on Base 200 {\"host\": \"modelmarket.dev\", \"rank_by_calls\": 522,",
+        "ayment Required → the agent pays $0.001 in USDC on Base 200 {\"host\": \"modelmarket.dev\", \"rank_by_calls\": 522, …} How the paid API works How to read these numbers Source: the public x402 discovery regi"
+      ]
+    },
+    "esim_feedback": {
+      "source_url": "https://dev.to/api/comments?a_id=5032052",
+      "status": 200,
+      "final_url": "https://dev.to/api/comments?a_id=5032052",
+      "server_date": "Wed, 18 Nov 2026 13:49:24 GMT",
+      "truncated": false,
+      "evidence": [
+        {
+          "author": "whiteknightonhorse",
+          "at": "2026-11-17T10:33:55Z",
+          "id": "3ldcg",
+          "text": "On the seller side, the hard part is the gap between the offer and the payment. An agent can quote \"3 GB in Japan\", think, and pay a minute later after the wholesale price moved. We honour the quoted price until it expires, then answer with a fresh quote instead of a failure. How does the kit handle an offer that goes stale before payment?"
+        },
+        {
+          "author": "whiteknightonhorse",
+          "at": "2026-11-18T01:27:34Z",
+          "id": "3lfb5",
+          "text": "Thanks for the full walk-through. Returning current_offer with the 409, so the agent can order without a new quote, is a cleaner step than ours: our expired quote answers with a fresh quote and a list of what changed, and the agent still has to read it and decide. The below-cost rule makes sense for a reseller. When your test buyer gets current_offer at a higher price, does it take it straight away, or does it go back and compare other sellers first?"
+        }
+      ]
+    },
+    "npm_warden": {
+      "source_url": "https://api.npmjs.org/downloads/point/last-week/@aimarket/warden",
+      "status": 200,
+      "final_url": "https://api.npmjs.org/downloads/point/last-week/@aimarket/warden",
+      "server_date": "Wed, 18 Nov 2026 13:49:25 GMT",
+      "truncated": false,
+      "evidence": {
+        "downloads": 1463,
+        "start": "2026-11-11",
+        "end": "2026-11-17",
+        "package": "@aimarket/warden"
+      }
+    },
+    "npm_argus": {
+      "source_url": "https://api.npmjs.org/downloads/point/last-week/@alexar76/argus3",
+      "status": 200,
+      "final_url": "https://api.npmjs.org/downloads/point/last-week/@alexar76/argus3",
+      "server_date": "Wed, 18 Nov 2026 13:49:25 GMT",
+      "truncated": false,
+      "evidence": {
+        "downloads": 567,
+        "start": "2026-11-11",
+        "end": "2026-11-17",
+        "package": "@alexar76/argus3"
+      }
+    },
+    "npm_esim": {
+      "source_url": "https://api.npmjs.org/downloads/point/last-week/@aimarket/esim-rails",
+      "status": 200,
+      "final_url": "https://api.npmjs.org/downloads/point/last-week/@aimarket/esim-rails",
+      "server_date": "Wed, 18 Nov 2026 13:49:25 GMT",
+      "truncated": false,
+      "evidence": {
+        "downloads": 196,
+        "start": "2026-11-11",
+        "end": "2026-11-17",
+        "package": "@aimarket/esim-rails"
+      }
+    },
+    "hf_histor": {
+      "source_url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+      "status": 200,
+      "final_url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+      "server_date": "Wed, 18 Nov 2026 13:49:25 GMT",
+      "truncated": false,
+      "evidence": {
+        "id": "alexar76/histor-mcp-tool-definitions",
+        "downloads": 360,
+        "likes": 0,
+        "lastModified": "2026-11-16T07:54:44.000Z"
+      }
+    },
+    "sentinel_requirements": {
+      "source_url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/aimarket-sentinel/requirements.txt",
+      "status": 200,
+      "final_url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/main/aimarket-sentinel/requirements.txt",
+      "server_date": "Wed, 18 Nov 2026 13:49:25 GMT",
+      "truncated": false,
+      "reference_lines": [
+        "git+https://github.com/alexar76/aimarket-hub.git@2310569f1e4e50e1062d80725bd69ae313042a69"
+      ]
+    }
+  }
+}

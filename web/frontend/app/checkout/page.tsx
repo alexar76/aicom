@@ -40,8 +40,7 @@ interface ChainInfo {
 const SUPPORTED_CHAINS: ChainInfo[] = [
   { id: 'base', name: 'Base', icon: '🔵', tokens: ['USDT', 'USDC'] },
   { id: 'arbitrum', name: 'Arbitrum', icon: '🔴', tokens: ['USDT', 'USDC'] },
-  { id: 'ethereum', name: 'Ethereum', icon: '💎', tokens: ['ETH', 'USDT', 'USDC'] },
-  { id: 'solana', name: 'Solana', icon: '🟣', tokens: ['USDC', 'SOL'] },
+  { id: 'solana', name: 'Solana', icon: '🟣', tokens: ['USDC'] },
 ];
 
 // ── EVM chain IDs for wallet switching ─────────────────────────────────────
@@ -140,13 +139,6 @@ const CHAIN_CONFIG_MAINNET: Record<string, ChainConfig> = {
     ['https://arb1.arbitrum.io/rpc', 'https://arbitrum.llamarpc.com'],
     'https://arbiscan.io/tx/',
   ),
-  ethereum: makeChainConfig(
-    1,
-    'Ethereum Mainnet',
-    'ETHEREUM',
-    ['https://cloudflare-eth.com', 'https://eth.llamarpc.com'],
-    'https://etherscan.io/tx/',
-  ),
 };
 
 const CHAIN_CONFIG_TESTNET: Record<string, ChainConfig> = {
@@ -164,19 +156,12 @@ const CHAIN_CONFIG_TESTNET: Record<string, ChainConfig> = {
     ['https://sepolia-rollup.arbitrum.io/rpc'],
     'https://sepolia.arbiscan.io/tx/',
   ),
-  ethereum: makeChainConfig(
-    11155111,
-    'Sepolia',
-    'ETHEREUM_TESTNET',
-    ['https://rpc.sepolia.org', 'https://ethereum-sepolia-rpc.publicnode.com'],
-    'https://sepolia.etherscan.io/tx/',
-  ),
 };
 
 export default function CheckoutPage() {
   const router = useRouter();
   const [selectedChain, setSelectedChain] = useState('base');
-  const [selectedToken, setSelectedToken] = useState('USDT');
+  const [preferredToken, setSelectedToken] = useState('USDT');
   const [amount, setAmount] = useState('10');
   const [productId, setProductId] = useState('');
   const [step, setStep] = useState<Step>('form');
@@ -197,6 +182,8 @@ export default function CheckoutPage() {
   const [pendingConfirmations, setPendingConfirmations] = useState(0);
   const [supportedChains, setSupportedChains] = useState<ChainInfo[]>(SUPPORTED_CHAINS);
 
+  const availableTokens = supportedChains.find((chain) => chain.id === selectedChain)?.tokens ?? [];
+  const selectedToken = availableTokens.includes(preferredToken) ? preferredToken : availableTokens[0];
   const chainConfig = paymentTestnet ? CHAIN_CONFIG_TESTNET : CHAIN_CONFIG_MAINNET;
 
   // Wallet state
@@ -244,7 +231,8 @@ export default function CheckoutPage() {
     if (savedEmail) setCustomerEmail(savedEmail);
     api.getSupportedChains().then((meta: any) => {
       if (Array.isArray(meta?.chains) && meta.chains.length > 0) {
-        setSupportedChains(meta.chains);
+        // An older API may still advertise Ethereum during a rolling update.
+        setSupportedChains(meta.chains.filter((chain: ChainInfo) => chain.id !== 'ethereum'));
       }
       setPaymentTestnet(Boolean(meta?.testnet));
       setVerifyStub(Boolean(meta?.verify_stub));
@@ -329,7 +317,7 @@ export default function CheckoutPage() {
   // ── Payment handlers ───────────────────────────────────────────────────
 
   const handleCreatePayment = async () => {
-    if (!productId || !amount) return;
+    if (!productId || !amount || !selectedToken) return;
 
     setStep('payment');
     setErrorMessage('');
@@ -509,11 +497,11 @@ export default function CheckoutPage() {
             <span className="text-gradient">Crypto</span> Checkout
           </h1>
           <p className="text-gray-400">
-            Pay with USDT, USDC, or ETH on your preferred blockchain
+            Pay with USDT or USDC on a supported network
           </p>
           {paymentTestnet && (
             <p className="mt-3 text-sm text-amber-300">
-              Testnet mode — use Sepolia / Base Sepolia funds only
+              Testnet mode — use testnet funds only
               {verifyStub ? ' (stub confirmations enabled for drills)' : ''}
             </p>
           )}
@@ -647,7 +635,7 @@ export default function CheckoutPage() {
                     Token
                   </label>
                   <div className="flex gap-3">
-                    {supportedChains.find((c) => c.id === selectedChain)?.tokens.map(
+                    {availableTokens.map(
                       (token) => (
                         <button
                           key={token}
@@ -676,7 +664,7 @@ export default function CheckoutPage() {
                   className="w-full"
                   size="lg"
                   onClick={handleCreatePayment}
-                  disabled={!productId || !amount || !customerEmail}
+                  disabled={!productId || !amount || !customerEmail || !selectedToken}
                   icon={<Wallet className="w-5 h-5" />}
                 >
                   Pay {amount} {selectedToken}

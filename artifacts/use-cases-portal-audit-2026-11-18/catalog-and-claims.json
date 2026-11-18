@@ -1,0 +1,980 @@
+{
+  "observed_utc": "2026-11-18T14:22:06.010573+00:00",
+  "sources": {
+    "homepage": {
+      "url": "https://use.modelmarket.dev/",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:09 GMT",
+      "sha256": "4aefd4e2e80dc555426ee221d18a7f30268caf6c3d12847954fa982bd76664e9"
+    },
+    "boards": {
+      "url": "https://use.modelmarket.dev/data/boards.json",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:09 GMT",
+      "sha256": "c960dbc5dc896f228db5c681fe4c534e6841ddc9e5b9ed8f33f1a1d6c34bde85"
+    },
+    "en": {
+      "url": "https://use.modelmarket.dev/locales/en.json",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:10 GMT",
+      "sha256": "ce2b33cacb6213a37d7c51b0d127a36a6fe2ebf460b5e7ba3fad8761b43b0800"
+    },
+    "ru": {
+      "url": "https://use.modelmarket.dev/locales/ru.json",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:10 GMT",
+      "sha256": "44fb8bd9b51d200d33f7ce794197ba214db3efd91954410ce81b9130a9b53294"
+    },
+    "hub_discovery": {
+      "url": "https://modelmarket.dev/.well-known/ai-market.json",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:10 GMT",
+      "sha256": "a8a028ac9d4e3e01d5e89d0e2b57c3b2970c43705b8a6943587f25327d5c4899"
+    },
+    "hub_manifest": {
+      "url": "https://modelmarket.dev/ai-market/v2/manifest",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:10 GMT",
+      "sha256": "d4728d972ff7b5eb1bb2c363ccdf80e7fa95ee58a4884acfdaeff43a7968e907"
+    },
+    "gaia_manifest": {
+      "url": "https://iot.modelmarket.dev/ai-market/v2/manifest",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:10 GMT",
+      "sha256": "34d4215e6dc9311e70ec84c5bec1e0dbe26075197a1ac8c4ce31f770b8e636bf"
+    },
+    "atlas_manifest": {
+      "url": "https://atlas.modelmarket.dev/ai-market/v2/manifest",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:10 GMT",
+      "sha256": "6542637f5ba23a595b4859af0d85097210db366365a4acb78e08bdabe02466f0"
+    },
+    "x402": {
+      "url": "https://modelmarket.dev/.well-known/x402",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:10 GMT",
+      "sha256": "b1d915ebe756208729c4d9b645ef8cd1e9bfa2e5b03795d4fd3ee800583023c6"
+    },
+    "observed": {
+      "url": "https://modelmarket.dev/ai-market/v2/federation/observed-sellers",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:11 GMT",
+      "sha256": "e7f4cb2171c23f67df162a02ee3207f0e7a58266b4ecda38eb0a274396b178b6"
+    },
+    "snapshot": {
+      "url": "https://use.modelmarket.dev/live/snapshot.json",
+      "status": 200,
+      "date": "Wed, 18 Nov 2026 13:24:11 GMT",
+      "sha256": "44454c59ff44f5eb45bb6f27052f22145d1e970bff3ded6099a99c02167ea4c1"
+    }
+  },
+  "portal_price_cards": {
+    "weather-risk": {
+      "capabilityId": "gaia.weather.read@v1",
+      "priceUsd": "0.001",
+      "source": "GAIA selected weather relay"
+    },
+    "fire-hotspot": {
+      "capabilityId": "atlas.fire.weather@v1",
+      "priceUsd": "0.080",
+      "source": "NASA FIRMS and/or Copernicus EFFIS + bounded GAIA weather context"
+    },
+    "verified-watchbox": {
+      "capabilityId": "atlas.watchbox.check@v1",
+      "priceUsd": "0.020",
+      "source": "ATLAS LIVE fleet snapshot"
+    },
+    "flood-hydrology": {
+      "capabilityId": "atlas.situation.brief@v1",
+      "priceUsd": "0.060",
+      "source": "ATLAS cited LIVE flood + river snapshot (US NWS CAP flood; not a flood model)"
+    },
+    "nordic-ais": {
+      "capabilityId": "gaia.ais.public.read@v1",
+      "priceUsd": "0.002",
+      "source": "Fintraffic Digitraffic (CC BY 4.0, Finnish waters) + Kystverket/BarentsWatch (NLOD 2.0, Norwegian waters); each reading carries its own attribution; not own-edge AIS"
+    },
+    "campus-nowcast": {
+      "capabilityId": "atlas.situation.brief@v1",
+      "priceUsd": "0.060",
+      "source": "ATLAS default-layer LIVE brief over a campus bbox"
+    },
+    "situation-brief": {
+      "capabilityId": "atlas.situation.brief@v1",
+      "priceUsd": "0.060",
+      "source": "ATLAS cited LIVE layer snapshot"
+    },
+    "nearest-read": {
+      "capabilityId": "atlas.nearest.read@v1",
+      "priceUsd": "0.030",
+      "source": "ATLAS LIVE spatial index"
+    },
+    "cyclone-watch": {
+      "capabilityId": "gaia.cyclone.read@v1",
+      "priceUsd": "0.002",
+      "source": "NOAA NHC/CPHC CurrentStorms.json (U.S. public domain; Atlantic + East/Central Pacific; advisory position, not a forecast track)"
+    },
+    "england-river-gauge": {
+      "capabilityId": "gaia.river.read@v1",
+      "priceUsd": "0.001",
+      "source": "Environment Agency Hydrology API in-situ (OGL v3), England only — not ea-flood-01 CAP warning; not SEPA/NRW; not PEGELONLINE"
+    },
+    "rhine-nl-gauge": {
+      "capabilityId": "gaia.river.read@v1",
+      "priceUsd": "0.001",
+      "source": "Rijkswaterstaat WaterWebservices in-situ (CC0); Lobith/Tiel expose discharge+stage — not PEGELONLINE DE, not EA England, not a flood CAP"
+    },
+    "usace-reservoir": {
+      "capabilityId": "gaia.reservoir.read@v1",
+      "priceUsd": "0.001",
+      "source": "USACE CWMS Elev + Stor hourly series (U.S. public domain); pool elevation and storage — not a flood warning product, not USGS river stage alone"
+    },
+    "ireland-synoptic": {
+      "capabilityId": "gaia.weather.read@v1",
+      "priceUsd": "0.001",
+      "source": "Met Éireann synoptic observations (CC BY 4.0 — five-line attribution); T/RH/wind/rain/pressure — not Open-Meteo as in-situ, not UK/NL land stations"
+    },
+    "pv-irradiance-record": {
+      "capabilityId": "atlas.pv.irradiance.record@v1",
+      "priceUsd": "0.15",
+      "copy_key": "idea.pv-irradiance-record.teaser"
+    },
+    "geomag-window": {
+      "capabilityId": "atlas.geomag.window@v1",
+      "priceUsd": "0.05",
+      "copy_key": "idea.geomag-window.teaser"
+    },
+    "smoke-operations": {
+      "capabilityId": "atlas.smoke.operations@v1",
+      "priceUsd": "0.12",
+      "copy_key": "idea.smoke-operations.teaser"
+    },
+    "desk-presets": {
+      "capabilityId": "atlas.situation.brief@v1",
+      "priceUsd": "0.06",
+      "copy_key": "idea.desk-presets.teaser"
+    },
+    "route-integrity": {
+      "capabilityId": "atlas.route.integrity@v1",
+      "priceUsd": "0.25",
+      "copy_key": "idea.route-integrity.teaser"
+    },
+    "observability-attest": {
+      "capabilityId": "atlas.observability.attest@v1",
+      "priceUsd": "0.10",
+      "copy_key": "idea.observability-attest.teaser"
+    }
+  },
+  "catalog": {
+    "hub_manifest": [
+      {
+        "capability_id": "gaia.weather.read@v1",
+        "product_id": "gaia.gateway",
+        "source_hub": "https://iot.modelmarket.dev",
+        "price_per_call_usd": 0.001,
+        "routed_price_usd": 0.00101,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "gaia.river.read@v1",
+        "product_id": "gaia.gateway",
+        "source_hub": "https://iot.modelmarket.dev",
+        "price_per_call_usd": 0.001,
+        "routed_price_usd": 0.00101,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "gaia.reservoir.read@v1",
+        "product_id": "gaia.gateway",
+        "source_hub": "https://iot.modelmarket.dev",
+        "price_per_call_usd": 0.001,
+        "routed_price_usd": 0.00101,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "gaia.ais.public.read@v1",
+        "product_id": "gaia.gateway",
+        "source_hub": "https://iot.modelmarket.dev",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "gaia.cyclone.read@v1",
+        "product_id": "gaia.gateway",
+        "source_hub": "https://iot.modelmarket.dev",
+        "price_per_call_usd": 0.002,
+        "routed_price_usd": 0.00202,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.watchbox.check@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.02,
+        "routed_price_usd": 0.0202,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.fire.weather@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.08,
+        "routed_price_usd": 0.0808,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.situation.brief@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.06,
+        "routed_price_usd": 0.0606,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.nearest.read@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.03,
+        "routed_price_usd": 0.0303,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.pv.irradiance.record@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.15,
+        "routed_price_usd": 0.1515,
+        "routing_fee_bps": 100,
+        "invoke_url": "https://modelmarket.dev/ai-market/v2/invoke"
+      }
+    ],
+    "gaia_manifest": [
+      {
+        "capability_id": "gaia.weather.read@v1",
+        "product_id": "gaia.gateway",
+        "price_per_call_usd": 0.001
+      },
+      {
+        "capability_id": "gaia.river.read@v1",
+        "product_id": "gaia.gateway",
+        "price_per_call_usd": 0.001
+      },
+      {
+        "capability_id": "gaia.reservoir.read@v1",
+        "product_id": "gaia.gateway",
+        "price_per_call_usd": 0.001
+      },
+      {
+        "capability_id": "gaia.ais.public.read@v1",
+        "product_id": "gaia.gateway",
+        "price_per_call_usd": 0.002
+      },
+      {
+        "capability_id": "gaia.cyclone.read@v1",
+        "product_id": "gaia.gateway",
+        "price_per_call_usd": 0.002
+      }
+    ],
+    "atlas_manifest": [
+      {
+        "capability_id": "atlas.watchbox.check@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.02,
+        "invoke_url": "https://atlas.modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.fire.weather@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.08,
+        "invoke_url": "https://atlas.modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.situation.brief@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.06,
+        "invoke_url": "https://atlas.modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.nearest.read@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.03,
+        "invoke_url": "https://atlas.modelmarket.dev/ai-market/v2/invoke"
+      },
+      {
+        "capability_id": "atlas.pv.irradiance.record@v1",
+        "product_id": "atlas.products",
+        "source_hub": "https://atlas.modelmarket.dev",
+        "price_per_call_usd": 0.15,
+        "invoke_url": "https://atlas.modelmarket.dev/ai-market/v2/invoke"
+      }
+    ]
+  },
+  "portal_claims": {
+    "en": {
+      "hero.h1": "Know where data came from. Pay when declared checks pass.",
+      "system.label": "One system, not separate projects",
+      "system.title": "How verifiable provenance becomes economic value",
+      "system.sub": "Each stage makes the next one possible; shared rails lower the cost of launching another vertical product.",
+      "system.s1t": "Physical source",
+      "system.s1d": "A device or external feed observes the world.",
+      "system.s2t": "Signed reading",
+      "system.s2d": "Identity, signature, and sequence preserve provenance.",
+      "system.s3t": "Verification",
+      "system.s3d": "LIVE stays distinct from SIM and invalid evidence fails closed.",
+      "system.s4t": "Paid invoke",
+      "system.s4d": "Agents and apps buy one capability call.",
+      "system.s5t": "Verified settlement",
+      "system.s5d": "Valid result → pay; fault → refund; silence → $0.",
+      "system.s6t": "Vertical product",
+      "system.s6d": "A builder turns the receipt-backed fact into a decision.",
+      "system.m1t": "Per-reading attestation",
+      "system.m1d": "Auditability and fewer provenance disputes.",
+      "system.m2t": "Pay-on-Verified",
+      "system.m2d": "Buyers pay for usable results, not failed delivery.",
+      "system.m3t": "Shared capabilities",
+      "system.m3d": "New products reuse identity, verification, billing, and receipts.",
+      "case4.tag": "Settlement",
+      "case4.h3": "Physics as the escrow judge",
+      "case4.p": "Money moves when the attestation clears. Bad data has an economic end.",
+      "case4.link": "GAIA on GitHub",
+      "case4.flow.aria": "Pay-on-Verified flow: sensor, signature, invoke, verification, settlement",
+      "case4.flow.title": "GAIA reading → Pay-on-Verified settlement",
+      "case4.flow.sensor": "Sensor",
+      "case4.flow.sensorDetail": "physical reading",
+      "case4.flow.sign": "Sign",
+      "case4.flow.signDetail": "Ed25519 device key",
+      "case4.flow.invoke": "Invoke",
+      "case4.flow.invokeDetail": "funds held by Hub",
+      "case4.flow.verify": "Verify",
+      "case4.flow.verifyDetail": "GAIA /v1/verify",
+      "case4.flow.settle": "Settle",
+      "case4.flow.settleDetail": "capture or refund",
+      "case4.flow.note": "The result returns immediately · money moves only after the verdict",
+      "ob.buy.who": "For agents and apps that buy attested readings — pay-per-call.",
+      "ob.buy.s1t": "Discover on Hub",
+      "ob.buy.s1d": "Find gaia.weather.read@v1 (also fire / radiation / jamming) or ATLAS composites (nearest / fire.weather / situation.brief). Price is micro.",
+      "ob.buy.s1a": "Open Hub",
+      "ob.buy.s2t": "Run the live example",
+      "ob.buy.s2d": "Try GAIA weather in Playground and inspect the signed receipt. This federated example does not use Pay-on-Verified settlement.",
+      "ob.buy.s2a": "Open Playground",
+      "ob.buy.s3t": "Repeat from your app",
+      "ob.buy.s3d": "Download a consumer starter, discover the offer and authorize one call with a price ceiling. Keep the receipt; its signature does not prove the reading is true.",
+      "ob.buy.s3a": "Consumer workspace",
+      "maturity.live": "A product or callable surface operates now.",
+      "maturity.ready": "Shared rails exist; a focused application layer remains.",
+      "maturity.example": "A third-party desk that already buys live SKUs — not a first-party product.",
+      "maturity.partner": "The path needs domain validation with a partner.",
+      "maturity.idea": "A possible application that still needs demand evidence.",
+      "idea.state.live.gate": "CHECKS PASS",
+      "idea.state.live.settlement": "ELIGIBLE",
+      "idea.state.live.explain": "In a real invoke, declared provenance, freshness, and signature checks must pass before the result is eligible for payment.",
+      "idea.state.live.verdict": "ELIGIBLE",
+      "idea.receipt.live.note": "Schema illustration only. No network invoke or cryptographic verification happened on this page.",
+      "cases.refLabel": "Reference desks",
+      "cases.refSub": "Independent products that already buy these SKUs. Fork the pattern. We are not the merchant."
+    },
+    "ru": {
+      "hero.h1": "Понятно, откуда пришли данные. Оплата — когда заявленные проверки пройдены.",
+      "system.label": "Единая система, а не набор проектов",
+      "system.title": "Как проверяемое происхождение данных превращается в экономическую ценность",
+      "system.sub": "Каждый этап делает возможным следующий; общая инфраструктура снижает стоимость запуска продуктов для новых отраслей.",
+      "system.s1t": "Физический источник",
+      "system.s1d": "Устройство или внешний поток наблюдает за миром.",
+      "system.s2t": "Подписанное показание",
+      "system.s2d": "Идентификатор, подпись и seq сохраняют происхождение.",
+      "system.s3t": "Проверка",
+      "system.s3d": "LIVE отделён от SIM, невалидное доказательство отклоняется.",
+      "system.s4t": "Платный invoke",
+      "system.s4d": "Агенты и приложения покупают один вызов capability.",
+      "system.s5t": "Проверенный расчёт",
+      "system.s5d": "Валидно → оплата; сбой → возврат; тишина → $0.",
+      "system.s6t": "Вертикальный продукт",
+      "system.s6d": "Разработчик превращает факт с квитанцией в решение.",
+      "system.m1t": "Аттестация каждого показания",
+      "system.m1d": "Аудируемость и меньше споров о происхождении.",
+      "system.m2t": "Pay-on-Verified",
+      "system.m2d": "Покупатель платит за пригодный результат, а не за сбой доставки.",
+      "system.m3t": "Общие capabilities",
+      "system.m3d": "Новые продукты переиспользуют идентификацию, проверку, биллинг и квитанции.",
+      "case4.tag": "Расчёт",
+      "case4.h3": "Физика как судья эскроу",
+      "case4.p": "Деньги двигаются, когда аттестация проходит. У плохих данных есть экономический конец.",
+      "case4.link": "GAIA на GitHub",
+      "case4.flow.aria": "Схема Pay-on-Verified: датчик, подпись, вызов, проверка и расчёт",
+      "case4.flow.title": "Показание GAIA → расчёт Pay-on-Verified",
+      "case4.flow.sensor": "Датчик",
+      "case4.flow.sensorDetail": "физическое показание",
+      "case4.flow.sign": "Подпись",
+      "case4.flow.signDetail": "ключ устройства Ed25519",
+      "case4.flow.invoke": "Вызов",
+      "case4.flow.invokeDetail": "Hub удерживает средства",
+      "case4.flow.verify": "Проверка",
+      "case4.flow.verifyDetail": "GAIA /v1/verify",
+      "case4.flow.settle": "Расчёт",
+      "case4.flow.settleDetail": "списание или возврат",
+      "case4.flow.note": "Результат возвращается сразу · деньги двигаются только после вердикта",
+      "ob.buy.who": "Для агентов и приложений, которые покупают аттестованные показания — pay-per-call.",
+      "ob.buy.s1t": "Найти на Hub",
+      "ob.buy.s1d": "Найди gaia.weather.read@v1 (также fire / radiation / jamming) или ATLAS composites (nearest / fire.weather / situation.brief). Цена micro.",
+      "ob.buy.s1a": "Открыть Hub",
+      "ob.buy.s2t": "Запустите живой пример",
+      "ob.buy.s2d": "Попробуйте погоду GAIA в Playground и изучите подписанную квитанцию. Этот федеративный пример не использует расчёт Pay-on-Verified.",
+      "ob.buy.s2a": "Открыть Playground",
+      "ob.buy.s3t": "Повторите из своего приложения",
+      "ob.buy.s3d": "Скачайте проект потребителя, найдите предложение и разрешите один вызов с пределом цены. Сохраните квитанцию: её подпись не доказывает достоверность показания.",
+      "ob.buy.s3a": "Рабочее пространство потребителя",
+      "maturity.live": "Продукт или вызываемая поверхность уже работает.",
+      "maturity.ready": "Общая инфраструктура готова; осталось построить прикладной продукт.",
+      "maturity.example": "Сторонний стол уже покупает LIVE SKU — это не продукт первого лица.",
+      "maturity.partner": "Направлению нужна отраслевая проверка с партнёром.",
+      "maturity.idea": "Потенциальному применению ещё нужны доказательства спроса.",
+      "idea.state.live.gate": "ПРОВЕРКИ ПРОЙДЕНЫ",
+      "idea.state.live.settlement": "ДОПУСК К ОПЛАТЕ",
+      "idea.state.live.explain": "В реальном вызове заявленные проверки происхождения, актуальности и подписи должны пройти до допуска результата к оплате.",
+      "idea.state.live.verdict": "ДОПУЩЕНО",
+      "idea.receipt.live.note": "Это только иллюстрация схемы. Страница не выполняла сетевой вызов или криптографическую проверку.",
+      "cases.refLabel": "Референтные столы",
+      "cases.refSub": "Независимые продукты, которые уже покупают эти SKU. Копируйте паттерн. Мы не продавец."
+    }
+  },
+  "idea_cards": {
+    "weather-risk": {
+      "chip": "live-wedge",
+      "title": "Weather Risk Analyst",
+      "cta": "https://modelmarket.dev",
+      "live_path": [
+        "https://modelmarket.dev",
+        "https://iot.modelmarket.dev",
+        "https://atlas.modelmarket.dev"
+      ]
+    },
+    "sensor-publisher": {
+      "chip": "live-rails",
+      "title": "Sensor publisher kit",
+      "cta": "https://atlas.modelmarket.dev",
+      "live_path": [
+        "https://atlas.modelmarket.dev",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "fire-hotspot": {
+      "chip": "live-wedge",
+      "title": "Fire + Weather Evidence Snapshot",
+      "cta": "https://atlas.modelmarket.dev/?layers=fire,weather",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=fire,weather",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "verified-watchbox": {
+      "chip": "live-wedge",
+      "title": "ATLAS Verified Watchbox",
+      "cta": "https://atlas.modelmarket.dev/docs",
+      "live_path": [
+        "https://atlas.modelmarket.dev",
+        "https://atlas.modelmarket.dev/docs",
+        "https://atlas.modelmarket.dev/api/v1/watchboxes"
+      ]
+    },
+    "emberline-desk": {
+      "chip": "example",
+      "title": "Emberline Fire Evidence Desk",
+      "cta": "https://emberlinedesk.com/",
+      "live_path": [
+        "https://emberlinedesk.com/sample",
+        "https://emberlinedesk.com/",
+        "ideas.html?v=20261007-onboarding&id=fire-hotspot"
+      ]
+    },
+    "flood-hydrology": {
+      "chip": "live-wedge",
+      "title": "Flood Hydrology Evidence",
+      "cta": "https://atlas.modelmarket.dev/?layers=flood,river",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=flood,river",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "nordic-ais": {
+      "chip": "live-wedge",
+      "title": "Nordic Public AIS Snapshot",
+      "cta": "https://atlas.modelmarket.dev/?layers=ais",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=ais",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "tsunami-cap": {
+      "chip": "idea",
+      "title": "Tsunami CAP Watch",
+      "cta": "https://atlas.modelmarket.dev/?layers=tsunami",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=tsunami",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "campus-nowcast": {
+      "chip": "live-wedge",
+      "title": "Campus Physical Nowcast",
+      "cta": "https://atlas.modelmarket.dev",
+      "live_path": [
+        "https://atlas.modelmarket.dev",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "situation-brief": {
+      "chip": "live-wedge",
+      "title": "Situation Brief (ATLAS > parts)",
+      "cta": "https://atlas.modelmarket.dev",
+      "live_path": [
+        "https://atlas.modelmarket.dev",
+        "https://atlas.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "nearest-read": {
+      "chip": "live-wedge",
+      "title": "Nearest LIVE by coordinates",
+      "cta": "https://atlas.modelmarket.dev",
+      "live_path": [
+        "https://atlas.modelmarket.dev",
+        "https://atlas.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "gnss-jamming-alert": {
+      "chip": "idea",
+      "title": "GNSS Threat Watchbox",
+      "cta": "https://atlas.modelmarket.dev/?layers=jamming",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=jamming",
+        "https://iot.modelmarket.dev",
+        "https://atlas.modelmarket.dev/?layers=jamming"
+      ]
+    },
+    "parametric-trigger": {
+      "chip": "partner",
+      "title": "Parametric TriggerEvent",
+      "cta": "https://iot.modelmarket.dev",
+      "live_path": []
+    },
+    "evidence-export": {
+      "chip": "idea",
+      "title": "Evidence export API",
+      "cta": "https://verify.modelmarket.dev",
+      "live_path": []
+    },
+    "capability-15": {
+      "chip": "live",
+      "title": "Capability in 15 minutes",
+      "cta": "https://modelmarket.dev",
+      "live_path": []
+    },
+    "hub-embed": {
+      "chip": "live",
+      "title": "Hub embed widget",
+      "cta": "https://modelmarket.dev/widget/demo",
+      "live_path": []
+    },
+    "warden-mcp": {
+      "chip": "live",
+      "title": "WARDEN for your MCP stack",
+      "cta": "https://magic-ai-factory.com/argus/",
+      "live_path": []
+    },
+    "metis-answers": {
+      "chip": "live",
+      "title": "Metis verified answers",
+      "cta": "https://metis.modelmarket.dev",
+      "live_path": []
+    },
+    "awr-receipts": {
+      "chip": "live",
+      "title": "AWR work receipts",
+      "cta": "https://verify.modelmarket.dev",
+      "live_path": []
+    },
+    "factory-oneshot": {
+      "chip": "live",
+      "title": "Brief → shippable product",
+      "cta": "https://magic-ai-factory.com",
+      "live_path": []
+    },
+    "fair-draw": {
+      "chip": "live",
+      "title": "Fair draw / VRF pattern",
+      "cta": "https://lottery.modelmarket.dev",
+      "live_path": []
+    },
+    "momus-gate": {
+      "chip": "partner",
+      "title": "MOMUS → deploy gate",
+      "cta": "https://momus.modelmarket.dev",
+      "live_path": []
+    },
+    "cyclone-watch": {
+      "chip": "live-wedge",
+      "title": "Named-Storm Watch",
+      "cta": "https://atlas.modelmarket.dev/?layers=cyclone",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=cyclone",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "adsb-overflight": {
+      "chip": "idea",
+      "title": "Overflight Log (anchored)",
+      "cta": "https://atlas.modelmarket.dev/?layers=adsb",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=adsb",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "geomag-window": {
+      "chip": "live-wedge",
+      "title": "Geomagnetic Operations Window",
+      "cta": "https://atlas.modelmarket.dev/?layers=spacewx,geomag",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=spacewx,geomag",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "pv-irradiance-record": {
+      "chip": "live-wedge",
+      "title": "PV Irradiance Record of Fact",
+      "cta": "https://atlas.modelmarket.dev/?layers=solar,atmosphere",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=solar,atmosphere",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "smoke-operations": {
+      "chip": "live-wedge",
+      "title": "Asset Smoke Containment Brief",
+      "cta": "https://atlas.modelmarket.dev/?layers=smoke,air",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=smoke,air",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "desk-presets": {
+      "chip": "live-wedge",
+      "title": "Named Desks on One Brief",
+      "cta": "https://atlas.modelmarket.dev/docs",
+      "live_path": [
+        "https://atlas.modelmarket.dev",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "route-integrity": {
+      "chip": "live-wedge",
+      "title": "Route Integrity Brief",
+      "cta": "https://atlas.modelmarket.dev/?layers=gnss,jamming,ais",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=gnss,jamming,ais",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "observability-attest": {
+      "chip": "live-wedge",
+      "title": "Data-Availability Attestation",
+      "cta": "https://atlas.modelmarket.dev/?layers=radar,alerts",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=radar,alerts",
+        "https://atlas.modelmarket.dev/docs",
+        "https://modelmarket.dev"
+      ]
+    },
+    "england-river-gauge": {
+      "chip": "live-wedge",
+      "title": "England River Gauge Evidence",
+      "cta": "https://atlas.modelmarket.dev/?layers=river",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=river",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "rhine-nl-gauge": {
+      "chip": "live-wedge",
+      "title": "NL Rhine Gauge Evidence",
+      "cta": "https://atlas.modelmarket.dev/?layers=river",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=river",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "usace-reservoir": {
+      "chip": "live-wedge",
+      "title": "USACE Reservoir Pool Evidence",
+      "cta": "https://atlas.modelmarket.dev/?layers=reservoir",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=reservoir",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "ireland-synoptic": {
+      "chip": "live-wedge",
+      "title": "Ireland Synoptic Weather",
+      "cta": "https://atlas.modelmarket.dev/?layers=weather",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=weather",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "answer-evidence-pack": {
+      "chip": "live",
+      "title": "Answer Evidence Pack",
+      "cta": "https://metis.modelmarket.dev",
+      "live_path": [
+        "https://metis.modelmarket.dev",
+        "https://verify.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "agent-spend-desk": {
+      "chip": "live",
+      "title": "Agent Spend Chargeback Desk",
+      "cta": "https://magic-ai-factory.com/argus/",
+      "live_path": [
+        "https://magic-ai-factory.com/argus/",
+        "https://modelmarket.dev",
+        "https://logos.modelmarket.dev"
+      ]
+    },
+    "capability-bakeoff": {
+      "chip": "live",
+      "title": "Capability Acceptance Bake-off",
+      "cta": "https://themis.modelmarket.dev",
+      "live_path": [
+        "https://modelmarket.dev",
+        "https://themis.modelmarket.dev",
+        "https://verify.modelmarket.dev"
+      ]
+    },
+    "capability-sla-pack": {
+      "chip": "live",
+      "title": "Capability SLA Incident Pack",
+      "cta": "https://logos.modelmarket.dev",
+      "live_path": [
+        "https://logos.modelmarket.dev",
+        "https://modelmarket.dev",
+        "https://verify.modelmarket.dev"
+      ]
+    },
+    "contract-drift-desk": {
+      "chip": "partner",
+      "title": "Capability Contract-Drift Desk",
+      "cta": "https://magic-ai-factory.com/argus/",
+      "live_path": [
+        "https://magic-ai-factory.com/argus/",
+        "https://themis.modelmarket.dev",
+        "https://github.com/alexar76/warden"
+      ]
+    },
+    "water-intake-evidence": {
+      "chip": "live",
+      "title": "US Water-Intake Condition Evidence",
+      "cta": "https://atlas.modelmarket.dev/?layers=river,weather",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=river,weather",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "finland-winter-lane": {
+      "chip": "live",
+      "title": "Finland Winter Lane Evidence",
+      "cta": "https://atlas.modelmarket.dev/?layers=aviation,road",
+      "live_path": [
+        "https://atlas.modelmarket.dev/?layers=aviation,road",
+        "https://iot.modelmarket.dev",
+        "https://modelmarket.dev"
+      ]
+    },
+    "tideline-desk": {
+      "chip": "example",
+      "title": "Tideline Flood Evidence Desk",
+      "cta": "https://tideline.modelmarket.dev/",
+      "live_path": [
+        "https://tideline.modelmarket.dev/",
+        "https://tideline.modelmarket.dev/",
+        "ideas.html?v=20261007-onboarding&id=flood-hydrology"
+      ]
+    },
+    "solrecord-desk": {
+      "chip": "example",
+      "title": "Solrecord PV Evidence Desk",
+      "cta": "https://solrecord.modelmarket.dev/",
+      "live_path": [
+        "https://solrecord.modelmarket.dev/",
+        "https://solrecord.modelmarket.dev/",
+        "ideas.html?v=20261007-onboarding&id=pv-irradiance-record"
+      ]
+    },
+    "seamark-desk": {
+      "chip": "example",
+      "title": "Seamark Nordic Maritime Desk",
+      "cta": "https://seamark.modelmarket.dev/",
+      "live_path": [
+        "https://seamark.modelmarket.dev/",
+        "https://seamark.modelmarket.dev/",
+        "ideas.html?v=20261007-onboarding&id=nordic-ais"
+      ]
+    },
+    "plinth-desk": {
+      "chip": "example",
+      "title": "Plinth Site Evidence Desk",
+      "cta": "https://plinth.modelmarket.dev/",
+      "live_path": [
+        "https://plinth.modelmarket.dev/",
+        "https://plinth.modelmarket.dev/",
+        "ideas.html?v=20261007-onboarding&id=campus-nowcast"
+      ]
+    }
+  },
+  "hub_conditions": {
+    "hub_version": "3.21.0",
+    "pay_on_verified": {
+      "enabled": true,
+      "spec": "https://github.com/alexar76/aicom/blob/main/docs/pay-on-verified.md",
+      "verifier": "metis.modelmarket.dev",
+      "rail": "payment channel (X-Payment-Channel): the price is held, then captured on a passing verdict or released to the buyer on a failing one",
+      "scope": "capabilities this hub executes itself (federated invokes are not held)",
+      "request": {
+        "verify": {
+          "requested": true,
+          "intent": "<what the output must satisfy>",
+          "mode": "auto",
+          "wait": false
+        }
+      },
+      "min_price_usd": 0.05,
+      "score_threshold": 0.7,
+      "audit_threshold": 0.7,
+      "appeal_window_s": 3600.0,
+      "authorization_min_lifetime_s": 10800.0,
+      "routes": [
+        {
+          "capabilities": "gaia.actuate@v1",
+          "verifier": "gaia.verify@v1"
+        }
+      ]
+    },
+    "payment_rails": {
+      "seller_direct": {
+        "enabled": true,
+        "header": "X-Payment",
+        "also": [
+          "PAYMENT-SIGNATURE",
+          "X-PAYMENT",
+          "X-Payment-Nonce"
+        ],
+        "asset": "USDC",
+        "note": "buyer pays the listing payout_address on-chain; this hub verifies and never holds the money"
+      },
+      "credits": {
+        "enabled": true,
+        "open_signup": true,
+        "signup_url": "https://modelmarket.dev/ai-market/v2/accounts",
+        "start_url": "https://modelmarket.dev/start",
+        "header": "X-API-Key",
+        "free_grant_usd": 0.01,
+        "min_unit_usd": 1e-05,
+        "topup": {
+          "enabled": true,
+          "quote": "/ai-market/v2/account/topup",
+          "redeem": "/ai-market/v2/topups/{nonce}",
+          "binding": "eip3009",
+          "asset": "USDC",
+          "asset_address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "network": "eip155:8453",
+          "pay_to": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "min_usd": 0.01,
+          "max_usd": 100.0,
+          "daily_usd": 500.0,
+          "min_confirmations": 2,
+          "quote_ttl_s": 900,
+          "deposit_watch": {
+            "enabled": false,
+            "reason": "plain transfers are not watched: set AIMARKET_TOPUP_PAY_TO to a wallet that receives top-ups and nothing else"
+          }
+        },
+        "topup_card": {
+          "enabled": false,
+          "provider": "stripe-checkout",
+          "create": "/ai-market/v2/account/topup/card",
+          "status": "/ai-market/v2/card-topups/{id}",
+          "reason": "card top-ups are switched off on this hub (AIMARKET_CARD_TOPUP_ENABLED)"
+        }
+      },
+      "channel": {
+        "enabled": true,
+        "header": "X-Payment-Channel",
+        "chains": [
+          "base",
+          "ethereum",
+          "arbitrum",
+          "optimism",
+          "polygon"
+        ]
+      }
+    },
+    "free_trial": {
+      "enabled": true,
+      "max_invokes_per_visitor": 5,
+      "quota_window": "hourly",
+      "renews": true,
+      "visitor_header": "X-AIMarket-Sandbox-Visitor",
+      "excluded_capabilities": [
+        "atlas.fire.weather@v1",
+        "atlas.situation.brief@v1",
+        "hestia.compute.run@v1",
+        "hestia.compute.verify@v1",
+        "platon.ask@v1",
+        "platon.oracle@v1",
+        "platon.steer@v1",
+        "weather.witness@v1"
+      ],
+      "excluded_reason": "each call spends real budget — a paid model, or metered upstream data — so it is not free to serve",
+      "exhausted_status": 429,
+      "exhausted_error": "trial_quota_exhausted",
+      "how": "Send X-AIMarket-Sandbox-Visitor with a stable id you choose and no payment channel; the invoke runs for free and returns a signed receipt. Results are marked sandbox=true. A refused call costs nothing — the allowance is spent only when data is delivered. When it is spent the hub answers 429 trial_quota_exhausted until the window renews.",
+      "clients": {
+        "mcp": "pip install aimarket-mcp — market_search / market_invoke",
+        "python": "pip install aimarket-agent — AIMarketAgent(..., sandbox_visitor=\"<id>\") or AIMARKET_SANDBOX_VISITOR; CLI: --sandbox-visitor (2.6.1+)",
+        "http": "POST /ai-market/v2/invoke with the visitor header and no payment channel"
+      }
+    }
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "checked_utc": "2026-11-18T14:54:57.810961+00:00",
+  "catalog": {
+    "gaia.weather.read@v1": {
+      "cards": [
+        "weather-risk",
+        "ireland-synoptic"
+      ],
+      "list_price_usd": 0.001,
+      "routed_price_usd": 0.00101,
+      "credits_eligible": false,
+      "source_hub": "https://iot.modelmarket.dev"
+    },
+    "atlas.fire.weather@v1": {
+      "cards": [
+        "fire-hotspot"
+      ],
+      "list_price_usd": 0.08,
+      "routed_price_usd": 0.0808,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "atlas.watchbox.check@v1": {
+      "cards": [
+        "verified-watchbox"
+      ],
+      "list_price_usd": 0.02,
+      "routed_price_usd": 0.0202,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "atlas.situation.brief@v1": {
+      "cards": [
+        "flood-hydrology",
+        "campus-nowcast",
+        "situation-brief",
+        "desk-presets"
+      ],
+      "list_price_usd": 0.06,
+      "routed_price_usd": 0.0606,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "gaia.ais.public.read@v1": {
+      "cards": [
+        "nordic-ais"
+      ],
+      "list_price_usd": 0.002,
+      "routed_price_usd": 0.00202,
+      "credits_eligible": false,
+      "source_hub": "https://iot.modelmarket.dev"
+    },
+    "atlas.nearest.read@v1": {
+      "cards": [
+        "nearest-read"
+      ],
+      "list_price_usd": 0.03,
+      "routed_price_usd": 0.0303,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "gaia.cyclone.read@v1": {
+      "cards": [
+        "cyclone-watch"
+      ],
+      "list_price_usd": 0.002,
+      "routed_price_usd": 0.00202,
+      "credits_eligible": false,
+      "source_hub": "https://iot.modelmarket.dev"
+    },
+    "atlas.geomag.window@v1": {
+      "cards": [
+        "geomag-window"
+      ],
+      "list_price_usd": 0.05,
+      "routed_price_usd": 0.0505,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "atlas.pv.irradiance.record@v1": {
+      "cards": [
+        "pv-irradiance-record"
+      ],
+      "list_price_usd": 0.15,
+      "routed_price_usd": 0.1515,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "atlas.smoke.operations@v1": {
+      "cards": [
+        "smoke-operations"
+      ],
+      "list_price_usd": 0.12,
+      "routed_price_usd": 0.1212,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "atlas.route.integrity@v1": {
+      "cards": [
+        "route-integrity"
+      ],
+      "list_price_usd": 0.25,
+      "routed_price_usd": 0.2525,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "atlas.observability.attest@v1": {
+      "cards": [
+        "observability-attest"
+      ],
+      "list_price_usd": 0.1,
+      "routed_price_usd": 0.101,
+      "credits_eligible": false,
+      "source_hub": "https://atlas.modelmarket.dev"
+    },
+    "gaia.river.read@v1": {
+      "cards": [
+        "england-river-gauge",
+        "rhine-nl-gauge"
+      ],
+      "list_price_usd": 0.001,
+      "routed_price_usd": 0.00101,
+      "credits_eligible": false,
+      "source_hub": "https://iot.modelmarket.dev"
+    },
+    "gaia.reservoir.read@v1": {
+      "cards": [
+        "usace-reservoir"
+      ],
+      "list_price_usd": 0.001,
+      "routed_price_usd": 0.00101,
+      "credits_eligible": false,
+      "source_hub": "https://iot.modelmarket.dev"
+    }
+  },
+  "receipts": {
+    "weather": {
+      "url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:fe49c748-9f53-400a-bb7f-4a691bb8c92d",
+      "valid": true,
+      "profile": "L0",
+      "document_digest": "sha256-gVNhNUcxR3vRmQlNAlQT0I8oXH/1mkDSpdaTBrLK8fs="
+    },
+    "watchbox": {
+      "url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:be093373-3b48-4655-a243-fa4779b7282f",
+      "valid": true,
+      "profile": "L0",
+      "document_digest": "sha256-qD81d0IZq6uqVz/7Nw9RLkhz4alJZ0BZs2SbO+QEwp4="
+    }
+  },
+  "atlas_doc_operation_links": [
+    "https://atlas.modelmarket.dev/docs#/default/product_fire_weather_api_v1_products_fire_weather_post",
+    "https://atlas.modelmarket.dev/docs#/default/product_geomag_window_api_v1_products_geomag_window_post",
+    "https://atlas.modelmarket.dev/docs#/default/product_nearest_api_v1_products_nearest_post",
+    "https://atlas.modelmarket.dev/docs#/default/product_observability_attest_api_v1_products_observability_attest_post",
+    "https://atlas.modelmarket.dev/docs#/default/product_pv_irradiance_record_api_v1_products_pv_irradiance_record_post",
+    "https://atlas.modelmarket.dev/docs#/default/product_route_integrity_api_v1_products_route_integrity_post",
+    "https://atlas.modelmarket.dev/docs#/default/product_situation_brief_api_v1_products_situation_brief_post",
+    "https://atlas.modelmarket.dev/docs#/default/product_smoke_operations_api_v1_products_smoke_operations_post",
+    "https://atlas.modelmarket.dev/docs#/default/watchboxes_check_api_v1_watchboxes__watchbox_id__check_post"
+  ]
+}

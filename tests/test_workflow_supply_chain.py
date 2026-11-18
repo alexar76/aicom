@@ -45,7 +45,9 @@ TRACKED = _tracked()
 WORKFLOWS = sorted(p for p in TRACKED if WORKFLOW_PATH.search(p))
 # Scripts that write workflow YAML for a satellite, a course or a starter repo.
 GENERATOR_SUFFIXES = (".py", ".sh", ".mjs", ".js", ".ts", ".yml", ".yaml", ".j2", ".tmpl")
-SELF = {"scripts/security/pin_workflow_actions.py", "tests/test_workflow_supply_chain.py"}
+SELF = {"scripts/security/pin_workflow_actions.py", "tests/test_workflow_supply_chain.py",
+        # Check the `uses: alexar76/warden@vX.Y.Z` tags in docs; their `uses:` lines are fixtures, not workflows.
+        "warden/scripts/check-doc-versions.mjs", "warden/test/doc-versions.test.ts"}
 
 
 def _load(path: str) -> dict:
@@ -123,6 +125,39 @@ def test_a_job_that_can_mint_oidc_tokens_runs_no_third_party_code(path):
             f"{path}:{name} holds id-token: write and runs {hits}; "
             "build/test in a job without it and hand the result over as an artifact"
         )
+
+
+@pytest.mark.parametrize("path", [p for p in WORKFLOWS if p.endswith("/sign-manifest-revision.yml")])
+def test_manifest_signing_never_executes_the_server_or_capture_artifact(path):
+    jobs = _jobs(_load(path))
+    assert set(jobs) == {"prepare", "capture", "sign"}
+    assert jobs["capture"]["permissions"] == {}
+    assert jobs["prepare"]["permissions"] in ({}, {"contents": "read"})
+    assert set(jobs["sign"]["needs"]) == {"prepare", "capture"}
+
+    sign_steps = _steps(jobs["sign"])
+    downloads = [step for step in sign_steps
+                 if str(step.get("uses", "")).startswith("actions/download-artifact@")]
+    assert len(downloads) == 2
+    expected_ids = {
+        "${{ needs.prepare.outputs.artifact-id }}",
+        "${{ needs.capture.outputs.artifact-id }}",
+    }
+    assert {step["with"]["artifact-ids"] for step in downloads} == expected_ids
+    assert all(step["with"]["skip-decompress"] is True for step in downloads)
+    assert {step["with"]["path"] for step in downloads} == {
+        "${{ runner.temp }}/revision-cli", "${{ runner.temp }}/revision-capture",
+    }
+
+    commands = "\n".join(_runs(jobs["sign"]))
+    assert "--stdio" not in commands and "--url" not in commands
+    assert 'revision-capture/tools.json' in commands
+    assert '--tools "$tools"' in commands
+    assert '--tools "$RUNNER_TEMP/revision-capture/tools.json"' in commands
+    assert 'tar -xzf "$RUNNER_TEMP/revision-cli/revision-cli.tar.gz"' in commands
+    assert 'PYTHONPATH=%s' in commands and 'revision-libs' in commands
+    assert not re.search(r"\b(?:tar|sh|bash|source)\b[^\n]*revision-capture", commands)
+    assert all(not step.get("with", {}).get("pattern") for step in downloads)
 
 
 SPLICE = re.compile(

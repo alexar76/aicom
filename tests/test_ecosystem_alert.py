@@ -15,7 +15,9 @@ import re
 import socket
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from threading import Event
 
 import pytest
 
@@ -208,8 +210,7 @@ def test_a_run_that_pages_does_not_also_send_the_digest():
 # ── bookkeeping ──────────────────────────────────────────────────────────────────────────
 
 def test_checks_that_disappear_are_forgotten():
-    """`--mode full` adds paywall checks. Switching back to quick must not leave them
-    permanently 'alerted', or their recovery could never be reported."""
+    """A full run retires a check that has disappeared from the complete set."""
     state = fresh_state()
     for i in range(2):
         alert.decide([C("hub_manifest", True), C("priced_capability_gated[x]", False)],
@@ -218,6 +219,79 @@ def test_checks_that_disappear_are_forgotten():
     alert.decide([C("hub_manifest", True)], state, flap=2, heartbeat_hours=24,
                  now=NOW + 1200)
     assert "priced_capability_gated[x]" not in state["checks"]
+
+
+def test_quick_runs_preserve_full_only_failure_and_recovery(monkeypatch, tmp_path):
+    check = "priced_capability_gated[x]"
+    ok = False
+
+    def collect(mode, **kwargs):
+        shared = [C("hub_manifest", True)]
+        return shared + [C(check, ok, "expected 402")] if mode == "full" else shared
+
+    sent = []
+    monkeypatch.setattr(alert, "collect", collect)
+    monkeypatch.setattr(alert, "channels_from_env",
+                        lambda *_: [("test", lambda message: (sent.append(message) or True, "sent"))])
+    monkeypatch.setenv("AICOM_ALERT_FLAP", "2")
+    monkeypatch.setenv("AICOM_ALERT_HEARTBEAT_HOURS", "0")
+    monkeypatch.setenv("AICOM_ALERT_LANG", "en")
+    base = ["--state", str(tmp_path / "state.json")]
+    assert alert.main([*base, "--mode", "full"]) == 1
+    assert alert.main([*base, "--mode", "quick"]) == 0
+    assert "all good" not in sent[-1] and "last observed" in sent[-1]
+    assert alert.main([*base, "--mode", "full"]) == 1
+    assert alert.load_state(base[-1])["checks"][check]["alerted"]
+    assert alert.main([*base, "--mode", "quick"]) == 0
+    ok = True
+    assert alert.main([*base, "--mode", "full"]) == 0
+    assert not alert.load_state(base[-1])["checks"][check]["alerted"]
+    assert sum("1 broken" in message.splitlines()[0] for message in sent) == 1
+    assert "✔" in sent[-1]
+
+
+def test_quick_and_full_take_turns_updating_shared_state(monkeypatch, tmp_path):
+    full_probing = Event()
+    full_can_finish = Event()
+    quick_lock_attempt = Event()
+    quick_probing = Event()
+    real_flock = alert.fcntl.flock
+    lock_attempts = []
+
+    def observe_flock(lock, op):
+        lock_attempts.append(op)
+        if len(lock_attempts) == 2:
+            quick_lock_attempt.set()
+        real_flock(lock, op)
+
+    def collect(mode, **kwargs):
+        if mode == "full":
+            full_probing.set()
+            assert full_can_finish.wait(5)
+        else:
+            quick_probing.set()
+        return [C(f"{mode}_only", False)]
+
+    monkeypatch.setattr(alert.fcntl, "flock", observe_flock)
+    monkeypatch.setattr(alert, "collect", collect)
+    monkeypatch.setattr(alert, "channels_from_env", lambda *_: [])
+    monkeypatch.setenv("AICOM_ALERT_FLAP", "2")
+    monkeypatch.setenv("AICOM_ALERT_HEARTBEAT_HOURS", "24")
+    path = str(tmp_path / "state.json")
+    state = fresh_state()
+    state["last_heartbeat"] = alert._iso(time.time())
+    alert.save_state(path, state)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        full = pool.submit(alert.main, ["--state", path, "--mode", "full"])
+        try:
+            assert full_probing.wait(5)
+            quick = pool.submit(alert.main, ["--state", path, "--mode", "quick"])
+            assert quick_lock_attempt.wait(5)
+            assert not quick_probing.wait(0.05)
+        finally:
+            full_can_finish.set()
+        assert full.result(5) == quick.result(5) == 1
+    assert set(alert.load_state(path)["checks"]) == {"full_only", "quick_only"}
 
 
 def test_state_survives_a_round_trip(tmp_path):
@@ -2078,6 +2152,21 @@ def test_a_host_that_stopped_reporting_pages_and_a_dead_export_is_one_check(monk
     assert bad == {"host_reporting[admin-vps]": "last report 5.0h ago"}
     monkeypatch.setattr(alert, "_get", lambda *a, **k: (403, None, "HTTP 403"))
     assert [(c.name, c.ok) for c in alert.probe_fleet("https://s", "tok", now=NOW)] == [("fleet_status_published", False)]
+
+
+def test_expected_host_missing_from_both_fleet_lists_pages(monkeypatch):
+    report = _fleet_export(NOW)
+    report["agents"] = []
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, report, ""))
+    checks = alert.probe_fleet("https://s", "tok", now=NOW,
+                               expected_hosts=["admin-vps", "factory-vps", "histor-vps"])
+    assert [(c.name, c.detail) for c in checks if not c.ok] == [
+        ("host_reporting[histor-vps]", "missing from the SKOPOS export"),
+    ]
+    report["agents"] = [{"server": "histor-vps", "last_seen_at": alert._iso(NOW - 300)}]
+    checks = alert.probe_fleet("https://s", "tok", now=NOW,
+                               expected_hosts=["admin-vps", "factory-vps", "histor-vps"])
+    assert sum(c.name == "host_reporting[histor-vps]" and c.ok for c in checks) == 1
 
 
 def test_host_checks_speak_both_languages():

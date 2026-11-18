@@ -1,0 +1,111 @@
+{
+  "observed_utc": "2026-11-18T14:52:36.028723+00:00",
+  "release": "20261118-portal-audit",
+  "backup": "/var/backups/use.modelmarket.dev-portal-audit.hX1L0MFG",
+  "files": {
+    "css/portal.css": {
+      "status": 200,
+      "sha256": "1fdd1f05c27a078b03d71393c6d1406985d7a6159098557fa849bb769ff5e6e5"
+    },
+    "data/boards.json": {
+      "status": 200,
+      "sha256": "3a82f994967b50f87d7621a0e322654fab00d62cb630b9dbe58020ed1c1c5039"
+    },
+    "js/boards.js": {
+      "status": 200,
+      "sha256": "a1f416d39aeda4477fb8612eab89770e808c05e7af748210486ed6732b7d4b35"
+    },
+    "js/i18n.js": {
+      "status": 200,
+      "sha256": "815c2229f128da52c578186806372cc65e542cebedbb9a0fe5aa6ad1a6d15c03"
+    },
+    "js/idea-page.js": {
+      "status": 200,
+      "sha256": "2fd177812bc84e9c1dcb97f3936b9493a5bf9ca44186b5c523ee4e436a534f8a"
+    },
+    "js/proof.js": {
+      "status": 200,
+      "sha256": "c84cbe5c71607176f4e0b7815955ecc35e86b8ac91a41a2572d145662ce5e76f"
+    },
+    "locales/en.json": {
+      "status": 200,
+      "sha256": "94dfba245ddafeb333f9544eaf0db56211ce35639543b3b9df6ff81e39fda338"
+    },
+    "locales/es.json": {
+      "status": 200,
+      "sha256": "da99d43a23864da0e0087e9bd8fce76f0a43bef2a693524b68510178af73927b"
+    },
+    "locales/fr.json": {
+      "status": 200,
+      "sha256": "10dc03d84513f6e6d60356f118fe32ff76963b2f64902a2b629f2b32e757412d"
+    },
+    "locales/ru.json": {
+      "status": 200,
+      "sha256": "25e33650580ebb3aca26ce575699232acd520c78c5055f0b5957322f956a5fee"
+    },
+    "locales/zh.json": {
+      "status": 200,
+      "sha256": "b24382426c3410403343ee1a128797315d7d599dbb61eb9d9fd632cd19e1464a"
+    },
+    "ideas.html": {
+      "status": 200,
+      "sha256": "300482468450a671482737092cb72f825a4d1e4bf3dec645dddd2a825213d84d"
+    },
+    "index.html": {
+      "status": 200,
+      "sha256": "e86355c3a1545decbcc80cc0bef5852c375ac413d1ef22eb7e941b0273300c2a"
+    }
+  },
+  "fire_weather_quote": {
+    "http": 402,
+    "options": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "amount": "80000"
+      }
+    ],
+    "price_usd": 0.08,
+    "routing_fee_usd": 0.0,
+    "binding_secret_present": true,
+    "payment_sent": false
+  },
+  "reference_demos": {
+    "emberline-desk": {
+      "status_link": "https://emberlinedesk.com/status",
+      "http": 200,
+      "demo": true,
+      "pay_mode": "fixture",
+      "invokes_hub": false
+    },
+    "tideline-desk": {
+      "status_link": "https://tideline.modelmarket.dev/status",
+      "http": 200,
+      "demo": true,
+      "pay_mode": "fixture",
+      "invokes_hub": false
+    },
+    "solrecord-desk": {
+      "status_link": "https://solrecord.modelmarket.dev/status",
+      "http": 200,
+      "demo": true,
+      "pay_mode": "fixture",
+      "invokes_hub": false
+    },
+    "seamark-desk": {
+      "status_link": "https://seamark.modelmarket.dev/status",
+      "http": 200,
+      "demo": true,
+      "pay_mode": "fixture",
+      "invokes_hub": false
+    },
+    "plinth-desk": {
+      "status_link": "https://plinth.modelmarket.dev/status",
+      "http": 200,
+      "demo": true,
+      "pay_mode": "fixture",
+      "invokes_hub": false
+    }
+  }
+}

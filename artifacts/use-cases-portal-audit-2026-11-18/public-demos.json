@@ -1,0 +1,80 @@
+{
+  "observed_utc": "2026-11-18T14:23:51.432Z",
+  "results": [
+    {
+      "name": "weather",
+      "page": "https://use.modelmarket.dev/?lang=en#proof",
+      "endpoint": "https://use.modelmarket.dev/live/weather",
+      "page_status": 200,
+      "http_status": 200,
+      "response": {
+        "ok": true,
+        "capability_id": "gaia.weather.read@v1",
+        "price_usd": 0,
+        "success": true,
+        "sandbox": {
+          "sandbox": true,
+          "remaining": 4,
+          "used": 1,
+          "max_trials": 5
+        }
+      },
+      "receipt": {
+        "url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:6e59ca49-eb0a-46ce-9e7c-8c203ce89a83",
+        "status": 200,
+        "proof_type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022"
+      },
+      "ui": {
+        "state": "success",
+        "text": "SIGNED RESULT 23 ms device_id om-wx-01 reading 11.3 °C · 75% RH seq 24 attestation ed25519 · LSFElZbVE…QAmZdAw== price_usd catalog $0.000 · charged $0 receipt AWR/2 · urn:uuid…3ce89a83 Returned: 2026-11-18T13:25:16Z · demo requests left: 4"
+      }
+    },
+    {
+      "name": "fire-weather",
+      "page": "https://use.modelmarket.dev/ideas.html?lang=en&id=fire-hotspot",
+      "endpoint": "https://use.modelmarket.dev/live/fire-weather",
+      "page_status": 200,
+      "http_status": 402,
+      "response": {
+        "success": false,
+        "error": "model_budget_not_free",
+        "capability_id": "atlas.fire.weather@v1",
+        "detail": "atlas.fire.weather@v1 spends real budget on every call — a paid model, or metered upstream data — so it is not free to serve. The free tier covers capabilities whose marginal cost is noise; this is not one of them."
+      },
+      "ui": {
+        "state": "error",
+        "text": "Invoke refused: atlas.fire.weather@v1 spends real budget on every call — a paid model, or metered upstream data — so it is not free to serve. The free tier covers capabilities whose marginal cost is noise; this is not one of them."
+      }
+    },
+    {
+      "name": "watchbox",
+      "page": "https://use.modelmarket.dev/ideas.html?lang=en&id=verified-watchbox",
+      "endpoint": "https://use.modelmarket.dev/live/watchbox",
+      "page_status": 200,
+      "http_status": 200,
+      "response": {
+        "ok": true,
+        "capability_id": "atlas.watchbox.check@v1",
+        "success": true,
+        "price_usd": 0,
+        "sandbox": {
+          "sandbox": true,
+          "remaining": 4,
+          "used": 1,
+          "max_trials": 5
+        }
+      },
+      "receipt": {
+        "url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:7e545b40-48dd-4e0c-a1b8-a5bf96a27c55",
+        "status": 200,
+        "proof_type": "DataIntegrityProof",
+        "cryptosuite": "eddsa-jcs-2022"
+      },
+      "ui": {
+        "state": "success",
+        "text": "Portable proof created · ready to share"
+      }
+    }
+  ]
+}

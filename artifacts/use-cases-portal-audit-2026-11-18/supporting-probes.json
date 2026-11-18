@@ -1,0 +1,154 @@
+{
+  "observed_utc": "2026-11-18T14:25:42.217705+00:00",
+  "checks": {
+    "weather": {
+      "url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:6e59ca49-eb0a-46ce-9e7c-8c203ce89a83",
+      "method": "GET",
+      "status": 200,
+      "valid": true,
+      "profile": "L0",
+      "documentType": "WorkReceipt",
+      "verifiedProof": 0,
+      "documentDigestSRI": "sha256-ygsUygCJU7tXHFhY9TsYz74nF+8S0rlxccYo0EXG8jo=",
+      "reasons": []
+    },
+    "watchbox": {
+      "url": "https://modelmarket.dev/ai-market/v2/p/provenance/receipt/urn:uuid:7e545b40-48dd-4e0c-a1b8-a5bf96a27c55",
+      "method": "GET",
+      "status": 200,
+      "valid": true,
+      "profile": "L0",
+      "documentType": "WorkReceipt",
+      "verifiedProof": 0,
+      "documentDigestSRI": "sha256-QSN5xBn2IGnT78BC1sG9SblFzfEBtiSGqwDT5QphDJM=",
+      "reasons": []
+    },
+    "Emberline": {
+      "url": "https://emberlinedesk.com/api/public/status",
+      "method": "GET",
+      "status": 200,
+      "demo": true,
+      "desk_mode": "demo",
+      "hub_mode": "fixture",
+      "pay_mode": "fixture",
+      "invokes_hub": false,
+      "independent_brand": true
+    },
+    "Tideline": {
+      "url": "https://tideline.modelmarket.dev/api/public/status",
+      "method": "GET",
+      "status": 200,
+      "demo": true,
+      "desk_mode": "demo",
+      "hub_mode": "fixture",
+      "pay_mode": "fixture",
+      "invokes_hub": false,
+      "independent_brand": true
+    },
+    "Solrecord": {
+      "url": "https://solrecord.modelmarket.dev/api/public/status",
+      "method": "GET",
+      "status": 200,
+      "demo": true,
+      "desk_mode": "demo",
+      "hub_mode": "fixture",
+      "pay_mode": "fixture",
+      "invokes_hub": false,
+      "independent_brand": true
+    },
+    "Seamark": {
+      "url": "https://seamark.modelmarket.dev/api/public/status",
+      "method": "GET",
+      "status": 200,
+      "demo": true,
+      "desk_mode": "demo",
+      "hub_mode": "fixture",
+      "pay_mode": "fixture",
+      "invokes_hub": false,
+      "independent_brand": true
+    },
+    "Plinth": {
+      "url": "https://plinth.modelmarket.dev/api/public/status",
+      "method": "GET",
+      "status": 200,
+      "demo": true,
+      "desk_mode": "demo",
+      "hub_mode": "fixture",
+      "pay_mode": "fixture",
+      "invokes_hub": false,
+      "independent_brand": true
+    },
+    "Metis models": {
+      "url": "https://metis.modelmarket.dev/v1/models",
+      "method": "GET",
+      "status": 401
+    },
+    "GAIA actuator status": {
+      "url": "https://iot.modelmarket.dev/actuation/v1/status",
+      "method": "GET",
+      "status": 200,
+      "enabled": true,
+      "actuators": [
+        {
+          "actuator_id": "plug-sim-01",
+          "label": "Demo heater behind a metering plug (simulated)",
+          "kind": "sim-plug",
+          "expect_on_w": 1000.0,
+          "off_max_w": 10.0,
+          "min_on_s": 10.0,
+          "max_on_s": 900.0,
+          "cooldown_s": 30.0,
+          "effect_timeout_s": 20.0,
+          "load_w": 1500.0,
+          "site": "demo-site-1",
+          "access": "public",
+          "commands": [
+            "on",
+            "off"
+          ],
+          "consumption": {
+            "for_sale": true,
+            "resolution": "hour",
+            "history_days": 30
+          },
+          "relay_on": false,
+          "device_pubkey": "z98+Y4+Kq0UOLX1iCdq+fFV2BXU4ZArOe/dzz9EdZZc=",
+          "busy": false,
+          "leased_until": null,
+          "cooldown_remaining_s": 0.0
+        }
+      ]
+    },
+    "ATLAS watchboxes": {
+      "url": "https://atlas.modelmarket.dev/api/v1/watchboxes",
+      "method": "GET",
+      "status": 401
+    },
+    "textokit": {
+      "url": "https://tienda.textokit.store/api/x402-ping",
+      "method": "HEAD",
+      "status": 402,
+      "x402": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+        }
+      ]
+    },
+    "Hub weather": {
+      "url": "https://modelmarket.dev/x402/weather-now",
+      "method": "HEAD",
+      "status": 402,
+      "x402": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+        }
+      ]
+    }
+  }
+}

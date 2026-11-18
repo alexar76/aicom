@@ -6,7 +6,8 @@ from types import SimpleNamespace
 import pytest
 from eth_account import Account
 from eth_account.messages import encode_defunct
-from fastapi import HTTPException
+from fastapi import FastAPI, HTTPException
+from fastapi.testclient import TestClient
 from hexbytes import HexBytes
 
 from web.backend.services.payment_claim import claim_message, verify_claim, canonical_tx_hash
@@ -25,6 +26,37 @@ def pay(tmp_path, monkeypatch):
     monkeypatch.setattr(payment, "PENDING_PAYMENTS_FILE", tmp_path / "pending.json")
     monkeypatch.setattr(payment, "payment_verify_stub_enabled", lambda: False)
     return payment
+
+
+def test_checkout_discovery_and_quote_creation_use_the_verifiable_pairs(pay, monkeypatch):
+    monkeypatch.setattr(pay, "_catalog_checkout_usdt", lambda _: 5.0)
+    monkeypatch.setattr(pay, "_get_address_for_chain", lambda _: "0x" + "12" * 20)
+    buyer = pay.commerce.register_customer("quote@example.test", "synthetic-password")
+    bearer = pay.commerce.create_token(buyer["id"], buyer["email"])
+    app = FastAPI()
+    app.include_router(pay.router)
+    with TestClient(app, headers={"Authorization": f"Bearer {bearer}"}) as client:
+        chains = client.get("/api/payment/chains").json()["chains"]
+        assert {chain["id"]: chain["tokens"] for chain in chains} == {
+            **{chain: list(tokens) for chain, tokens in pay.TOKEN_ADDRESSES.items()},
+            "solana": ["USDC"],
+        }
+        for token in ("USDC", "USDT"):
+            response = client.post("/api/payment/create", json={
+                "product_id": "prod-12345678", "chain": "ethereum", "token": token,
+            })
+            assert response.status_code == 400
+            assert "wallet_address" not in response.json()
+        assert pay._pending_payments == {}
+        assert not pay.PENDING_PAYMENTS_FILE.exists()
+
+        for chain in chains:
+            for token in chain["tokens"]:
+                response = client.post("/api/payment/create", json={
+                    "product_id": "prod-12345678", "chain": chain["id"], "token": token,
+                })
+                assert response.status_code == 200, response.text
+                assert response.json()["currency"] == token
 
 
 @pytest.mark.parametrize("wire_type", [str, HexBytes])

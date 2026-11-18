@@ -217,7 +217,10 @@ FACTORY_LOCAL_EXCLUDES = [
     # the full trees; the trimmed factory must not.
     "artifacts/admin-vps-backup-move-2026-11-10",
     "artifacts/admin-vps-migration-audit-2026-11-10",
-    "artifacts/ecosystem-audit-2026-11-10",
+    # Dated ecosystem audit / P1 remediation kits (host literals, SSH inventory).
+    # Wildcard covers 2026-11-10 onward; growth packs (ecosystem-next/chains/…) stay.
+    "artifacts/ecosystem-audit-*",
+    "artifacts/ecosystem-p1-*",
     "artifacts/histor-migration-2026-11-10",
     "artifacts/hub-functional-recheck-2026-11-08",
     "artifacts/hub-public-endpoints-audit-2026-11-08",

@@ -1,0 +1,252 @@
+{
+  "checked_at_utc": "2026-11-18T21:30:18.165753+00:00",
+  "sources": {
+    "hubwiz": {
+      "url": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+      "status": 200,
+      "final": "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+      "date": "Wed, 18 Nov 2026 20:32:24 GMT",
+      "meta": {
+        "article:published_time": "2026-10-15T21:25:33.000Z",
+        "article:modified_time": "2026-10-22T16:13:47.000Z",
+        "datetime": "2026-11-18"
+      },
+      "links": [],
+      "hits": [
+        "的复盘与六项控制（dev.to，2026-10-15）；HISTOR 团队对",
+        "：GitGuardian 是安全厂商、HISTOR/WARDEN 是作者团队的自建项目，文中数据均为其自述，本文按\"方法与数据\"引用与整理，不替任何产品背书。这不是一篇\"AI 要被取代了吗\"的文章，而是一份",
+        "Agent 的工具面大多通过 MCP 接入，那么\"工具供应链\"的成色如何？HISTOR 团队做了另一半工作：",
+        "、shell history）；观察者说 MCP 协议：",
+        "（2,239 个），其中 580 个在安装时尝试联网拉预编译二进制——在 HISTOR 沙箱里失败，在你自己机器上会用你的凭据执行；",
+        "：固定版本、pin SDK 主版本、跑一次 WARDEN/HISTOR 之类能看\"真实启动行为\"的扫描；",
+        "@alexar76（HISTOR）,",
+        "（dev.to，2026-10-14；快照 2026-10-13）：https://dev.to/alexar76/we-installed-12915-mcp-servers-and-started-each-one-41-never-answered-3heh",
+        "HISTOR 公开记录与 WARDEN：https://histor.modelmarket.dev ；仓库",
+        "alexar76/histor"
+      ]
+    },
+    "scraperwatch_slash": {
+      "url": "https://scraperwatch.com/mcp-changes/",
+      "status": 200,
+      "final": "https://scraperwatch.com/mcp-changes/",
+      "date": "Wed, 18 Nov 2026 20:32:22 GMT",
+      "meta": {},
+      "links": [
+        "https://histor.modelmarket.dev"
+      ],
+      "hits": [
+        "hana_fast_account__accounts__transaction_history__search",
+        "hometax__cash_receipt__purchase__search_history",
+        "hometax__cash_receipt__sales__search_history",
+        "hometax__tax__notice__search_history",
+        "hometax__tax__overdue__search_history",
+        "hometax__tax__payment_statement__search_submit_history",
+        "hometax__tax__return_history__search",
+        "hometax__tax__return_history__search_vat",
+        "kb_fast_account__accounts__transaction_history__search",
+        "nh_fast_account__transaction_history__search",
+        "shinhan_easy__accounts__transaction_history__search",
+        "woori_bank__accounts__transaction_history__search",
+        "Outside check"
+      ]
+    },
+    "undercode": {
+      "url": "https://undercodenews.com/aicom-factory-just-updated-video/",
+      "status": 200,
+      "final": "https://undercodenews.com/aicom-factory-just-updated-video/",
+      "date": "Wed, 18 Nov 2026 20:32:23 GMT",
+      "meta": {
+        "article:published_time": "2026-10-08T13:06:27-04:00"
+      },
+      "links": [
+        "https://github.com/alexar76/aicom/releases"
+      ],
+      "hits": [
+        "The release also rewrites the legacy /aimarket/invoke endpoint to the newer /ai-market/v2/invoke path, helping older factory components communicate with the current AI Market interface.",
+        "Version 2.2.0 refreshed the GitHub mirror with ecosystem work accumulated since v2.1.0, including SKOPOS analytics, THEOROS/DIOSCURI canon, GAIA, Metis live history, publishing guards, and fleet-operations documentation.",
+        "One important caveat remains: the GitHub repository is explicitly described as a trimmed force-mirror of the larger monorepo. The project recommends using Gitea or the local monorepo when full history is required.",
+        "The trimmed GitHub mirror is still a limitation, however. Developers wanting the complete development history need to look elsewhere, which makes the public repository more of a reproducible satellite than the definitive source of the project.",
+        "✅ The legacy /aimarket/invoke route is rewritten to /ai-market/v2/invoke.",
+        "The broader release history indicates a project steadily moving from a public experimental factory toward a more reproducible and operational AI-product platform.",
+        "Clone the public AICOM Factory mirror git clone https://github.com/alexar76/aicom.git",
+        "grep -R \"/aimarket/invoke\" . --exclude-dir=.git"
+      ]
+    },
+    "ragmap_repo": {
+      "url": "https://api.github.com/repos/khalidsaidi/ragmap/commits?path=README.md&per_page=1",
+      "status": 200,
+      "final": "https://api.github.com/repos/khalidsaidi/ragmap/commits?path=README.md&per_page=1",
+      "date": "Wed, 18 Nov 2026 20:32:23 GMT",
+      "head": {
+        "sha": "274004fcf8c469a9d92058e5bbdd50af2ec6da57",
+        "url": "https://github.com/khalidsaidi/ragmap/commit/274004fcf8c469a9d92058e5bbdd50af2ec6da57",
+        "date": "2026-11-18T16:02:16Z"
+      }
+    },
+    "agentforge_warden": {
+      "url": "https://theagentforge.io/api/v1/check?id=npm%3A%40aimarket%2Fwarden",
+      "status": 200,
+      "final": "https://theagentforge.io/api/v1/check?id=npm%3A%40aimarket%2Fwarden",
+      "date": "Wed, 18 Nov 2026 20:32:23 GMT",
+      "keys": [
+        "summary",
+        "known",
+        "tool",
+        "version",
+        "fingerprint",
+        "forge_score",
+        "distinct_owners",
+        "verified_owners",
+        "loop_rate",
+        "recovers_after_reset_rate",
+        "strain_reports",
+        "strain_hook_reports",
+        "outcome_breakdown",
+        "security_status",
+        "other_versions_flagged",
+        "public_signals_summary",
+        "advisories_checked",
+        "page_url",
+        "reports_for_this_version",
+        "be_first",
+        "contribute",
+        "verdict",
+        "reports",
+        "corroborated_reports",
+        "share",
+        "owner_claim"
+      ],
+      "check": {
+        "version": "0.28.0",
+        "verdict": "insufficient"
+      },
+      "strongest_hit": []
+    },
+    "agentforge_argus": {
+      "url": "https://theagentforge.io/api/v1/check?id=npm%3A%40alexar76%2Fargus3",
+      "status": 200,
+      "final": "https://theagentforge.io/api/v1/check?id=npm%3A%40alexar76%2Fargus3",
+      "date": "Wed, 18 Nov 2026 20:32:23 GMT",
+      "keys": [
+        "summary",
+        "known",
+        "tool",
+        "version",
+        "fingerprint",
+        "forge_score",
+        "distinct_owners",
+        "verified_owners",
+        "loop_rate",
+        "recovers_after_reset_rate",
+        "strain_reports",
+        "strain_hook_reports",
+        "outcome_breakdown",
+        "security_status",
+        "other_versions_flagged",
+        "public_signals_summary",
+        "advisories_checked",
+        "page_url",
+        "reports_for_this_version",
+        "be_first",
+        "contribute",
+        "verdict",
+        "reports",
+        "corroborated_reports",
+        "share",
+        "owner_claim"
+      ],
+      "check": {
+        "version": "0.4.0",
+        "verdict": "insufficient"
+      },
+      "strongest_hit": []
+    },
+    "agentforge_histor": {
+      "url": "https://theagentforge.io/api/v1/check?id=pypi%3Aaimarket-histor",
+      "status": 200,
+      "final": "https://theagentforge.io/api/v1/check?id=pypi%3Aaimarket-histor",
+      "date": "Wed, 18 Nov 2026 20:32:23 GMT",
+      "keys": [
+        "summary",
+        "known",
+        "tool",
+        "version",
+        "fingerprint",
+        "forge_score",
+        "distinct_owners",
+        "verified_owners",
+        "loop_rate",
+        "recovers_after_reset_rate",
+        "strain_reports",
+        "strain_hook_reports",
+        "outcome_breakdown",
+        "security_status",
+        "other_versions_flagged",
+        "public_signals_summary",
+        "advisories_checked",
+        "page_url",
+        "reports_for_this_version",
+        "be_first",
+        "contribute",
+        "verdict",
+        "reports",
+        "corroborated_reports",
+        "share",
+        "owner_claim"
+      ],
+      "check": {
+        "version": "0.9.1",
+        "verdict": "insufficient"
+      },
+      "strongest_hit": []
+    },
+    "roninforge": {
+      "url": "https://roninforge.org/data/state-of-mcp/servers/io.github.alexar76/warden/",
+      "status": 200,
+      "final": "https://roninforge.org/data/state-of-mcp/servers/io.github.alexar76/warden/",
+      "date": "Wed, 18 Nov 2026 20:32:23 GMT",
+      "meta": {},
+      "links": [
+        "https://github.com/alexar76/warden",
+        "https://roninforge.org/data/state-of-mcp/servers/io.github.alexar76/warden.json"
+      ],
+      "hits": [
+        "io.github.alexar76/warden - healthy MCP server",
+        "io.github.alexar76/warden",
+        "WARDEN — MCP Security Firewall",
+        "io.github.alexar76/warden",
+        "akashi check io.github.alexar76/warden",
+        "https://github.com/alexar76/warden",
+        "@aimarket/warden · published",
+        "akashi check io.github.alexar76/warden",
+        "akashi check io.github.alexar76/warden --badge"
+      ]
+    },
+    "roundhouse": {
+      "url": "https://roundhouseai.io/merchant/0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+      "status": 200,
+      "final": "https://roundhouseai.io/merchant/0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+      "date": "Wed, 18 Nov 2026 20:32:25 GMT",
+      "meta": {},
+      "links": [
+        "https://modelmarket.dev/.well-known/erc-8004/aimarket-hub.json",
+        "https://modelmarket.dev/.well-known/erc-8004/histor.json",
+        "https://modelmarket.dev/.well-known/erc-8004/warden.json",
+        "https://modelmarket.dev/x402/warden-scan"
+      ],
+      "hits": [
+        "AIMarket · Merchant · Roundhouse",
+        "AIMarket Hub",
+        "modelmarket.dev",
+        "HISTOR",
+        "modelmarket.dev",
+        "WARDEN",
+        "modelmarket.dev",
+        "AIMarket",
+        "modelmarket.dev",
+        "WARDEN verdict on an MCP server's tools/list: allow or block, a 0-1 score and every finding with the matched text (prompt injection, secret requests, exfiltration, hidden Unicode). Deterministic published rules, no network.",
+        "Over the whole indexed history"
+      ]
+    }
+  }
+}

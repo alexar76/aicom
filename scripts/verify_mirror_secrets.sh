@@ -306,6 +306,10 @@ allow_trusted_signing_storage() {
 
 key_hits=""
 while IFS= read -r f; do
+  # find listed the path; EXIT-trap cleanup of the mirror staging dir (SIGTERM of
+  # publish_all_repos / mirror_satellites) can unlink it before we open it. Skip
+  # rather than die under set -euo pipefail on a failed `< "$f"` redirect.
+  [[ -f "$f" ]] || continue
   case "$(basename "$f")" in
     *.pem)
       if allow_known_public_pem "$f"; then
@@ -341,7 +345,7 @@ while IFS= read -r f; do
     if allow_pinned_zk_proof "$f"; then
       continue
     fi
-    ctl=$(LC_ALL=C tr -dc '\000-\010\013\014\016-\037\177' < "$f" 2>/dev/null | wc -c | tr -d ' ')
+    ctl=$(LC_ALL=C tr -dc '\000-\010\013\014\016-\037\177' < "$f" 2>/dev/null | wc -c | tr -d ' ') || ctl=0
     # "Any control byte at all" was too blunt above the key-sized range. It flagged
     # docs/assets/icons/bar-chart-3.svg (410 B, ONE control byte) and an AWR
     # canonicalization vector (299 B, one) — both plainly text, both blocking a

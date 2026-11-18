@@ -359,21 +359,22 @@ if payment_testnet_enabled():
         },
     }
 
-# ── Supported chains ────────────────────────────────────────────────────────
-# Only stablecoin settlement is offered: native ETH/SOL have no USD→native conversion.
+# New quotes and checkout discovery use the verifier's ERC-20 allowlist.
+# Existing quotes still go through the confirmation and claim-review paths.
 SUPPORTED_CHAINS = [
-    {"id": "base", "name": "Base", "icon": "🔵", "tokens": ["USDT", "USDC"]},
-    {"id": "arbitrum", "name": "Arbitrum", "icon": "🔴", "tokens": ["USDT", "USDC"]},
-    {"id": "ethereum", "name": "Ethereum", "icon": "💎", "tokens": ["USDT", "USDC"]},
-    {"id": "solana", "name": "Solana", "icon": "🟣", "tokens": ["USDC"]},
+    {
+        "id": chain,
+        "name": testnet_name if payment_testnet_enabled() else name,
+        "icon": icon,
+        "tokens": list(tokens),
+    }
+    for chain, name, testnet_name, icon, tokens in (
+        ("base", "Base", "Base Sepolia", "🔵", TOKEN_ADDRESSES["base"]),
+        ("arbitrum", "Arbitrum", "Arbitrum Sepolia", "🔴", TOKEN_ADDRESSES["arbitrum"]),
+        ("solana", "Solana", "Solana Devnet", "🟣", ("USDC",)),
+    )
 ]
-if payment_testnet_enabled():
-    SUPPORTED_CHAINS = [
-        {"id": "base", "name": "Base Sepolia", "icon": "🔵", "tokens": ["USDC"]},
-        {"id": "arbitrum", "name": "Arbitrum Sepolia", "icon": "🔴", "tokens": ["USDC"]},
-        {"id": "ethereum", "name": "Sepolia", "icon": "💎", "tokens": ["USDC"]},
-        {"id": "solana", "name": "Solana Devnet", "icon": "🟣", "tokens": ["USDC"]},
-    ]
+CHECKOUT_TOKENS = {chain["id"]: tuple(chain["tokens"]) for chain in SUPPORTED_CHAINS}
 
 MIN_CONFIRMATIONS = max(
     1,
@@ -385,12 +386,6 @@ SOLANA_USDC_MINT = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
 
 # Allow tiny float/rounding slack (0.1%) on token amounts.
 _AMOUNT_TOLERANCE_RATIO = 0.001
-
-# Settlement currencies. The catalog price is denominated in USD (USDT), and there is
-# NO price oracle to convert that USD amount into a native-token quantity. Stablecoins
-# (USDT/USDC ≈ $1) settle 1:1 against the catalog price; native tokens (ETH/SOL) cannot
-# be compared to a USD amount directly, so they are not accepted until conversion exists.
-STABLECOINS = frozenset({"USDT", "USDC"})
 
 # ── Token decimals (6 for USDC everywhere; USDT: 18 on Base, 6 on Arbitrum) ─
 TOKEN_DECIMALS = {
@@ -926,16 +921,11 @@ async def create_payment(body: CreatePaymentRequest, authorization: Optional[str
     if not customer_id or not customer_email:
         raise HTTPException(status_code=401, detail="Customer authentication required")
 
-    # Settlement currency must be a stablecoin: the catalog price is USD-denominated
-    # and there is no oracle to convert it into a native-token (ETH/SOL) amount.
-    currency = (body.token or ("USDC" if body.chain == "solana" else "USDT")).upper()
-    if currency not in STABLECOINS:
+    currency = body.token
+    if currency not in CHECKOUT_TOKENS.get(body.chain, ()):
         raise HTTPException(
             status_code=400,
-            detail=(
-                f"Unsupported settlement currency '{currency}'. "
-                f"Only stablecoins are accepted: {', '.join(sorted(STABLECOINS))}."
-            ),
+            detail=f"Checkout does not support {currency} on {body.chain}. Choose an available network and token.",
         )
 
     # Authoritative catalog price — ignore any client-supplied amount.

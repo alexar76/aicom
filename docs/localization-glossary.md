@@ -586,6 +586,40 @@ never makes a session *safe*: the same vocabulary rule as above applies.
 | call at the attacker | вызов в адрес атакующего | llamada al atacante | appel vers l’attaquant | 指向攻击者的调用 | A refused call whose arguments carry what the goal names. |
 | relay (key holder) | ретранслятор | relé | relais | 中继 | Host process that holds the API key; the container has no network. |
 
+## WARDEN gateway and OpenWebUI terms
+
+Added 2026-11-17 with `warden/docs/gateway*.md` and `warden/docs/openwebui*.md`. Routes (`/v1/pre` …), config
+fields (`requireAdapter`, `stateDir` …), the CLI `warden-mcp gateway`, finding and reason codes
+(`unnamed_destination`, `destructive_action`, `secret`), scenario ids (S1, B2, O5, R1 …) and the approval phrase as
+typed (`подтверждаю K7Q2`) are **identifiers and never translated**. OpenWebUI's own names stay Latin: `Filter`,
+`Function`, `Valves`, `Tool`, `inlet` / `outlet`, Admin Panel paths, the `Default` (legacy) mode, the dialog buttons
+Confirm / Cancel. The flow-guard rows above apply here: *flow guard* is «страж потоков» / «guardián de flujos» /
+«garde de flux» / 流向守卫 in prose (the English may be glossed once), *gates* follow `gate chain`, *pinned*
+follows `pinned (tool set)`. Same vocabulary rule: the gateway refuses or asks; it never makes a chat *safe*.
+
+| EN | RU | ES | FR | ZH | Notes |
+|----|----|----|----|----|-------|
+| gateway (WARDEN) | шлюз | pasarela | passerelle | 网关 | The `warden-mcp gateway` process, not a network device. |
+| decision service | служба решений | servicio de decisiones | service de décision | 决策服务 | The `/v1/*` routes. |
+| tool server | сервер инструментов | servidor de herramientas | serveur d’outils | 工具服务器 | MCP or OpenAPI server a platform calls over HTTP. |
+| platform adapter | адаптер платформы | adaptador de la plataforma | adaptateur de la plateforme | 平台适配器 | The thin code inside the platform that reports and asks; it makes no decisions. RU not «переходник». |
+| approval code | код подтверждения | código de aprobación | code d’approbation | 批准码 | One call, one chat, one user, ten minutes. |
+| approve / decline (a call) | подтвердить / отклонить | aprobar / rechazar | approuver / décliner | 批准 / 不批准 | The person's answer. Keep apart from the `deny` decision («запрещён», «denegada», «refusé», 拒绝). |
+| grant (approved code) | разрешение | autorización | autorisation | 授权 | An approved code waiting for the identical call. Not the job-grant row above. |
+| confirmation dialog | окно подтверждения | diálogo de confirmación | boîte de dialogue de confirmation | 确认对话框 | OpenWebUI's `confirmation` event. |
+| result screening | проверка результатов | revisión de resultados | contrôle des résultats | 结果审查 | Config field `results`: `warn`, `block`, `off`. |
+| pinning | закрепление | fijación | épinglage | 固定 | Recording a digest of the tool definitions; see `pinned (tool set)`. |
+| built-in tools (OpenWebUI) | встроенные инструменты | herramientas integradas | outils intégrés | 内置工具 | `search_web`, `fetch_url`, notes, memory, code … |
+| native / legacy function calling | нативный / старый («Default») вызов функций | llamada a funciones nativa / heredada («Default») | appel de fonctions natif / hérité (« Default ») | 原生 / 旧版（Default）函数调用 | OpenWebUI's two modes. |
+| chat (OpenWebUI) | чат | chat | conversation | 对话 | FR keeps «conversation» in prose; the header names stay Latin. |
+| chat state | состояние чата | estado del chat | état de la conversation | 对话状态 | One flow-guard state per user and chat. |
+| state folder | папка состояния | carpeta de estado | dossier d’état | 状态目录 | `stateDir`. |
+| counts as having read outside text | считается прочитавшим чужой текст | cuenta como lector de texto ajeno | compte comme ayant lu du texte extérieur | 视为已读取外部文本 | Preferred to *tainted* («заражён», «contaminado», «contaminé», 受污染) in prose. |
+| outage (gateway unreachable) | недоступность | indisponibilidad | indisponibilité | 不可用 | Only a failed connection. An error answer is a refusal, not an outage. |
+| scripted model | сценарная модель | modelo con guion | modèle scénarisé | 脚本化模型 | The test "model" that always does what the injected text asks. |
+| live check | живая проверка | comprobación en vivo | vérification en direct | 实机检查 | On a running OpenWebUI, as opposed to unit tests. |
+| independent review | независимая проверка | revisión independiente | revue indépendante | 独立审查 | By a separate agent; not a human audit. |
+
 ## WARDEN continuous quality cycle
 
 Added 2026-10-10 for `momus/docs/quality-cycle*.md` (EN/RU/ES/FR/ZH).
