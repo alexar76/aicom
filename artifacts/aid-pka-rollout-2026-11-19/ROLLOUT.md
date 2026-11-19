@@ -59,6 +59,10 @@ AID client fails the proof.
 - Plain `GET /mcp` 200, MCP `initialize` 200, health, `/.well-known/ard.json`, `/` 200; THEMIS healthy.
 - Hub log since the switch: one line, an outside peer's `/.well-known/ai-market.json` 404 during the crawl (not
   this change).
-- DNS: owner to put `k` into `_agent.modelmarket.dev` (Timeweb):
+- DNS: the owner put `k` into `_agent.modelmarket.dev` (Timeweb, TTL 600) at about 09:35Z:
   `v=aid2;u=https://modelmarket.dev/mcp;p=mcp;a=none;s=AIMarket hub: search and call agent tools;k=H_pv7n0l5b3o5SgCFPaAhm-K1flFG-Dim16mHmclqaM`
-  (139 bytes).
+  (139 bytes). All four Timeweb servers (ns1, ns2 .ru, ns3, ns4 .org) served it at 09:45:45Z (serial 166), and so did
+  1.1.1.1, 8.8.8.8 and 9.9.9.9 at 09:45:51Z. Timeweb serials ran ahead of the content (165 and 166 still served the
+  old text for a few minutes), so check the value, not the serial.
+- `verify_live.py` from skopos-vps at 09:39:46Z with `u` and `k` parsed from the DNS record (ns1): unbound ok, bound to
+  modelmarket.dev ok, unserved domain → 403 without signature.
