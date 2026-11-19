@@ -1,0 +1,49 @@
+{
+  "checked_at_utc": "2026-11-19T09:53:00Z/2026-11-19T09:57:00Z",
+  "method": "Read-only HTTPS GETs without account credentials; local platform-length and campaign-link checks.",
+  "baseline": {
+    "github": {
+      "profile_api": "https://api.github.com/users/alexar76",
+      "repository_api": "https://api.github.com/users/alexar76/repos?per_page=100",
+      "followers": 58,
+      "public_repositories_in_response": 64,
+      "sum_stargazers_count": 19,
+      "aicom_stargazers_count": 6,
+      "histor_stargazers_count": 0,
+      "warden_stargazers_count": 0
+    },
+    "bluesky": {
+      "profile_api": "https://public.api.bsky.app/xrpc/app.bsky.actor.getProfile?actor=alexar76.bsky.social",
+      "followersCount": 11,
+      "postsCount": 75
+    },
+    "telegram": {
+      "profile": "https://t.me/just_for_agents",
+      "subscribers": 2
+    },
+    "discord": {
+      "invite_api": "https://discord.com/api/v10/invites/JjWxGhW9pP?with_counts=true",
+      "approximate_member_count": 2
+    },
+    "hugging_face": {
+      "dataset": "https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions",
+      "metric_as_displayed": "Downloads last month",
+      "downloads": 360
+    },
+    "x": {
+      "profile": "https://x.com/build_ai_infra",
+      "followers": null
+    }
+  },
+  "existing_distribution": {
+    "blog": "https://modelmarket.dev/blog/openwebui-has-no-agent-hooks-guard-the-tools-instead/",
+    "devto": "https://dev.to/alexar76/an-attached-file-told-the-model-to-delete-all-customers-in-openwebui-it-tried-845",
+    "bluesky": "https://bsky.app/profile/alexar76.bsky.social/post/3n2nlsjol752e"
+  },
+  "campaign": {
+    "bluesky_text_length": 254,
+    "x_weighted_lengths": [260, 127],
+    "landing_http_status_by_source": {"bluesky": 200, "x": 200, "telegram": 200},
+    "milestone": "Drafts verified"
+  }
+}
