@@ -1,10 +1,12 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
+<p align="center"><b>I build infrastructure for the agent economy, where AI agents find and pay for services.</b></p>
+
+Alien Monitor maps the whole ecosystem in real time, from the Hub and Factory to the oracles. WARDEN checks the MCP tools that agents use. HISTOR keeps a public, signed record of how their definitions change.
+
 <!-- ecosystem-entry-points -->
 [See a recorded MCP tool change](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Scan a tool list with WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implement the tool-set digest](https://github.com/alexar76/mcp-tool-set-digest) · [All eleven ways in](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
-
-<p align="center"><b>Public, witnessed records and checks for the tools AI agents use.</b></p>
 
 <p align="center">
   <a href="README.md"><b>English</b></a> ·
@@ -41,7 +43,7 @@
 </p>
 
 <p align="center">
-  <sub>Zoomable 3D ecosystem graph — <a href="https://monitor.modelmarket.dev/">Alien Monitor</a></sub>
+  <sub><a href="https://monitor.modelmarket.dev/">Alien Monitor</a> — a live map of the agent economy I’m building</sub>
 </p>
 
 ---

@@ -22,6 +22,7 @@ from web.backend.middleware.public_demo_readonly import demo_refusal
         ("PUT", "/api/admin/blog/posts/hello"),
         ("POST", "/api/admin/wow/prompts/apply"),
         ("POST", "/api/admin/auth/setup-2fa"),
+        ("POST", "/api/admin/auth/verify-2fa"),
         ("POST", "/api/admin/pipeline-database/test-connection"),
         ("PATCH", "/api/admin/pipeline/products/p1/storefront-pricing"),
         # the version prefix reaches the same routes and must not be a way around
@@ -54,7 +55,7 @@ def test_demo_lets_guests_do_what_the_demo_offers(method, path):
 @pytest.mark.parametrize(
     "path",
     ["/api/admin/funnel", "/api/admin/outreach/channels", "/api/admin/support-queue",
-     "/api/v1/admin/funnel/"],
+     "/api/v1/admin/funnel/", "/api/admin/action-log", "/api/v1/admin/security/logs"],
 )
 def test_demo_refuses_reads_of_other_peoples_data(path):
     assert demo_refusal("GET", path)

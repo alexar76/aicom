@@ -2674,20 +2674,9 @@ else:
       echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
       return 1
       ;;
-    protocol-v2-receipt-from-spec)
-      echo "ERROR: protocol-v2-receipt-from-spec/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
-      echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
-      return 1
-      ;;
-    protocol-v2-from-spec-rs)
-      echo "ERROR: protocol-v2-from-spec-rs/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
-      echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
-      return 1
-      ;;
-    protocol-v2-federator-go)
-      echo "ERROR: protocol-v2-federator-go/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
-      echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
-      return 1
+    protocol-v2-receipt-from-spec|protocol-v2-from-spec-rs|protocol-v2-federator-go)
+      echo "Skipping public reference repository $sat_id (no automated mirror)."
+      return 0
       ;;
     cite-desks)
       local extra_excludes

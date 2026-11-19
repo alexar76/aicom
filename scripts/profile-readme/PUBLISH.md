@@ -35,7 +35,7 @@ Whenever you change `scripts/profile-readme/README.md` **or anything in `assets/
 
 | Field | Suggested value |
 | --- | --- |
-| Bio | `infrastructure for AI agent economy` |
+| Bio | `I build infrastructure for the agent economy, where AI agents find and pay for services. My work includes MCP security tools WARDEN and HISTOR.` |
 | Website | `https://magic-ai-factory.com` |
 | X (Twitter) | `https://x.com/build_ai_infra` — also linked in README header |
 | Pinned repos | Prefer `aicom`, `alien-monitor`, `themis`, `metis`, `aimarket-mcp`, `aimarket-oracle-gateway`, `oracles` (swap out crypto-heavy `acex` / `lottery` for newcomers) |

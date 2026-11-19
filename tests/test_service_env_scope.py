@@ -73,6 +73,8 @@ NOT_READ_AT_RUNTIME = {
         # AUTO_PIPELINE_VALUE=...` from AIFACTORY_AUTONOMOUS_PIPELINE) or by `docker compose
         # exec ... env AUTO_PIPELINE_VALUE=0`; never from .env.
         "AUTO_PIPELINE_VALUE",
+        # Read by the host-side Rust vendor refresh script in security/solana-wire.
+        "CARGO_HOME",
         # Set by `next build` itself to tell build from serve; an operator value would lie.
         "NEXT_PHASE",
     },
@@ -714,6 +716,7 @@ def test_generated_env_files_never_enter_a_build_context(path):
     "artifacts/security-audit/host-inventory.json", "output/private-run/result.json",
     ".internal/audit/report.json", ".ssh/id_ed25519", ".aws/credentials",
     ".codex/session.json", ".agents/local-state.json",
+    "data/.env.example", "deploy/env/.env.example", "satellite/.env.production", "satellite/.env.bak-trialkey",
     "satellite/.git/config", "satellite/.ssh/id_ed25519", "satellite/.aws/credentials",
     ".venv-quality/lib/tool.py", "satellite/.venv-test/lib/tool.py",
     "examples/n8n-order-check/.runtime/n8n/state.json",
@@ -725,7 +728,7 @@ def test_host_evidence_and_legacy_copies_never_enter_build_context(path):
 
 
 @pytest.mark.parametrize("path", [
-    "security/vendor/deepmerge-safe/index.js", "web/backend/main.py",
+    ".env.example", "satellite/.env.example", "security/vendor/deepmerge-safe/index.js", "web/backend/main.py",
     "data/config/model_providers.example.yaml", "contracts/evm/lib/openzeppelin-contracts/contracts/token/ERC20/ERC20.sol",
     "warden/docs/data/measurements.json",
 ])

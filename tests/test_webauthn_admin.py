@@ -108,3 +108,29 @@ def test_pending_login_challenges_are_bounded(admin_json):
         wa.authentication_options("admin")
     rows = wa.load_admin_config()["webauthn_pending"]["login_challenges"]
     assert len(rows) == wa.MAX_PENDING_LOGINS
+
+
+def test_only_owner_can_manage_shared_factors(admin_json, monkeypatch):
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+    from web.backend.api.admin import auth
+
+    monkeypatch.setattr(auth, "ADMIN_JSON", admin_json)
+    monkeypatch.setenv("AIFACTORY_DEMO_READONLY", "0")
+    app = FastAPI()
+    app.include_router(auth.router)
+    identity = {"sub": "colleague", "role": "admin"}
+    app.dependency_overrides[auth.require_admin_with_rbac] = lambda: identity
+    client = TestClient(app)
+    before = admin_json.read_bytes()
+    bodies = {"setup-2fa": {"password": "sample"}, "verify-2fa": {"code": "123456"},
+              "cancel-2fa-setup": {}, "disable-2fa": {"password": "sample"},
+              "webauthn/register/options": {}, "webauthn/register/verify": {"credential": {}},
+              "webauthn/disable": {"password": "sample"}}
+    for subject, role in (("colleague", "admin"), ("admin", "operator")):
+        identity.update(sub=subject, role=role)
+        for route, body in bodies.items():
+            assert client.post("/api/admin/auth/" + route, json=body).status_code == 403
+        assert admin_json.read_bytes() == before
+    identity.update(sub="admin", role="super_admin")
+    assert client.post("/api/admin/auth/cancel-2fa-setup").status_code == 200

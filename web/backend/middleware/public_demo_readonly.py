@@ -34,7 +34,6 @@ _SAFE_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
 DEMO_ADMIN_MUTATIONS_ALLOWED = frozenset({
     ("POST", "/api/admin/auth/login"),
     ("POST", "/api/admin/auth/logout"),
-    ("POST", "/api/admin/auth/verify-2fa"),
     ("POST", "/api/admin/auth/webauthn/login/options"),
     ("POST", "/api/admin/settings"),
     ("POST", "/api/admin/products/create"),
@@ -42,6 +41,8 @@ DEMO_ADMIN_MUTATIONS_ALLOWED = frozenset({
 
 #: Reads that return personal data of other visitors or stored credentials.
 DEMO_ADMIN_READS_REFUSED = (
+    "/api/admin/action-log",
+    "/api/admin/security",
     "/api/admin/funnel",
     "/api/admin/outreach",
     "/api/admin/support-queue",

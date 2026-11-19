@@ -1,26 +1,187 @@
 {
-  "stork_emporion": {
-    "url": "https://www.stork.ai/mcp/dev-modelmarket-emporion",
-    "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
-  },
-  "stork_security": {
-    "url": "https://www.stork.ai/mcp/dev-modelmarket-mcp-security",
-    "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
-  },
-  "shortform_attested": {
-    "url": "https://raw.githubusercontent.com/shortformkit/free-remote-mcp-servers/7dfce891294e9e4a51cf2bbb00c4645ab33ffb01/README.md",
-    "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
-  },
-  "ragmap_pinned": {
-    "url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/274004fcf8c469a9d92058e5bbdd50af2ec6da57/README.md",
-    "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
-  },
-  "esim_comment": {
-    "url": "https://dev.to/whiteknightonhorse/comment/3lh4e",
-    "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
-  },
-  "course_issue": {
-    "url": "https://api.github.com/repos/S-AI-Projects/free-programming-books/issues/5",
-    "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"
-  }
+  "as_of": "2026-11-18",
+  "scope": "Публичные ссылки и наблюдения. Даты обозначают дату события или теста. Включены и новые находки, и перепроверенные источники предыдущих аудитов.",
+  "sources": [
+    {
+      "component": "HISTOR",
+      "source": "GenAI Security Project ACS #38 и #53",
+      "evidence_type": "Независимое воспроизведение",
+      "observation": "31 октября сторонний участник сверил SHA-256 архива, разобрал выборку из 250 подписанных меток и ответ API. 14 ноября полученные расхождения использовали в обсуждении диагностики совместимости ACS. Issue открыт. В ACS #53 сторонний участник опубликовал проект таблицы тестов и указал, какие два теста основаны на предложении alexar76. Тесты пока вне основной ветки.",
+      "urls": [
+        "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6545176155",
+        "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6826211702",
+        "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6880041042",
+        "https://github.com/GenAI-Security-Project/agent-control-standard/issues/38#issuecomment-6880195766",
+        "https://github.com/GenAI-Security-Project/agent-control-standard/issues/53#issuecomment-6881469495"
+      ]
+    },
+    {
+      "component": "HISTOR",
+      "source": "ScraperWatch",
+      "evidence_type": "Сопоставление наблюдений",
+      "observation": "Внешний журнал ссылается на HISTOR в разделе Outside check.",
+      "urls": [
+        "https://scraperwatch.com/mcp-changes/"
+      ]
+    },
+    {
+      "component": "HISTOR",
+      "source": "OWASP MCP Security Testing Guide",
+      "evidence_type": "Изменение статуса внешнего PR",
+      "observation": "PR #21 слит 18 ноября в 15:02:08 UTC. Семь файлов в составе правки без названия HISTOR и домена modelmarket.dev. Ссылка расположена в комментарии alexar76.",
+      "urls": [
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/21",
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/21#issuecomment-6789870454"
+      ]
+    },
+    {
+      "component": "WARDEN · ARGUS · HISTOR",
+      "source": "The Agent Forge",
+      "evidence_type": "Автоматический запуск пакетов",
+      "observation": "House tester наблюдал WARDEN 0.28.0 17 ноября, ARGUS 0.4.0 и HISTOR 0.9.1 16 ноября. Вывод Forge insufficient на всех трёх страницах.",
+      "urls": [
+        "https://theagentforge.io/a/house-tester",
+        "https://theagentforge.io/api/v1/check?id=npm%3A%40aimarket%2Fwarden",
+        "https://theagentforge.io/api/v1/check?id=npm%3A%40alexar76%2Fargus3",
+        "https://theagentforge.io/api/v1/check?id=pypi%3Aaimarket-histor"
+      ]
+    },
+    {
+      "component": "EMPORION · WARDEN · HISTOR",
+      "source": "Stork.AI",
+      "evidence_type": "Автоматическая проверка удалённого MCP",
+      "observation": "16 ноября успешная инициализация без аккаунта. Страницы показывают 8 инструментов EMPORION и 4 на общей точке WARDEN/HISTOR и дают прямые адреса подключения.",
+      "urls": [
+        "https://www.stork.ai/mcp/dev-modelmarket-emporion",
+        "https://www.stork.ai/mcp/dev-modelmarket-mcp-security"
+      ]
+    },
+    {
+      "component": "EMPORION",
+      "source": "Ragmap",
+      "evidence_type": "Запись в чужом репозитории",
+      "observation": "README с прямым адресом подключения. В данных каталога дата lastOk по состоянию на 18 ноября.",
+      "urls": [
+        "https://github.com/khalidsaidi/ragmap/blob/main/README.md#L1072",
+        "https://github.com/khalidsaidi/ragmap/blob/main/data/servers.json"
+      ]
+    },
+    {
+      "component": "EMPORION",
+      "source": "ProtocolProbe",
+      "evidence_type": "Проверка совместимости схем",
+      "observation": "Снимок MCP от 23 октября. В тестах каталога 24–25 октября API Anthropic и OpenAI отклонили опубликованную схему, Google принял. Вывод ограничен указанными датами и моделями.",
+      "urls": [
+        "https://protocolprobe.com/mcp/servers/dev.modelmarket/emporion"
+      ]
+    },
+    {
+      "component": "Attested Memory",
+      "source": "ShortformKit · Glama",
+      "evidence_type": "Автоматическая проверка удалённого MCP",
+      "observation": "ShortformKit 16 ноября получил список из 13 инструментов. Glama отметила успешную проверку 18 ноября в 19:58 UTC.",
+      "urls": [
+        "https://github.com/shortformkit/free-remote-mcp-servers/blob/7dfce891294e9e4a51cf2bbb00c4645ab33ffb01/README.md#L326",
+        "https://glama.ai/mcp/connectors/io.github.alexar76/attested-memory"
+      ]
+    },
+    {
+      "component": "AIMarket Hub",
+      "source": "Industrial Platform",
+      "evidence_type": "Зависимость в стороннем коде",
+      "observation": "Зависимость от конкретного коммита Hub закреплена в requirements и проверена CI 5 октября. Публичный статус рабочего развёртывания не установлен.",
+      "urls": [
+        "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/blob/3bf93bbf25262546e7aeaa635c8ae5740103719e/aimarket-sentinel/requirements.txt#L1",
+        "https://github.com/industrial-platform-ai/industrial-platform-agent-tools/actions/runs/37384937868/job/112015783278"
+      ]
+    },
+    {
+      "component": "AIMarket Hub",
+      "source": "LupaRiel",
+      "evidence_type": "Внешняя котировка",
+      "observation": "30 октября LupaRiel получил HTTP 402 без оплаты с котировкой 0,003 USDC в Base.",
+      "urls": [
+        "https://lupariel.com/fichas/aimarket-hub/"
+      ]
+    },
+    {
+      "component": "AIMarket Hub · HISTOR · WARDEN",
+      "source": "Roundhouse",
+      "evidence_type": "Ончейн-индекс",
+      "observation": "Ссылки на три регистрационные записи ERC-8004 и WARDEN x402.",
+      "urls": [
+        "https://roundhouseai.io/merchant/0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a"
+      ]
+    },
+    {
+      "component": "x402 · Swarm Connect",
+      "source": "Swarm Connect",
+      "evidence_type": "Внешнее изменение кода",
+      "observation": "Разработчик подтвердил выпуск теста, добавленного по предложению alexar76. Использование Hub не установлено.",
+      "urls": [
+        "https://github.com/datafund/swarm_connect/pull/500",
+        "https://github.com/datafund/swarm_connect/issues/467#issuecomment-6683684438"
+      ]
+    },
+    {
+      "component": "eSIM · ARGUS",
+      "source": "DEV Community",
+      "evidence_type": "Предметный отклик внешнего разработчика",
+      "observation": "17–18 ноября обсуждение изменения котировки и выбора продавца. 18 ноября разработчик сообщил, что перенял бы привязку одобрения к продавцу и цене.",
+      "urls": [
+        "https://dev.to/whiteknightonhorse/comment/3ldcg",
+        "https://dev.to/whiteknightonhorse/comment/3lfb5",
+        "https://dev.to/whiteknightonhorse/comment/3lh4e"
+      ]
+    },
+    {
+      "component": "HISTOR · WARDEN",
+      "source": "Hubwiz · 程序员 Poetry",
+      "evidence_type": "Сторонние материалы на китайском",
+      "observation": "Hubwiz сослался на октябрьский замер HISTOR, представив цифры как данные команды проекта. Poetry 12 ноября указал исходную статью и API.",
+      "urls": [
+        "https://www.hubwiz.com/blog/agent-security-nine-incidents-six-controls/",
+        "https://feinterview.poetries.top/ai-monitor/news/six-of-16-common-mcp-servers-can-t-be-read-from-outside-one-of-the-others-changed-19-t"
+      ]
+    },
+    {
+      "component": "AI Factory",
+      "source": "enterprise-factory · UnderCode News",
+      "evidence_type": "Форк с собственной разработкой и статья",
+      "observation": "Проверен коммит отдельного форка от 14 октября. Статья 8 октября, доступная при повторной проверке, содержит прямую ссылку на релизы AICOM.",
+      "urls": [
+        "https://github.com/th3artfuldodger/enterprise-factory/commit/ef124a40d592bf149fab93fb632a4aaf688a04fa",
+        "https://undercodenews.com/aicom-factory-just-updated-video/"
+      ]
+    },
+    {
+      "component": "AIMarket Courses",
+      "source": "EbookFoundation · S-AI-Projects",
+      "evidence_type": "Принятая ссылка и внешнее учебное задание",
+      "observation": "Августовский PR в курируемый список слит. 3 ноября другой автор привёл Courses как пример задания. Issue открыт.",
+      "urls": [
+        "https://github.com/EbookFoundation/free-programming-books/pull/13394",
+        "https://github.com/S-AI-Projects/free-programming-books/issues/5"
+      ]
+    },
+    {
+      "component": "METIS",
+      "source": "Help Wanted",
+      "evidence_type": "Каталог",
+      "observation": "Страница ссылается на METIS, сайт и задачи. Дата снимка 17 июля.",
+      "urls": [
+        "https://helpwanted.dev/projects/alexar76/metis"
+      ]
+    },
+    {
+      "component": "AIMarket Hub",
+      "source": "UseTested",
+      "evidence_type": "Опубликованная запись об одном тестовом платеже",
+      "observation": "В карточке от 11 ноября указана прежняя запись о тестовом платеже от 27 октября. Повторное обновление карточки не добавило платежей.",
+      "urls": [
+        "https://usetested.com/v1/review?service=modelmarket.dev",
+        "https://usetested.com/services"
+      ]
+    }
+  ]
 }

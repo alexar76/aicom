@@ -319,6 +319,46 @@ satellites:
       - github-releases
     ci: []
 
+  - id: protocol-v2-from-spec-rs
+    github_published: true
+    repo: protocol-v2-from-spec-rs
+    description: >
+      Second-pass checks of AIMarket Protocol v2 manifest and federation announce,
+      written in Rust from spec.md and test-vectors only.
+      Does not count as an independent implementation: the author is the protocol editor.
+    license: "Apache-2.0 OR MIT"
+    paths:
+      - protocol-v2-from-spec-rs
+    notes: >
+      Public editor-maintained reference implementation.
+
+  - id: protocol-v2-receipt-from-spec
+    github_published: true
+    repo: protocol-v2-receipt-from-spec
+    description: >
+      Second implementation of AIMarket Protocol v2 receipt checks, written from
+      spec.md and test-vectors only. Does not count as an
+      independent implementation: the author is the protocol editor.
+    license: "Apache-2.0 OR MIT"
+    paths:
+      - protocol-v2-receipt-from-spec
+    notes: >
+      Public editor-maintained reference implementation.
+
+  - id: protocol-v2-federator-go
+    github_published: true
+    repo: protocol-v2-federator-go
+    description: >
+      Directory-node federator for AIMarket Protocol v2, written in Go from
+      spec.md, schemas and test-vectors for an outside operator to run with their
+      own key. While AICOM authors it, it is not an
+      independent implementation under GOVERNANCE.md.
+    license: "Apache-2.0 OR MIT"
+    paths:
+      - protocol-v2-federator-go
+    notes: >
+      Public editor-maintained reference implementation.
+
   - id: aimarket-agent
     homepage: "https://alexar76.github.io/aicom/"
     repo: aimarket-agent

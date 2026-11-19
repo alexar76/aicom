@@ -1,10 +1,12 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
+<p align="center"><b>Desarrollo infraestructura para la economía de los agentes de IA, donde los agentes encuentran servicios y pagan por ellos.</b></p>
+
+Alien Monitor muestra todo el ecosistema en tiempo real, desde el Hub y la Factory hasta los oráculos. WARDEN comprueba las herramientas MCP que usan los agentes. HISTOR mantiene un registro público y firmado de los cambios en sus definiciones.
+
 <!-- ecosystem-entry-points -->
 [Ver un cambio registrado en herramientas MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Analizar una lista de herramientas con WARDEN](https://modelmarket.dev/tools/warden-scan) · [Implementar la huella del conjunto de herramientas](https://github.com/alexar76/mcp-tool-set-digest) · [Las once puertas de entrada](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
-
-<p align="center"><b>Comprobaciones y un registro público con testigos de las herramientas que usan los agentes de IA.</b></p>
 
 <p align="center">
   <a href="README.md">English</a> ·
@@ -41,7 +43,7 @@
 </p>
 
 <p align="center">
-  <sub>Grafo 3D ampliable del ecosistema — <a href="https://monitor.modelmarket.dev/">Alien Monitor</a></sub>
+  <sub><a href="https://monitor.modelmarket.dev/">Alien Monitor</a> — un mapa en tiempo real de la economía de agentes que estoy construyendo</sub>
 </p>
 
 ---

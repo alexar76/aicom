@@ -1,10 +1,12 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
+<p align="center"><b>我为智能体经济构建基础设施，让 AI 智能体能够找到所需的服务并付费。</b></p>
+
+Alien Monitor 实时展示整个生态系统，涵盖 Hub、Factory 和预言机等组件。WARDEN 检查智能体使用的 MCP 工具。HISTOR 公开记录这些工具定义的变更，并为记录签名。
+
 <!-- ecosystem-entry-points -->
 [查看已记录的 MCP 工具变更](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [用 WARDEN 扫描工具列表](https://modelmarket.dev/tools/warden-scan) · [实现工具集摘要](https://github.com/alexar76/mcp-tool-set-digest) · [全部十一个入口](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
-
-<p align="center"><b>为 AI 智能体所用的工具提供检查和有见证的公开记录。</b></p>
 
 <p align="center">
   <a href="README.md">English</a> ·
@@ -41,7 +43,7 @@
 </p>
 
 <p align="center">
-  <sub>可缩放的 3D 生态图谱——<a href="https://monitor.modelmarket.dev/">Alien Monitor</a></sub>
+  <sub><a href="https://monitor.modelmarket.dev/">Alien Monitor</a> —— 我所构建的智能体经济的实时地图</sub>
 </p>
 
 ---

@@ -28,6 +28,7 @@ if TYPE_CHECKING:
     pass
 
 from web.backend.core.security import get_current_admin
+from web.backend.middleware.api_version import canonical_api_path
 
 
 class AdminRole(str, Enum):
@@ -84,6 +85,7 @@ VIEWER_BLOCKED_GET_PREFIXES: tuple[str, ...] = (
 
 # Non-GET requests operators cannot perform (prefix match).
 OPERATOR_WRITE_DENIED_PREFIXES: tuple[str, ...] = (
+    "/api/admin/llm-limits",
     "/api/admin/users",
     "/api/admin/providers",
     "/api/admin/llm-pricing",
@@ -123,7 +125,7 @@ def check_admin_rbac(request: Request, admin: dict) -> dict:
     """Raise 403 if this admin role may not access the request."""
     role = normalize_role(admin.get("role"))
     method = request.method.upper()
-    path = request.url.path
+    path = canonical_api_path(request.url.path).rstrip("/")
 
     if path.startswith("/api/admin/users"):
         if role != AdminRole.SUPER_ADMIN:

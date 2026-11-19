@@ -32,3 +32,17 @@ def test_normalize_role_invalid_fails_closed_to_viewer():
 def test_normalize_role_valid():
     assert normalize_role("super_admin") == AdminRole.SUPER_ADMIN
     assert normalize_role("viewer") == AdminRole.VIEWER
+
+
+def test_llm_budget_changes_require_admin_on_both_api_paths():
+    import pytest
+    from fastapi import HTTPException
+    from starlette.requests import Request
+    from web.backend.core.admin_roles import check_admin_rbac
+
+    for prefix in ("/api", "/api/v1"):
+        req = Request({"type": "http", "method": "PUT", "path": prefix + "/admin/llm-limits", "headers": []})
+        with pytest.raises(HTTPException) as denied:
+            check_admin_rbac(req, {"role": "operator"})
+        assert denied.value.status_code == 403
+        assert check_admin_rbac(req, {"role": "admin"}) == {"role": "admin"}

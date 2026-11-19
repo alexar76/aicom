@@ -166,3 +166,39 @@ def test_hub_capital_pricing_route_source():
     src = hub_api.read_text()
     assert "/capital/pricing" in src
     assert "/api/v2/capital" in src
+
+
+def test_snapshot_cache_bounds_keys_and_new_refreshes(monkeypatch):
+    import asyncio
+    from web.backend.api import acex_capital as pricing
+
+    async def run():
+        started, release = asyncio.Event(), asyncio.Event()
+
+        async def compute(*, chain, listing_id, limit):
+            started.set()
+            await release.wait()
+            return {"listing_id": listing_id}
+
+        monkeypatch.setattr(pricing, "_compute_pricing_snapshot", compute)
+        monkeypatch.setattr(pricing, "_snapshot_cache", {})
+        monkeypatch.setattr(pricing, "_snapshot_inflight", {})
+        monkeypatch.setattr(pricing, "_snapshot_lock", asyncio.Lock())
+        monkeypatch.setattr(pricing, "_MAX_SNAPSHOTS", 2)
+        monkeypatch.setattr(pricing, "_MAX_REFRESHES", 1)
+
+        def snapshot(name):
+            return pricing._get_pricing_snapshot(chain="solana", listing_id=name, limit=1)
+
+        first = asyncio.create_task(snapshot("first"))
+        await started.wait()
+        with pytest.raises(TimeoutError):
+            await snapshot("second")
+        release.set()
+        await first
+        for name in ("second", "third"):
+            await snapshot(name)
+        assert [key[1] for key in pricing._snapshot_cache] == ["second", "third"]
+        assert not pricing._snapshot_inflight
+
+    asyncio.run(run())

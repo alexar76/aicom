@@ -185,6 +185,10 @@ DENY = {
         # aimarket_hub/answer_dependence.py's free-capability probe and the federation
         # visitor door: both run inside the hub's own crawl and server, never in the Factory.
         "AIMARKET_ANSWER_PROBE", "AIMARKET_FEDERATION_VISITOR",
+        # Hub-only paid-tier credentials and federation settings. The Factory uses
+        # its local Hub database's adjacent peer-rejections.json for local listings.
+        "AIMARKET_ORACLE_PAID_TIER_CREDENTIALS", "AIMARKET_FEDERATION_INDEX_WITNESSES",
+        "AIMARKET_PEER_IDENTITY_ALIASES", "AIMARKET_PEER_REJECTIONS_FILE",
         # A buyer's wallet key (see the hub's entry). Nothing in the Factory reads it, and its
         # PIPELINE_ namespace would otherwise let it through.
         "PIPELINE_WALLET_KEY",

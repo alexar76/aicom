@@ -55,6 +55,8 @@ _SNAPSHOT_STALE_SEC = max(
     float(os.environ.get("ACEX_SNAPSHOT_STALE_SEC", "60.0")),
     _SNAPSHOT_TTL_SEC,
 )
+_MAX_SNAPSHOTS = 128
+_MAX_REFRESHES = 16
 _snapshot_cache: dict[tuple, tuple[float, dict]] = {}
 _snapshot_lock = asyncio.Lock()
 _snapshot_inflight: dict[tuple, asyncio.Future] = {}
@@ -150,6 +152,8 @@ async def _get_pricing_snapshot(
 
         inflight = _snapshot_inflight.get(key)
         if inflight is None:
+            if len(_snapshot_inflight) >= _MAX_REFRESHES:
+                raise asyncio.TimeoutError("pricing refresh capacity exhausted")
             loop = asyncio.get_running_loop()
             inflight = loop.create_future()
             _snapshot_inflight[key] = inflight
@@ -162,6 +166,9 @@ async def _get_pricing_snapshot(
         snap = await _compute_pricing_snapshot(
             chain=chain, listing_id=listing_id, limit=limit
         )
+        _snapshot_cache.pop(key, None)
+        if len(_snapshot_cache) >= _MAX_SNAPSHOTS:
+            del _snapshot_cache[next(iter(_snapshot_cache))]
         _snapshot_cache[key] = (time.monotonic(), snap)
         if not inflight.done():
             inflight.set_result(snap)

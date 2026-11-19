@@ -1,10 +1,12 @@
 <h1 align="center">Aleksandr Artamokhov</h1>
 
+<p align="center"><b>Я строю инфраструктуру агентной экономики, где ИИ-агенты находят и оплачивают услуги.</b></p>
+
+Alien Monitor показывает всю экосистему в реальном времени, от Hub и Factory до оракулов. WARDEN проверяет MCP-инструменты, которыми пользуются агенты. HISTOR ведёт публичный журнал изменений в описаниях этих инструментов и подписывает записи.
+
 <!-- ecosystem-entry-points -->
 [Посмотреть зафиксированное изменение MCP](https://histor.modelmarket.dev/s/236eb5f0481cc99c) · [Проверить список инструментов в WARDEN](https://modelmarket.dev/tools/warden-scan) · [Реализовать хеш набора инструментов](https://github.com/alexar76/mcp-tool-set-digest) · [Все одиннадцать входов](https://ecosystem.modelmarket.dev/#ways-in)
 <!-- /ecosystem-entry-points -->
-
-<p align="center"><b>Проверки и публичная история с подписями свидетелей для инструментов, которыми пользуются ИИ-агенты.</b></p>
 
 <p align="center">
   <a href="README.md">English</a> ·
@@ -41,7 +43,7 @@
 </p>
 
 <p align="center">
-  <sub>Масштабируемый 3D-граф экосистемы — <a href="https://monitor.modelmarket.dev/">Alien Monitor</a></sub>
+  <sub><a href="https://monitor.modelmarket.dev/">Alien Monitor</a> — живая карта агентной экономики, которую я строю</sub>
 </p>
 
 ---

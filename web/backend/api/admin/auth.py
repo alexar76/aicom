@@ -161,6 +161,17 @@ def _load_legacy_admin() -> dict:
         return {}
 
 
+def require_mfa_owner(admin: dict = Depends(require_admin_with_rbac)) -> dict:
+    """Only the owner of the legacy MFA record can change its factors."""
+    require_not_public_demo("change MFA factors")
+    config = _load_legacy_admin()
+    owner = aus.normalize_username(config.get("username") or "admin")
+    if (not config or normalize_role(admin.get("role")) not in {"admin", "super_admin"}
+            or aus.normalize_username(admin.get("sub") or "") != owner):
+        raise HTTPException(status_code=403, detail="Only the MFA account owner may change its factors")
+    return admin
+
+
 def _legacy_totp_applies(login_username: str) -> bool:
     cfg = _load_legacy_admin()
     if not cfg.get("totp_enabled") or not cfg.get("totp_secret"):
@@ -437,7 +448,7 @@ async def get_current_admin_info(
 async def setup_2fa(
     request: Request,
     setup_data: Setup2FARequest,
-    current_admin: dict = Depends(require_admin_with_rbac),
+    current_admin: dict = Depends(require_mfa_owner),
 ):
     """Setup 2FA — metadata stored in legacy admin.json."""
     from security import webauthn_admin as wa
@@ -472,7 +483,7 @@ async def setup_2fa(
 async def verify_2fa(
     request: Request,
     verify_data: Verify2FARequest,
-    current_admin: dict = Depends(require_admin_with_rbac),
+    current_admin: dict = Depends(require_mfa_owner),
 ):
     """Verify and enable 2FA."""
     security: SecurityManager = request.app.state.security_manager
@@ -504,7 +515,7 @@ async def verify_2fa(
 
 @router.post("/cancel-2fa-setup")
 async def cancel_2fa_setup(
-    _admin: dict = Depends(require_admin_with_rbac),
+    _admin: dict = Depends(require_mfa_owner),
 ):
     """Discard pending_totp_secret (e.g. user closed setup without verifying)."""
     if not ADMIN_JSON.exists():
@@ -520,7 +531,7 @@ async def cancel_2fa_setup(
 async def disable_2fa(
     request: Request,
     body: Disable2FARequest,
-    _admin: dict = Depends(require_admin_with_rbac),
+    _admin: dict = Depends(require_mfa_owner),
 ):
     """Turn off TOTP 2FA after password confirmation."""
     security: SecurityManager = request.app.state.security_manager
@@ -629,7 +640,7 @@ async def webauthn_login_options(body: WebAuthnLoginOptionsRequest, request: Req
 
 @router.post("/webauthn/register/options")
 async def webauthn_register_options(
-    current_admin: dict = Depends(require_admin_with_rbac),
+    current_admin: dict = Depends(require_mfa_owner),
 ):
     """Begin passkey registration for the logged-in admin."""
     from security import webauthn_admin as wa
@@ -646,7 +657,7 @@ async def webauthn_register_options(
 @router.post("/webauthn/register/verify")
 async def webauthn_register_verify(
     body: WebAuthnRegisterVerifyRequest,
-    current_admin: dict = Depends(require_admin_with_rbac),
+    current_admin: dict = Depends(require_mfa_owner),
 ):
     """Complete passkey registration (disables TOTP when enabled)."""
     from security import webauthn_admin as wa
@@ -661,7 +672,7 @@ async def webauthn_register_verify(
 async def webauthn_disable(
     body: WebAuthnDisableRequest,
     request: Request,
-    current_admin: dict = Depends(require_admin_with_rbac),
+    current_admin: dict = Depends(require_mfa_owner),
 ):
     """Remove all passkeys after password confirmation."""
     from security import webauthn_admin as wa
