@@ -597,4 +597,4 @@ When docs disagree, prefer **whitepaper** for ecosystem scope and **argus/docs/k
 
 ---
 
-*Last expanded: ecosystem MCP/oracles table, ARGUS sell path, wiki links. Maintainers: update this index when adding satellites or capabilities.*
+*Last expanded: protocol-v2 reference satellites (federator-go / from-spec-rs / receipt-from-spec) synced into generated component blocks; ecosystem MCP/oracles table, ARGUS sell path, wiki links. Maintainers: update this index when adding satellites or capabilities.*
