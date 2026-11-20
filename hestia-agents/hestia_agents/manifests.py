@@ -371,6 +371,92 @@ AGENTS: dict[str, dict[str, Any]] = {
             },
         },
     },
+    "aid-record": {
+        "capability_id": "aid.record.read@v1",
+        "name": "AID record lookup and validation (_agent TXT, AID v2.1.1)",
+        "description": (
+            "What an Agent Identity & Discovery client finds for a domain. Give a domain: two "
+            "public DNS-over-HTTPS resolvers are asked for TXT at _agent.<domain> (that exact "
+            "host), each answer is parsed and validated by the AID v2.1.1 rules, aid2 is "
+            "preferred and two valid records are refused as ambiguous. Returns the selected "
+            "record, the keyid an endpoint proof must name when the record has k, each "
+            "resolver's answer with its DNSSEC flag, and the specification's error code "
+            "(1000, 1001, 1002, 1004) when discovery fails. Or give txt to validate a record "
+            "before you publish it, with no lookup."
+        ),
+        "price_per_call_usd": 0,
+        "note": "agent discovery check for the DNS record a domain publishes about its agent",
+        "egress_hosts": ["cloudflare-dns.com", "dns.google"],
+        "probe": {"txt": ["v=aid2;u=https://api.example.com/mcp;p=mcp;a=pat;s=Example AI Tools"]},
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "domain": {"type": "string",
+                           "description": "host to look up, e.g. example.com (A-label for an IDN)"},
+                "txt": {"description": "instead of domain: one TXT string or a list of up to 16 "
+                                       "to validate without a lookup"},
+                "at": {"type": "string",
+                       "description": "ISO 8601 UTC time to judge the dep (deprecation) field "
+                                      "against; a lookup uses the resolver's Date"},
+            },
+        },
+    },
+    "aid-proof": {
+        "capability_id": "aid.proof.verify@v1",
+        "name": "AID endpoint proof check (PKA, RFC 9421 Ed25519)",
+        "description": (
+            "Checks the endpoint proof of AID v2.1.1 Appendix B for an exchange you made: the "
+            "key k from the _agent record, the request you sent (URI, nonce, AID-Domain) and "
+            "the response you got (status, Signature-Input, Signature, Cache-Control). Applies "
+            "every verifier rule: covered components, tag, alg, keyid as the RFC 7638 "
+            "thumbprint of k, nonce, the 300-second window and freshness, no-store, no "
+            "redirect, domain binding (B.7), and Ed25519 over the rebuilt RFC 9421 signature "
+            "base. Returns each check with its reason and the exact signature base, which is "
+            "what a signer's author needs when a proof fails."
+        ),
+        "price_per_call_usd": 0,
+        "note": "tells a client whether an agent endpoint proved the key its domain publishes",
+        "probe": {
+                "k": "H_pv7n0l5b3o5SgCFPaAhm-K1flFG-Dim16mHmclqaM",
+                "request": {
+                    "method": "GET",
+                    "uri": "https://modelmarket.dev/mcp",
+                    "nonce": "u22PT4mB2X0RzRBshbMYmSU1Ximhu_923OeklRyFgQc",
+                    "aid_domain": "modelmarket.dev"
+                },
+                "response": {
+                    "status": 200,
+                    "headers": {
+                        "signature-input": "aid-pka=(\"@method\";req \"@target-uri\";req \"@authority\";req \"aid-domain\";req \"@status\");created=1795120515;expires=1795120575;keyid=\"GPgQ1hgsCNYND5UeXKXx970ljHR9Tlg4dR1oMK-p9aA\";alg=\"ed25519\";nonce=\"u22PT4mB2X0RzRBshbMYmSU1Ximhu_923OeklRyFgQc\";tag=\"aid-pka-v2\"",  # noqa: E501 — recorded header, verbatim
+                        "signature": "aid-pka=:dBkvIYHo+x/TAcv0+89TqNt0hf1dk1dA5A+mdVWiwFahSuX3NYfZRmoQti9U2dRR5Q3zl9Su4nYouNgzctYQAA==:",  # noqa: E501 — recorded header, verbatim
+                        "cache-control": "no-store",
+                        "date": "Thu, 19 Nov 2026 20:35:15 GMT"
+                    }
+                },
+                "now": 1795120515
+            },
+        "input_schema": {
+            "type": "object",
+            "required": ["request", "response", "now"],
+            "properties": {
+                "k": {"type": "string",
+                      "description": "the key from the record (unpadded base64url)"},
+                "record": {"type": "string",
+                           "description": "instead of k: the TXT string that has k"},
+                "request": {"type": "object",
+                            "description": "{uri, nonce, method (default GET), aid_domain (the "
+                                           "AID-Domain header, if you sent one)}"},
+                "response": {"type": "object",
+                             "description": "{status, headers: {signature-input, signature, "
+                                            "cache-control}}"},
+                "now": {"type": "integer",
+                        "description": "unix seconds when the response arrived"},
+                "skew": {"type": "integer", "default": 30,
+                         "description": "allowed clock difference in seconds, 0 to 300"},
+                "require_domain_binding": {"type": "boolean", "default": False},
+            },
+        },
+    },
 }
 
 
@@ -386,7 +472,7 @@ def deploy_body(
     payout_address: str = PAYOUT_ADDRESS,
 ) -> dict[str, Any]:
     meta = AGENTS[slug]
-    return {
+    body = {
         "slug": slug,
         "capability": {
             "product_id": PRODUCT_ID,
@@ -407,6 +493,10 @@ def deploy_body(
         "payout_address": payout_address,
         "note": meta["note"],
     }
+    # Hosts the handler may reach through the hearth (hestia.egress). Public on the roster.
+    if meta.get("egress_hosts"):
+        body["egress_hosts"] = list(meta["egress_hosts"])
+    return body
 
 
 def write_manifests() -> list[Path]:

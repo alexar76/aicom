@@ -1,0 +1,6 @@
+[Unit]
+Description=aicom hestia guard: copy the HESTIA compose folder aside
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/aicom-hestia-guard snapshot

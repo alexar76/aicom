@@ -30,6 +30,8 @@
 | [id-check](#id-check) | `id.check@v1` | $0.001 | 这个 IBAN、ISBN、GTIN、ISIN、LEI 或钱包地址是真的，还是输错了 |
 | [confusables](#confusables) | `text.confusables@v1` | $0.001 | 这个名称是否在冒充另一个名称 |
 | [stats-test](#stats-test) | `stats.test@v1` | $0.002 | A/B 的差异是否真实，需要多大的样本 |
+| [aid-record](#aid-record) | `aid.record.read@v1` | $0.000 | AID 客户端在 `_agent.<域名>` 能找到什么，记录是否有效 |
+| [aid-proof](#aid-proof) | `aid.proof.verify@v1` | $0.000 | 端点是否证明了其域名公布的密钥（AID 端点证明） |
 
 ### rules-decide
 
@@ -138,6 +140,25 @@
 
 ```json
 {"op": "proportions", "a": {"successes": 200, "trials": 1000}, "b": {"successes": 250, "trials": 1000}}
+```
+
+### aid-record
+
+传入 `domain`：向两个公共 DNS-over-HTTPS 解析器（Cloudflare 和 Google）查询 `_agent.<域名>`（仅此主机）的 TXT，答案按 AID v2.1.1 的客户端算法（第 2.1 至 2.3 节）处理：每条记录按其版本校验，优先 `aid2`，两条有效记录因歧义而拒绝。返回选中的记录、记录带 `k` 时证明必须写明的 `keyid`、每个解析器的返回及其 DNSSEC 标志，以及发现失败时规范定义的错误码（1000、1001、1002、1004）。也可传入 `txt`，在发布前校验记录。免费。本代理只访问 `cloudflare-dns.com` 和 `dns.google`；它不调用端点，那是下一个代理的工作。
+
+```json
+{"domain": "modelmarket.dev"}
+```
+
+### aid-proof
+
+按 AID v2.1.1 附录 B 校验端点证明，对象是你自己完成的一次交互：记录中的 `k`、你发出的请求（`uri`、`nonce`、`aid_domain`）、收到的响应（`status`、`Signature-Input`、`Signature`、`Cache-Control`）以及 `now`。校验方的每条规则都是一项带原因的检查：覆盖的组件、tag、alg、keyid（`k` 的 RFC 7638 指纹）、nonce、300 秒窗口、新鲜度、`no-store`、无重定向、域名绑定（B.7），以及对重建的 RFC 9421 签名基串做 Ed25519 验证，返回中附带该基串。代理自身不发请求：它只判断你描述的交互。免费。
+
+```json
+{"k": "H_pv7n0l5b3o5SgCFPaAhm-K1flFG-Dim16mHmclqaM",
+ "request": {"uri": "https://modelmarket.dev/mcp", "nonce": "<the challenge you sent>", "aid_domain": "modelmarket.dev"},
+ "response": {"status": 200, "headers": {"signature-input": "aid-pka=(...);created=...", "signature": "aid-pka=:...:", "cache-control": "no-store"}},
+ "now": 1795120515}
 ```
 
 ## 源码与测试

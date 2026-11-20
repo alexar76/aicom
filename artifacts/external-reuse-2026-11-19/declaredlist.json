@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-11-19T17:34:16.857924+00:00",
+  "repo": "https://github.com/bcrypto0/declaredlist",
+  "created_at": "2026-11-19T16:31:05Z",
+  "commit": "f71f025c11235d3a4eb0ff0613986321be860b44",
+  "same_publisher_as": "RTLpdf (README line 15)",
+  "attribution": {
+    "url": "https://github.com/bcrypto0/declaredlist/blob/f71f025c11235d3a4eb0ff0613986321be860b44/README.md#L15",
+    "text": "The authors of this site also publish the listing `com.rtlpdf/arabic-pdf` (rtlpdf.com). The scan and the check treat it like every other listing, and its listing page says who publishes it."
+  },
+  "declaration_format_in_public_methods": {
+    "url": "https://github.com/bcrypto0/declaredlist/blob/f71f025c11235d3a4eb0ff0613986321be860b44/build/core.js#L328",
+    "text": "<li>when the tool list was compared, the list the declared remote sent equals the declared one (for format 0.2, its two digests under mcp-tool-set-digest/1).</li>"
+  },
+  "test_real_checker_fixture": {
+    "url": "https://github.com/bcrypto0/declaredlist/blob/f71f025c11235d3a4eb0ff0613986321be860b44/test/check-real.test.js#L35",
+    "text": "{ spec: SPEC_ID_02, name: NAME, version: VERSION, toolSetDigest: { spec: 'mcp-tool-set-digest/1', contract: tsd.contract.digest, extras: tsd.extras.digest }, issuedAt: '2026-01-01T00:00:00Z', expiresAt: '2030-01-01T00:00:00Z', key: { method: 'http', domain: HOST }, ...over },"
+  },
+  "daily_workflow_checker_pin": {
+    "url": "https://github.com/bcrypto0/declaredlist/blob/f71f025c11235d3a4eb0ff0613986321be860b44/.github/workflows/daily-scan.yml#L33",
+    "text": "CHECKER_SHA: f58225ad3fb56f90fb0acfb657a2bcad3c0df100"
+  },
+  "checker_spec_attribution": "https://github.com/bcrypto0/addon-declaration/blob/f58225ad3fb56f90fb0acfb657a2bcad3c0df100/README.md#L5",
+  "scan_source": "https://raw.githubusercontent.com/bcrypto0/declaredlist/f71f025c11235d3a4eb0ff0613986321be860b44/data/latest.json",
+  "scan_counts": {
+    "listingsScanned": 351,
+    "pages": 4,
+    "rowsWithoutName": 0,
+    "withPublisherMetadata": 15,
+    "withPointer": 0,
+    "checked": 1,
+    "listed": 1,
+    "withdrawn": 0,
+    "byState": {
+      "verified_newer_declaration": 1
+    }
+  },
+  "listings": [
+    {
+      "name": "com.rtlpdf/arabic-pdf",
+      "checked_at": "2026-11-19T14:57:08.419Z",
+      "state": "verified_newer_declaration"
+    }
+  ],
+  "ci": {
+    "html_url": "https://github.com/bcrypto0/declaredlist/actions/runs/44567097811",
+    "name": "test",
+    "status": "completed",
+    "conclusion": "success",
+    "head_sha": "f71f025c11235d3a4eb0ff0613986321be860b44"
+  },
+  "site_status": "declaredlist.com DNS resolution failed from verification host; no public-site launch verified."
+}

@@ -3,7 +3,7 @@
 Deterministic AIMarket capability providers, built to run as HESTIA template
 tenants and sold under the operator's name (payouts to the treasury).
 
-**Catalogue of all eleven agents, in five languages:** [English](docs/AGENTS.md) ·
+**Catalogue of all thirteen agents, in five languages:** [English](docs/AGENTS.md) ·
 [Русский](docs/AGENTS.ru.md) · [Español](docs/AGENTS.es.md) · [Français](docs/AGENTS.fr.md) ·
 [中文](docs/AGENTS.zh.md) — what each answers, how to call it, an example request.
 
@@ -26,6 +26,8 @@ nothing. Determinism is what makes the receipt worth paying for.
 | `id-check` | `id.check@v1` | Is this IBAN, ISBN, GTIN, ISIN, LEI or wallet address real — or a typo |
 | `confusables` | `text.confusables@v1` | Does this name pretend to be another one |
 | `stats-test` | `stats.test@v1` | Did B really beat A — and how many visitors would it take to know |
+| `aid-record` | `aid.record.read@v1` | What an AID client finds at `_agent.<domain>` — and is the record valid |
+| `aid-proof` | `aid.proof.verify@v1` | Did the endpoint prove the key its domain publishes (AID endpoint proof) |
 
 ## Quick start
 
@@ -274,6 +276,28 @@ chi-square and beta distributions are computed here — regularized incomplete b
 functions by continued fractions — and tested against printed critical values, closed forms,
 Fisher's tea-tasting table (34/70) and Evan Miller's A/B sample size (8 158 per group for
 5% → 6%).
+
+
+### `aid-record` and `aid-proof` — agent discovery, checked
+
+[AID](https://aid.agentcommunity.org/docs/specification) (Agent Identity & Discovery) lets a domain say
+where its agent is with one TXT record at `_agent.<domain>`, and lets the endpoint prove it holds the key
+that record publishes. These two agents are a client's checks, callable by an agent that has no DNS library
+and no Ed25519. Both are free.
+
+`aid-record` takes `{"domain": "example.com"}`, asks Cloudflare's and Google's DNS-over-HTTPS resolvers for
+the TXT (the only two hosts it can reach, through the hearth), and applies sections 2.1 to 2.3 of AID
+v2.1.1: the selected record, the `keyid` a proof must name, each resolver's answer and DNSSEC flag, or the
+specification's error code. `{"txt": [...]}` validates a record before it is published.
+
+`aid-proof` takes the exchange a client made (`k`, the request's `uri`, `nonce` and `aid_domain`, the
+response's status and signature headers, `now`) and applies every verifier rule of Appendix B, with domain
+binding (B.7). It returns each check with its reason and the exact RFC 9421 signature base. It makes no
+request itself, so it judges the exchange it is told about.
+
+Tested against three exchanges recorded from `https://modelmarket.dev/mcp` (bound, unbound, and the 403 for
+an unserved domain), a second signer built on `cryptography`, the specification's example records, and real
+answers from both resolvers; the lookup also runs round by round under the hearth's guest code.
 
 ## Limits worth knowing before writing another
 

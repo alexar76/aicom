@@ -60,6 +60,7 @@ Environment (values never come from argv — argv is world-readable in `ps`):
     AICOM_ALERT_JOURNEY_URL      the UNI stranger-journey canary's uni-journey.json ("" = off)
     AICOM_ALERT_UNI_CHAIN_URL    the UNI monitor's /api/health, for its demo chain ("" = off)
     AICOM_ALERT_QUALITY_URL      the signed MOMUS receipt for the live WARDEN build ("" = off)
+    AICOM_ALERT_HESTIA_GUARD_URL the status aicom-hestia-guard publishes on the hearth's host ("" = off)
     AICOM_ALERT_REMEDIATION_URL  the SKOPOS fix loop's counts (/remediation/stats on the MOMUS panel, "" = off)
     AICOM_ALERT_DEPOSIT_HUBS     hubs whose top-up wallet the hub watches, comma-separated ("" = off).
                                  Named one by one, so NOT filtered by the scope, e.g.
@@ -128,6 +129,12 @@ UNI_LOTTERY_FEED_STALE_S = 15 * 60
 # MOMUS runs once a day (03:26–03:30 UTC); its receipt expires after 48 h. A day and a quarter
 # without a new run is a dead timer, with most of a day left to fix it before releases stop.
 MOMUS_QUALITY_STALE_HOURS = 30.0
+# aicom-hestia-guard repairs every 5 minutes and copies the folder every hour.
+HESTIA_GUARD_STALE_HOURS = 0.5
+HESTIA_GUARD_COPY_STALE_HOURS = 3.0
+# A restore is reported for this long after it happened, so a file that vanished and came back
+# between two alerter runs is still seen by a person.
+HESTIA_GUARD_RESTORE_REPORT_HOURS = 1.0
 MOMUS_QUALITY_RUNNING_HOURS = 2.0
 # Every server's nightly backup lands on the PingBlip host, which publishes when each
 # repository last took a commit — readable from this host's address only (deploy/backup/).
@@ -855,6 +862,45 @@ def probe_momus_quality(url: str, timeout: float = 20.0, now: float | None = Non
         why.append(f"adversarial discovery: {discovery.get('status')}")
     return checks + [Check("momus_quality_passed", False,
                            f"run {run} {report.get('status')}: " + ("; ".join(why) or "no failing part named"))]
+
+
+def probe_hestia_guard(url: str, timeout: float = 20.0, now: float | None = None) -> list[Check]:
+    """Is the HESTIA hearth's compose folder still on its host, and is its guard alive?
+
+    On 2026-11-19 /root/claudecode was found missing on the hearth's host: the compose files and the
+    only copy of hestia/.env. The containers kept running from named volumes, so every probe of the
+    hearth stayed green; a redeploy or a compose restart would have had nothing to read. Nobody knows
+    when it went. aicom-hestia-guard now copies the folder hourly, puts back what is missing every
+    5 minutes and publishes what it saw. A restore is a page too: the guard hides the damage, and
+    whatever deleted the folder is still on that host."""
+    now = time.time() if now is None else now
+    status, body, err = _get(url, timeout)
+    if status != 200 or not isinstance(body, dict):
+        return [Check("hestia_guard_published", False, f"{url} -> {err or status}")]
+    age = _hours_since_iso(str(body.get("generated_at", "")), now)
+    if age is None or age > HESTIA_GUARD_STALE_HOURS:
+        return [Check("hestia_guard_published", False,
+                      f"unreadable generated_at: {body.get('generated_at')!r}" if age is None
+                      else f"STALE: the guard last ran {age:.1f}h ago (aicom-hestia-guard-repair.timer dead?)")]
+    checks = [Check("hestia_guard_published", True, f"guard ran {age * 60:.0f} min ago")]
+    missing = body.get("missing")
+    whole = body.get("ok") is True and missing == 0
+    first = ", ".join(str(p)[:80] for p in body.get("missing_first") or [])
+    checks.append(Check("hestia_tree_whole", whole,
+                        "every required path is there" if whole
+                        else f"{missing} paths missing and not restored: {first or 'not named'}"))
+    copied = _hours_since_iso(str(body.get("snapshot_at") or ""), now)
+    fresh = copied is not None and copied <= HESTIA_GUARD_COPY_STALE_HOURS
+    checks.append(Check("hestia_guard_copy_fresh", fresh,
+                        f"copied {copied * 60:.0f} min ago" if fresh else
+                        "no copy taken yet" if copied is None else
+                        f"STALE: last copy {copied:.1f}h ago (the guard refuses to copy an incomplete folder)"))
+    restored = _hours_since_iso(str(body.get("restored_at") or ""), now)
+    recent = restored is not None and restored <= HESTIA_GUARD_RESTORE_REPORT_HOURS
+    checks.append(Check("hestia_tree_untouched", not recent,
+                        f"files were put back {restored * 60:.0f} min ago: something on the host deleted them "
+                        "(journalctl -u 'aicom-hestia-guard*')" if recent else "nothing had to be put back"))
+    return checks
 
 
 def probe_remediation_loop(url: str, timeout: float = 20.0) -> list[Check]:
@@ -1621,6 +1667,21 @@ _EN: dict[str, tuple[str, str, str]] = {
     "momus_quality_passed": (
         "the MOMUS quality gate failed", "the MOMUS quality gate passes again",
         "HISTOR deploys and WARDEN releases are blocked — the failing part is in the detail"),
+    "hestia_guard_published": (
+        "the HESTIA folder guard's status cannot be read", "the HESTIA folder guard's status can be read again",
+        "nobody would see the hearth's compose folder and settings disappear again"),
+    "hestia_tree_whole": (
+        "HESTIA's compose folder is missing files the guard could not put back",
+        "HESTIA's compose folder is whole again",
+        "the hearth keeps serving, but it cannot be redeployed or restarted through compose"),
+    "hestia_guard_copy_fresh": (
+        "the copy of HESTIA's compose folder is not being refreshed",
+        "the copy of HESTIA's compose folder is refreshed again",
+        "a later loss would be restored from an old copy, without recent settings"),
+    "hestia_tree_untouched": (
+        "files of HESTIA's compose folder were deleted and put back by the guard",
+        "nothing was deleted from HESTIA's compose folder in the last hour",
+        "the hearth is unharmed, but whatever deletes files on that host is still there"),
     "remediation_stats_published": (
         "the fix loop's counts cannot be read", "the fix loop's counts can be read again",
         "nobody can see whether MOMUS findings still get fixed"),
@@ -1904,6 +1965,19 @@ _RU: dict[str, tuple[str, str, str]] = {
     "momus_quality_passed": (
         "проверка качества MOMUS провалена", "проверка качества MOMUS снова проходит",
         "деплой HISTOR и релизы WARDEN заблокированы — что именно упало, в подробностях"),
+    "hestia_guard_published": (
+        "статус сторожа папки HESTIA не читается", "статус сторожа папки HESTIA снова читается",
+        "никто не заметит, если папка с compose-файлами и настройками HESTIA пропадёт снова"),
+    "hestia_tree_whole": (
+        "в папке HESTIA не хватает файлов, и сторож не смог их вернуть", "папка HESTIA снова целая",
+        "HESTIA продолжает отвечать, но её нельзя обновить или перезапустить через compose"),
+    "hestia_guard_copy_fresh": (
+        "копия папки HESTIA не обновляется", "копия папки HESTIA снова обновляется",
+        "при следующей пропаже восстановление пойдёт из старой копии, без свежих настроек"),
+    "hestia_tree_untouched": (
+        "из папки HESTIA удалили файлы, сторож их вернул",
+        "за последний час из папки HESTIA ничего не удаляли",
+        "HESTIA не пострадала, но то, что удаляет файлы на этом хосте, никуда не делось"),
     "remediation_stats_published": (
         "счётчики цикла починок не читаются", "счётчики цикла починок снова читаются",
         "не видно, чинятся ли находки MOMUS"),
@@ -2470,7 +2544,7 @@ def probe_tls_expiry(names: list[str], timeout: float = 8.0,
 
 def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url: str,
             timeout: float, journey_url: str = "", uni_chain_url: str = "", quality_url: str = "",
-            remediation_url: str = "",
+            remediation_url: str = "", hestia_guard_url: str = "",
             deposit_hubs: list[str] | None = None,
             backup_url: str = "", backup_hosts: list[str] | None = None,
             fleet_url: str = "", fleet_token: str = "", fleet_hosts: list[str] | None = None,
@@ -2529,6 +2603,8 @@ def collect(mode: str, *, hub: str, signer: str, status_url: str, settlement_url
         checks += probe_momus_quality(quality_url, timeout)
     if remediation_url.strip():
         checks += probe_remediation_loop(remediation_url, timeout)
+    if hestia_guard_url.strip():
+        checks += probe_hestia_guard(hestia_guard_url, timeout)
     # Named one by one by the owner, like the uptime URLs, so not filtered by the scope: Attested and
     # Independent stay outside it as ecosystems (2026-09-24, 2026-10-04), yet the Independent node's
     # watcher read nothing from 2026-10-08 to 10-21 while this probe skipped it. Asked on 2026-10-22
@@ -2612,6 +2688,7 @@ def _run(args: argparse.Namespace) -> int:
     uni_chain_url = os.environ.get("AICOM_ALERT_UNI_CHAIN_URL", DEFAULT_UNI_CHAIN)
     quality_url = os.environ.get("AICOM_ALERT_QUALITY_URL", DEFAULT_QUALITY)
     remediation_url = os.environ.get("AICOM_ALERT_REMEDIATION_URL", DEFAULT_REMEDIATION)
+    hestia_guard_url = os.environ.get("AICOM_ALERT_HESTIA_GUARD_URL", "")
     deposit_hubs = [h.strip() for h in os.environ.get("AICOM_ALERT_DEPOSIT_HUBS", DEFAULT_DEPOSIT_HUBS).split(",")
                     if h.strip()]
     backup_url = os.environ.get("AICOM_ALERT_BACKUP_URL", DEFAULT_BACKUP)
@@ -2657,7 +2734,8 @@ def _run(args: argparse.Namespace) -> int:
     checks = collect(args.mode, hub=hub, signer=signer, status_url=status_url,
                      settlement_url=settlement_url, timeout=args.timeout, journey_url=journey_url,
                      uni_chain_url=uni_chain_url, quality_url=quality_url,
-                     remediation_url=remediation_url, deposit_hubs=deposit_hubs,
+                     remediation_url=remediation_url, hestia_guard_url=hestia_guard_url,
+                     deposit_hubs=deposit_hubs,
                      backup_url=backup_url, backup_hosts=backup_hosts,
                      fleet_url=fleet_url, fleet_token=fleet_token, fleet_hosts=fleet_hosts,
                      federation_hubs=federation_hubs_from_env(hub), scope=scope,

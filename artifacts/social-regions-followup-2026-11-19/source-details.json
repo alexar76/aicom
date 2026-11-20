@@ -1,0 +1,72 @@
+{
+  "habr": {
+    "url": "https://habr.com/kek/v2/articles/1069588/?fl=ru&hl=ru",
+    "error": "HTTP Error 403: Forbidden"
+  },
+  "qiitaComments": {
+    "url": "https://qiita.com/api/v2/items/4dfe9dc2fbe9d69b1fb7/comments",
+    "data": [
+      {
+        "id": "7f36425cc245927fc95c",
+        "author": "qwezzy721",
+        "date": "2026-10-24T19:23:47+09:00",
+        "body": "ご指摘ありがとうございます。どちらもその通りでした。\n\nキャッシュの列は読み込みの単価だけで、最初の書き込みもリクエスト間隔の前提も書いていなかったので、表を直しました。今の列は「開始間隔が 5 分未満の 1,000 リクエスト」で、書き込み 1 回（入力単価の 1.25 倍）と読み込み 999 回です。中央値の一覧では $0.127 が $0.130 になる程度です。間隔が 5 分を超える場合の列も加えました。毎回書き込みになるので中央値で $3.18、キャッシュなし（$2.54）より 25% 高くなります。カウンターのページ（modelmarket.dev/tools/tool-list-cost）にも同じ 2 行を出しています。\n\n順番の点も本文に入れました。tools が前置きの先頭にあるので、notifications/tools/list_changed を受けて一覧を取り直すと、システムプロンプトと会話履歴まで書き直しになります。私たちのログ HISTOR では、リモートサーバーの約 3 分の 1（ホスト単位で 36.5%）が 4 週間のうちにツール定義を変えていました（最初に書いた 45% は登録エントリー単位の数字で、ほぼ同一のエントリーを 2,341 件持つ 1 つの発行者に押し上げられていました）。\n"
+      },
+      {
+        "id": "a71ae02460f429b7606e",
+        "author": "Skillselion",
+        "date": "2026-10-24T17:10:34+09:00",
+        "body": "Anthropic の API では、キャッシュの前置きが tools、system、messages の順で組まれます。なのでツール定義が1か所変わるだけで、その後ろにあるシステムプロンプトと会話履歴のキャッシュもまとめて外れます。順番の入れ替えのほかに起きやすいのは、MCP サーバーが `notifications/tools/list_changed` を送ってクライアントが一覧を取り直す場合で、セッションの途中でも前置き全体の書き直しになります。\n\nもう1点、表の「プロンプトキャッシュから読んだ場合」の列は読み込みの単価だけで、最初の書き込みの分が入っていないように読めます。Anthropic では書き込みが入力単価の1.25倍で、既定の TTL は5分です。リクエストの間隔が5分を超える使い方だと毎回書き込みになり、この列より高くつきます。1,000 リクエストをどのくらいの間隔で投げる前提かが書いてあると、列の読み方がはっきりすると思います。\n"
+      }
+    ]
+  },
+  "qiitaLikes": {
+    "url": "https://qiita.com/api/v2/items/b71aaeaae84fcb360fe6/likes",
+    "data": [
+      {
+        "author": "Hirotaka421",
+        "date": "2026-10-22T13:51:13+09:00"
+      }
+    ]
+  },
+  "hn": {
+    "url": "https://hn.algolia.com/api/v1/items/50193565",
+    "data": {
+      "title": "Show HN: An open dataset of MCP tool definitions and every change to them",
+      "points": 1,
+      "author": "alex_artamokhov",
+      "created_at": "2026-10-22T10:38:35.000Z",
+      "replies": [
+        {
+          "id": 50205750,
+          "author": "ITAltitudes",
+          "text": "What happens if the MCP server changes its tools more than once a day? Will all those changes be logged?"
+        }
+      ]
+    }
+  },
+  "v2ex": {
+    "url": "https://www.v2ex.com/api/topics/show.json?id=1229964",
+    "data": [
+      {
+        "id": 1229964,
+        "title": "当 MCP Server 变了，用户原来的设置还算数吗？",
+        "url": "https://www.v2ex.com/t/1229964",
+        "created": 1785076940,
+        "last_modified": 1785076940,
+        "replies": 1
+      }
+    ]
+  },
+  "bsky": {
+    "url": "https://public.api.bsky.app/xrpc/app.bsky.feed.getPosts?uris=at://did:plc:u63726gke7rdfrsrtuz3hqzd/app.bsky.feed.post/3n2nqcwiax327",
+    "data": {
+      "text": "Did your MCP server change its tools? Search for it in HISTOR and open its change history. ScraperWatch links to HISTOR as an outside check.\n\nhttps://histor.modelmarket.dev/servers?utm_source=bluesky&utm_medium=social&utm_campaign=mcp_tool_history_202611",
+      "createdAt": "2026-11-19T09:15:32.034Z",
+      "likes": 1,
+      "reposts": 0,
+      "quotes": 0,
+      "replies": 0
+    }
+  }
+}

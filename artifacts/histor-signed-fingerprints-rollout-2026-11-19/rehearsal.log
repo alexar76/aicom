@@ -1,0 +1,20 @@
+1. old image on an empty database
+  healthy; schema 24
+2. new image on that database
+  healthy; schema 25
+   columns: target_id,url,first_seen,last_fetched,last_ok,last_error,pointer,statement
+   /api/v1/fingerprints (unknown server): 404 {"detail":"HISTOR has no record of this server"}
+   /api/v1/fingerprints (no subject): 400 {"detail":"name the server: endpoint=<url>, package=npm:<name> or pypi:<name>, name=<registry name> or id=<server id>"}
+   /api/v1/stats: 200 {"generatedAt":"2026-11-19T19:59:22Z","targets":{"listed
+3. the new statements on Postgres (store calls from the new image)
+  store calls on Postgres: ok
+   page of that server: 200 {"server
+4. old image on the database at 25 (must refuse)
+  NOT healthy (exited/unhealthy):     raise MigrationError(f"database is at revisions {sorted(unknown)} this build does not know") histor.migrations.MigrationError: database is at revisions [25] this build does not know 
+5. rollback.sql, then the old image
+  rollback applied; schema 24; signed sets left active: 0; pointer rows: 0
+  healthy; schema 24
+6. new image again
+  healthy; schema 25
+done
+finished 2026-11-19T20:00:46Z

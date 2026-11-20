@@ -1,0 +1,57 @@
+{
+ "recorded_from": "https://modelmarket.dev/mcp",
+ "bound": {
+  "k": "H_pv7n0l5b3o5SgCFPaAhm-K1flFG-Dim16mHmclqaM",
+  "request": {
+   "method": "GET",
+   "uri": "https://modelmarket.dev/mcp",
+   "nonce": "u22PT4mB2X0RzRBshbMYmSU1Ximhu_923OeklRyFgQc",
+   "aid_domain": "modelmarket.dev"
+  },
+  "response": {
+   "status": 200,
+   "headers": {
+    "signature-input": "aid-pka=(\"@method\";req \"@target-uri\";req \"@authority\";req \"aid-domain\";req \"@status\");created=1795120515;expires=1795120575;keyid=\"GPgQ1hgsCNYND5UeXKXx970ljHR9Tlg4dR1oMK-p9aA\";alg=\"ed25519\";nonce=\"u22PT4mB2X0RzRBshbMYmSU1Ximhu_923OeklRyFgQc\";tag=\"aid-pka-v2\"",
+    "signature": "aid-pka=:dBkvIYHo+x/TAcv0+89TqNt0hf1dk1dA5A+mdVWiwFahSuX3NYfZRmoQti9U2dRR5Q3zl9Su4nYouNgzctYQAA==:",
+    "cache-control": "no-store",
+    "date": "Thu, 19 Nov 2026 20:35:15 GMT"
+   }
+  },
+  "now": 1795120515
+ },
+ "unbound": {
+  "k": "H_pv7n0l5b3o5SgCFPaAhm-K1flFG-Dim16mHmclqaM",
+  "request": {
+   "method": "GET",
+   "uri": "https://modelmarket.dev/mcp",
+   "nonce": "-bNKJbD9UTxcxNhgnzehV60grH5lzxbkFQLrHhXVdl0"
+  },
+  "response": {
+   "status": 200,
+   "headers": {
+    "signature-input": "aid-pka=(\"@method\";req \"@target-uri\";req \"@authority\";req \"@status\");created=1795120516;expires=1795120576;keyid=\"GPgQ1hgsCNYND5UeXKXx970ljHR9Tlg4dR1oMK-p9aA\";alg=\"ed25519\";nonce=\"-bNKJbD9UTxcxNhgnzehV60grH5lzxbkFQLrHhXVdl0\";tag=\"aid-pka-v2\"",
+    "signature": "aid-pka=:qbxfISidawg/q9S6OHHKbXVQQEI2A/5EI9IGBhnbT+4dALmbTbGTXkXjRo2gBEdAmmHZsE01eCleKnS/J+EVDQ==:",
+    "cache-control": "no-store",
+    "date": "Thu, 19 Nov 2026 20:35:16 GMT"
+   }
+  },
+  "now": 1795120515
+ },
+ "unserved_domain": {
+  "k": "H_pv7n0l5b3o5SgCFPaAhm-K1flFG-Dim16mHmclqaM",
+  "request": {
+   "method": "GET",
+   "uri": "https://modelmarket.dev/mcp",
+   "nonce": "ltUeQKHp7NjZgiIvgg0mCbMJ58vrVmKpB7_ANspLVA4",
+   "aid_domain": "not-served.example"
+  },
+  "response": {
+   "status": 403,
+   "headers": {
+    "cache-control": "no-store",
+    "date": "Thu, 19 Nov 2026 20:35:16 GMT"
+   }
+  },
+  "now": 1795120516
+ }
+}

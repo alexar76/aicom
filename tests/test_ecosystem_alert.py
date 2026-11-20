@@ -2498,3 +2498,90 @@ def test_an_open_breaker_and_an_unreadable_page_page(monkeypatch):
     assert [c.name for c in alert.probe_remediation_loop("u") if not c.ok] == ["remediation_breaker_closed"]
     monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, "<html>", ""))
     assert [c.name for c in alert.probe_remediation_loop("u") if not c.ok] == ["remediation_stats_published"]
+
+
+# --- aicom-hestia-guard: the hearth's compose folder (found missing 2026-11-19) ---
+
+def _hestia_guard(*, ran_min: float = 2, missing: int = 0, copied_min: float | None = 20,
+                  restored_min: float | None = None) -> dict:
+    def ago(minutes: float | None) -> str | None:
+        return None if minutes is None else time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - minutes * 60))
+    return {"generated_at": ago(ran_min), "ok": missing == 0, "missing": missing,
+            "missing_first": ["hestia/.env", "hestia/docker-compose.yml"][:missing],
+            "snapshot_at": ago(copied_min), "restored_at": ago(restored_min)}
+
+
+def _hestia_bad(monkeypatch, **status) -> list:
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _hestia_guard(**status), ""))
+    return [c for c in alert.probe_hestia_guard("https://x/.aicom/hestia-guard.json") if not c.ok]
+
+
+def test_a_whole_hestia_folder_with_a_live_guard_is_quiet(monkeypatch):
+    assert _hestia_bad(monkeypatch) == []
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, _hestia_guard(), ""))
+    assert [c.name for c in alert.probe_hestia_guard("https://x")] == [
+        "hestia_guard_published", "hestia_tree_whole", "hestia_guard_copy_fresh", "hestia_tree_untouched"]
+
+
+def test_files_the_guard_could_not_put_back_page_and_are_named(monkeypatch):
+    bad = _hestia_bad(monkeypatch, missing=2)
+    assert [c.name for c in bad] == ["hestia_tree_whole"]
+    assert "2 paths missing" in bad[0].detail and "hestia/.env" in bad[0].detail
+
+
+def test_a_restore_pages_for_an_hour_even_though_the_folder_is_whole_again(monkeypatch):
+    """The guard hides the damage within 5 minutes; the deleter is still on the host."""
+    assert [c.name for c in _hestia_bad(monkeypatch, restored_min=12)] == ["hestia_tree_untouched"]
+    assert _hestia_bad(monkeypatch, restored_min=61) == []
+
+
+def test_a_guard_that_stopped_running_or_copying_pages(monkeypatch):
+    assert [c.name for c in _hestia_bad(monkeypatch, ran_min=45)] == ["hestia_guard_published"]
+    assert [c.name for c in _hestia_bad(monkeypatch, copied_min=200)] == ["hestia_guard_copy_fresh"]
+    assert [c.name for c in _hestia_bad(monkeypatch, copied_min=None)] == ["hestia_guard_copy_fresh"]
+
+
+@pytest.mark.parametrize("answer", [(403, None, "HTTP 403"), (200, [1], ""), (200, {"ok": True}, "")])
+def test_an_unreadable_hestia_guard_status_pages(monkeypatch, answer):
+    monkeypatch.setattr(alert, "_get", lambda *a, **k: answer)
+    checks = alert.probe_hestia_guard("https://x/.aicom/hestia-guard.json")
+    assert [(c.name, c.ok) for c in checks] == [("hestia_guard_published", False)]
+
+
+@pytest.mark.parametrize("name", ["hestia_guard_published", "hestia_tree_whole", "hestia_guard_copy_fresh",
+                                  "hestia_tree_untouched"])
+def test_hestia_guard_checks_are_worded_in_both_languages(name):
+    for lang in ("en", "ru"):
+        fail, back, impact = alert._describe(name, "https://modelmarket.dev", lang)
+        assert fail != name and back != name and impact
+
+
+def test_the_hestia_guard_script_publishes_what_the_alerter_reads(tmp_path, monkeypatch):
+    """The real guard, on a scratch tree: copy, lose two files, repair, and feed its status to the probe."""
+    import importlib.machinery
+    import importlib.util
+    path = Path(__file__).resolve().parent.parent / "scripts/ops/hestia-guard/aicom-hestia-guard"
+    tree, keep, out = tmp_path / "tree", tmp_path / "keep", tmp_path / "www/status.json"
+    for name, value in (("HESTIA_TREE", tree), ("HESTIA_KEEP", keep), ("HESTIA_GUARD_PUBLISHED", out)):
+        monkeypatch.setenv(name, str(value))
+    loader = importlib.machinery.SourceFileLoader("aicom_hestia_guard", str(path))
+    guard = importlib.util.module_from_spec(importlib.util.spec_from_loader(loader.name, loader))
+    loader.exec_module(guard)
+    for rel in guard.REQUIRED:
+        (tree / rel).parent.mkdir(parents=True, exist_ok=True)
+        (tree / rel).write_text("x=1\n")
+    assert guard.snapshot() == 0 and guard.repair() == 0
+
+    def probe() -> list[str]:
+        monkeypatch.setattr(alert, "_get", lambda *a, **k: (200, json.loads(out.read_text()), ""))
+        return [c.name for c in alert.probe_hestia_guard("https://x") if not c.ok]
+
+    assert probe() == []
+    (tree / "hestia/.env").unlink()
+    (tree / "hestia/docker-compose.yml").unlink()
+    assert guard.snapshot() == 1                      # an incomplete folder never overwrites the copy
+    assert guard.repair() == 0 and (tree / "hestia/.env").read_text() == "x=1\n"
+    assert probe() == ["hestia_tree_untouched"]       # whole again, and a person still hears about it
+    (keep / "tree/hestia/.env").unlink()
+    (tree / "hestia/.env").unlink()
+    assert guard.repair() == 1 and probe() == ["hestia_tree_whole", "hestia_tree_untouched"]

@@ -23,6 +23,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import re
 import time
 from dataclasses import dataclass
 
@@ -112,10 +113,13 @@ def _market_search(product_idea: str) -> MarketEvidence:
         f"best {product_idea} alternatives review",
     ]
 
+    from core.untrusted_text import looks_like_instruction, scrub
+
     all_results: list[str] = []
     sources: list[str] = []
     errors: list[str] = []
     ok_count = 0
+    dropped = 0
     for q in searches:
         outcome = _duckduckgo_search(q, max_results=3)
         if not outcome.ok:
@@ -126,13 +130,23 @@ def _market_search(product_idea: str) -> MarketEvidence:
             continue
         all_results.append(f"--- Search: {q} ---")
         for r in outcome.results:
-            href = (r.get("href") or "").strip()
+            href = scrub(r.get("href"), max_len=300)
+            title = scrub(r.get("title"), max_len=200)
+            body = scrub(r.get("body"), max_len=300)
+            # A result that talks to the model is not market evidence; it does not reach the prompt or the file.
+            if looks_like_instruction(f"{title}\n{body}\n{href}") or not re.match(r"https?://[^\s]+$", href or "http://x"):
+                dropped += 1
+                continue
             if href:
                 sources.append(href)
-            all_results.append(f"Title: {r.get('title', 'N/A')}")
-            all_results.append(f"Snippet: {(r.get('body') or 'N/A')[:300]}")
+            all_results.append(f"Title: {title or 'N/A'}")
+            all_results.append(f"Snippet: {body or 'N/A'}")
             all_results.append(f"URL: {href or 'N/A'}")
             all_results.append("")
+        if all_results and all_results[-1].startswith("--- Search:"):
+            all_results.pop()
+    if dropped:
+        logger.warning("market search: dropped %d result(s) that address the model", dropped)
 
     return MarketEvidence(
         text="\n".join(all_results),
@@ -160,7 +174,9 @@ def _evidence_block(evidence: MarketEvidence) -> str:
                 f"\nNote: {evidence.queries - evidence.queries_ok} of {evidence.queries} searches "
                 "did not run, so coverage is incomplete."
             )
-        return f"{header}\n{evidence.text}\n{footer}"
+        from core.untrusted_text import fence
+
+        return f"{header}\n{fence(evidence.text, kind='web-search')}\n{footer}"
     return (
         "=== WEB SEARCH RESULTS: NONE RETRIEVED ===\n"
         "Live search returned nothing for this idea. You have NO external evidence.\n"

@@ -1,0 +1,140 @@
+#!/usr/bin/env python3
+"""aicom-hestia-guard: keep the HESTIA hearth's compose folder on its host from disappearing again.
+
+On 2026-11-19 /root/claudecode was found missing on the hearth's host: the compose files, the only copy
+of the settings (hestia/.env) and the tree scripts/deploy_hestia.sh deploys from. The three hestia
+containers kept running (named volumes, no bind mounts), so nothing looked wrong, but a redeploy or a
+compose restart had nothing to read. It was rebuilt by hand on 2026-11-20.
+
+Three modes:
+
+  snapshot  copy the tree into KEEP (hourly). Refuses when the live tree is incomplete, so a deleted
+            tree can never overwrite the copy. Never deletes anything from KEEP.
+  check     report only: required paths that are missing. Exit 1 when anything is wrong.
+  repair    check, then copy back from KEEP only what is missing (never overwrites a live file).
+            No container is touched: none binds this folder.
+
+Every problem is logged as a line starting with ✖, every recovery with ✔
+(journalctl -u 'aicom-hestia-guard*'). Each repair run also writes PUBLISHED, a small JSON the
+ecosystem alerter reads through nginx (/.aicom/hestia-guard.json on hub.modelmarket.dev): when the
+guard last ran, whether the tree is whole, how many paths are missing, when the copy was last taken
+and when something was last put back. It holds no settings and no file contents.
+"""
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+TREE = Path(os.environ.get("HESTIA_TREE", "/root/claudecode/aicom"))
+KEEP = Path(os.environ.get("HESTIA_KEEP", "/var/lib/aicom-hestia-keep"))
+KEEP_TREE = KEEP / "tree"
+STATUS = KEEP / "status.json"
+PUBLISHED = Path(os.environ.get("HESTIA_GUARD_PUBLISHED", "/var/www/aicom-hestia-guard/status.json"))
+REQUIRED = ["hestia/docker-compose.yml", "hestia/docker-compose.postgres.yml", "hestia/Dockerfile",
+            "hestia/.env", "hestia/hestia/app.py", "hestia/pyproject.toml", "scripts/deploy_hestia.sh",
+            "deploy/nginx/hestia.modelmarket.dev.conf", "PROD-LIVE-DO-NOT-DELETE.md"]
+EXCLUDES = [".git", ".venv", "venv", "__pycache__", ".pytest_cache", ".ruff_cache", ".mypy_cache",
+            ".coverage", ".DS_Store"]
+
+
+def log(mark: str, msg: str) -> None:
+    print(f"{mark} {msg}", flush=True)
+
+
+def missing() -> list[str]:
+    miss = [str(TREE / p) for p in REQUIRED if not (TREE / p).exists()]
+    env = TREE / "hestia/.env"
+    if env.is_file() and env.stat().st_size == 0:
+        miss.append(f"{env} (empty)")
+    return miss
+
+
+def now_iso() -> str:
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def remembered() -> dict:
+    try:
+        seen = json.loads(STATUS.read_text())
+    except (OSError, ValueError):
+        return {}
+    return seen if isinstance(seen, dict) else {}
+
+
+def remember(**fields: str) -> None:
+    KEEP.mkdir(parents=True, exist_ok=True)
+    os.chmod(KEEP, 0o700)
+    STATUS.write_text(json.dumps({**remembered(), **fields}) + "\n")
+
+
+def publish(still_missing: list[str]) -> None:
+    """What the alerter reads. Written whole, then moved into place."""
+    seen = remembered()
+    body = {"generated_at": now_iso(), "ok": not still_missing, "missing": len(still_missing),
+            "missing_first": [os.path.relpath(m.split(" ")[0], TREE) for m in still_missing[:4]],
+            "snapshot_at": seen.get("snapshot_at"), "restored_at": seen.get("restored_at")}
+    PUBLISHED.parent.mkdir(parents=True, exist_ok=True)
+    tmp = PUBLISHED.with_name(PUBLISHED.name + ".tmp")
+    tmp.write_text(json.dumps(body) + "\n")
+    os.chmod(tmp, 0o644)
+    os.replace(tmp, PUBLISHED)
+
+
+def snapshot() -> int:
+    miss = missing()
+    if miss:
+        log("✖", f"snapshot refused: the live tree is incomplete ({len(miss)} missing, first {miss[0]}); run repair")
+        return 1
+    KEEP_TREE.mkdir(parents=True, exist_ok=True)
+    os.chmod(KEEP, 0o700)
+    args = ["rsync", "-a", "--no-specials", "--no-devices"]
+    for e in EXCLUDES:
+        args += ["--exclude", e]
+    subprocess.run(args + [f"{TREE}/", f"{KEEP_TREE}/"], check=True)
+    remember(snapshot_at=now_iso())
+    log("✔", "snapshot: tree copied")
+    return 0
+
+
+def repair() -> int:
+    miss = missing()
+    if not miss:
+        log("✔", "hestia tree whole")
+        publish([])
+        return 0
+    log("✖", f"{len(miss)} paths missing from {TREE}: {', '.join(miss[:6])}")
+    if not all((KEEP_TREE / p).exists() for p in REQUIRED):
+        log("✖", f"no whole copy in {KEEP_TREE}; rebuild by hand (git archive main hestia, .env from the container env)")
+        publish(miss)
+        return 1
+    TREE.mkdir(parents=True, exist_ok=True)
+    # check=False: TREE and its parent may be chattr +i, so rsync cannot set the top folder's times and
+    # exits 23 even when every missing file came back. What counts is what is still missing.
+    rc = subprocess.run(["rsync", "-a", "--ignore-existing", f"{KEEP_TREE}/", f"{TREE}/"]).returncode
+    if rc not in (0, 23):
+        log("✖", f"rsync from {KEEP_TREE} exited {rc}")
+    left = missing()
+    log("✔" if not left else "✖",
+        f"restored missing files from {KEEP_TREE}" + (f"; still missing {left[:4]}" if left else ""))
+    if len(left) < len(miss):
+        remember(restored_at=now_iso())
+    publish(left)
+    return 1 if left else 0
+
+
+def check() -> int:
+    miss = missing()
+    for m in miss:
+        log("✖", f"missing {m}")
+    if not miss:
+        log("✔", f"hestia tree whole ({len(REQUIRED)} required paths)")
+    return 1 if miss else 0
+
+
+if __name__ == "__main__":
+    mode = sys.argv[1] if len(sys.argv) > 1 else "check"
+    sys.exit({"snapshot": snapshot, "check": check, "repair": repair}.get(mode, check)())

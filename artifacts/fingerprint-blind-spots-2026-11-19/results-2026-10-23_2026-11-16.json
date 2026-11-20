@@ -1,0 +1,215 @@
+{
+ "window": [
+  "2026-10-23T18:22:44Z",
+  "2026-11-16T06:29:45Z"
+ ],
+ "events": 278157,
+ "servers_with_events": 14013,
+ "counts": {
+  "ai_blind_events": 180822,
+  "ai_blind_events_excl_version_only": 6338,
+  "ai_blind_events_package": 270,
+  "ai_blind_events_remote": 6068,
+  "ai_blind_events_touching::annotation-other": 12,
+  "ai_blind_events_touching::hint": 438,
+  "ai_blind_events_touching::inputSchema.additionalProperties(top)": 106,
+  "ai_blind_events_touching::member:_meta": 3861,
+  "ai_blind_events_touching::member:execution": 21,
+  "ai_blind_events_touching::member:hint-outside-annotations": 3,
+  "ai_blind_events_touching::member:icons": 12,
+  "ai_blind_events_touching::member:other": 79,
+  "ai_blind_events_touching::member:securitySchemes": 37,
+  "ai_blind_events_touching::member:version": 498,
+  "ai_blind_events_touching::outputSchema": 2171,
+  "ai_blind_events_vendor_version_only": 174484,
+  "ai_blind_tool_moves": 56270,
+  "ai_blind_tool_moves_in_events_where_another_tool_was_seen": 24841,
+  "events_excl_version_only": 103657,
+  "events_unknown_detail": 2901,
+  "events_with_tool_moves": 278141,
+  "events_without_tool_moves": 16,
+  "fm_blind_events": 243259,
+  "fm_blind_events_description_only": 10742,
+  "fm_blind_events_excl_version_only": 68775,
+  "fm_blind_events_package": 1442,
+  "fm_blind_events_remote": 67333,
+  "fm_blind_events_vendor_version_only": 174484
+ },
+ "events_by_kind": {
+  "remote": 270602,
+  "package": 7539
+ },
+ "servers_with_events_excl_version_only": 14009,
+ "ai_blind_servers": 2014,
+ "ai_blind_hosts": 1314,
+ "fm_blind_servers": 7805,
+ "fm_blind_hosts": 5467,
+ "fm_description_only_servers": 4191,
+ "fm_description_only_hosts": 3932,
+ "ai_blind_events_top_hosts": [
+  [
+   "mcp.apify.com",
+   2805
+  ],
+  [
+   "gateway.pipeworx.io",
+   498
+  ],
+  [
+   "emem.dev",
+   219
+  ],
+  [
+   "agentstack.tech",
+   177
+  ],
+  [
+   "mcp.zovo.one",
+   70
+  ],
+  [
+   "mcp.worklittle.com",
+   57
+  ],
+  [
+   "mcp.socialdatax.com",
+   51
+  ],
+  [
+   "tooloracle.io",
+   47
+  ],
+  [
+   "ai-apps.homejourney.sg",
+   42
+  ],
+  [
+   "agentdrives.com",
+   35
+  ]
+ ],
+ "readOnlyHint": {
+  "true_to_false": {
+   "all": {
+    "tools": 524,
+    "servers": 189,
+    "hosts": 182,
+    "remote_servers": 130,
+    "package_servers": 59
+   },
+   "tool_fingerprint_unchanged_in_that_read": {
+    "tools": 176,
+    "servers": 76,
+    "hosts": 73,
+    "remote_servers": 53,
+    "package_servers": 23
+   },
+   "of_those_still_so_at_last_recorded_move": {
+    "tools": 175,
+    "servers": 76,
+    "hosts": 73,
+    "remote_servers": 53,
+    "package_servers": 23
+   },
+   "no_tool_fingerprint_changed_in_that_read": {
+    "tools": 91,
+    "servers": 32,
+    "hosts": 30,
+    "remote_servers": 27,
+    "package_servers": 5
+   }
+  },
+  "true_to_absent": {
+   "all": {
+    "tools": 8023,
+    "servers": 1549,
+    "hosts": 749,
+    "remote_servers": 1361,
+    "package_servers": 188
+   },
+   "tool_fingerprint_unchanged_in_that_read": {
+    "tools": 63,
+    "servers": 6,
+    "hosts": 6,
+    "remote_servers": 5,
+    "package_servers": 1
+   },
+   "of_those_still_so_at_last_recorded_move": {
+    "tools": 60,
+    "servers": 4,
+    "hosts": 4,
+    "remote_servers": 3,
+    "package_servers": 1
+   },
+   "no_tool_fingerprint_changed_in_that_read": {
+    "tools": 0,
+    "servers": 0,
+    "hosts": 0,
+    "remote_servers": 0,
+    "package_servers": 0
+   }
+  }
+ },
+ "destructiveHint": {
+  "false_to_true": {
+   "all": {
+    "tools": 1075,
+    "servers": 314,
+    "hosts": 302,
+    "remote_servers": 205,
+    "package_servers": 109
+   },
+   "tool_fingerprint_unchanged_in_that_read": {
+    "tools": 720,
+    "servers": 198,
+    "hosts": 187,
+    "remote_servers": 140,
+    "package_servers": 58
+   },
+   "of_those_still_so_at_last_recorded_move": {
+    "tools": 715,
+    "servers": 195,
+    "hosts": 184,
+    "remote_servers": 137,
+    "package_servers": 58
+   },
+   "no_tool_fingerprint_changed_in_that_read": {
+    "tools": 230,
+    "servers": 87,
+    "hosts": 83,
+    "remote_servers": 75,
+    "package_servers": 12
+   }
+  },
+  "false_to_absent": {
+   "all": {
+    "tools": 8947,
+    "servers": 1515,
+    "hosts": 715,
+    "remote_servers": 1364,
+    "package_servers": 151
+   },
+   "tool_fingerprint_unchanged_in_that_read": {
+    "tools": 117,
+    "servers": 10,
+    "hosts": 10,
+    "remote_servers": 9,
+    "package_servers": 1
+   },
+   "of_those_still_so_at_last_recorded_move": {
+    "tools": 114,
+    "servers": 8,
+    "hosts": 8,
+    "remote_servers": 7,
+    "package_servers": 1
+   },
+   "no_tool_fingerprint_changed_in_that_read": {
+    "tools": 2,
+    "servers": 2,
+    "hosts": 2,
+    "remote_servers": 2,
+    "package_servers": 0
+   }
+  }
+ }
+}

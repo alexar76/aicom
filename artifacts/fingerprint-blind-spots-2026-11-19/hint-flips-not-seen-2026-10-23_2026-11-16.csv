@@ -1,0 +1,322 @@
+observedAt,serverId,serverName,hostOrPackage,tool,move,annotationMoves,contractChangeInSameRead
+2026-10-23T18:28:18Z,a384d41d8a77758a,com.402post/402post,402post.com,create_post,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,generate_email_postcard_artwork,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,hold_email_postcard_review,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,quote_email_postcard,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,save_address,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,save_cover_sheet,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,save_email_letterhead,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,save_email_postcard_rule,destructiveHint false->true,"{""destructiveHint"": [false, true], ""idempotentHint"": [true, false]}",none
+2026-10-23T18:31:05Z,a834767e022dfef4,com.directmailamerica/mcp,directmailamerica.com,update_workspace_settings,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T19:05:43Z,63d52c2b4eafdb01,tools.superpowers/superpowers,superpowers.tools,charge_saved_card,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T19:05:43Z,63d52c2b4eafdb01,tools.superpowers/superpowers,superpowers.tools,revoke_key,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T19:05:43Z,63d52c2b4eafdb01,tools.superpowers/superpowers,superpowers.tools,update_key,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T19:06:43Z,ac1f2f2d10832f21,xyz.phase.ai/gateway,mcp.fermat.ai.phase.xyz,chat,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T19:06:43Z,ac1f2f2d10832f21,xyz.phase.ai/gateway,mcp.fermat.ai.phase.xyz,compare,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-23T19:06:43Z,ac1f2f2d10832f21,xyz.phase.ai/gateway,mcp.fermat.ai.phase.xyz,embed,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_derivatives_calibrate,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_derivatives_implied_vol,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_derivatives_smile,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_market_making_avellaneda_stoikov,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_market_making_breakeven_alpha,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_market_making_expected_pnl_rate,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_market_making_glosten_milgrom_spread,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_market_making_glt_quotes,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_market_making_logit_quotes,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_microstructure_hardiman_bouchaud,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_microstructure_hawkes_mle,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_microstructure_microprice_series,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_microstructure_ofi_series,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_microstructure_queue_imbalance,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_microstructure_realized_vol_tick,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_microstructure_vpin_pm,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_signals_alpha_combination,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_signals_convergence_gate,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_signals_effective_independent_n,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_signals_information_ratio,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_signals_order_book_imbalance,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_signals_spread_reversion,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_sizing_bayesian_kelly,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_sizing_empirical_kelly,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_sizing_kelly_fraction,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_sizing_posterior_credible_interval,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_statespace_kalman_beta,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_statespace_kalman_filter,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_statespace_kalman_volatility,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_statespace_markov_transition,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_statespace_ou_calibrate,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_statespace_ou_optimal_thresholds,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_validation_brier_score,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_validation_deflated_sharpe,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_validation_diebold_mariano,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_validation_probability_backtest_overfit,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-24T23:30:32Z,b59727d089238152,pypi/data-science-mcp,pypi:data-science-mcp,quant_validation_purged_cpcv,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-25T18:20:08Z,b2188e5c167da29a,io.github.Mr-Macharia/mpesa-daraja-mcp,pypi:mpesa-daraja-mcp,mpesa_bill_manager_cancel_invoice,destructiveHint false->true,"{""destructiveHint"": [false, true], ""idempotentHint"": [null, true]}",none
+2026-10-25T22:53:04Z,55890e580e008ad0,studio.altessa/altessa,mcp.altessa.studio,build_wedding_timeline,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-25T22:53:04Z,55890e580e008ad0,studio.altessa/altessa,mcp.altessa.studio,estimate_wedding_budget,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-25T22:53:04Z,55890e580e008ad0,studio.altessa/altessa,mcp.altessa.studio,generate_seating_chart,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-25T22:53:04Z,55890e580e008ad0,studio.altessa/altessa,mcp.altessa.studio,plan_reception_layout,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-26T14:16:37Z,9d82ec43d225044d,fun.madeira/hiking-permits,madeira.fun,confirm_reservation,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T01:23:05Z,cf8769b02ec284ec,com.getgovinbox/govinbox,mcp.getgovinbox.com,manage_watchlist,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T13:23:12Z,62122371752ad9f8,pro.socialhive/platform,platform.socialhive.pro,create_post,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T13:23:12Z,62122371752ad9f8,pro.socialhive/platform,platform.socialhive.pro,publish_article,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T13:23:12Z,62122371752ad9f8,pro.socialhive/platform,platform.socialhive.pro,publish_post,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T18:43:00Z,4390bbc610b83f20,ai.ekwo/mcp,npm:@ekwo-ai/mcp,create_api_key,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T18:43:00Z,4390bbc610b83f20,ai.ekwo/mcp,npm:@ekwo-ai/mcp,share_document,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T18:47:21Z,7ffe706932e05836,com.githits/githits,npm:githits,get_example,readOnlyHint true->false,"{""idempotentHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-10-27T18:47:21Z,7ffe706932e05836,com.githits/githits,npm:githits,research,readOnlyHint true->false,"{""idempotentHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-10-27T19:23:27Z,f5bcbab1689f4f89,io.github.hslee16/archy,pypi:archy,archy_snapshot,destructiveHint false->true,"{""destructiveHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-27T19:23:27Z,f5bcbab1689f4f89,io.github.hslee16/archy,pypi:archy,archy_snapshot,readOnlyHint true->false,"{""destructiveHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-27T20:02:18Z,b98b8f3a4146df02,io.github.sachinbkale27/label-image-mcp,pypi:label-image-mcp,detect_nuclei,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T20:12:05Z,dc48da6b30d77ae6,pypi/lean-lsp-mcp,pypi:lean-lsp-mcp,lean_minimal_hypotheses,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""idempotentHint"": [true, false], ""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-27T20:12:05Z,dc48da6b30d77ae6,pypi/lean-lsp-mcp,pypi:lean-lsp-mcp,lean_multi_attempt,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""idempotentHint"": [true, false], ""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-27T20:12:05Z,dc48da6b30d77ae6,pypi/lean-lsp-mcp,pypi:lean-lsp-mcp,lean_profile_proof,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""idempotentHint"": [true, false], ""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-27T20:12:05Z,dc48da6b30d77ae6,pypi/lean-lsp-mcp,pypi:lean-lsp-mcp,lean_run_code,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""idempotentHint"": [true, false], ""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-27T20:12:05Z,dc48da6b30d77ae6,pypi/lean-lsp-mcp,pypi:lean-lsp-mcp,lean_verify,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""idempotentHint"": [true, false], ""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-27T21:50:19Z,7c54d28b2af4a6fe,com.ableandagent/sandbox,mcp.sandbox.ableandagent.com,commission_act,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T21:50:19Z,7c54d28b2af4a6fe,com.ableandagent/sandbox,mcp.sandbox.ableandagent.com,register_agent,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T21:50:19Z,7c54d28b2af4a6fe,com.ableandagent/sandbox,mcp.sandbox.ableandagent.com,resend_claim_link,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-27T21:50:19Z,7c54d28b2af4a6fe,com.ableandagent/sandbox,mcp.sandbox.ableandagent.com,send_message,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T09:07:12Z,c8796e08269e6fc2,com.avokata/avokata,mcp.avokata.com,avokata_account,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T09:13:54Z,f51598b9825e5076,io.github.nevent-dev/mcp-nevent,mcp.nevent.ai,nevent_reset_tenant,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T13:34:52Z,f68889596fe64bc9,com.theaiintegrationhub/use-cases,www.theaiintegrationhub.com,get_agent_playbook,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-28T13:34:52Z,f68889596fe64bc9,com.theaiintegrationhub/use-cases,www.theaiintegrationhub.com,run_agent,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-28T18:16:24Z,5c9069de8e259dfb,com.fulcradynamics/context,pypi:fulcra-context-mcp,send_agent_message,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T18:16:56Z,8f9be742a612b784,com.files/python-mcp,pypi:files-com-mcp,Begin_Delete_File,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T18:16:56Z,8f9be742a612b784,com.files/python-mcp,pypi:files-com-mcp,Gpg_Decrypt_File,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T18:16:56Z,8f9be742a612b784,com.files/python-mcp,pypi:files-com-mcp,Gpg_Encrypt_File,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T18:16:56Z,8f9be742a612b784,com.files/python-mcp,pypi:files-com-mcp,Transform_File,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T18:25:17Z,318a739040abeeda,io.github.Contentrain/contentrain,npm:@contentrain/mcp,contentrain_merge,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T18:31:49Z,c216786914e6ee82,io.github.STiFLeR7/waypoint-mcp,pypi:waypoint-mcp,log_watch,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-28T20:55:49Z,02bb8a30eefb8efa,com.ultimatebusinessmachines/ubm-public,ultimatebusinessmachines.com,ubm_request_plan,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T00:02:24Z,7e0741a739227c74,io.pugi/pugi,api.pugi.io,edit,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-10-29T00:02:24Z,7e0741a739227c74,io.pugi/pugi,api.pugi.io,publish,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T00:04:29Z,e1f5d155e7f3ce5e,io.github.VKarich/picjury,picjury.app,start_photo_poll,readOnlyHint true->false,"{""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-10-29T02:58:47Z,3ed404e52ab90eb1,nl.feminiqrides/booking,www.feminiqrides.nl,request_booking,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T16:26:56Z,672142988e80bb7d,com.lightbringer/connector,mcp.lightbringer.com,set_validation_countries,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T19:17:46Z,20d24cff1d44014f,io.github.mooshee/pressmark,pressmark.dev,convert_document,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-29T19:17:46Z,20d24cff1d44014f,io.github.mooshee/pressmark,pressmark.dev,preview_document,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-29T19:17:46Z,20d24cff1d44014f,io.github.mooshee/pressmark,pressmark.dev,record_payment,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-29T19:43:44Z,7e0741a739227c74,io.pugi/pugi,api.pugi.io,build_site,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T19:43:44Z,7e0741a739227c74,io.pugi/pugi,api.pugi.io,make_logo,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T19:43:44Z,7e0741a739227c74,io.pugi/pugi,api.pugi.io,scan_repo,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T20:16:35Z,975532f8889759dd,tickets.xp/xp-tickets,mcp.xp.tickets,create_listing,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-29T23:09:21Z,18cbbfec32605bee,dev.pressmark/pressmark,pressmark.dev,convert_document,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-29T23:09:21Z,18cbbfec32605bee,dev.pressmark/pressmark,pressmark.dev,preview_document,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-29T23:09:21Z,18cbbfec32605bee,dev.pressmark/pressmark,pressmark.dev,record_payment,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-30T01:10:33Z,472c304803d99c6f,com.scriptmasterlabs/provider-trust,provider-trust-mcp.onrender.com,canon_registry_bulk_lookup,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-30T01:10:33Z,472c304803d99c6f,com.scriptmasterlabs/provider-trust,provider-trust-mcp.onrender.com,verify_provider,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-30T01:58:35Z,c0cdac3ffefdc3e6,com.swarmmemo/bulletin,swarmmemo.com,accept_work,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T01:58:35Z,c0cdac3ffefdc3e6,com.swarmmemo/bulletin,swarmmemo.com,journal_suspend,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T01:58:35Z,c0cdac3ffefdc3e6,com.swarmmemo/bulletin,swarmmemo.com,reject_work,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T02:03:30Z,98377c91eca6dba4,com.swarmmemo/bulletin,swarmmemo.com,accept_work,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T02:03:30Z,98377c91eca6dba4,com.swarmmemo/bulletin,swarmmemo.com,reject_work,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T02:21:45Z,a1416b4a1f78b6dd,com.foldlaundry/fold-laundry,foldlaundry.com,rate_order,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T02:34:33Z,8a14426384c632f6,com.scriptmasterlabs/pro-lo,pro-lo.onrender.com,coherence_jev_verdict,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-30T02:34:33Z,8a14426384c632f6,com.scriptmasterlabs/pro-lo,pro-lo.onrender.com,earnings_gate_verdict,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-30T09:31:00Z,c0cdac3ffefdc3e6,com.swarmmemo/bulletin,swarmmemo.com,join_invite,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T12:02:27Z,c0cdac3ffefdc3e6,com.swarmmemo/bulletin,swarmmemo.com,set_handle,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T12:15:31Z,322146ea9b23628b,ru.vedarai/mcp,vedarai.ru,make_trip_plan,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-10-30T18:49:05Z,9ebe4cb2979dcf91,ca.dispola/places,dispola.ca,confirmer_code,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T18:49:05Z,9ebe4cb2979dcf91,ca.dispola/places,dispola.ca,envoyer_code,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-30T18:49:05Z,9ebe4cb2979dcf91,ca.dispola/places,dispola.ca,proposer_limites,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-31T02:13:58Z,646a4627ac6a85d6,io.github.inchwormz/iter0-mcp,iter0.com,iter0_publish_site,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-31T07:01:24Z,d57c3a5bde9a0802,io.github.replohq/replo,api.replo.app,set_file_sharing,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-10-31T09:32:10Z,d57c3a5bde9a0802,io.github.replohq/replo,api.replo.app,sightglass_update_board,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-01T09:41:02Z,9cd09d74b9f15fe2,com.gdprrepresentative/rep27,gdprrepresentative.com,check_obligations,readOnlyHint true->false,"{""idempotentHint"": [null, false], ""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-11-01T09:41:42Z,a78b3b8e30f3cc3f,io.github.som2026-commits/kestrova,kestrova.onrender.com,scan_solidity_full,readOnlyHint true->false,"{""destructiveHint"": [null, false], ""idempotentHint"": [true, false], ""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-11-01T11:14:01Z,21cf73a79e3fe909,ai.whiteboardanimation/whiteboard-animation,mcp.whiteboardanimation.ai,render_link,readOnlyHint true->false,"{""readOnlyHint"": [true, false]}",none
+2026-11-01T18:50:24Z,1dd9540de067ca64,cloud.pandy/tickets,tickets.pandy.cloud,draft-event,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-01T20:01:06Z,7505dfa1c94fbdc1,io.github.boriskendev/stormap,stormap.ai,company_changes,readOnlyHint true->false,"{""destructiveHint"": [null, false], ""idempotentHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-02T05:07:18Z,cba2435348fdf4fa,tech.tchin/tchin,tchin.tech,modifier_lien,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-02T09:21:14Z,fe78d807c42388e1,fr.scorelook/capucine,scorelook.fr,annuler_action,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-02T14:50:55Z,fedad17c9a8fa634,com.xn--5kvtwv52d/jizhineng-mcp,mcp.xn--5kvtwv52d.com,audit.record,readOnlyHint true->false,"{""idempotentHint"": [null, false], ""openWorldHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-11-02T14:50:55Z,fedad17c9a8fa634,com.xn--5kvtwv52d/jizhineng-mcp,mcp.xn--5kvtwv52d.com,metering.record,readOnlyHint true->false,"{""idempotentHint"": [null, false], ""openWorldHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-11-02T14:50:55Z,fedad17c9a8fa634,com.xn--5kvtwv52d/jizhineng-mcp,mcp.xn--5kvtwv52d.com,settlement.account,readOnlyHint true->false,"{""idempotentHint"": [null, false], ""openWorldHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-11-02T14:50:55Z,fedad17c9a8fa634,com.xn--5kvtwv52d/jizhineng-mcp,mcp.xn--5kvtwv52d.com,settlement.transfer,destructiveHint false->true,"{""destructiveHint"": [false, true], ""idempotentHint"": [null, false], ""openWorldHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-11-02T14:50:55Z,fedad17c9a8fa634,com.xn--5kvtwv52d/jizhineng-mcp,mcp.xn--5kvtwv52d.com,settlement.transfer,readOnlyHint true->false,"{""destructiveHint"": [false, true], ""idempotentHint"": [null, false], ""openWorldHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-11-02T15:11:46Z,c8d943cf33c58e90,nl.jetcabams.www/booking,www.jetcabams.nl,request_booking,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-02T21:43:40Z,606cce50b7566bd1,ai.appgoat/mcp,api.appgoat.ai,reject_action,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [true, false]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,act,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,buy_credit,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,cancel_world,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,claim_world,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,credit_gift,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,draw_self,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,found,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,home,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,invent_kind,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,laws,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,list_world,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,make,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,mark_for_later,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,me,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,payment_attempt,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,place_edit,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,reconcile_world,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,revise_kind,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,thing_edit,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,thing_upgrade,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,transfer,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T00:13:58Z,1cb5af2c51ef6562,io.github.onetapstudiogames/1f3d9,1f3d9.com,withdraw,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T02:59:46Z,b9c49bbbc9d211dc,au.humanendpoint/humanendpoint,humanendpoint.au,human_request_quote,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [true, false]}",none
+2026-11-04T03:39:29Z,fb065f3406b3c0d0,domains.audit/appraisal,audit.domains,buy_appraisal,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T03:39:29Z,fb065f3406b3c0d0,domains.audit/appraisal,audit.domains,set_listing_terms,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T13:41:41Z,921da998f6b2e5fb,com.huitongdesk.screenparty/watch-together,screenparty.huitongdesk.com,update_branded_link,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-04T13:41:41Z,921da998f6b2e5fb,com.huitongdesk.screenparty/watch-together,screenparty.huitongdesk.com,update_watch_party,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T15:12:46Z,48cf6ac8fffa5ec6,io.github.troothllc/trooth-network,api.trooth.co,trooth_profile_publish,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-04T21:46:23Z,d5bd62289e8a7451,immo.rundum/real-estate-appraisal,npm:@rundum-immo/real-estate-appraisal-mcp,book_appointment,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-05T09:51:40Z,1a54999240b3afb5,com.advocatemcp/advocate,api.advocatemcp.com,create_booking_payment_link,readOnlyHint true->false,"{""readOnlyHint"": [true, false]}",none
+2026-11-05T11:53:06Z,710ea013d78b4dd1,com.fastcac/cac,api.fastcac.com,remove_discount_code,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-05T11:53:06Z,710ea013d78b4dd1,com.fastcac/cac,api.fastcac.com,rename_business,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-05T11:53:06Z,710ea013d78b4dd1,com.fastcac/cac,api.fastcac.com,update_profile,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-05T13:36:55Z,45f9f4c3527d5240,com.verifyum/mcp,api.verifyum.com,verifyum_anchor_commitment,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-05T13:36:58Z,465e06fbaea91eb1,at.aamio/aamio,aamio.at,aamio_send,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-05T20:57:57Z,5a9521a7d2cf89d1,com.pagetovid/pagetovid,pagetovid.com,create_animation,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-05T20:57:57Z,5a9521a7d2cf89d1,com.pagetovid/pagetovid,pagetovid.com,create_video,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-05T20:57:57Z,5a9521a7d2cf89d1,com.pagetovid/pagetovid,pagetovid.com,translate_video,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_cross,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_evidence,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_milestone_submit,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_project_claim,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_project_open,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_project_post,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_sign_in,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T01:34:10Z,def952958a9a8f80,io.github.drexthealpha/knos,knos.onrender.com,knos_task_submit,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T18:27:49Z,a87b4bf27e6ab4ea,io.github.KilvingtonDigital/groundquote,mcp.groundquote.com,send_quote_request,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T19:52:08Z,f32321ab7b4ecbf5,io.github.Mvp2o-ai/cuttingfloor,api.cuttingfloor.ai,media.analyze,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T22:08:00Z,d3a608b850696975,io.github.alessandropeng/arc-flash-platform,arc-flash-platform.onrender.com,solicitar_orcamento,readOnlyHint true->false,"{""destructiveHint"": [null, false], ""idempotentHint"": [null, false], ""openWorldHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-06T23:28:50Z,9b5d00a2238ad64d,com.getecommerceleads/ecommerce-leads,getecommerceleads.com,removeFromWatchlist,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-06T23:28:56Z,a629ca15f33eb13b,com.shutterbots/shutterbots,shutterbots.com,shutterbots_check_in,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-11-08T14:02:59Z,6cde6e3c111528be,com.dayze/life-context,dayze.com,log_movie_watch,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T14:02:59Z,6cde6e3c111528be,com.dayze/life-context,dayze.com,log_tv_watch,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T14:10:04Z,13d4a6a0d9ef6fd8,com.dayze/life-context,dayze.com,log_movie_watch,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T14:10:04Z,13d4a6a0d9ef6fd8,com.dayze/life-context,dayze.com,log_tv_watch,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T16:12:31Z,c3bc3eaea9b27132,com.usepickly/pickly,usepickly.com,review_suggestion,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T16:12:31Z,c3bc3eaea9b27132,com.usepickly/pickly,usepickly.com,review_voter_request,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T16:24:36Z,0105f30b3c290b07,co.promptguard/security,api.promptguard.co,promptguard_propose_suppression,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,answer_decision,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,ask_marsell,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,business_context_change,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,get_upload_link,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,listings_mark,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,offering_remove,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,owner_fact_set,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,page_again,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,remove_from_setup,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,scheduled_posts_remove,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,scheduled_posts_sync,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,series_end_card,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,series_start,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,series_video_type_set,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,set_aside,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,slot_drop,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,stream_stop,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,update_brand,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,voice_remove,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-08T18:18:00Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,work_cancel,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_brand_file,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_characters,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_font,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_logo,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_places,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_products,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_rivals,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,add_socials,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,fill_setup,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,set_look,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,set_offer,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T19:19:26Z,af3a8546ebcdece6,com.getmarsell/marsell,getmarsell.com,set_type,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-08T21:20:46Z,e899b8668aa9b7a6,com.comos-federation/gateway,mcp.comos-federation.com,federation_attest,readOnlyHint true->false,"{""readOnlyHint"": [true, false]}",none
+2026-11-08T21:24:37Z,117d7b5975e45e77,io.github.ronrey/comos-federation,mcp.comos-gateway.com,federation_attest,readOnlyHint true->false,"{""readOnlyHint"": [true, false]}",none
+2026-11-08T21:24:46Z,31fc77b66f20272c,io.github.ronrey/federation,mcp.comos-gateway.com,federation_attest,readOnlyHint true->false,"{""readOnlyHint"": [true, false]}",none
+2026-11-09T05:28:17Z,d6fac839f75b51cb,fun.pumpdata/pumpdata,pumpdata.fun,send_tx,readOnlyHint true->false,"{""openWorldHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-11-09T06:03:46Z,251e676f219bd926,io.github.dav3trad3r/agentpickup,agentpickup.app,close_group_order,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T06:03:46Z,251e676f219bd926,io.github.dav3trad3r/agentpickup,agentpickup.app,create_pickup_order,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T06:03:46Z,251e676f219bd926,io.github.dav3trad3r/agentpickup,agentpickup.app,join_group_order,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T06:03:46Z,251e676f219bd926,io.github.dav3trad3r/agentpickup,agentpickup.app,pay_order,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T06:03:46Z,251e676f219bd926,io.github.dav3trad3r/agentpickup,agentpickup.app,start_group_order,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T07:28:54Z,d6fac839f75b51cb,fun.pumpdata/pumpdata,pumpdata.fun,send_tx,destructiveHint false->true,"{""destructiveHint"": [false, true], ""idempotentHint"": [true, false]}",none
+2026-11-09T19:08:38Z,a87b4bf27e6ab4ea,io.github.KilvingtonDigital/groundquote,mcp.groundquote.com,set_branding,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-09T19:08:38Z,a87b4bf27e6ab4ea,io.github.KilvingtonDigital/groundquote,mcp.groundquote.com,set_fence_pricing,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T19:08:38Z,a87b4bf27e6ab4ea,io.github.KilvingtonDigital/groundquote,mcp.groundquote.com,set_hosted_page,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-09T19:08:38Z,a87b4bf27e6ab4ea,io.github.KilvingtonDigital/groundquote,mcp.groundquote.com,set_rental_pricing,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T19:14:16Z,28310e2b1730fa56,io.github.amerged-org/ohmyhost-mcp,npm:@amerged/ohmyhost-mcp,native_auth_user_create,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T19:24:01Z,b08a1a9133deed32,io.github.dappros/ethora-mcp-cli,npm:@ethora/mcp-server,ethora-source-site-crawl-wait,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-09T19:29:58Z,d6fac839f75b51cb,fun.pumpdata/pumpdata,pumpdata.fun,replay,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-11-09T20:35:56Z,724c8f2c2175bf37,io.github.Pankaj-bit361/volanea,api.volanea.com,volanea_create_segment,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [null, false]}",none
+2026-11-09T20:35:56Z,724c8f2c2175bf37,io.github.Pankaj-bit361/volanea,api.volanea.com,volanea_create_template,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [null, false]}",none
+2026-11-09T20:35:56Z,724c8f2c2175bf37,io.github.Pankaj-bit361/volanea,api.volanea.com,volanea_create_webhook_endpoint,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [null, false]}",none
+2026-11-09T20:35:56Z,724c8f2c2175bf37,io.github.Pankaj-bit361/volanea,api.volanea.com,volanea_create_workflow,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [null, false]}",none
+2026-11-09T20:35:56Z,724c8f2c2175bf37,io.github.Pankaj-bit361/volanea,api.volanea.com,volanea_update_webhook_endpoint,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [null, false]}",none
+2026-11-10T08:50:57Z,8148366e6dd9c084,com.studocu/studocu,agent-os-mcp.alpha.studocu.com,update-project,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-10T09:43:25Z,9100497d197379eb,app.kangram/kangram,kangram.app,restore_task,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-10T14:19:44Z,45bedc47e198f574,com.hydracept/hydracept,api.hydracept.com,hydracept_cancel_job,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-10T14:19:44Z,45bedc47e198f574,com.hydracept/hydracept,api.hydracept.com,hydracept_run,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-10T14:19:44Z,45bedc47e198f574,com.hydracept/hydracept,api.hydracept.com,hydracept_submit_job,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-10T21:13:19Z,66c69ef54077bcf5,io.github.Nutshell2000/agent-data-tools-utilities,agent-data-tools.revmesh2074.workers.dev,memory_set,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T02:21:39Z,bc4eb7303a8dc3f7,com.youspot/youspot,youspot.com,choose_my_newsletters,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-11T02:21:39Z,bc4eb7303a8dc3f7,com.youspot/youspot,youspot.com,draft_my_planned_posts,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-11T02:21:39Z,bc4eb7303a8dc3f7,com.youspot/youspot,youspot.com,generate_substack_post,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-11T02:21:39Z,bc4eb7303a8dc3f7,com.youspot/youspot,youspot.com,set_linkedin_manager,readOnlyHint true->false,"{""destructiveHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-11T02:48:40Z,307acca70bbff042,ai.ciphyr.agentmart/agentmart,agentmart.ciphyr.ai,check_site,readOnlyHint true->false,"{""idempotentHint"": [null, false], ""readOnlyHint"": [true, false]}",none
+2026-11-11T13:52:08Z,2553a8d2435bea73,io.github.MikeyPetrillo/agent402,agent402.tools,memory.write,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [true, false]}",outputSchema or top-level additionalProperties only
+2026-11-11T15:33:24Z,58b17533bfa3231d,com.organiqgeo/organiq,organiqgeo.com,set_bing_key,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T15:33:24Z,58b17533bfa3231d,com.organiqgeo/organiq,organiqgeo.com,set_bing_site,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T15:33:24Z,58b17533bfa3231d,com.organiqgeo/organiq,organiqgeo.com,set_branded_terms,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T15:33:24Z,58b17533bfa3231d,com.organiqgeo/organiq,organiqgeo.com,set_ga4_property,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T17:50:50Z,eb2a40841b0afb3b,ai.listplus/listplus,listplus.ai,fix_list,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T17:50:50Z,eb2a40841b0afb3b,ai.listplus/listplus,listplus.ai,update_records,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T21:47:24Z,90594f103282b242,io.ppc/postclick-landing-page-cro,mcp.ppc.io,save_note,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-11T21:47:24Z,90594f103282b242,io.ppc/postclick-landing-page-cro,mcp.ppc.io,share_page,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-12T00:51:40Z,e58ea80394ecc0e4,ai.workpods/agent-ready-mcp,mcp.workpods.ai,start_site_crawl,readOnlyHint true->false,"{""readOnlyHint"": [true, false]}",none
+2026-11-12T01:23:21Z,19e0de1d25db71ff,com.kaicalls/kaicalls,www.kaicalls.com,set_business_hours,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-12T01:23:21Z,19e0de1d25db71ff,com.kaicalls/kaicalls,www.kaicalls.com,unshare_call_example,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-12T06:26:38Z,958c0618f514ff91,tw.meang/meang,meang.tw,upsert_note,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-12T14:53:32Z,5f41643d8432d0a2,dev.zambo/zambo,zambo.dev,doc_intel,destructiveHint false->true,"{""destructiveHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-11-12T14:53:32Z,5f41643d8432d0a2,dev.zambo/zambo,zambo.dev,doc_intel,readOnlyHint true->false,"{""destructiveHint"": [false, true], ""readOnlyHint"": [true, false]}",none
+2026-11-13T01:02:36Z,0a729ffc32d660d7,io.soundchecklive/live-event-quotes,mcp.soundchecklive.io,send_feedback,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",none
+2026-11-13T07:27:33Z,dca8d70ac5e3a3bc,ai.athenahq/mcp,api.athenahq.ai,draft_outreach_message,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:27:33Z,dca8d70ac5e3a3bc,ai.athenahq/mcp,api.athenahq.ai,find_outreach_author,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:27:33Z,dca8d70ac5e3a3bc,ai.athenahq/mcp,api.athenahq.ai,set_outreach_status,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:27:33Z,dca8d70ac5e3a3bc,ai.athenahq/mcp,api.athenahq.ai,update_brand_kit,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:27:33Z,dca8d70ac5e3a3bc,ai.athenahq/mcp,api.athenahq.ai,update_outreach_contact,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:59:05Z,b733ea1b5da05de3,com.teppek/teppek,mcp.teppek.com,reply_to_conversation,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:59:05Z,b733ea1b5da05de3,com.teppek/teppek,mcp.teppek.com,send_message,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:59:05Z,b733ea1b5da05de3,com.teppek/teppek,mcp.teppek.com,update_listing,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T07:59:05Z,b733ea1b5da05de3,com.teppek/teppek,mcp.teppek.com,update_listing_images,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T10:45:12Z,afaf0307e186206d,io.github.cometchat/docs-mcp,mcp.cometchat.com,cometchat_add_group_members,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,add_status_incident_update,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,add_status_maintenance_update,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,complete_task,destructiveHint false->true,"{""destructiveHint"": [false, true], ""idempotentHint"": [true, false], ""openWorldHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,create_status_incident,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,create_status_maintenance,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,edit_status_maintenance_update,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,prepare_completion,readOnlyHint true->false,"{""readOnlyHint"": [true, false]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,publish_changelog,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,reply_to_feedback,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,run_status_check,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,update_feedback,destructiveHint false->true,"{""destructiveHint"": [false, true], ""openWorldHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,update_status_incident,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:26:04Z,3889de1547a552c7,com.usedamper/mcp,api.usedamper.com,update_status_maintenance,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-13T19:47:18Z,56d3209007a793e2,io.compteam/compteam,api.compteam.io,set_class_rsvp,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T21:19:39Z,d7620dc0f6ab5ab1,ai.humansfix/humansfix,humansfix.ai,respond_to_call_time,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T22:13:11Z,b4172830fb20ea39,dev.spacepost/mcp,api.spacepost.dev,send_batch_emails,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T22:13:11Z,b4172830fb20ea39,dev.spacepost/mcp,api.spacepost.dev,send_broadcast,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T22:13:11Z,b4172830fb20ea39,dev.spacepost/mcp,api.spacepost.dev,send_email,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T23:41:28Z,79b4adaf0869c805,com.loadster/loadster-mcp,api.loadster.com,stop_load_test,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-13T23:41:28Z,79b4adaf0869c805,com.loadster/loadster-mcp,api.loadster.com,stop_script,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-14T03:17:18Z,56a68f15a6df7bff,com.allthepossibles/designers,designers.allthepossibles.com,save_project_context,destructiveHint false->true,"{""destructiveHint"": [false, true], ""idempotentHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-14T03:17:18Z,56a68f15a6df7bff,com.allthepossibles/designers,designers.allthepossibles.com,save_project_context,readOnlyHint true->false,"{""destructiveHint"": [false, true], ""idempotentHint"": [null, true], ""readOnlyHint"": [true, false]}",none
+2026-11-14T06:34:00Z,8d24a43c276192bd,io.github.hermoso-ai/hermoso-social-media-manager,app.hermoso.ai,reply_to_inbox_item,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-14T06:42:20Z,2bb3a18050308bf3,com.rollstack/mcp,api.rollstack.com,createReportParameter,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-14T06:44:22Z,6480d2ac066219c2,io.github.hermoso-ai/hermoso-ai-ad-generator,app.hermoso.ai,advance_story_film,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-14T07:03:40Z,844975f143039ac4,io.github.hermoso-ai/hermoso-ads-manager,app.hermoso.ai,set_google_ads_rule_limits,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-14T07:03:40Z,844975f143039ac4,io.github.hermoso-ai/hermoso-ads-manager,app.hermoso.ai,set_meta_ad_rule_limits,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-14T10:22:23Z,1819cece0db651b5,lu.chathome/chathome,chathome.lu,analyze_lease,destructiveHint false->true,"{""destructiveHint"": [false, true]}",outputSchema or top-level additionalProperties only
+2026-11-15T00:08:34Z,3011862cda83c29b,io.github.haiyunsky/hpsilab-quant-finance-mcp,hpsilab.com,get_pretrade_risk_scan,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-11-15T20:09:15Z,3dc47ebd18d01a53,io.github.LevapVeeskela/lv24-seo,pypi:lv24-seo,seo_crawl_site,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-11-15T20:09:15Z,3dc47ebd18d01a53,io.github.LevapVeeskela/lv24-seo,pypi:lv24-seo,seo_weekly_report,readOnlyHint true->false,"{""idempotentHint"": [true, false], ""readOnlyHint"": [true, false]}",none
+2026-11-15T20:24:26Z,fc26f987cc7e22a8,io.github.isi1314/clipai-mcp,npm:clipai-mcp,render_clip,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-15T21:14:36Z,eedc8851de2d95c9,com.session-exchange/sessions,session-exchange.com,acquire_session,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none
+2026-11-15T21:14:36Z,eedc8851de2d95c9,com.session-exchange/sessions,session-exchange.com,publish_session,destructiveHint false->true,"{""destructiveHint"": [false, true]}",none

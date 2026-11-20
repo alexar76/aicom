@@ -2669,8 +2669,8 @@ else:
       echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
       return 1
       ;;
-    pingblip)
-      echo "ERROR: pingblip/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
+    pingblip|community-landing)
+      echo "ERROR: ${sat_id}/ is Gitea-only (github_published: false). Refuse GitHub mirror." >&2
       echo "        Use ./scripts/push_gitea_monorepo.sh — flip github_published only when asked." >&2
       return 1
       ;;

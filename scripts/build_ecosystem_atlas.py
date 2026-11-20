@@ -10,7 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def build(output: Path, base_url: str) -> None:
+def build(output: Path, base_url: str, with_community: bool = False) -> None:
     source = ROOT / 'scripts/github-io'
     os.environ['ATLAS_SITE_URL'] = base_url.rstrip('/')
     os.environ['ATLAS_ASSET_PREFIX'] = '/ecosystem-atlas'
@@ -18,11 +18,21 @@ def build(output: Path, base_url: str) -> None:
     atlas = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(atlas)
     output.mkdir(parents=True, exist_ok=True)
+    extra_paths = []
+    community = None
+    if with_community:
+        private_root = ROOT / 'community-landing'
+        if private_root.resolve() not in output.resolve().parents:
+            raise ValueError('Build the private atlas inside community-landing/ (for example, community-landing/dist).')
+        spec = importlib.util.spec_from_file_location('community_editions', private_root / 'build.py')
+        community = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(community)
+        extra_paths = community.build(output, base_url.rstrip('/'))
     for locale, copy in atlas.CONTENT.items():
         destination = output / ('' if locale == 'en' else locale)
         destination.mkdir(exist_ok=True)
-        (destination / 'index.html').write_text(atlas.render(locale, copy))
-    document_paths = atlas.build_documentation(output)
+        (destination / 'index.html').write_text(atlas.render(locale, copy, community.home_action(locale) if community else ''))
+    document_paths = atlas.build_documentation(output) + extra_paths
     for folder in ['assets', 'fonts']:
         shutil.copytree(source / folder, output / 'ecosystem-atlas' / folder, dirs_exist_ok=True)
     # Keep encyclopedia, courses and all other existing sitemap entries.
@@ -51,5 +61,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=ROOT / 'ecosystem-landing')
     parser.add_argument('--base-url', default='https://ecosystem.modelmarket.dev')
+    parser.add_argument('--with-community', action='store_true', help='Include the private multilingual community landing')
     args = parser.parse_args()
-    build(args.output, args.base_url)
+    build(args.output, args.base_url, args.with_community)

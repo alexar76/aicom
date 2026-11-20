@@ -1,0 +1,19 @@
+1. base image on an empty database
+  healthy; schema 25
+2. new image on that database, subregistry off
+  healthy; schema 26
+   /v0.1/servers: 404 application/json {"detail":"Not Found"}
+   table: name,version,body,meta,status,is_latest,published_key,updated_key,seen_at
+3. new image, subregistry on (no sync: the network has no way out)
+  healthy; schema 26
+   /v0.1/servers (empty): 200 * {"servers":[],"metadata":{"count":0}}
+   /api/v1/subregistry: 200 * {"type":"histor.subregistry/v1","registry":"http://127.0.0.1:9490","api":"v0.1","upstream":"https://registry.modelcontextprotocol.io","servers":0,"entries":0,"allowList":null,"observedKey":"dev.
+4. the subregistry's statements on Postgres (calls from the new image)
+  ok: 47 entries paged, search, latest, updated_since, versions, deleted, observed, surrogate kept; marked 45 dropped 1 status 1 47
+5. base image on the database at 26
+  NOT healthy (exited/unhealthy):     raise MigrationError(f"database is at revisions {sorted(unknown)} this build does not know") histor.migrations.MigrationError: database is at revisions [26] this build does not know 
+6. rollback.sql, then the base image
+  healthy; schema 25
+7. new image again (re-applies 026)
+  healthy; schema 26
+0

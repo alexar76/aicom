@@ -1,0 +1,29 @@
+{
+  "verified_utc": "2026-11-19T17:33:12.047200+00:00",
+  "inputs": {
+    "histor": "https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions/resolve/7350d0180291701e09835046f5b479e4b1c24c16/servers.jsonl.gz",
+    "manifest": "https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions/resolve/7350d0180291701e09835046f5b479e4b1c24c16/manifest.json",
+    "peer": "https://raw.githubusercontent.com/yassinht/mcp-transparency-log/4b28233c1b0ccb70f14cfe81cce9732a8d9476a7/docs/data/peers/tool-digests-latest.jsonl"
+  },
+  "sha256": {
+    "histor": "ab428f72a7b6be1922f5962d2fad2fc0c4251f17b0d54a71c547c3e71a59f924",
+    "manifest": "fa2f848f92ee321a1ebdfae2aaf10a7924c5a09b75e8fc6fd0461ebec52d2ca9",
+    "peer": "d529eda2658adb3c3b4372d9501833198b57696628e2641287a22c6b864469e1"
+  },
+  "counts": {
+    "overlapping_name_endpoint_pairs": 44428,
+    "missing_successful_pair": 23239,
+    "comparable_without_time_limit": 21189
+  },
+  "by_max_gap_hours": {
+    "24": {
+      "different": 2129,
+      "same": 2569
+    },
+    "48": {
+      "same": 18193,
+      "different": 2982
+    }
+  },
+  "note": "Exact (registry name, endpoint) pairs, unique in both exports. HISTOR snapshot 16 Nov, Surfacelog reads 17 Nov. Last successful observations only where HISTOR lastStatus is ok and listed. A changed digest can reflect an intervening update or client-specific output. Bands are cumulative; pairs can share an endpoint."
+}

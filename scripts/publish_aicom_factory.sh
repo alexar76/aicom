@@ -450,8 +450,8 @@ if [[ -n "$EXPORT_DIR" ]]; then
     echo "ERROR: emberline/ or cite-desks/ reached the GitHub factory tree — refusing to export." >&2
     exit 1
   fi
-  if [[ -e "$TARGET/pingblip" ]]; then
-    echo "ERROR: pingblip/ reached the GitHub factory tree — refusing to export." >&2
+  if [[ -e "$TARGET/pingblip" || -e "$TARGET/community-landing" ]]; then
+    echo "ERROR: pingblip/ or community-landing/ reached the GitHub factory tree — refusing to export." >&2
     exit 1
   fi
   if [[ -e "$TARGET/protocol-v2-receipt-from-spec" ]]; then
@@ -548,8 +548,8 @@ if [[ -e "$CLONE/emberline" || -e "$CLONE/cite-desks" ]]; then
   echo "ERROR: emberline/ or cite-desks/ reached the GitHub factory clone — refusing to push." >&2
   exit 1
 fi
-if [[ -e "$CLONE/pingblip" ]]; then
-  echo "ERROR: pingblip/ reached the GitHub factory clone — refusing to push." >&2
+if [[ -e "$CLONE/pingblip" || -e "$CLONE/community-landing" ]]; then
+  echo "ERROR: pingblip/ or community-landing/ reached the GitHub factory clone — refusing to push." >&2
   exit 1
 fi
 if [[ -e "$CLONE/protocol-v2-receipt-from-spec" ]]; then

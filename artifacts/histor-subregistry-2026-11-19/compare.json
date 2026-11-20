@@ -1,0 +1,137 @@
+{
+ "cursors": [
+  [
+   "ai.agentblueprint/agent-blueprint:0.2.0",
+   "ai.agentblueprint/agent-blueprint:0.2.0"
+  ],
+  [
+   "ai.ambix/ambix:0.1.0",
+   "ai.ambix/ambix:0.1.0"
+  ],
+  [
+   "ai.autoposter/autoposter:1.0.0",
+   "ai.autoposter/autoposter:1.0.0"
+  ]
+ ],
+ "list_same": 300,
+ "list_diff": 0,
+ "list_schema_errors": [
+  "servers/27/server/repository: 'url' is a required property",
+  "servers/27/server/repository: 'source' is a required property",
+  "servers/93/server/repository: 'url' is a required property",
+  "servers/17/server/repository: 'url' is a required property",
+  "servers/17/server/repository: 'source' is a required property"
+ ],
+ "single": [
+  {
+   "name": "io.github.alexar76/histor",
+   "status": [
+    200,
+    200,
+    200,
+    200,
+    200
+   ],
+   "server_equal": true,
+   "official_equal": true,
+   "exact_equal": true,
+   "plain_equal": true,
+   "versions_kept": 1,
+   "schema": [],
+   "cors": [
+    "*",
+    "GET, OPTIONS",
+    "Authorization, Content-Type"
+   ]
+  },
+  {
+   "name": "io.github.alexar76/warden",
+   "status": [
+    200,
+    200,
+    200,
+    200,
+    200
+   ],
+   "server_equal": true,
+   "official_equal": true,
+   "exact_equal": true,
+   "plain_equal": true,
+   "versions_kept": 1,
+   "schema": [],
+   "cors": [
+    "*",
+    "GET, OPTIONS",
+    "Authorization, Content-Type"
+   ]
+  },
+  {
+   "name": "io.github.alexar76/aimarket-hub",
+   "status": [
+    200,
+    200,
+    200,
+    200,
+    200
+   ],
+   "server_equal": true,
+   "official_equal": true,
+   "exact_equal": true,
+   "plain_equal": true,
+   "versions_kept": 1,
+   "schema": [],
+   "cors": [
+    "*",
+    "GET, OPTIONS",
+    "Authorization, Content-Type"
+   ]
+  },
+  {
+   "name": "ac.inference.sh/mcp",
+   "status": [
+    200,
+    200,
+    200,
+    200,
+    200
+   ],
+   "server_equal": true,
+   "official_equal": true,
+   "exact_equal": true,
+   "plain_equal": true,
+   "versions_kept": 1,
+   "schema": [],
+   "cors": [
+    "*",
+    "GET, OPTIONS",
+    "Authorization, Content-Type"
+   ]
+  }
+ ],
+ "missing": {
+  "ours": [
+   404,
+   "application/problem+json",
+   {
+    "title": "Not Found",
+    "status": 404,
+    "detail": "Server not found",
+    "error": "Server not found"
+   }
+  ],
+  "theirs": [
+   404,
+   null,
+   {
+    "title": "Not Found",
+    "status": 404,
+    "detail": "Server not found"
+   }
+  ]
+ },
+ "search_alexar76": {
+  "ours": 8,
+  "theirs": 8,
+  "same_names": true
+ }
+}

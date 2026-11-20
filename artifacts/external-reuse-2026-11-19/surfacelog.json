@@ -1,0 +1,191 @@
+{
+  "checked_utc": "2026-11-19T16:41:01.275157+00:00",
+  "export_url": "https://raw.githubusercontent.com/yassinht/mcp-transparency-log/ecf5dcb67addf43a1b20f3c7146dbc2e57a27755/docs/data/peers/tool-digests-latest.jsonl",
+  "export_sha256": "5fcd22df878a5ff57079b6f3bd83df2c2f0e46bd939fa0be6fccd98cdfbd4cf7",
+  "row_count": 46675,
+  "unique_endpoints": 46407,
+  "rows_with_digest": 27655,
+  "digest_null": 19020,
+  "project_rows": [
+    {
+      "name": "io.github.alexar76/aimarket-hub",
+      "digest": "sha256-+tgzggq0506M928osbUhi0t1DVKtNLSEajxgP4lCjww=",
+      "tools": 13,
+      "read_at": "2026-11-19T03:15:08Z",
+      "outcome": null
+    },
+    {
+      "name": "dev.modelmarket/domains",
+      "digest": "sha256-Ntsd25bm6pWVt2l9z5SdWPsICMJJ8Z4IUFfLU85wfJ8=",
+      "tools": 1,
+      "read_at": "2026-11-19T03:15:05Z",
+      "outcome": null
+    },
+    {
+      "name": "dev.modelmarket/emporion",
+      "digest": "sha256-rsfdT6S9O2pxcBdmp4qaH39LUfhZgHS8uINCn0Mcars=",
+      "tools": 8,
+      "read_at": "2026-11-19T03:15:06Z",
+      "outcome": null
+    },
+    {
+      "name": "dev.modelmarket/mcp-security",
+      "digest": "sha256-8HFOTjtMz8c/IXz4WSX8Rk+1ohUxlM4cTGpOOxLMORc=",
+      "tools": 4,
+      "read_at": "2026-11-19T03:15:07Z",
+      "outcome": null
+    },
+    {
+      "name": "dev.modelmarket/weather",
+      "digest": "sha256-RCJXRPTiLGIRKcysKzXRNIXUd3TvQb7gxi5/1DQCCZc=",
+      "tools": 3,
+      "read_at": "2026-11-19T03:15:08Z",
+      "outcome": null
+    }
+  ],
+  "our_peer_index": {
+    "kind": "histor-peer-cross-checks",
+    "v": 1,
+    "generated_at": "2026-11-19T12:13:14Z",
+    "about": "Observers HISTOR compares its records with, and where each comparison is published. Method and verdicts: https://github.com/alexar76/histor/blob/main/docs/cross-check.md",
+    "peers": [
+      {
+        "slug": "crawlcheck",
+        "name": "CrawlCheck",
+        "operator": "VSNARY",
+        "contact": "contact@crawlcheck.io",
+        "page": "https://crawlcheck.io/spec/mcp-lockfile",
+        "since": "2026-11-07",
+        "method": "digest",
+        "schedule": "daily 12:00 UTC (histor-peers.timer)",
+        "path": "/datasets/peers/crawlcheck/",
+        "sources": [
+          {
+            "name": "feed",
+            "url": "https://crawlcheck.io/api/v1/mcp/changes?limit=500"
+          },
+          {
+            "name": "list",
+            "url": "https://crawlcheck.io/data/xcheck/histor/latest.jsonl"
+          }
+        ],
+        "window_hours": 24,
+        "aliases": [
+          "/datasets/xcheck-crawlcheck/"
+        ],
+        "last_day": "2026-11-19",
+        "last_results": {
+          "feed": {
+            "rows": 956,
+            "counts": {
+              "agree": 831,
+              "agree_nearby": 0,
+              "disagree": 2,
+              "histor_no_digest": 123,
+              "not_listed": 0,
+              "theirs_no_digest": 0,
+              "bad_row": 0
+            }
+          },
+          "list": {
+            "rows": 30,
+            "counts": {
+              "agree": 30,
+              "agree_nearby": 0,
+              "disagree": 0,
+              "histor_no_digest": 0,
+              "not_listed": 0,
+              "theirs_no_digest": 0,
+              "bad_row": 0
+            }
+          }
+        }
+      },
+      {
+        "slug": "scraperwatch",
+        "name": "ScraperWatch",
+        "contact": "ops@scraperwatch.com",
+        "page": "https://scraperwatch.com/mcp-changes/",
+        "since": "2026-11-01",
+        "method": "field-diff",
+        "schedule": "daily 12:00 UTC (histor-peers.timer)",
+        "path": "/datasets/peers/scraperwatch/",
+        "last_day": "2026-11-19",
+        "last_results": {
+          "days": [
+            "2026-11-19"
+          ],
+          "forward": {
+            "same change in HISTOR": 189,
+            "server instructions only (HISTOR does not record them)": 4,
+            "partly in HISTOR": 4,
+            "HISTOR has no definitions in the window": 2
+          },
+          "reverse": {
+            "listed by the peer the day before": 3,
+            "only members the peer does not hash changed": 2,
+            "only dates, version strings, numbers or whitespace changed": 1
+          },
+          "likelyMisses": 0
+        }
+      }
+    ]
+  },
+  "five_project_rows_current_comparison": [
+    {
+      "name": "io.github.alexar76/aimarket-hub",
+      "histor_url": "https://histor.modelmarket.dev/api/v1/servers/a9a47b63e52b8e27",
+      "histor_read_at": "2026-11-19T12:28:58Z",
+      "histor_digest": "sha256-+tgzggq0506M928osbUhi0t1DVKtNLSEajxgP4lCjww=",
+      "peer_read_at": "2026-11-19T03:15:08Z",
+      "peer_digest": "sha256-+tgzggq0506M928osbUhi0t1DVKtNLSEajxgP4lCjww=",
+      "peer_tools": 13,
+      "histor_tools": 13,
+      "equal_current_digest": true
+    },
+    {
+      "name": "dev.modelmarket/domains",
+      "histor_url": "https://histor.modelmarket.dev/api/v1/servers/e1eb27d49e525f9f",
+      "histor_read_at": "2026-11-19T13:47:52Z",
+      "histor_digest": "sha256-Ntsd25bm6pWVt2l9z5SdWPsICMJJ8Z4IUFfLU85wfJ8=",
+      "peer_read_at": "2026-11-19T03:15:05Z",
+      "peer_digest": "sha256-Ntsd25bm6pWVt2l9z5SdWPsICMJJ8Z4IUFfLU85wfJ8=",
+      "peer_tools": 1,
+      "histor_tools": 1,
+      "equal_current_digest": true
+    },
+    {
+      "name": "dev.modelmarket/emporion",
+      "histor_url": "https://histor.modelmarket.dev/api/v1/servers/1996cb129eb8dad4",
+      "histor_read_at": "2026-11-19T15:08:30Z",
+      "histor_digest": "sha256-rsfdT6S9O2pxcBdmp4qaH39LUfhZgHS8uINCn0Mcars=",
+      "peer_read_at": "2026-11-19T03:15:06Z",
+      "peer_digest": "sha256-rsfdT6S9O2pxcBdmp4qaH39LUfhZgHS8uINCn0Mcars=",
+      "peer_tools": 8,
+      "histor_tools": 8,
+      "equal_current_digest": true
+    },
+    {
+      "name": "dev.modelmarket/mcp-security",
+      "histor_url": "https://histor.modelmarket.dev/api/v1/servers/15a674f0502e8fdc",
+      "histor_read_at": "2026-11-19T15:05:50Z",
+      "histor_digest": "sha256-8HFOTjtMz8c/IXz4WSX8Rk+1ohUxlM4cTGpOOxLMORc=",
+      "peer_read_at": "2026-11-19T03:15:07Z",
+      "peer_digest": "sha256-8HFOTjtMz8c/IXz4WSX8Rk+1ohUxlM4cTGpOOxLMORc=",
+      "peer_tools": 4,
+      "histor_tools": 4,
+      "equal_current_digest": true
+    },
+    {
+      "name": "dev.modelmarket/weather",
+      "histor_url": "https://histor.modelmarket.dev/api/v1/servers/7ae3dcf9233c5105",
+      "histor_read_at": "2026-11-19T11:40:20Z",
+      "histor_digest": "sha256-RCJXRPTiLGIRKcysKzXRNIXUd3TvQb7gxi5/1DQCCZc=",
+      "peer_read_at": "2026-11-19T03:15:08Z",
+      "peer_digest": "sha256-RCJXRPTiLGIRKcysKzXRNIXUd3TvQb7gxi5/1DQCCZc=",
+      "peer_tools": 3,
+      "histor_tools": 3,
+      "equal_current_digest": true
+    }
+  ]
+}

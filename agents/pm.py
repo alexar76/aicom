@@ -308,7 +308,9 @@ class PMAgent(BaseAgent):
             try:
                 with open(research_file, encoding="utf-8") as f:
                     research_data = json.load(f)
-                research_context = prompt_json(research_data)
+                from core.untrusted_text import research_for_prompt
+
+                research_context = prompt_json(research_for_prompt(research_data))
                 self._log("INFO", f"Loaded market research for {product_id}")
             except (json.JSONDecodeError, OSError) as e:
                 self._log("WARNING", f"Could not load market research: {e}")

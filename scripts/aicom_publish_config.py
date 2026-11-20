@@ -156,6 +156,7 @@ DEFAULT_RSYNC_EXCLUDES = [
     # excludes the whole tree via FACTORY_LOCAL_EXCLUDES.
     "cite-desks",
     "pingblip",
+    "community-landing",
     # Domain operator kit is satellite alexar76/domain-operator-kit (map id domain-kit).
     # Named here so classify_root stays "excluded" and the tree never enters the
     # trimmed factory. The satellite mirror rsyncs the directory contents; this
@@ -241,6 +242,10 @@ FACTORY_LOCAL_EXCLUDES = [
     # HISTOR sandbox observer rollout/fix notes name private hosts; blocked factory
     # publish 2026-11-17. Pattern covers dated packs; Gitea keeps the trees.
     "artifacts/histor-observer-*",
+    # Social-growth measurement packs embed private edge SSH defaults (e.g.
+    # measure_distribution.py --edge root@…). Blocked factory publish 2026-11-20.
+    # Pattern covers dated packs; Gitea keeps the trees.
+    "artifacts/social-growth-*",
     # Local hub release kit with a checked-in release-venv (broken symlinks trip
     # verify_mirror_secrets wc redirects and stall the factory publish). Gitea only.
     "artifacts/hub-3.17.0-2026-10-31",
@@ -322,6 +327,7 @@ FACTORY_LOCAL_EXCLUDES = [
     # wiring, or product-shell trees on the public factory mirror.
     "attested",
     "pingblip",
+    "community-landing",
     "domain-kit",  # satellite alexar76/domain-operator-kit; excluded from the trimmed factory
     # Local creative/output packs (e.g. Instagram renders) — Gitea only; not factory.
     "output",

@@ -73,7 +73,9 @@ class ArchitectAgent(BaseAgent):
             if research_path.is_file():
                 try:
                     raw_mr = json.loads(research_path.read_text(encoding="utf-8"))
-                    research_context = prompt_json(raw_mr, limit=28_000)
+                    from core.untrusted_text import research_for_prompt
+
+                    research_context = prompt_json(research_for_prompt(raw_mr), limit=28_000)
                     self._log("INFO", "Architect loaded market_research.json for context")
                 except (json.JSONDecodeError, OSError) as e:
                     self._log("WARNING", f"Architect could not read market research: {e}")

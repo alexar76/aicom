@@ -1,0 +1,34 @@
+{
+ "population": "listed servers with a recorded tool set and an observed extras record",
+ "servers": {
+  "not_observed_since_extras_are_kept": 931,
+  "servers": 52580,
+  "servers_package": 27469,
+  "servers_remote": 25111,
+  "servers_with_a_hint_outside_annotations": 14,
+  "servers_with_all_four_hints_on_every_tool": 15585,
+  "servers_with_any_hint": 26924,
+  "servers_with_any_hint_package": 9458,
+  "servers_with_any_hint_remote": 17466,
+  "servers_with_partial_extras_record": 15,
+  "servers_with_readOnlyHint_on_every_tool": 25345,
+  "servers_with_readOnlyHint_on_some_tool": 26873
+ },
+ "hosts_or_packages": {
+  "all": 45145,
+  "any_hint": 22452
+ },
+ "tools": {
+  "all": 970766,
+  "destructiveHint=false": 375196,
+  "destructiveHint=true": 52406,
+  "idempotentHint=false": 72835,
+  "idempotentHint=true": 305780,
+  "openWorldHint=false": 212967,
+  "openWorldHint=true": 261988,
+  "readOnlyHint=false": 139976,
+  "readOnlyHint=true": 377201,
+  "with_a_hint_outside_annotations": 241,
+  "with_any_hint": 533339
+ }
+}

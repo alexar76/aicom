@@ -1,0 +1,6 @@
+[Unit]
+Description=aicom hestia guard: bring back missing files of the HESTIA compose folder
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/aicom-hestia-guard repair

@@ -37,6 +37,8 @@ foyer, rien n'est filtré.
 | [id-check](#id-check) | `id.check@v1` | 0,001 $ | cet IBAN, ISBN, GTIN, ISIN, LEI ou adresse de portefeuille est-il réel, ou une coquille |
 | [confusables](#confusables) | `text.confusables@v1` | 0,001 $ | ce nom se fait-il passer pour un autre |
 | [stats-test](#stats-test) | `stats.test@v1` | 0,002 $ | l'écart d'un A/B est-il réel, et quel échantillon faut-il |
+| [aid-record](#aid-record) | `aid.record.read@v1` | 0,000 $ | ce qu'un client AID trouve à `_agent.<domaine>`, et si l'enregistrement est valide |
+| [aid-proof](#aid-proof) | `aid.proof.verify@v1` | 0,000 $ | le point d'accès a-t-il prouvé la clé que publie son domaine (preuve de point d'accès AID) |
 
 ### rules-decide
 
@@ -184,6 +186,38 @@ Cramér), `sample_size` (par groupe, pour un taux ou une moyenne), `proportion_c
 
 ```json
 {"op": "proportions", "a": {"successes": 200, "trials": 1000}, "b": {"successes": 250, "trials": 1000}}
+```
+
+### aid-record
+
+Donnez `domain` : deux résolveurs publics DNS sur HTTPS (Cloudflare et Google) sont interrogés pour le TXT de
+`_agent.<domaine>`, cet hôte exact, et les réponses passent par l'algorithme client d'AID v2.1.1 (sections 2.1
+à 2.3) : chaque enregistrement est validé selon sa version, `aid2` est préféré, deux enregistrements valides
+sont refusés comme ambigus. La réponse contient l'enregistrement retenu, le `keyid` que la preuve doit nommer
+quand l'enregistrement porte `k`, ce que chaque résolveur a renvoyé avec son indicateur DNSSEC, et le code
+d'erreur de la spécification (1000, 1001, 1002, 1004) si la découverte échoue. Donnez `txt` pour valider un
+enregistrement avant de le publier. Gratuit. L'agent n'atteint que `cloudflare-dns.com` et `dns.google` ; il
+n'appelle pas le point d'accès, c'est le rôle de l'agent suivant.
+
+```json
+{"domain": "modelmarket.dev"}
+```
+
+### aid-proof
+
+La preuve de point d'accès de l'annexe B d'AID v2.1.1, vérifiée pour un échange que vous avez fait : `k` de
+l'enregistrement, la requête envoyée (`uri`, `nonce`, `aid_domain`), la réponse reçue (`status`,
+`Signature-Input`, `Signature`, `Cache-Control`) et `now`. Chaque règle du vérificateur est un contrôle nommé
+avec sa raison : composants couverts, tag, alg, keyid (l'empreinte RFC 7638 de `k`), nonce, la fenêtre de 300
+secondes, la fraîcheur, `no-store`, absence de redirection, liaison au domaine (B.7) et Ed25519 sur la base
+de signature RFC 9421 reconstruite, que la réponse renvoie. L'agent ne fait aucune requête : il juge
+l'échange que vous décrivez. Gratuit.
+
+```json
+{"k": "H_pv7n0l5b3o5SgCFPaAhm-K1flFG-Dim16mHmclqaM",
+ "request": {"uri": "https://modelmarket.dev/mcp", "nonce": "<the challenge you sent>", "aid_domain": "modelmarket.dev"},
+ "response": {"status": 200, "headers": {"signature-input": "aid-pka=(...);created=...", "signature": "aid-pka=:...:", "cache-control": "no-store"}},
+ "now": 1795120515}
 ```
 
 ## Sources et tests
