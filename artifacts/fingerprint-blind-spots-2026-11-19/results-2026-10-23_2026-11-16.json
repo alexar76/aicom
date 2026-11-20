@@ -148,6 +148,66 @@
     "remote_servers": 0,
     "package_servers": 0
    }
+  },
+  "false_to_true": {
+   "all": {
+    "tools": 321,
+    "servers": 78,
+    "hosts": 73,
+    "remote_servers": 56,
+    "package_servers": 22
+   },
+   "tool_fingerprint_unchanged_in_that_read": {
+    "tools": 262,
+    "servers": 30,
+    "hosts": 27,
+    "remote_servers": 24,
+    "package_servers": 6
+   },
+   "of_those_still_so_at_last_recorded_move": {
+    "tools": 250,
+    "servers": 30,
+    "hosts": 27,
+    "remote_servers": 24,
+    "package_servers": 6
+   },
+   "no_tool_fingerprint_changed_in_that_read": {
+    "tools": 48,
+    "servers": 15,
+    "hosts": 12,
+    "remote_servers": 15,
+    "package_servers": 0
+   }
+  },
+  "absent_to_true": {
+   "all": {
+    "tools": 38916,
+    "servers": 5946,
+    "hosts": 3787,
+    "remote_servers": 4843,
+    "package_servers": 1103
+   },
+   "tool_fingerprint_unchanged_in_that_read": {
+    "tools": 2681,
+    "servers": 290,
+    "hosts": 241,
+    "remote_servers": 215,
+    "package_servers": 75
+   },
+   "of_those_still_so_at_last_recorded_move": {
+    "tools": 2602,
+    "servers": 285,
+    "hosts": 236,
+    "remote_servers": 211,
+    "package_servers": 74
+   },
+   "no_tool_fingerprint_changed_in_that_read": {
+    "tools": 1081,
+    "servers": 140,
+    "hosts": 98,
+    "remote_servers": 114,
+    "package_servers": 26
+   }
   }
  },
  "destructiveHint": {
@@ -208,6 +268,36 @@
     "servers": 2,
     "hosts": 2,
     "remote_servers": 2,
+    "package_servers": 0
+   }
+  },
+  "true_to_false": {
+   "all": {
+    "tools": 141,
+    "servers": 65,
+    "hosts": 61,
+    "remote_servers": 47,
+    "package_servers": 18
+   },
+   "tool_fingerprint_unchanged_in_that_read": {
+    "tools": 64,
+    "servers": 27,
+    "hosts": 26,
+    "remote_servers": 20,
+    "package_servers": 7
+   },
+   "of_those_still_so_at_last_recorded_move": {
+    "tools": 64,
+    "servers": 27,
+    "hosts": 26,
+    "remote_servers": 20,
+    "package_servers": 7
+   },
+   "no_tool_fingerprint_changed_in_that_read": {
+    "tools": 16,
+    "servers": 8,
+    "hosts": 7,
+    "remote_servers": 8,
     "package_servers": 0
    }
   }

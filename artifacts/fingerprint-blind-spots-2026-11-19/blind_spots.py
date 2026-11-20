@@ -191,7 +191,8 @@ def main(folder, since, until):
                             pairs_read_blind.add((sid, name))
                 if hit_blind:
                     last = moves[-1]
-                    if pred(last[1], last[2]) or not _restored(hint, last[2]):
+                    # Not moved back: the last recorded value is not the one the counted move left.
+                    if pred(last[1], last[2]) or last[2] != next(b for (_, b, a, ai, _) in moves if pred(b, a) and not ai):
                         pairs_blind_net.add((sid, name))
             def agg(pairs):
                 s = {p[0] for p in pairs}
@@ -213,17 +214,18 @@ def main(folder, since, until):
     out["readOnlyHint"] = hint_report("readOnlyHint", {
         "true_to_false": lambda b, a: b is True and a is False,
         "true_to_absent": lambda b, a: b is True and a is None,
+        # The other direction (added 2026-11-20, asked on DEV): a tool that now claims read-only. A host that
+        # skips the prompt for read-only tools stops asking about it.
+        "false_to_true": lambda b, a: b is False and a is True,
+        "absent_to_true": lambda b, a: b is None and a is True,
     })
     out["destructiveHint"] = hint_report("destructiveHint", {
         "false_to_true": lambda b, a: b is False and a is True,
         "false_to_absent": lambda b, a: b is False and a is None,
+        "true_to_false": lambda b, a: b is True and a is False,
     })
     json.dump(out, sys.stdout, indent=1, ensure_ascii=False)
     print()
-
-
-def _restored(hint, after):
-    return after is True if hint == "readOnlyHint" else after is False
 
 
 if __name__ == "__main__":
