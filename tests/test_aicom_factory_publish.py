@@ -166,11 +166,11 @@ def test_factory_rsync_omits_internal_evidence_and_keeps_public_content(tmp_path
         path = source / rel
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("<testsuite name='local-audit'/>\n", encoding="utf-8")
+    # histor-full-observations-* and external-signals-* are whole-tree omits
+    # (publish stall / secret-scan walk); only keep clearly public fixtures here.
     public = {
         "artifacts/kaggle-histor/public-example.txt": "public example\n",
-        "docs/evidence/histor-full-observations-2026-10-27/python-packages/artifact-index.json": "{}\n",
         "docs/growth/publication-2026-10-25/launchgate/article.published.md": "# Published article\n",
-        "docs/evidence/external-signals-2026-10-30/summary.json": "{}\n",
     }
     for rel, content in public.items():
         path = source / rel
