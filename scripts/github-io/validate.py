@@ -5,7 +5,7 @@ import re
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
-from build import CONTENT, LANGUAGES, PROJECTS, ROOT, ASSET_PREFIX, render
+from build import CONTENT, LANGUAGES, PROJECTS, ROOT, ASSET_PREFIX, BASE_PATH, render
 
 class Page(HTMLParser):
     def __init__(self, text):
@@ -18,6 +18,21 @@ class Page(HTMLParser):
         if tag=='html': self.lang=a.get('lang')
         for k in ['href','src']:
             if k in a: self.links.append(a[k])
+
+
+def local_path(link: str) -> Path:
+    """Map a root-absolute href to a file under scripts/github-io/ (strip project-Pages base)."""
+    path = urlsplit(link).path
+    if BASE_PATH and (path == BASE_PATH or path.startswith(BASE_PATH + '/')):
+        path = path[len(BASE_PATH):] or '/'
+    # Overlay builds publish assets under /ecosystem-atlas/; source keeps them at repo root.
+    asset_dir = ASSET_PREFIX[len(BASE_PATH):] if BASE_PATH and ASSET_PREFIX.startswith(BASE_PATH) else ASSET_PREFIX
+    if asset_dir and path.startswith(asset_dir + '/'):
+        path = path[len(asset_dir):] or '/'
+    target = ROOT / path.lstrip('/')
+    if path.endswith('/'):
+        target = target / 'index.html'
+    return target
 
 for locale in LANGUAGES:
     copy=CONTENT[locale]
@@ -34,11 +49,10 @@ for locale in LANGUAGES:
     for link in page.links:
         if link.startswith('#'): assert link[1:] in page.ids, link
         elif link.startswith('/'):
-            target=ROOT/urlsplit(link).path.lstrip('/')
-            if link.endswith('/'): target=target/'index.html'
+            target=local_path(link)
             assert target.is_file(), (locale,link)
     assert source.count('hreflang=')==11
-font_root=ROOT/ASSET_PREFIX.lstrip('/')/'fonts'
+font_root=ROOT/'fonts'
 css=(font_root/'fonts.css').read_text()
 for url in re.findall(r'url\([\'\"]?([^\)\'\"]+)',css):
     assert (font_root/url).is_file(), url
@@ -58,8 +72,7 @@ for locale in LANGUAGES:
         for link in page.links:
             if not link.startswith('/'): continue
             parsed=urlsplit(link)
-            target=ROOT/parsed.path.lstrip('/')
-            if parsed.path.endswith('/'): target=target/'index.html'
+            target=local_path(link)
             assert target.is_file(), (relative,link)
             if parsed.fragment and target.suffix=='.html':
                 assert unquote(parsed.fragment) in Page(target.read_text()).ids, (relative,link)

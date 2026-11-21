@@ -9,7 +9,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 FACTORY_LANDING = 'https://modeldev.modelmarket.dev'
 SITE_URL = os.environ.get('ATLAS_SITE_URL', 'https://ecosystem.modelmarket.dev').rstrip('/')
-ASSET_PREFIX = os.environ.get('ATLAS_ASSET_PREFIX', '').rstrip('/')
+# Project Pages base (e.g. /aicom). Empty on apex hosts. Set by build_ecosystem_atlas.
+BASE_PATH = os.environ.get('ATLAS_BASE_PATH', '').rstrip('/')
+# Asset folder under the site root ('' → assets next to index; '/ecosystem-atlas' for overlay builds).
+ASSET_DIR = os.environ.get('ATLAS_ASSET_DIR', os.environ.get('ATLAS_ASSET_PREFIX', '')).rstrip('/')
+if ASSET_DIR.startswith(BASE_PATH) and BASE_PATH:
+    # Older callers set ATLAS_ASSET_PREFIX already including BASE_PATH.
+    ASSET_DIR = ASSET_DIR[len(BASE_PATH):] or ASSET_DIR
+ASSET_PREFIX = f'{BASE_PATH}{ASSET_DIR}'
 CONTENT = json.loads((ROOT / 'content.json').read_text())
 LANGUAGES = {'en': 'EN', 'ru': 'RU', 'es': 'ES', 'fr': 'FR', 'zh': '中文'}
 ONBOARDING_PATHS = ('build', 'invest', 'publish', 'buy')
@@ -41,7 +48,6 @@ DOORS = [
     (2, 'https://monitor.modelmarket.dev/'),
     (2, None),  # the factory landing, in the page's language
 ]
-DOCS = '/docs/ecosystem/knowledge-base.html'
 WHITEPAPER_LABELS = {'en': 'Whitepaper', 'ru': 'Whitepaper', 'es': 'Libro blanco', 'fr': 'Livre blanc', 'zh': '白皮书'}
 
 
@@ -49,16 +55,26 @@ def build_documentation(output):
     spec = importlib.util.spec_from_file_location('ecosystem_public_docs', ROOT / 'public_docs.py')
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.build_documents(output, SITE_URL, ASSET_PREFIX)
+    return module.build_documents(output, SITE_URL, ASSET_PREFIX, BASE_PATH)
+
+
+def locale_path(locale):
+    """Locale path relative to the site root (no project-Pages prefix). English is at /."""
+    return '/' if locale == 'en' else f'/{locale}/'
+
 
 def route(locale):
-    return '/' if locale == 'ru' else f'/{locale}/'
+    """Root-absolute path for in-page links, including project Pages base when set."""
+    path = locale_path(locale)
+    return f'{BASE_PATH}{path}' if BASE_PATH else path
+
 
 def render(locale, c, extra_action=''):
-    url = SITE_URL + route(locale)
-    docs = DOCS if locale == 'en' else DOCS.replace('knowledge-base.html', f'knowledge-base-{locale}.html')
-    whitepaper = f'/docs/ecosystem/whitepaper/{locale}.html'
-    alternates = ''.join(f'<link rel="alternate" hreflang="{l}" href="{SITE_URL}{route(l)}">' for l in LANGUAGES)
+    url = SITE_URL + locale_path(locale)
+    docs_name = 'knowledge-base.html' if locale == 'en' else f'knowledge-base-{locale}.html'
+    docs = f'{BASE_PATH}/docs/ecosystem/{docs_name}'
+    whitepaper = f'{BASE_PATH}/docs/ecosystem/whitepaper/{locale}.html'
+    alternates = ''.join(f'<link rel="alternate" hreflang="{l}" href="{SITE_URL}{locale_path(l)}">' for l in LANGUAGES)
     lang_links = ''.join(f'<a href="{route(l)}" lang="{l}" hreflang="{l}" {"aria-current=page" if l == locale else ""}>{name}</a>' for l, name in LANGUAGES.items())
     factory_entry = PROJECTS[0][2] + f"?lang={locale}"
     onboarding_links = ''.join(
@@ -72,7 +88,7 @@ def render(locale, c, extra_action=''):
     filters = ''.join(f'<button type="button" data-filter="{key}" aria-pressed="{str(i == 0).lower()}">{e(c["filters"][i])}</button>' for i, key in enumerate(CATEGORIES))
     projects = ''.join(f'<a class="project" data-category="{category}" href="{factory_entry if i == 0 else href}"><span class="project-symbol" aria-hidden="true">{["▧","↗","◇","✳","◎","⊞","⋈","◒","∿","◈","§"][i]}</span><span class="mono">{e(c["filters"][CATEGORIES.index(category)])}</span><h3>{e(name)}</h3><p>{e(c["descriptions"][i])}</p><span class="project-open">{e(c["open"])} <b>↗</b></span></a>' for i, (name, category, href) in enumerate(PROJECTS))
     def door(i, q, name, desc, cta):
-        href = DOORS[i][1] or f"{FACTORY_LANDING}{route(locale)}"
+        href = DOORS[i][1] or f"{FACTORY_LANDING}{locale_path(locale)}"
         return (f'<a class="door" href="{href}"><span class="door-q">{e(q)}</span><span class="door-name">{e(name)}</span>'
                 f'<span class="door-desc">{e(desc)}</span><span class="door-go">{e(cta)} <b aria-hidden="true">↗</b></span></a>')
     door_groups = ''.join(
@@ -81,19 +97,28 @@ def render(locale, c, extra_action=''):
         + '</div></div>'
         for g, title in enumerate(c['doorGroups'])
     )
+    # Locale redirect: English is at /; strip BASE_PATH before matching /ru|/es|… on project Pages.
+    redirect = (
+        f"(function(){{var base={BASE_PATH!r},p=location.pathname,rest=base&&p.indexOf(base)===0?p.slice(base.length)||'/':p,"
+        f"c='en',m=rest.match(/^\\/(ru|es|fr|zh)\\//);if(m)c=m[1];"
+        f"var l=(navigator.language||'').toLowerCase().slice(0,2);"
+        f"var w=['ru','es','fr','zh','en'].indexOf(l)>=0?l:'en';"
+        f"if(w!==c){{location.replace((base||'')+(w==='en'?'/':'/'+w+'/'));}}}})();"
+    )
+    social = f'{SITE_URL}{ASSET_DIR}/assets/social.png'
     return f'''<!doctype html>
-<html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e8eee9"><script>(function(){{var p=location.pathname,c='ru',m=p.match(/^\/(en|es|fr|zh)\//);if(m)c=m[1];var l=(navigator.language||'').toLowerCase().slice(0,2);var w=['ru','es','fr','zh','en'].indexOf(l)>=0?l:'ru';if(w!==c){{location.replace(w==='ru'?'/':'/'+w+'/');}}}})();</script>
+<html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e8eee9"><script>{redirect}</script>
 <title>{e(c['title'])} — AICOM Ecosystem</title><meta name="description" content="{e(c['intro'])}"><link rel="canonical" href="{url}">{alternates}<link rel="alternate" hreflang="x-default" href="{SITE_URL}/">
-<meta property="og:type" content="website"><meta property="og:title" content="{e(c['title'])}"><meta property="og:description" content="{e(c['intro'])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{SITE_URL}{ASSET_PREFIX}/assets/social.png"><meta name="twitter:card" content="summary">
+<meta property="og:type" content="website"><meta property="og:title" content="{e(c['title'])}"><meta property="og:description" content="{e(c['intro'])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{social}"><meta name="twitter:card" content="summary">
 <link rel="icon" href="{ASSET_PREFIX}/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{ASSET_PREFIX}/fonts/fonts.css"><link rel="stylesheet" href="{ASSET_PREFIX}/assets/site.css?v=20261113-doors"><script type="module" src="{ASSET_PREFIX}/assets/site.js?v=20261011-rotate"></script><script type="module" src="{ASSET_PREFIX}/assets/scene.js?v=20261011-rotate"></script></head>
-<body><a class="skip" href="#main">{e(c['skip'])}</a><header class="wrap"><a class="brand" href="{route(locale)}"><span class="brand-mark">✳</span><span>AICOM<span class="brand-sub">ECOSYSTEM</span></span></a><nav class="primary"><a href="#ways-in">{e(c['doorsNav'])}</a><a href="#explore">{e(c['nav'][0])}</a><a href="#exchange">{e(c['nav'][1])}</a><a href="https://github.com/alexar76">{e(c['nav'][2])} ↗</a></nav></header>
-<main id="main"><section class="hero wrap"><div class="hero-copy"><p class="eyebrow">{e(c['eyebrow'])}</p><h1>{e(c['title'])}</h1><p class="intro">{e(c['intro'])}</p><nav class="onboarding-links" aria-label="{e(c['onboardingLabel'])}">{onboarding_links}</nav><div class="actions"><a class="button" href="#ways-in">{e(c['doorsTitle'])}<span>↓</span></a>{extra_action}<a class="text-link" href="#exchange">{e(c['cta'])} ↗</a><a class="text-link" href="{FACTORY_LANDING}{route(locale)}">{e(c['factory'])} ↗</a></div></div>
+<body><a class="skip" href="#main">{e(c['skip'])}</a><header class="wrap"><a class="brand" href="{route(locale)}"><span class="brand-mark">✳</span><span>AICOM<span class="brand-sub">ECOSYSTEM</span></span></a><nav class="primary"><a href="#ways-in">{e(c['doorsNav'])}</a><a href="#explore">{e(c['nav'][0])}</a><a href="#exchange">{e(c['nav'][1])}</a><a href="https://github.com/alexar76">{e(c['nav'][2])} ↗</a></nav><nav class="languages" aria-label="Language">{lang_links}</nav></header>
+<main id="main"><section class="hero wrap"><div class="hero-copy"><p class="eyebrow">{e(c['eyebrow'])}</p><h1>{e(c['title'])}</h1><p class="intro">{e(c['intro'])}</p><nav class="onboarding-links" aria-label="{e(c['onboardingLabel'])}">{onboarding_links}</nav><div class="actions"><a class="button" href="#ways-in">{e(c['doorsTitle'])}<span>↓</span></a>{extra_action}<a class="text-link" href="#exchange">{e(c['cta'])} ↗</a><a class="text-link" href="{FACTORY_LANDING}{locale_path(locale)}">{e(c['factory'])} ↗</a></div></div>
 <div class="atlas"><div class="atlas-top mono"><span>ATLAS / 01</span></div><machine-scene mode="atlas" tabindex="0" role="group" aria-label="{e(c['title'])}" aria-describedby="atlas-scene-hint"><div class="fallback" aria-hidden="true"><i></i><i></i><i></i><b>✳</b></div></machine-scene><span class="map-label label-1">AICOM <small>01</small></span><span class="map-label label-2">AIMarket <small>02</small></span><span class="map-label label-3">HESTIA <small>03</small></span><div class="atlas-caption" id="atlas-scene-hint"><span>+</span><p>{e(c['caption'])}</p><span>XYZ ↗</span></div></div></section>
 <section id="ways-in" class="doors wrap"><p class="eyebrow">{e(c['doorsLabel'])}</p><div class="section-heading"><h2>{e(c['doorsTitle'])}</h2><p>{e(c['doorsIntro'])}</p></div><div class="door-groups">{door_groups}</div></section>
 <section class="roles-section wrap"><div class="section-heading"><h2>{e(c['roleTitle'])}</h2><p>{e(c['roleIntro'])}</p></div><div class="roles">{roles}</div></section>
-<section id="exchange" class="exchange"><div class="wrap"><p class="eyebrow">01 / {e(c['nav'][1])}</p><div class="section-heading"><h2>{e(c['flowTitle'])}</h2><p>{e(c['flowIntro'])}</p></div><div class="case-brief"><span class="mono">{e(c['briefLabel'])}</span><h3>{e(c['brief'])}</h3></div><div class="steps">{steps}</div><p class="case-outcome">{e(c['outcome'])}</p><p class="limit">{e(c['limit'])}</p><details class="case-proof"><summary>{e(c['proofTitle'])}</summary><p>{e(c['proof'])}</p></details><a class="text-link case-link" href="{FACTORY_LANDING}{route(locale)}#specialists">{e(c['factoryCase'])} ↗</a></div></section>
+<section id="exchange" class="exchange"><div class="wrap"><p class="eyebrow">01 / {e(c['nav'][1])}</p><div class="section-heading"><h2>{e(c['flowTitle'])}</h2><p>{e(c['flowIntro'])}</p></div><div class="case-brief"><span class="mono">{e(c['briefLabel'])}</span><h3>{e(c['brief'])}</h3></div><div class="steps">{steps}</div><p class="case-outcome">{e(c['outcome'])}</p><p class="limit">{e(c['limit'])}</p><details class="case-proof"><summary>{e(c['proofTitle'])}</summary><p>{e(c['proof'])}</p></details><a class="text-link case-link" href="{FACTORY_LANDING}{locale_path(locale)}#specialists">{e(c['factoryCase'])} ↗</a></div></section>
 <section id="explore" class="directory wrap"><p class="eyebrow">02 / {e(c['nav'][0])}</p><div class="section-heading"><h2>{e(c['directory'])}</h2><p>{e(c['directoryIntro'])}</p></div><div class="filter-bar"><div class="filters" role="group" aria-label="{e(c['nav'][0])}">{filters}</div><span class="count mono" aria-live="polite"><span id="project-count">{len(PROJECTS)}</span> {e(c['projectLabel'])}</span></div><div class="projects">{projects}</div></section>
-<section class="closing wrap"><span class="closing-star" aria-hidden="true">✳</span><h2>{e(c['endTitle']).replace(chr(10), '<br>')}</h2><p>{e(c['endText'])}</p><div class="actions"><a class="button" href="{factory_entry}">{e(c['endCta'])}<span>↗</span></a><a class="text-link" href="{PROJECTS[1][2]}">{e(c['endSecond'])} ↗</a></div><p><a class="text-link" href="https://edu.modelmarket.dev{route(locale)}ai-pays-ai/">{e(c['firstExchange'])} ↗</a></p></section></main>
+<section class="closing wrap"><span class="closing-star" aria-hidden="true">✳</span><h2>{e(c['endTitle']).replace(chr(10), '<br>')}</h2><p>{e(c['endText'])}</p><div class="actions"><a class="button" href="{factory_entry}">{e(c['endCta'])}<span>↗</span></a><a class="text-link" href="{PROJECTS[1][2]}">{e(c['endSecond'])} ↗</a></div><p><a class="text-link" href="https://edu.modelmarket.dev{locale_path(locale)}ai-pays-ai/">{e(c['firstExchange'])} ↗</a></p></section></main>
 <footer class="wrap"><div class="footer-brand">AICOM ECOSYSTEM<p>{e(c['footer'])}</p></div><a href="{docs}">{e(c['docs'])} ↗</a><a href="{whitepaper}">{WHITEPAPER_LABELS[locale]} ↗</a><a href="https://github.com/alexar76/alexar76.github.io">GitHub ↗</a><span class="mono">OPEN / CONNECTED</span></footer></body></html>'''
 
 if __name__ == '__main__':
@@ -102,6 +127,6 @@ if __name__ == '__main__':
         destination.mkdir(exist_ok=True)
         (destination / 'index.html').write_text(render(locale, content))
     document_paths = build_documentation(ROOT)
-    (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{SITE_URL}{path}</loc></url>' for path in [*(route(l) for l in LANGUAGES), *document_paths]) + '</urlset>')
+    (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + ''.join(f'<url><loc>{SITE_URL}{locale_path(l)}</loc></url>' for l in LANGUAGES) + ''.join(f'<url><loc>{SITE_URL}{path}</loc></url>' for path in document_paths) + '</urlset>')
     (ROOT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n')
     print('Built five localized ecosystem pages.')

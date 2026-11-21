@@ -6,14 +6,21 @@ import os
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
+from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def build(output: Path, base_url: str, with_community: bool = False) -> None:
     source = ROOT / 'scripts/github-io'
-    os.environ['ATLAS_SITE_URL'] = base_url.rstrip('/')
-    os.environ['ATLAS_ASSET_PREFIX'] = '/ecosystem-atlas'
+    site_url = base_url.rstrip('/')
+    # Project Pages (alexar76.github.io/aicom) need /aicom/ecosystem-atlas, not
+    # /ecosystem-atlas — root-absolute CSS/JS otherwise 404 and the atlas renders unstyled.
+    base_path = urlparse(site_url).path.rstrip('/')
+    os.environ['ATLAS_SITE_URL'] = site_url
+    os.environ['ATLAS_BASE_PATH'] = base_path
+    # Asset dir under the site root; BASE_PATH is prepended for root-absolute hrefs.
+    os.environ['ATLAS_ASSET_DIR'] = '/ecosystem-atlas'
     spec = importlib.util.spec_from_file_location('ecosystem_atlas', source / 'build.py')
     atlas = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(atlas)
@@ -29,7 +36,7 @@ def build(output: Path, base_url: str, with_community: bool = False) -> None:
         spec.loader.exec_module(community)
         extra_paths = community.build(output, base_url.rstrip('/'))
     for locale, copy in atlas.CONTENT.items():
-        destination = output / ('' if locale == 'ru' else locale)
+        destination = output / ('' if locale == 'en' else locale)
         destination.mkdir(exist_ok=True)
         (destination / 'index.html').write_text(atlas.render(locale, copy, community.home_action(locale) if community else ''))
     document_paths = atlas.build_documentation(output) + extra_paths
@@ -46,7 +53,7 @@ def build(output: Path, base_url: str, with_community: bool = False) -> None:
     else:
         tree = ET.ElementTree(ET.Element(f'{{{namespace}}}urlset'))
     urls = {node.text for node in tree.findall(f'.//{{{namespace}}}loc')}
-    for path in [*(atlas.route(locale) for locale in atlas.LANGUAGES), *document_paths]:
+    for path in [*(atlas.locale_path(locale) for locale in atlas.LANGUAGES), *document_paths]:
         url = base_url.rstrip('/') + path
         if url not in urls:
             entry = ET.SubElement(tree.getroot(), f'{{{namespace}}}url')

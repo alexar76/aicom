@@ -34,11 +34,15 @@ def _slug(text):
     return re.sub(r"[^\w -]", "", text.lower().strip()).replace(" ", "-")
 
 
-def build_documents(output, site_url, asset_prefix=""):
+def build_documents(output, site_url, asset_prefix="", base_path=""):
     # Build-time dependency only. Pages require no script or remote renderer.
     from markdown_it import MarkdownIt
 
     output = Path(output)
+    base_path = (base_path or "").rstrip("/")
+    def abs_href(path):
+        """Root-absolute href, including project Pages base when set."""
+        return f"{base_path}{path}" if base_path else path
     parser = MarkdownIt("commonmark", {"html": False}).enable("table")
     pages = {}
     headings = {}
@@ -79,7 +83,7 @@ def build_documents(output, site_url, asset_prefix=""):
                 matches = [value for value in headings[target] if compact(value) == compact(fragment)]
                 if len(matches) == 1:
                     fragment = matches[0]
-            return document_url(kind, locale) + ("#" + fragment if fragment else "")
+            return abs_href(document_url(kind, locale)) + ("#" + fragment if fragment else "")
         if image and target and target.is_file() and target.suffix.lower() in {".png", ".jpg", ".jpeg", ".svg", ".webp", ".gif"}:
             try:
                 relative = target.relative_to(WORKSPACE)
@@ -88,7 +92,7 @@ def build_documents(output, site_url, asset_prefix=""):
             destination = output / "docs/assets" / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(target, destination)
-            return "/docs/assets/" + relative.as_posix()
+            return abs_href("/docs/assets/" + relative.as_posix())
         if target and not parsed.scheme:
             try:
                 relative = target.relative_to(WORKSPACE)
@@ -108,17 +112,18 @@ def build_documents(output, site_url, asset_prefix=""):
         labels = LABELS[locale]
         title = next(token.content for token in tokens if token.type == "inline")
         canonical = site_url.rstrip("/") + document_url(kind, locale)
-        languages = "".join(f'<a href="{document_url(kind, lang)}" lang="{lang}" hreflang="{lang}"' + (' aria-current="page"' if lang == locale else '') + f'>{name}</a>' for lang, name in LOCALES.items())
-        source_url = document_url(kind, locale).replace(".html", ".md")
+        home = abs_href("/" if locale == "en" else f"/{locale}/")
+        languages = "".join(f'<a href="{abs_href(document_url(kind, lang))}" lang="{lang}" hreflang="{lang}"' + (' aria-current="page"' if lang == locale else '') + f'>{name}</a>' for lang, name in LOCALES.items())
+        source_url = abs_href(document_url(kind, locale).replace(".html", ".md"))
         html = f'''<!doctype html>
 <html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{escape(title)} — AICOM Ecosystem</title><link rel="canonical" href="{canonical}">
-<link rel="stylesheet" href="{asset_prefix}/fonts/fonts.css"><link rel="stylesheet" href="/docs/document.css"></head>
-<body><header><a class="brand" href="{'/' if locale == 'en' else '/' + locale + '/'}">AICOM ECOSYSTEM</a>
-<nav aria-label="Documents"><a href="{document_url('knowledge', locale)}">{labels[0]}</a><a href="{document_url('whitepaper', locale)}">{labels[1]}</a></nav>
+<link rel="stylesheet" href="{asset_prefix}/fonts/fonts.css"><link rel="stylesheet" href="{abs_href("/docs/document.css")}"></head>
+<body><header><a class="brand" href="{home}">AICOM ECOSYSTEM</a>
+<nav aria-label="Documents"><a href="{abs_href(document_url('knowledge', locale))}">{labels[0]}</a><a href="{abs_href(document_url('whitepaper', locale))}">{labels[1]}</a></nav>
 <nav class="languages" aria-label="Language">{languages}</nav></header>
 <main><article>{parser.renderer.render(tokens, parser.options, {})}</article></main>
-<footer><a href="{source_url}" download>{labels[2]}</a><a href="{'/' if locale == 'en' else '/' + locale + '/'}">{labels[3]}</a></footer></body></html>'''
+<footer><a href="{source_url}" download>{labels[2]}</a><a href="{home}">{labels[3]}</a></footer></body></html>'''
         destination = output / document_url(kind, locale).lstrip("/")
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.write_text(html)
