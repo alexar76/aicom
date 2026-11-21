@@ -52,7 +52,7 @@ def build_documentation(output):
     return module.build_documents(output, SITE_URL, ASSET_PREFIX)
 
 def route(locale):
-    return '/' if locale == 'en' else f'/{locale}/'
+    return '/' if locale == 'ru' else f'/{locale}/'
 
 def render(locale, c, extra_action=''):
     url = SITE_URL + route(locale)
@@ -82,11 +82,11 @@ def render(locale, c, extra_action=''):
         for g, title in enumerate(c['doorGroups'])
     )
     return f'''<!doctype html>
-<html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e8eee9">
+<html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e8eee9"><script>(function(){{var p=location.pathname,c='ru',m=p.match(/^\/(en|es|fr|zh)\//);if(m)c=m[1];var l=(navigator.language||'').toLowerCase().slice(0,2);var w=['ru','es','fr','zh','en'].indexOf(l)>=0?l:'ru';if(w!==c){{location.replace(w==='ru'?'/':'/'+w+'/');}}}})();</script>
 <title>{e(c['title'])} — AICOM Ecosystem</title><meta name="description" content="{e(c['intro'])}"><link rel="canonical" href="{url}">{alternates}<link rel="alternate" hreflang="x-default" href="{SITE_URL}/">
 <meta property="og:type" content="website"><meta property="og:title" content="{e(c['title'])}"><meta property="og:description" content="{e(c['intro'])}"><meta property="og:url" content="{url}"><meta property="og:image" content="{SITE_URL}{ASSET_PREFIX}/assets/social.png"><meta name="twitter:card" content="summary">
 <link rel="icon" href="{ASSET_PREFIX}/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="{ASSET_PREFIX}/fonts/fonts.css"><link rel="stylesheet" href="{ASSET_PREFIX}/assets/site.css?v=20261113-doors"><script type="module" src="{ASSET_PREFIX}/assets/site.js?v=20261011-rotate"></script><script type="module" src="{ASSET_PREFIX}/assets/scene.js?v=20261011-rotate"></script></head>
-<body><a class="skip" href="#main">{e(c['skip'])}</a><header class="wrap"><a class="brand" href="{route(locale)}"><span class="brand-mark">✳</span><span>AICOM<span class="brand-sub">ECOSYSTEM</span></span></a><nav class="primary"><a href="#ways-in">{e(c['doorsNav'])}</a><a href="#explore">{e(c['nav'][0])}</a><a href="#exchange">{e(c['nav'][1])}</a><a href="https://github.com/alexar76">{e(c['nav'][2])} ↗</a></nav><nav class="languages" aria-label="{e(c['language'])}">{lang_links}</nav></header>
+<body><a class="skip" href="#main">{e(c['skip'])}</a><header class="wrap"><a class="brand" href="{route(locale)}"><span class="brand-mark">✳</span><span>AICOM<span class="brand-sub">ECOSYSTEM</span></span></a><nav class="primary"><a href="#ways-in">{e(c['doorsNav'])}</a><a href="#explore">{e(c['nav'][0])}</a><a href="#exchange">{e(c['nav'][1])}</a><a href="https://github.com/alexar76">{e(c['nav'][2])} ↗</a></nav></header>
 <main id="main"><section class="hero wrap"><div class="hero-copy"><p class="eyebrow">{e(c['eyebrow'])}</p><h1>{e(c['title'])}</h1><p class="intro">{e(c['intro'])}</p><nav class="onboarding-links" aria-label="{e(c['onboardingLabel'])}">{onboarding_links}</nav><div class="actions"><a class="button" href="#ways-in">{e(c['doorsTitle'])}<span>↓</span></a>{extra_action}<a class="text-link" href="#exchange">{e(c['cta'])} ↗</a><a class="text-link" href="{FACTORY_LANDING}{route(locale)}">{e(c['factory'])} ↗</a></div></div>
 <div class="atlas"><div class="atlas-top mono"><span>ATLAS / 01</span></div><machine-scene mode="atlas" tabindex="0" role="group" aria-label="{e(c['title'])}" aria-describedby="atlas-scene-hint"><div class="fallback" aria-hidden="true"><i></i><i></i><i></i><b>✳</b></div></machine-scene><span class="map-label label-1">AICOM <small>01</small></span><span class="map-label label-2">AIMarket <small>02</small></span><span class="map-label label-3">HESTIA <small>03</small></span><div class="atlas-caption" id="atlas-scene-hint"><span>+</span><p>{e(c['caption'])}</p><span>XYZ ↗</span></div></div></section>
 <section id="ways-in" class="doors wrap"><p class="eyebrow">{e(c['doorsLabel'])}</p><div class="section-heading"><h2>{e(c['doorsTitle'])}</h2><p>{e(c['doorsIntro'])}</p></div><div class="door-groups">{door_groups}</div></section>

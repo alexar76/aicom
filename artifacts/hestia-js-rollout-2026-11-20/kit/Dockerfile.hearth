@@ -1,0 +1,6 @@
+# The hearth: the running image plus the hestia package from aicom main (JavaScript handlers).
+# jsbase-hestia-hearth:20261120 = sha256:176f205691d20629df8ed5572edbce8f45b23cfe85ac93b92d7bcf55f172f5d6, the image the container ran (build.sh tags it).
+FROM jsbase-hestia-hearth:20261120
+COPY --chown=65532:65532 overlay/hestia/ /app/hestia/
+COPY --chown=65532:65532 --chmod=0644 hestia-overlay.sha256 /app/hestia-overlay.sha256
+RUN cd /app && sha256sum -c --quiet hestia-overlay.sha256 && python -c "import hestia.sandbox, hestia.app, hestia.runtime.wasm, hestia.app_routes.tenants; print('import ok')"

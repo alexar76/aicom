@@ -21,6 +21,7 @@ install -m 0755 "$HERE/esim_price_history.py" "$LIB/esim_price_history.py"
 install -m 0644 "$HERE/esim-price-history.service" /etc/systemd/system/esim-price-history.service
 install -m 0644 "$HERE/esim-price-history.timer" /etc/systemd/system/esim-price-history.timer
 install -d -m 0750 /var/lib/aicom/esim-price-history
+install -d -m 0755 /var/www/esim-landing/price-history /var/www/esim-landing/price-history/v1
 systemctl daemon-reload
 systemctl start esim-price-history.service
 systemctl enable --now esim-price-history.timer

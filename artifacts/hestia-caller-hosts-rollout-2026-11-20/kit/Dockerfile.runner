@@ -1,0 +1,6 @@
+# The runner: the running image (already carries QuickJS-ng) plus the same package.
+# jsbase2-hestia-runner:20261120 = sha256:2013a3fa719f…
+FROM jsbase2-hestia-runner:20261120
+COPY --chown=65532:65532 overlay/hestia/ /app/hestia/
+COPY --chown=65532:65532 --chmod=0644 hestia-overlay.sha256 /app/hestia-overlay.sha256
+RUN cd /app && sha256sum -c --quiet hestia-overlay.sha256 && python -c "import hestia.sandbox, hestia.wasm_runner; print('import ok')"

@@ -12,9 +12,16 @@ import json
 import pytest
 
 from hestia_agents.cli import PROBES
-from hestia_agents.manifests import AGENTS, AGENTS_DIR, deploy_body, handler_source
+from hestia_agents.manifests import AGENTS, AGENTS_DIR, deploy_body, handler_source, language
 
 NAMES = sorted(AGENTS)
+# The Python agents; JavaScript ones (warden-scan) are tested in the real engine instead
+# (tests/test_warden_scan.py), since this process cannot run them.
+PY_NAMES = sorted(slug for slug in AGENTS if language(slug) == "python")
+# Agents that run only in the WebAssembly sandbox (exec, larger than the stub's 32 000): the stub's
+# AST admission does not apply to them, the sandbox lint does.
+SANDBOX_ONLY = sorted(slug for slug in AGENTS if AGENTS[slug].get("sandbox_only"))
+STUB_PY = [slug for slug in PY_NAMES if slug not in SANDBOX_ONLY]
 
 
 def load(name: str):
@@ -29,16 +36,30 @@ def sha256_hex(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-@pytest.mark.parametrize("name", NAMES)
+@pytest.mark.parametrize("name", STUB_PY)
 def test_handler_passes_hestia_admission(name: str, admit) -> None:
     admit(handler_source(name))
 
 
+@pytest.mark.parametrize("name", SANDBOX_ONLY)
+def test_sandbox_only_handler_passes_the_sandbox_lint(name: str, admit) -> None:
+    from hestia.scan import lint_wasm_handler
+    lint_wasm_handler(handler_source(name))
+
+
+@pytest.mark.parametrize("name", sorted(set(NAMES) - set(PY_NAMES)))
+def test_javascript_handler_passes_hestia_admission(name: str, admit) -> None:
+    from hestia.scan import lint_js_handler
+    lint_js_handler(handler_source(name))
+
+
 @pytest.mark.parametrize("name", NAMES)
 def test_handler_fits_the_template_field(name: str) -> None:
-    # TemplateSource.handler is capped at 32_000 characters; a handler that
-    # outgrows it has to become a pinned image instead.
-    assert len(handler_source(name)) < 32_000
+    # TemplateSource caps a Python handler at 32_000 characters and a JavaScript one at
+    # 200_000 (the deploy body must fit 256 KiB); a handler that outgrows it has to become a
+    # pinned image instead.
+    stub_python = language(name) == "python" and name not in SANDBOX_ONLY
+    assert len(handler_source(name)) < (32_000 if stub_python else 200_000)
 
 
 @pytest.mark.parametrize("name", NAMES)
@@ -141,7 +162,7 @@ def test_decision_binds_policy_and_facts_by_digest() -> None:
     assert first["facts_sha256"] != changed["facts_sha256"]
 
 
-@pytest.mark.parametrize("name", NAMES)
+@pytest.mark.parametrize("name", STUB_PY)
 def test_every_agent_is_deterministic(name: str) -> None:
     handle = load(name)
     cases = {

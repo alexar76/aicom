@@ -39,3 +39,10 @@ Owner 2026-11-20: «Yes, deploy». Code: aicom main + Gitea 56b85fd35 (`histor/h
 Result: to be added after the run (read both logs; from outside:
 `https://histor.modelmarket.dev/v0.1/servers?limit=1`, `/api/v1/subregistry`,
 `/v0.1/servers/io.github.alexar76%2Fhistor/versions/latest` with its `dev.modelmarket.histor/observed` block).
+
+## Result
+
+Not switched. `after.log`: `2026-11-20T05:58:48Z SKIP: running image is histor-histor:warden-0.32.0-prod`. Production
+moved to WARDEN 0.32.0 and then 0.33.0 images the same morning (other sessions), and the signed-fingerprints switch
+this one waited for was held. The image `subregistry-20261120` is built on `signed-fingerprints-20261119` and is not
+used. Deploying the subregistry needs a new overlay over whatever image is live then.

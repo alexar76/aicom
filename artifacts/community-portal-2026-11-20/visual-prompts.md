@@ -1,0 +1,11 @@
+# Обложки «Агенты в деле»
+
+Обе обложки созданы встроенным ImageGen. Файлы портала — `community-landing/assets/portal/hub.webp`, `hub-card.webp` и `histor.webp`.
+
+## AIMarket
+
+> Wide 3:2 landscape editorial key art for a Russian engineering community about AI agents finding services in a distributed network. No text of any kind, no numbers, no letters, no logos, no watermark. A hero object on the center-right: a heavy precisely machined nickel routing hub shaped like a hexagonal industrial switch, centered rotating receiver core surrounded by six radial matte-nickel arms with distinct illuminated tiny cyan terminal ends, intricate microcircuit bands, a bright vermilion-coral filament follows one handoff through the network. Macro close-up luxurious 3D product photography, sharp details, shallow depth of field, metallic gleam and sophisticated soft chiaroscuro, iconically legible at thumbnail scale. View from elevated 3/4 perspective, dark midnight navy lab with traces in a fine grid, high contrast light and dark. Object occupies most of right two-thirds, left side naturally falls almost to navy black with minimal detail for white web text; keep all meaningful object inside central 75 percent of height. Deliberately restrained color, white steel, navy and desaturated cyan with small hot-orange accents. Visually specific electronics instrument, no people, no generic planet, no fake UI, no digital text, no space or planets.
+
+## HISTOR
+
+> Landscape 3:2 editorial artwork for HISTOR, an engineering project that records dated snapshots of what MCP tools say. A tactile still life like a premium product photograph: three separate translucent smoked-glass plates stacked diagonally in depth, clipped polished corners, each plate contains a subtly different set of fine etched light-blue traces and small unlabeled nodes, visible edge lights, one burnt-orange illuminated trace changes position on the middle plate. The stack dominates the centered composition, slate-black laboratory backdrop, artfully controlled shadows, high contrast, detailed material and subtle reflections, close-up, no people. Graphical depiction of versioned observations, not a chart. Absolutely no text, no glyphs, no numerals, no UI panels, no logos or watermarks, no currency and no commercial symbols. Readable when cropped into a wide 16:9 card.

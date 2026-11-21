@@ -29,7 +29,7 @@ def build(output: Path, base_url: str, with_community: bool = False) -> None:
         spec.loader.exec_module(community)
         extra_paths = community.build(output, base_url.rstrip('/'))
     for locale, copy in atlas.CONTENT.items():
-        destination = output / ('' if locale == 'en' else locale)
+        destination = output / ('' if locale == 'ru' else locale)
         destination.mkdir(exist_ok=True)
         (destination / 'index.html').write_text(atlas.render(locale, copy, community.home_action(locale) if community else ''))
     document_paths = atlas.build_documentation(output) + extra_paths

@@ -1,0 +1,787 @@
+{
+  "external_https": {
+    "https://demo.openazimuth.com/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://emberlinedesk.com/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://iot.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://logos.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://momus.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://monitor.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://oracles.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://oracles.modelmarket.dev/platon/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://plinth.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://pulse.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://seamark.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://service-mesh.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://smokeproof.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://solrecord.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://thelubber.com/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://tideline.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    }
+  },
+  "production_pins": {
+    "admin-vps": {
+      "ecosystem-monitor-frontend-1": {
+        "build": false,
+        "compose_backup": null,
+        "container": "ecosystem-monitor-frontend-1",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/root/platon/ecosystem/docker-compose.yml",
+        "file_sha256": "95273d0f2ef1e6ab00d299c23029c84c50526f48544a890348aebfdffa3eec13",
+        "image": "aicom-security:ecosystem-monitor-frontend-1-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:2306d6464bac5881881a84523134dcdb0181ed2dcc16e4dac3bb34399ea40e14",
+        "project": "ecosystem",
+        "pull_policy": "never",
+        "restored_missing_compose": true,
+        "retained_rollback": {
+          "id": "b0a79b9609fd398e5ec1074ad8aa7266b952265c6171a17979f9169b24ee1dc6",
+          "image": "aicom-rollback:ecosystem-monitor-frontend-1-nginx-8e83b3df3681",
+          "image_id": "sha256:ac3a9f219b19d605fbf6a49d39d44d7ba6d4a0aa45865d496ebb89924d8ff71b",
+          "name": "ecosystem-monitor-frontend-1-nginx-rollback-8e83b3df3681",
+          "prior": "ecosystem-monitor-frontend-1-security-prev-1795209104063375906",
+          "prior_id": "8e83b3df36812a5f33c36c1f3cc47171e0609173f7e24378b62a59c862b005ab"
+        },
+        "service": "monitor-frontend",
+        "status": "PINNED"
+      },
+      "logos": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/4d919641b898-docker-compose.yml",
+        "container": "logos",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/root/aicom/logos/docker-compose.yml",
+        "file_sha256": "5493d01c243a31ec6432eb5274dca5eb949b68fcf8479be0b5be591e3311c970",
+        "image": "aicom-security:logos-nginx-1.26.3-3-deb13u11-20261120",
+        "image_id": "sha256:17c55aa16c843f1b680bf50bbcf419514c93b1d4bb921e52c76d5af2813d85af",
+        "project": "logos",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "c98b14a9fd283fb9621f077e9e2015ce083d5566e158e27a6f04c2861d95d627",
+          "image": "aicom-rollback:logos-nginx-7ca0cd3fe8db",
+          "image_id": "sha256:6c1982b4ecea5029d5895f3b797081543522c9abc10bb3e796c2e3c29f014165",
+          "name": "logos-nginx-rollback-7ca0cd3fe8db",
+          "prior": "logos-security-prev-1795209170731065563",
+          "prior_id": "7ca0cd3fe8dbf380cf74b6e001bf66ba5b0919bd0603c219d4916c262148d27c"
+        },
+        "service": "logos",
+        "status": "PINNED"
+      },
+      "momus-frontend": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/7f8fb1a5b385-docker-compose.prod.yml",
+        "container": "momus-frontend",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/root/momus-deploy/docker-compose.prod.yml",
+        "file_sha256": "cebe43be977681a50c367338a5c373914ba2059fd5530098e53384497bc49923",
+        "image": "aicom-security:momus-frontend-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:d72aed2cf55fcc44ef09bc5a6251a29a741307fadbc9be18f4538786cefc44c0",
+        "project": "momus-deploy",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "1a91797b613f7f276c040e22e47a749df9ce3ea22d99fa169c6a2db91018cf24",
+          "image": "aicom-rollback:momus-frontend-nginx-f8a7c961fc0d",
+          "image_id": "sha256:c5c3b23828344793b54e6404cdc674630bf9a9d1325c35ef1c66f5d48ef7e063",
+          "name": "momus-frontend-nginx-rollback-f8a7c961fc0d",
+          "prior": "momus-frontend-security-prev-1795209126457296147",
+          "prior_id": "f8a7c961fc0d0506caa74e0fcf5cac376f0356734c941e86ff9c7adb21d2a849"
+        },
+        "service": "momus-frontend",
+        "status": "PINNED"
+      },
+      "oracles-oracles-landing-1": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/b25f61a39567-docker-compose.yml",
+        "container": "oracles-oracles-landing-1",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/root/oracles/oracles/docker-compose.yml",
+        "file_sha256": "c08c84fa3d9d6d0d3dc0fa7a7832bf6864e8973dede9c5d98095ff1fea43ce84",
+        "image": "aicom-security:oracles-oracles-landing-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:c0ee09f216de13f7dea6733bd183297fb2d06f951984ca54cb2affcd83a70ac7",
+        "project": "oracles",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "91bd4b7b59e92340c938c03c78e3b6e95623593fb1a1260a5998d377aac2dade",
+          "image": "aicom-rollback:oracles-oracles-landing-1-nginx-0812eb515543",
+          "image_id": "sha256:7ea6da14009fce34c529827b10cfd2c43703621fe3bb2ef7b549afa295f9da73",
+          "name": "oracles-oracles-landing-1-nginx-rollback-0812eb515543",
+          "prior": "oracles-oracles-landing-1-security-prev-1795209136256879621",
+          "prior_id": "0812eb515543e22a37fcb35bda73736b4a4f0b6e65e08801c6afe03a3caecbd6"
+        },
+        "service": "oracles-landing",
+        "status": "PINNED"
+      },
+      "platon-platon-frontend": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/efdd2748bc9f-docker-compose.yml",
+        "container": "platon-platon-frontend",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/root/platon/docker-compose.yml",
+        "file_sha256": "4a2e682ce567dc481fc95d5ffce9ca84ce3a3feb6b7b95dab14d9aa1feb77cc7",
+        "image": "aicom-security:platon-platon-frontend-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:cc24291242cbc75fcf6e2419498df275c1c9bd522249a52368db08a4ddf48fc7",
+        "project": "platon",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "fccb3d255ef033ab86c730a81bdcdff1960beff78ae7b56400115233f65a5fe1",
+          "image": "aicom-rollback:platon-platon-frontend-nginx-98df9cfb7b5d",
+          "image_id": "sha256:37993e925085aecfe51a57ac8382022aab67e7470ae4e26cbfb3a19b4d11f45d",
+          "name": "platon-platon-frontend-nginx-rollback-98df9cfb7b5d",
+          "prior": "platon-platon-frontend-security-prev-1795209116449238765",
+          "prior_id": "98df9cfb7b5d865eead8aa54856b322b2c1bf5a288be042eca59aa5d514e82b3"
+        },
+        "service": "platon-frontend",
+        "status": "PINNED"
+      }
+    },
+    "attested": {
+      "azimuth-web-1": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/76a4aaa2df2c-docker-compose.deploy.yml",
+        "container": "azimuth-web-1",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/azimuth/docker-compose.deploy.yml",
+        "file_sha256": "d702b8708ef42575946e791aad4e699fee1d2e18fc013aed522721054a41d402",
+        "image": "aicom-security:azimuth-web-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:3c5b9cbc2dea802fdc40c2fef7324d2d9c2a1ed80a1783bd287621bd7d5956e5",
+        "project": "azimuth",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "e7496cc79500c62707e19a38263aa3b4dea6322b86bc9e4aee879f61b41708a3",
+          "image": "aicom-rollback:azimuth-web-1-nginx-f1b6b93cf627",
+          "image_id": "sha256:e2a5078e0d4f43e43372fccb2f5322ddbe47fd72bdba6ed29fcfae97e3593d38",
+          "name": "azimuth-web-1-nginx-rollback-f1b6b93cf627",
+          "prior": "azimuth-web-1-security-prev-1795209087105963386",
+          "prior_id": "f1b6b93cf627efa51b45594c344add1cec50decbc9f66cfaa18e67eaa87934d8"
+        },
+        "service": "web",
+        "status": "PINNED"
+      },
+      "gaia-gaia-frontend-1": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/c94d76de5abb-docker-compose.yml",
+        "container": "gaia-gaia-frontend-1",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/root/aicom/gaia/docker-compose.yml",
+        "file_sha256": "879f0844837a085634bf23077aa26d599b8038a152af5723615c7284d2eaafc2",
+        "image": "aicom-security:gaia-gaia-frontend-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:f6b792709dd002def0c244bf1ba50335e1a24199397a4d2e08687a7eaef355f8",
+        "project": "gaia",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "759942e0f6e2d6861f8931e0e3c57c4927f091f07d1244aa2d1e85f90c70bc8d",
+          "image": "aicom-rollback:gaia-gaia-frontend-1-nginx-9ab818ea7015",
+          "image_id": "sha256:fda95ec6cc7241359dac953ca983bd4ee800279d584dd19cdd243332dffcbe25",
+          "name": "gaia-gaia-frontend-1-nginx-rollback-9ab818ea7015",
+          "prior": "gaia-gaia-frontend-1-security-prev-1795209062855734917",
+          "prior_id": "9ab818ea701585050737d944322f76b30a64e54e0bfa577870967ce68a189f9c"
+        },
+        "service": "gaia-frontend",
+        "status": "PINNED"
+      },
+      "lubber-watch-watch-1": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/e5f991c35417-docker-compose.yml",
+        "container": "lubber-watch-watch-1",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/lubber-watch/docker-compose.yml",
+        "file_sha256": "7cc4ebe163f4656fb8f01f7591f9d8862bc82eb8a5d5e11093a835f332c5be62",
+        "image": "aicom-security:lubber-watch-watch-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:0b8470719aa48bb2ad10d3d2fdc27181bb0327decc70e7183c67338c4021512c",
+        "project": "lubber-watch",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "5cb3472de9c1d5a6a156827ee10f7f215d6e01238f2c78f28abf87ac8ddbb23f",
+          "image": "aicom-rollback:lubber-watch-watch-1-nginx-bf7ad4741986",
+          "image_id": "sha256:41ad80bfb3c1f460f21543da2efec8ad1aa3ecf5c1bbcf7a67108b8b601095d0",
+          "name": "lubber-watch-watch-1-nginx-rollback-bf7ad4741986",
+          "prior": "lubber-watch-watch-1-security-prev-1795209071873872163",
+          "prior_id": "bf7ad474198612257f5c947713823aef8f7f00c6e2172619073083b22a8913e5"
+        },
+        "service": "watch",
+        "status": "PINNED"
+      },
+      "multica-gateway-1": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/223175dedec1-docker-compose.yml",
+        "container": "multica-gateway-1",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/multica/docker-compose.yml",
+        "file_sha256": "76ae826931a2bc488c7c1fd5676fa74894ac9fa1aebc160bc5d6731dbd447710",
+        "image": "aicom-security:multica-gateway-1-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:349c8a2a4cb3e2ac25cdc9db2671be006498b11e22582bb5b21d8cf96da9fa4e",
+        "project": "multica",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "d868082a78caa803690af3d930b8d5aba6985588703d179d401f07313dfa989d",
+          "image": "aicom-rollback:multica-gateway-1-nginx-5f53583fdf42",
+          "image_id": "sha256:ee1f19fa3e5096f39f80d8a39e80f4848ba99975bcab1c39c09e1a0cbbd4b620",
+          "name": "multica-gateway-1-nginx-rollback-5f53583fdf42",
+          "prior": "multica-gateway-1-security-prev-1795209053126426013",
+          "prior_id": "5f53583fdf42960de86df5b24c212da18d432e2aa7e941433153ef9ef878feb5"
+        },
+        "service": "gateway",
+        "status": "PINNED"
+      }
+    },
+    "factory-vps": {
+      "aicom-mesh-dashboard": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/d69299bf6a74-docker-compose.dashboard.yml",
+        "container": "aicom-mesh-dashboard",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/root/claudecode/aicom/ai-service-mesh/docker-compose.dashboard.yml",
+        "file_sha256": "cdda8b81b2acc6eb065b882f037f78b30ecbf8945746ae8e4ad1bfaa50a86bb1",
+        "image": "aicom-security:aicom-mesh-dashboard-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:634ecad52f1275813301ed31e0dc5c999a101dde3e0aa1752a1d8aca9c5816a4",
+        "project": "ai-service-mesh",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "da93f6a56be97badcb8718aa1aa27117a9ca24ce02c56b46c42e2b767d27cecb",
+          "image": "aicom-rollback:aicom-mesh-dashboard-nginx-ee12847b703a",
+          "image_id": "sha256:a3f034bcf5d86be0a7efd5d64fcf196a324e97ad91639af66d853282afaf4ca4",
+          "name": "aicom-mesh-dashboard-nginx-rollback-ee12847b703a",
+          "prior": "aicom-mesh-dashboard-security-prev-1795209042704330395",
+          "prior_id": "ee12847b703a63f1274cb99c212dc8d8eb0035e27f5991d29b9b549754a57bac"
+        },
+        "service": "mesh-dashboard",
+        "status": "PINNED"
+      },
+      "pulse-terminal": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/15006424ce78-docker-compose.prod.yml",
+        "container": "pulse-terminal",
+        "dry_run": {
+          "previous_in_plan": false,
+          "result": "passed"
+        },
+        "file": "/root/claudecode/aicom/alien-monitor/docker-compose.prod.yml",
+        "file_sha256": "fef0b7a3a87cfd06d2f12a6c5033f2ce9663d29c6c898ce6762939cb2199cbf5",
+        "image": "aicom-security:pulse-terminal-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:a08e32e09d7531207a8edd010382469245da662d6dd0c2ae5c6f0019990b4a47",
+        "project": "alien-monitor",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "5f244a3bbe49a3249c4244e474342f8bef79495a38bc573feef014e8a3929960",
+          "image": "aicom-rollback:pulse-terminal-nginx-f5d446331e2b",
+          "image_id": "sha256:c5c356bd4130581e8c33c15a03db430407a02f6d1aa4ea8d15d6389979ca7090",
+          "name": "pulse-terminal-nginx-rollback-f5d446331e2b",
+          "prior": "pulse-terminal-security-prev-1795209032817800768",
+          "prior_id": "f5d446331e2b816220b5996df2ee60d61f43776bcbc0072bad8cfe36afb5d525"
+        },
+        "service": "pulse-terminal",
+        "status": "PINNED"
+      }
+    },
+    "skopos-vps": {
+      "emberline-web": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/bcb46f526c54-docker-compose.metis.yml",
+        "container": "emberline-web",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/cite-desks/emberline/docker-compose.metis.yml",
+        "file_sha256": "a2b88d408fdd2edb3bb3c49caf506d81f7b99e2574e540ddee87330e867c1a54",
+        "image": "aicom-security:emberline-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:71b440c4bb61b1eaea84497bb39d102c8b9fcf3cef9c4db45460a18ad9ed2004",
+        "project": "emberline",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "9496c6632f6a624d1964faeab7e088d7fe36a65e34aeb1fae5d9d5f8094002f3",
+          "image": "aicom-rollback:emberline-web-nginx-b0daca1b5b82",
+          "image_id": "sha256:e3ec40350bc459558be74d80e20bf8181b2e42ad145dbb00ad8c3ab7c9a436c2",
+          "name": "emberline-web-nginx-rollback-b0daca1b5b82",
+          "prior": "emberline-web-security-prev-1795208966217451722",
+          "prior_id": "b0daca1b5b82f1c0d14351a64521773955bfb4140c9b1d37c266ac705104e885"
+        },
+        "service": "web",
+        "status": "PINNED"
+      },
+      "plinth-web": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/bea18054c546-docker-compose.metis.yml",
+        "container": "plinth-web",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/cite-desks/plinth/docker-compose.metis.yml",
+        "file_sha256": "3be7c4b5c5ef719710cab39ee6f5539520608e2324329fb8723311d8bbc600df",
+        "image": "aicom-security:plinth-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:77a6ed3c1442b4a32e9108cf49d46d1554f34862761ee843021645dd9732ddb6",
+        "project": "plinth",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "d5f52d32b97d2b88949c33277d1d43de932b58755dd508ed47f4d196ea791260",
+          "image": "aicom-rollback:plinth-web-nginx-b9e9d7d79e0c",
+          "image_id": "sha256:a189ac73b6af6f6c8e186e0ec40c81683c3020b1c76b08ffedea0af91bc8b6bb",
+          "name": "plinth-web-nginx-rollback-b9e9d7d79e0c",
+          "prior": "plinth-web-security-prev-1795208948558457215",
+          "prior_id": "b9e9d7d79e0c6dbf15f3097d4420f5f9fd7a4e66151454da64f220e270368c2b"
+        },
+        "service": "web",
+        "status": "PINNED"
+      },
+      "seamark-web": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/d8cd2f0a58d1-docker-compose.metis.yml",
+        "container": "seamark-web",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/cite-desks/seamark/docker-compose.metis.yml",
+        "file_sha256": "194849277c47a4b3478950b41e49bfd7521ba95be4e6f2c1d8ebe0dcb7722c8f",
+        "image": "aicom-security:seamark-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:4976e111f47e292d92ff54b1894b3ecafcc6dfde702a09df9024bfd8a26d5b5e",
+        "project": "seamark",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "83b64cb36527dc18bd7c8a3670bb7195b92b6a0e9870cc83e3486b6288465cb2",
+          "image": "aicom-rollback:seamark-web-nginx-a8093165ba77",
+          "image_id": "sha256:42040e40b0b7aeb90d23eb03ef3dbee3eefca6b35e40ee6325915f18c51e7367",
+          "name": "seamark-web-nginx-rollback-a8093165ba77",
+          "prior": "seamark-web-security-prev-1795208938853987968",
+          "prior_id": "a8093165ba77ce8d27332d5c8578f9f84b0c29da09edad9712a51392d935b058"
+        },
+        "service": "web",
+        "status": "PINNED"
+      },
+      "smokeproof-web": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/d293e3497acd-docker-compose.metis.yml",
+        "container": "smokeproof-web",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/cite-desks/smokeproof/docker-compose.metis.yml",
+        "file_sha256": "68669dab1d524a34e87bfe833376c99dcfad551cb1fe39dbcae4d1e0c3636d4a",
+        "image": "aicom-security:smokeproof-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:79a455a0beb74710826f5ba39141e59d332cabd4edb9de3182c1c0b5e1aef90c",
+        "project": "smokeproof",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "6f23c30071eb1bed1f2906308a1a3a2e70725d343f9cf2fb56b2ad68102ac177",
+          "image": "aicom-rollback:smokeproof-web-nginx-9da2928d673e",
+          "image_id": "sha256:afbb2f4ad671c8bbe3e385b2e57421d5ef149da452fc21c7d5beb5eba4d4d055",
+          "name": "smokeproof-web-nginx-rollback-9da2928d673e",
+          "prior": "smokeproof-web-security-prev-1795208957692086256",
+          "prior_id": "9da2928d673e032e665b8019807acfc7d2d57dce13d934ea6b7d4327d691a6c2"
+        },
+        "service": "web",
+        "status": "PINNED"
+      },
+      "solrecord-web": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/ad5ccaa1df73-docker-compose.metis.yml",
+        "container": "solrecord-web",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/cite-desks/solrecord/docker-compose.metis.yml",
+        "file_sha256": "9b5ae3bb47ff414d2b64830eaa95cbac5ab577da09ac55ff4eaf411f2a1c3dc7",
+        "image": "aicom-security:solrecord-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:319efdae52d61876e5a2fdc37e46163229867d35dc0d836377b0bbcbf54f2b43",
+        "project": "solrecord",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "0223481aaf8e18823475fc0de0bd29af87458d6b95f29969b0c0b2191c542800",
+          "image": "aicom-rollback:solrecord-web-nginx-9a698f4bc18f",
+          "image_id": "sha256:148e984614c9dd128671cf8534c949a21b8244517e2f281526601a37973865ef",
+          "name": "solrecord-web-nginx-rollback-9a698f4bc18f",
+          "prior": "solrecord-web-security-prev-1795208929646834850",
+          "prior_id": "9a698f4bc18f327aa0205460d9f0b9385842c17f2550bbdfff37257aacb452dc"
+        },
+        "service": "web",
+        "status": "PINNED"
+      },
+      "tideline-web": {
+        "build": false,
+        "compose_backup": "/root/security-rollbacks/nginx-compose-pins-20261120/805b1afb82b4-docker-compose.metis.yml",
+        "container": "tideline-web",
+        "dry_run": {
+          "previous_in_plan": true,
+          "result": "passed"
+        },
+        "file": "/opt/cite-desks/tideline/docker-compose.metis.yml",
+        "file_sha256": "553fed016e871f23987118b3fb95f4c06f7e15232ad198ca1cb42a0b6f77dc35",
+        "image": "aicom-security:tideline-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:bd69749edb6f9f696c181ce5308697aac9cde5ea448a7f7df8bbb624d751d9eb",
+        "project": "tideline",
+        "pull_policy": "never",
+        "restored_missing_compose": false,
+        "retained_rollback": {
+          "id": "3cecc8b4b9d5127cb7e4294cf79543107e9917b66c90ffe247e6ff299df75e78",
+          "image": "aicom-rollback:tideline-web-nginx-8d077c37b600",
+          "image_id": "sha256:9b86cdc877e3f5e5d4a5e74ce01fa0a1af7e9970c9a965255f7368d3e923f266",
+          "name": "tideline-web-nginx-rollback-8d077c37b600",
+          "prior": "tideline-web-security-prev-1795208902683175263",
+          "prior_id": "8d077c37b6002c498848ab58043755d5238f57d085e6923c4cdcc8d2dafad9bc"
+        },
+        "service": "web",
+        "status": "PINNED"
+      }
+    }
+  },
+  "pulse_compose_adoption": {
+    "compose_managed": true,
+    "container": "pulse-terminal",
+    "id": "2477ae73e01a756524cfd2f297f634a069c51d5bee8303f1559011327ac88f84",
+    "image": "aicom-security:pulse-terminal-nginx-1.31.9-r1-20261120",
+    "nginx": "nginx version: nginx/1.31.9",
+    "previous_patched_container": "pulse-terminal-before-compose-1795209873725578467",
+    "previous_patched_id": "40ee3cb53e569076e12946b3f825470927e0a207c45eadf959ab63a23f6537e7",
+    "sites": {
+      "http://127.0.0.1:5199/": {
+        "http": 200,
+        "sha256": "5611716daa539cc00f61f1481a80c8b68695ecbb675b10c6d02bf0e039b0e10d"
+      },
+      "https://magic-ai-factory.com/pulse/": {
+        "http": 200,
+        "sha256": "5611716daa539cc00f61f1481a80c8b68695ecbb675b10c6d02bf0e039b0e10d"
+      },
+      "https://pulse.modelmarket.dev/": {
+        "http": 200,
+        "sha256": "4ae0db053cb48834196bcbba680e75722ecac9e985e9225f95ac1d844f604251"
+      }
+    }
+  },
+  "validated_runtime": {
+    "admin-vps": {
+      "ecosystem-monitor-frontend-1": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "6f1dcb2c67ab7e310b144a409c76eb9993d92eb1385f72e6f7364a6439047460",
+        "effective_image": "aicom-security:ecosystem-monitor-frontend-1-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:2306d6464bac5881881a84523134dcdb0181ed2dcc16e4dac3bb34399ea40e14",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "logos": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "e84ffe776611bebe313449dab852a06f61d0d9a528e39cc43bce047cef6e5d31",
+        "effective_image": "aicom-security:logos-nginx-1.26.3-3-deb13u11-20261120",
+        "image_id": "sha256:17c55aa16c843f1b680bf50bbcf419514c93b1d4bb921e52c76d5af2813d85af",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "momus-frontend": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "8cdfa8875eea66530f4309cc4f22f96e315d4e436d76b9957c006c0744591f40",
+        "effective_image": "aicom-security:momus-frontend-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:d72aed2cf55fcc44ef09bc5a6251a29a741307fadbc9be18f4538786cefc44c0",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "oracles-oracles-landing-1": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "910d6bd66e3c289926e7c175a9294393f793e287e8e3fc6ee2b695c44dfe0ec6",
+        "effective_image": "aicom-security:oracles-oracles-landing-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:c0ee09f216de13f7dea6733bd183297fb2d06f951984ca54cb2affcd83a70ac7",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "platon-platon-frontend": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "70fde29025674fc8a606149bf09fd2023b72cb6eadeb5ba99835771609a6ec13",
+        "effective_image": "aicom-security:platon-platon-frontend-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:cc24291242cbc75fcf6e2419498df275c1c9bd522249a52368db08a4ddf48fc7",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      }
+    },
+    "attested": {
+      "azimuth-web-1": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "d5da4493c020cb09354310dfab5127704036b4044b62bf5b760ffea9b401cd67",
+        "effective_image": "aicom-security:azimuth-web-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:3c5b9cbc2dea802fdc40c2fef7324d2d9c2a1ed80a1783bd287621bd7d5956e5",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "gaia-gaia-frontend-1": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "506a4d67bd71c74f07ec469e262adb124afaff2b25f18a70c28f6ac097f0d3be",
+        "effective_image": "aicom-security:gaia-gaia-frontend-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:f6b792709dd002def0c244bf1ba50335e1a24199397a4d2e08687a7eaef355f8",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "lubber-watch-watch-1": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "791c428eeb88486b6621ccf8a377ef32116438563c3f053b8eed8e40ae6e0f3b",
+        "effective_image": "aicom-security:lubber-watch-watch-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:0b8470719aa48bb2ad10d3d2fdc27181bb0327decc70e7183c67338c4021512c",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "multica-gateway-1": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "9e3d2e5f1377b2b585a945a66953cfb328c08fbd79bae8e8faa40a7c31a22e5e",
+        "effective_image": "aicom-security:multica-gateway-1-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:349c8a2a4cb3e2ac25cdc9db2671be006498b11e22582bb5b21d8cf96da9fa4e",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      }
+    },
+    "factory-vps": {
+      "aicom-mesh-dashboard": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "f022be676546ffed13e4c465078a96b46332624904bca2f1b87fc7df0dc0ae94",
+        "effective_image": "aicom-security:aicom-mesh-dashboard-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:634ecad52f1275813301ed31e0dc5c999a101dde3e0aa1752a1d8aca9c5816a4",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "pulse-terminal": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "2477ae73e01a756524cfd2f297f634a069c51d5bee8303f1559011327ac88f84",
+        "effective_image": "aicom-security:pulse-terminal-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:a08e32e09d7531207a8edd010382469245da662d6dd0c2ae5c6f0019990b4a47",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      }
+    },
+    "skopos-vps": {
+      "emberline-web": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "d1ceddeab40cdfaa81c107cdea989d09a6d31046450a463a442e5cab302c6b7e",
+        "effective_image": "aicom-security:emberline-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:71b440c4bb61b1eaea84497bb39d102c8b9fcf3cef9c4db45460a18ad9ed2004",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "plinth-web": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "4f171ec470bc2ef0788d49f58a53e9a6eeb0996e8b1fe56cc7e0188c86902d6e",
+        "effective_image": "aicom-security:plinth-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:77a6ed3c1442b4a32e9108cf49d46d1554f34862761ee843021645dd9732ddb6",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "seamark-web": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "21840c326a8b4e41ecff256eff01fbd3e54786a6aceb192f2b70af5cbcb17f6b",
+        "effective_image": "aicom-security:seamark-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:4976e111f47e292d92ff54b1894b3ecafcc6dfde702a09df9024bfd8a26d5b5e",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "smokeproof-web": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "c74de96a4dfee0ff79b4c0dec8919e28ca9c571cb438d4835005618a304b0c7d",
+        "effective_image": "aicom-security:smokeproof-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:79a455a0beb74710826f5ba39141e59d332cabd4edb9de3182c1c0b5e1aef90c",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "solrecord-web": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "7701b9c7d02beae457c422545acfc39b306a87f89ffa19acaaa21f2ed302516a",
+        "effective_image": "aicom-security:solrecord-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:319efdae52d61876e5a2fdc37e46163229867d35dc0d836377b0bbcbf54f2b43",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      },
+      "tideline-web": {
+        "build_present": false,
+        "compose_independent_rollback_stopped": true,
+        "container_id": "036938fc7c2ee07eae2fcf384758e4a00422c840d39e8e7ba21cf2a96178792c",
+        "effective_image": "aicom-security:tideline-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:bd69749edb6f9f696c181ce5308697aac9cde5ea448a7f7df8bbb624d751d9eb",
+        "original_rollback_stopped": true,
+        "pull_policy": "never",
+        "running": true
+      }
+    }
+  }
+}

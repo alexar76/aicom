@@ -29,7 +29,7 @@ Alien Monitor maps the whole ecosystem in real time, from the Hub and Factory to
 
 | | What you get | Open |
 | --- | --- | --- |
-| **MCP tool firewall (WARDEN)** | Run a one-time scan of configured servers. To enforce reviewed definitions during use, set up the stdio wrapper. | `npx -y @aimarket/warden@0.33.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
+| **MCP tool firewall (WARDEN)** | Run a one-time scan of configured servers. To enforce reviewed definitions during use, set up the stdio wrapper. | `npx -y @aimarket/warden@0.35.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **HISTOR open data** | What every remote MCP server in the official registry advertised, and every change, signed, monthly (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
 | **Free checks** | x402 endpoint, MCP diff, WARDEN scan, HISTOR check and tool-list token cost — in the browser | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Send one allow-listed GAIA reading through Hub and Metis, then inspect the signed receipt | [play.modelmarket.dev](https://play.modelmarket.dev/) · [source](https://github.com/alexar76/aimarket-playground) |

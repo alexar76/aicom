@@ -1,0 +1,1157 @@
+{
+  "external_https": {
+    "https://demo.openazimuth.com/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://emberlinedesk.com/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://iot.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://logos.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://momus.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://monitor.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://oracles.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://oracles.modelmarket.dev/platon/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://plinth.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://pulse.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://seamark.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://service-mesh.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://smokeproof.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://solrecord.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://thelubber.com/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    },
+    "https://tideline.modelmarket.dev/": {
+      "code": "200",
+      "error": "",
+      "http": "2",
+      "rc": 0,
+      "redirect": "",
+      "type": "text/html"
+    }
+  },
+  "final_runtime": {
+    "admin-vps": {
+      "ecosystem-monitor-frontend-1": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "logos": {
+        "expected_package": "1.26.3-3+deb13u11",
+        "health": "healthy",
+        "image_matches": true,
+        "package": "1.26.3-3+deb13u11",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "momus-frontend": {
+        "expected_package": "1.31.9-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "oracles-oracles-landing-1": {
+        "expected_package": "1.31.9-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "platon-platon-frontend": {
+        "expected_package": "1.31.9-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      }
+    },
+    "attested": {
+      "azimuth-web-1": {
+        "expected_package": "1.31.9-r1",
+        "health": "healthy",
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "gaia-gaia-frontend-1": {
+        "expected_package": "1.31.9-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "lubber-watch-watch-1": {
+        "expected_package": "1.31.9-r1",
+        "health": "healthy",
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "multica-gateway-1": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      }
+    },
+    "factory-vps": {
+      "aicom-mesh-dashboard": {
+        "expected_package": "1.31.9-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "pulse-terminal": {
+        "expected_package": "1.31.9-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.31.9-r1",
+        "rollback_stopped": true,
+        "running": true
+      }
+    },
+    "skopos-vps": {
+      "emberline-web": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "plinth-web": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "seamark-web": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "smokeproof-web": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "solrecord-web": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      },
+      "tideline-web": {
+        "expected_package": "1.30.7-r1",
+        "health": null,
+        "image_matches": true,
+        "package": "1.30.7-r1",
+        "rollback_stopped": true,
+        "running": true
+      }
+    }
+  },
+  "rollout": {
+    "admin-vps": [
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 1322,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "418a40d5d8016458767253543e57e571ca47ccb6aa4ea2470ea37d7244143185",
+            "status": "200",
+            "type": "text/html",
+            "uri": "/monitor/assets/index-BKm0Mw6Y.js"
+          },
+          "asset_2": {
+            "bytes": 1322,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "418a40d5d8016458767253543e57e571ca47ccb6aa4ea2470ea37d7244143185",
+            "status": "200",
+            "type": "text/html",
+            "uri": "/monitor/assets/index-C65o_fk9.css"
+          },
+          "container": {
+            "bytes": 1322,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 2166,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/root/platon/ecosystem/docker-compose.yml",
+          "project": "ecosystem",
+          "service": "monitor-frontend",
+          "working_dir": "/root/platon/ecosystem"
+        },
+        "container": "ecosystem-monitor-frontend-1",
+        "host": "admin-vps",
+        "image": "aicom-security:ecosystem-monitor-frontend-1-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:2306d6464bac5881881a84523134dcdb0181ed2dcc16e4dac3bb34399ea40e14",
+        "package": "1.30.7-r1",
+        "previous": "ecosystem-monitor-frontend-1-security-prev-1795209104063375906",
+        "version": "nginx version: nginx/1.30.7"
+      },
+      {
+        "checks": {
+          "container": {
+            "bytes": 615,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 1085,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/root/aicom/logos/docker-compose.yml",
+          "project": "logos",
+          "service": "logos",
+          "working_dir": "/root/aicom/logos"
+        },
+        "container": "logos",
+        "host": "admin-vps",
+        "image": "aicom-security:logos-nginx-1.26.3-3-deb13u11-20261120",
+        "image_id": "sha256:17c55aa16c843f1b680bf50bbcf419514c93b1d4bb921e52c76d5af2813d85af",
+        "package": "1.26.3-3+deb13u11",
+        "previous": "logos-security-prev-1795209170731065563",
+        "version": "nginx version: nginx/1.26.3"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 273056,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "2560c5b8c597d98f1e878f3e99b576d9ed825eb9716b3b87a93635f35d833d06",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/index-CRPjmkcM.js"
+          },
+          "asset_2": {
+            "bytes": 28950,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "17717cef99798a7a5a06255df9c7ea68d08fa9436e56387b713624ec20bc470e",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/assets/index-BV41NDfE.css"
+          },
+          "container": {
+            "bytes": 566,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 1047,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/root/momus-deploy/docker-compose.prod.yml",
+          "project": "momus-deploy",
+          "service": "momus-frontend",
+          "working_dir": "/root/momus-deploy"
+        },
+        "container": "momus-frontend",
+        "host": "admin-vps",
+        "image": "aicom-security:momus-frontend-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:d72aed2cf55fcc44ef09bc5a6251a29a741307fadbc9be18f4538786cefc44c0",
+        "package": "1.31.9-r1",
+        "previous": "momus-frontend-security-prev-1795209126457296147",
+        "version": "nginx version: nginx/1.31.9"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 1083097,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "1c94facc3ff29489792fe4a4d11e29e98f6d45730d0f2514dfdc669e62376015",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/index-BfkErbx3.js"
+          },
+          "asset_2": {
+            "bytes": 6832,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "3935c2b5fca574436baf3394c761c6c1d3e26f564f404595f6bbef28b6bb1988",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/assets/index-BYPmdKQ1.css"
+          },
+          "container": {
+            "bytes": 415,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 1066,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/root/oracles/oracles/docker-compose.yml",
+          "project": "oracles",
+          "service": "oracles-landing",
+          "working_dir": "/root/oracles/oracles"
+        },
+        "container": "oracles-oracles-landing-1",
+        "host": "admin-vps",
+        "image": "aicom-security:oracles-oracles-landing-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:c0ee09f216de13f7dea6733bd183297fb2d06f951984ca54cb2affcd83a70ac7",
+        "package": "1.31.9-r1",
+        "previous": "oracles-oracles-landing-1-security-prev-1795209136256879621",
+        "version": "nginx version: nginx/1.31.9"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 8413,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "f1db414574240cda4337169b6b74ecf1a37f204e76dec485a098ac6206e80f5e",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/platon/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 1106081,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "f6df8c918a570f088dd0b9f96a0dda5dcdb7192a7563cb04bdb272eadc00207c",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/platon/assets/index-BKW6a01n.js"
+          },
+          "container": {
+            "bytes": 816,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 816,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/root/platon/docker-compose.yml",
+          "project": "platon",
+          "service": "platon-frontend",
+          "working_dir": "/root/platon"
+        },
+        "container": "platon-platon-frontend",
+        "host": "admin-vps",
+        "image": "aicom-security:platon-platon-frontend-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:cc24291242cbc75fcf6e2419498df275c1c9bd522249a52368db08a4ddf48fc7",
+        "package": "1.31.9-r1",
+        "previous": "platon-platon-frontend-security-prev-1795209116449238765",
+        "version": "nginx version: nginx/1.31.9"
+      }
+    ],
+    "attested": [
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 7640,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "4d7846bc23ff2873923cd825f2d974611903a90424bbfa0ec255e1ee124fa292",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 1569484,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "6cd05849616c6f119107ef37c8fab8ca8911d58b3eced1f800301446f9b4e5e1",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/index-DVVJs_Cb.js"
+          },
+          "container": {
+            "bytes": 896,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 896,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/azimuth/docker-compose.yml,/opt/azimuth/docker-compose.deploy.yml",
+          "project": "azimuth",
+          "service": "web",
+          "working_dir": "/opt/azimuth"
+        },
+        "container": "azimuth-web-1",
+        "host": "attested",
+        "image": "aicom-security:azimuth-web-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:3c5b9cbc2dea802fdc40c2fef7324d2d9c2a1ed80a1783bd287621bd7d5956e5",
+        "package": "1.31.9-r1",
+        "previous": "azimuth-web-1-security-prev-1795209087105963386",
+        "version": "nginx version: nginx/1.31.9"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 1212515,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "3d6a3038ad0df99cf9b4e13fc68764c492b6e4688d8638affa3dcd47216d51cf",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/index-DnBdiaXB.js"
+          },
+          "asset_2": {
+            "bytes": 1027,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "337dc5f34fa7473ed01d24ef4be8594309a5b639553f219b30ef107520cb1bbf",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/assets/index-DIjzATBG.css"
+          },
+          "container": {
+            "bytes": 421,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 941,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/root/aicom/gaia/docker-compose.yml,/root/aicom/gaia/docker-compose.om-node.yml,/root/aicom/gaia/docker-compose.om-selfhost.yml",
+          "project": "gaia",
+          "service": "gaia-frontend",
+          "working_dir": "/root/aicom/gaia"
+        },
+        "container": "gaia-gaia-frontend-1",
+        "host": "attested",
+        "image": "aicom-security:gaia-gaia-frontend-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:f6b792709dd002def0c244bf1ba50335e1a24199397a4d2e08687a7eaef355f8",
+        "package": "1.31.9-r1",
+        "previous": "gaia-gaia-frontend-1-security-prev-1795209062855734917",
+        "version": "nginx version: nginx/1.31.9"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 11226,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "9270247867453acd5be4ba0644be4e16025eac36404b97630fc611c2f9d5d90e",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 789726,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "d0da504758ea11d9989fe7aec9d6ef47f973add14c44b771670d31c6c5bd5a7a",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/index-B0dfP63L.js"
+          },
+          "container": {
+            "bytes": 1418,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 1418,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/lubber-watch/docker-compose.yml",
+          "project": "lubber-watch",
+          "service": "watch",
+          "working_dir": "/opt/lubber-watch"
+        },
+        "container": "lubber-watch-watch-1",
+        "host": "attested",
+        "image": "aicom-security:lubber-watch-watch-1-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:0b8470719aa48bb2ad10d3d2fdc27181bb0327decc70e7183c67338c4021512c",
+        "package": "1.31.9-r1",
+        "previous": "lubber-watch-watch-1-security-prev-1795209071873872163",
+        "version": "nginx version: nginx/1.31.9"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 318221,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "84d045f4d158ebbd70bc4aa2a35d5aaf8f61c9854f435e06487fc2312061acab",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/_next/static/css/616d82def013768e.css"
+          },
+          "asset_2": {
+            "bytes": 9973,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "bf08b886bff4ab86fb46b04946f6fb200b863864f64b890fdd12796f9bdb0fcd",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/_next/static/css/0ba5d9c6fcea570d.css"
+          },
+          "container": {
+            "bytes": 496101,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/multica/docker-compose.yml",
+          "project": "multica",
+          "service": "gateway",
+          "working_dir": "/opt/multica"
+        },
+        "container": "multica-gateway-1",
+        "host": "attested",
+        "image": "aicom-security:multica-gateway-1-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:349c8a2a4cb3e2ac25cdc9db2671be006498b11e22582bb5b21d8cf96da9fa4e",
+        "package": "1.30.7-r1",
+        "previous": "multica-gateway-1-security-prev-1795209053126426013",
+        "version": "nginx version: nginx/1.30.7"
+      }
+    ],
+    "factory-vps": [
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 17823,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "59a645636f3a16ee332e7cf7c749e713fc62d88d682fa32a501e217192d5e9d0",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 247598,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "fef569929efe3096be8056e8aa8e4fc078b559120ec64f204f9ddb5869b23741",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/index-cWhD4gIR.js"
+          },
+          "container": {
+            "bytes": 955,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 1482,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/root/claudecode/aicom/ai-service-mesh/docker-compose.prod.yml,/root/claudecode/aicom/ai-service-mesh/docker-compose.dashboard.yml",
+          "project": "ai-service-mesh",
+          "service": "mesh-dashboard",
+          "working_dir": "/root/claudecode/aicom/ai-service-mesh"
+        },
+        "container": "aicom-mesh-dashboard",
+        "host": "factory-vps",
+        "image": "aicom-security:aicom-mesh-dashboard-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:634ecad52f1275813301ed31e0dc5c999a101dde3e0aa1752a1d8aca9c5816a4",
+        "package": "1.31.9-r1",
+        "previous": "aicom-mesh-dashboard-security-prev-1795209042704330395",
+        "version": "nginx version: nginx/1.31.9"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 14501,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "53da00f00bfb650ce36a54d895d919c901ea9d7a599c009665b7e877725b3570",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 242697,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "715f13b5f0815b4ff39a54b906660d8724cba74f8571c66dc3361678ceceb871",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/index-CeufKgOn.js"
+          },
+          "container": {
+            "bytes": 499,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 1090,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {},
+        "container": "pulse-terminal",
+        "host": "factory-vps",
+        "image": "aicom-security:pulse-terminal-nginx-1.31.9-r1-20261120",
+        "image_id": "sha256:a08e32e09d7531207a8edd010382469245da662d6dd0c2ae5c6f0019990b4a47",
+        "package": "1.31.9-r1",
+        "previous": "pulse-terminal-security-prev-1795209032817800768",
+        "version": "nginx version: nginx/1.31.9"
+      }
+    ],
+    "skopos-vps": [
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 28205,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "c39f04f7af26865982b1f7e11e4393c0b4c187b4d5114dd93862aab1e3b42ac9",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 1603259,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "469b0e7f028c78bb58b1ca72ad73f8b5910fe9e575a63f4e0f7133ef7f5fbae6",
+            "status": "200",
+            "type": "application/javascript",
+            "uri": "/assets/main-y6bVLOay.js"
+          },
+          "container": {
+            "bytes": 3900,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 3900,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/cite-desks/emberline/docker-compose.yml,/opt/cite-desks/emberline/docker-compose.metis.yml",
+          "project": "emberline",
+          "service": "web",
+          "working_dir": "/opt/cite-desks/emberline"
+        },
+        "container": "emberline-web",
+        "host": "skopos-vps",
+        "image": "aicom-security:emberline-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:71b440c4bb61b1eaea84497bb39d102c8b9fcf3cef9c4db45460a18ad9ed2004",
+        "package": "1.30.7-r1",
+        "previous": "emberline-web-security-prev-1795208966217451722",
+        "version": "nginx version: nginx/1.30.7"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 13664,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "d2fbadb33000d51f93693793b070c359456b4ee0734f40063d95ab61435511e0",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 20038,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "8310c60c977bc5a90fa3e592b15f4b04eac29f5c73217e300d6b4d975efe8173",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/styles.css"
+          },
+          "container": {
+            "bytes": 9456,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 9456,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/cite-desks/plinth/docker-compose.yml,/opt/cite-desks/plinth/docker-compose.metis.yml",
+          "project": "plinth",
+          "service": "web",
+          "working_dir": "/opt/cite-desks/plinth"
+        },
+        "container": "plinth-web",
+        "host": "skopos-vps",
+        "image": "aicom-security:plinth-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:77a6ed3c1442b4a32e9108cf49d46d1554f34862761ee843021645dd9732ddb6",
+        "package": "1.30.7-r1",
+        "previous": "plinth-web-security-prev-1795208948558457215",
+        "version": "nginx version: nginx/1.30.7"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 13664,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "d2fbadb33000d51f93693793b070c359456b4ee0734f40063d95ab61435511e0",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 20038,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "8310c60c977bc5a90fa3e592b15f4b04eac29f5c73217e300d6b4d975efe8173",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/styles.css"
+          },
+          "container": {
+            "bytes": 9456,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 9456,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/cite-desks/seamark/docker-compose.yml,/opt/cite-desks/seamark/docker-compose.metis.yml",
+          "project": "seamark",
+          "service": "web",
+          "working_dir": "/opt/cite-desks/seamark"
+        },
+        "container": "seamark-web",
+        "host": "skopos-vps",
+        "image": "aicom-security:seamark-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:4976e111f47e292d92ff54b1894b3ecafcc6dfde702a09df9024bfd8a26d5b5e",
+        "package": "1.30.7-r1",
+        "previous": "seamark-web-security-prev-1795208938853987968",
+        "version": "nginx version: nginx/1.30.7"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 13664,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "d2fbadb33000d51f93693793b070c359456b4ee0734f40063d95ab61435511e0",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 20038,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "8310c60c977bc5a90fa3e592b15f4b04eac29f5c73217e300d6b4d975efe8173",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/styles.css"
+          },
+          "container": {
+            "bytes": 9456,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 9456,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/cite-desks/smokeproof/docker-compose.yml,/opt/cite-desks/smokeproof/docker-compose.metis.yml",
+          "project": "smokeproof",
+          "service": "web",
+          "working_dir": "/opt/cite-desks/smokeproof"
+        },
+        "container": "smokeproof-web",
+        "host": "skopos-vps",
+        "image": "aicom-security:smokeproof-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:79a455a0beb74710826f5ba39141e59d332cabd4edb9de3182c1c0b5e1aef90c",
+        "package": "1.30.7-r1",
+        "previous": "smokeproof-web-security-prev-1795208957692086256",
+        "version": "nginx version: nginx/1.30.7"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 13664,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "d2fbadb33000d51f93693793b070c359456b4ee0734f40063d95ab61435511e0",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 20038,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "8310c60c977bc5a90fa3e592b15f4b04eac29f5c73217e300d6b4d975efe8173",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/styles.css"
+          },
+          "container": {
+            "bytes": 9456,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 9456,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/cite-desks/solrecord/docker-compose.yml,/opt/cite-desks/solrecord/docker-compose.metis.yml",
+          "project": "solrecord",
+          "service": "web",
+          "working_dir": "/opt/cite-desks/solrecord"
+        },
+        "container": "solrecord-web",
+        "host": "skopos-vps",
+        "image": "aicom-security:solrecord-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:319efdae52d61876e5a2fdc37e46163229867d35dc0d836377b0bbcbf54f2b43",
+        "package": "1.30.7-r1",
+        "previous": "solrecord-web-security-prev-1795208929646834850",
+        "version": "nginx version: nginx/1.30.7"
+      },
+      {
+        "checks": {
+          "asset_1": {
+            "bytes": 13664,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "d2fbadb33000d51f93693793b070c359456b4ee0734f40063d95ab61435511e0",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/fonts/fonts.css"
+          },
+          "asset_2": {
+            "bytes": 20038,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "sha256": "8310c60c977bc5a90fa3e592b15f4b04eac29f5c73217e300d6b4d975efe8173",
+            "status": "200",
+            "type": "text/css",
+            "uri": "/styles.css"
+          },
+          "container": {
+            "bytes": 9456,
+            "http": "1.1",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          },
+          "public": {
+            "bytes": 9456,
+            "http": "2",
+            "rc": 0,
+            "redirect": "",
+            "status": "200",
+            "type": "text/html"
+          }
+        },
+        "compose": {
+          "config_files": "/opt/cite-desks/tideline/docker-compose.yml,/opt/cite-desks/tideline/docker-compose.metis.yml",
+          "project": "tideline",
+          "service": "web",
+          "working_dir": "/opt/cite-desks/tideline"
+        },
+        "container": "tideline-web",
+        "host": "skopos-vps",
+        "image": "aicom-security:tideline-web-nginx-1.30.7-r1-20261120",
+        "image_id": "sha256:bd69749edb6f9f696c181ce5308697aac9cde5ea448a7f7df8bbb624d751d9eb",
+        "package": "1.30.7-r1",
+        "previous": "tideline-web-security-prev-1795208902683175263",
+        "version": "nginx version: nginx/1.30.7"
+      }
+    ]
+  },
+  "verified_count": 17
+}

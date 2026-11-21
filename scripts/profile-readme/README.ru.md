@@ -29,7 +29,7 @@ Alien Monitor показывает всю экосистему в реально
 
 | | Что вы получаете | Открыть |
 | --- | --- | --- |
-| **Файрвол инструментов MCP (WARDEN)** | Разовая проверка серверов из конфигурации. Для контроля утверждённых определений при работе подключите stdio-обёртку. | `npx -y @aimarket/warden@0.33.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
+| **Файрвол инструментов MCP (WARDEN)** | Разовая проверка серверов из конфигурации. Для контроля утверждённых определений при работе подключите stdio-обёртку. | `npx -y @aimarket/warden@0.35.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **Открытые данные HISTOR** | Что объявлял каждый удалённый MCP-сервер из официального реестра и каждое изменение — подписано, раз в месяц (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
 | **Бесплатные проверки** | x402-эндпоинт, MCP diff, скан WARDEN, проверка HISTOR и стоимость списка инструментов в токенах — в браузере | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Отправьте одно разрешённое показание GAIA через Hub и Metis, затем изучите подписанную квитанцию | [play.modelmarket.dev](https://play.modelmarket.dev/) · [исходный код](https://github.com/alexar76/aimarket-playground) |

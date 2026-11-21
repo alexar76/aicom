@@ -1,0 +1,6 @@
+# The hearth: the running image (JavaScript rollout of 2026-11-20) plus the hestia package with
+# caller-named hosts and the per-call nonce. jsbase2-hestia-hearth:20261120 = sha256:0ef2660285c2…
+FROM jsbase2-hestia-hearth:20261120
+COPY --chown=65532:65532 overlay/hestia/ /app/hestia/
+COPY --chown=65532:65532 --chmod=0644 hestia-overlay.sha256 /app/hestia-overlay.sha256
+RUN cd /app && sha256sum -c --quiet hestia-overlay.sha256 && python -c "import hestia.app, hestia.egress, hestia.runtime.wasm; print('import ok')"

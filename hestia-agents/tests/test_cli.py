@@ -136,7 +136,8 @@ def test_build_regenerates_every_manifest_from_its_handler(tmp_path, monkeypatch
     agents = tmp_path / "agents"
     for slug in SLUGS:
         (agents / slug).mkdir(parents=True)
-        shutil.copy(manifests.AGENTS_DIR / slug / "handler.py", agents / slug / "handler.py")
+        name = manifests.handler_path(slug).name
+        shutil.copy(manifests.AGENTS_DIR / slug / name, agents / slug / name)
     # An edit to one handler must show up in its manifest: it is generated, not copied.
     edited = agents / "json-canonical" / "handler.py"
     edited.write_text(edited.read_text(encoding="utf-8") + "# edited\n", encoding="utf-8")
@@ -152,7 +153,8 @@ def test_build_regenerates_every_manifest_from_its_handler(tmp_path, monkeypatch
         assert text.endswith("}\n")
         written = json.loads(text)
         assert written == deploy_body(slug)
-        assert written["source"]["handler"] == (agents / slug / "handler.py").read_text(
+        handler_file = agents / slug / manifests.handler_path(slug).name
+        assert written["source"]["handler"] == handler_file.read_text(
             encoding="utf-8"
         )
     assert json.loads((agents / "json-canonical" / "deploy.json").read_text())["source"][

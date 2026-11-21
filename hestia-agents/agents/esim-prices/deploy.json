@@ -1,0 +1,57 @@
+{
+  "slug": "esim-prices",
+  "capability": {
+    "product_id": "hestia-agents",
+    "capability_id": "esim.price.history@v1",
+    "name": "eSIM wholesale price history by country",
+    "description": "How has the wholesale price of eSIM plans for a country moved? Our own record of the eSIM Access catalogue as the modelmarket.dev demo node reads it: a read every 15 minutes since 2026-11-18, copies from nightly backups since 2026-10-19, about 1,800 plans. Give a country (ISO alpha-2), optionally data_gb, days or a plan id: every plan that covers it with each change of its wholesale cost in percent and when, rises, falls and the dates of the batches. With no country, the overview of every batch. Also the chance a plan's price moves inside a quote window. Percent only, never absolute costs; one supplier, catalogue costs, not orders.",
+    "price_per_call_usd": 0,
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "country": {
+          "type": "string",
+          "description": "ISO 3166 alpha-2, e.g. JP; omit for the overview"
+        },
+        "data_gb": {
+          "type": "number",
+          "description": "only plans of this size"
+        },
+        "days": {
+          "type": "integer",
+          "description": "only plans of this length"
+        },
+        "plan": {
+          "type": "string",
+          "description": "one plan id, e.g. JP_20_30"
+        },
+        "regional": {
+          "type": "boolean",
+          "default": true,
+          "description": "false: country plans only, no regional ones"
+        },
+        "window_seconds": {
+          "type": "integer",
+          "default": 600,
+          "description": "quote window to estimate the chance for"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "publisher_id": "aicom",
+    "provider_pubkey": ""
+  },
+  "source": {
+    "kind": "template",
+    "handler": "\"\"\"esim.price.history@v1: how has the wholesale price of eSIM plans for a country moved?\n\nThe data is our own record: the modelmarket.dev demo node reads the eSIM Access wholesale catalogue\n(about 1,800 plans), a recorder on its host compares every read with the one before (every 15\nminutes since 2026-11-18 14:29 UTC), and copies from the host's nightly backups go back to\n2026-10-19. The public copy is https://esim.modelmarket.dev/price-history/v1/: index.json and one\nfile per country. It gives each change of a plan's wholesale cost in percent and never the cost\nitself; the node's sell price is its quote (POST https://esim.modelmarket.dev/agents/quote).\n\nGive `country` (ISO 3166 alpha-2, e.g. \"JP\"): every plan that covers it, country plans and\nregional ones, optionally narrowed by `data_gb`, `days`, `plan` (a plan id) or\n`regional: false`. With no country: the overview, every batch of changes so far. `window_seconds`\n(default 600, the eSIM kit's quote window) asks how likely a plan's price is to move inside it,\nestimated from the 15-minute reads.\n\nOne supplier, catalogue costs, not orders: what the node read, not what anyone paid. Before the\n15-minute reads a change is dated only to the gap between two backup copies.\n\"\"\"\n\nBASE = \"https://esim.modelmarket.dev/price-history/v1/\"\nGB = 1 << 30\nDAY = 24 * 3600\n\n\ndef _get(path):\n    reply = fetch(BASE + path)  # noqa: F821 — the sandbox provides fetch()\n    if reply.status == 404:\n        return None\n    if not reply.ok:\n        raise RuntimeError(\"the price history answered HTTP \" + str(reply.status) + \" for \" + path)\n    return reply.json()\n\n\ndef _number(payload, name, low, high):\n    value = payload.get(name)\n    if value is None:\n        return None\n    if isinstance(value, bool) or not isinstance(value, (int, float)) or not low <= value <= high:\n        raise ValueError(name + \" must be a number from \" + str(low) + \" to \" + str(high))\n    return value\n\n\ndef _window(index, seconds):\n    rate = (index.get(\"live_rate\") or {}).get(\"per_plan_second\")\n    if rate is None:\n        return {\"seconds\": seconds, \"note\": \"no 15-minute reads to estimate from yet\"}\n    # 1 - exp(-x) without math: the series converges fast for the small x seen here.\n    x, term, chance = rate * seconds, 1.0, 0.0\n    for n in range(1, 30):\n        term *= x / n\n        chance += term if n % 2 else -term\n    return {\n        \"seconds\": seconds,\n        \"chance_a_plan_changes_pct\": round(100 * chance, 4),\n        \"based_on\": str(index[\"live_rate\"][\"price_changes\"]) + \" price changes in \"\n        + str(index[\"live_rate\"][\"plan_days_observed\"]) + \" plan-days of 15-minute reads\",\n        \"note\": \"a Poisson estimate from the average rate; changes come in batches, so the real \"\n                \"chance is near zero most of the time and high in the minutes a batch lands\",\n    }\n\n\ndef _source(index):\n    coverage = index[\"coverage\"]\n    copies = coverage.get(\"daily_copies\") or []\n    return {\n        \"url\": BASE,\n        \"supplier\": index.get(\"supplier\"),\n        \"unit\": index.get(\"unit\"),\n        \"generated_at\": index.get(\"generated_at\"),\n        \"last_read_at\": coverage.get(\"last_read_at\"),\n        \"backup_copies\": {\"count\": len(copies), \"first\": copies[0] if copies else None,\n                          \"last\": copies[-1] if copies else None},\n        \"live_from\": coverage.get(\"live_from\"),\n        \"live_reads\": coverage.get(\"live_reads\"),\n        \"median_read_interval_minutes\": coverage.get(\"median_interval_minutes\"),\n        \"longest_read_gap_minutes\": coverage.get(\"longest_gap_minutes\"),\n        \"note\": coverage.get(\"note\"),\n    }\n\n\ndef _prices(events):\n    return [e for e in events if e.get(\"event\") == \"price\" and e.get(\"change_pct\") is not None]\n\n\ndef handle(payload):\n    if payload is None:\n        payload = {}\n    if not isinstance(payload, dict):\n        raise ValueError(\"send an object: country (e.g. \\\"JP\\\"), or nothing for the overview\")\n    seconds = _number(payload, \"window_seconds\", 1, 7 * DAY)\n    seconds = 600 if seconds is None else int(seconds)\n    index = _get(\"index.json\")\n    if not index or index.get(\"version\") != 1:\n        raise RuntimeError(\"the price history index is missing or of an unknown version\")\n    out = {\"source\": _source(index), \"window\": _window(index, seconds)}\n\n    country = payload.get(\"country\")\n    if country is None:\n        if payload.get(\"plan\"):\n            raise ValueError(\"give the country the plan covers too, e.g. country \\\"JP\\\"\")\n        batches = index.get(\"batches\") or []\n        out.update(\n            mode=\"overview\",\n            plans_now=index.get(\"plans_now\"),\n            price_changes=index.get(\"price_changes\"),\n            rises=index.get(\"rises\"),\n            falls=index.get(\"falls\"),\n            per_1000_plans_per_day=(index.get(\"live_rate\") or {}).get(\"per_1000_plans_per_day\"),\n            batches=batches,\n            countries=len(index.get(\"countries\") or {}),\n            next=\"give country (ISO alpha-2) for its plans and their changes\",\n        )\n        return out\n\n    code = str(country).strip().upper()\n    if len(code) != 2 or not code.isalpha() or not code.isascii():\n        raise ValueError(\"country must be an ISO 3166 alpha-2 code such as JP\")\n    out.update(mode=\"country\", country=code)\n    if code not in (index.get(\"countries\") or {}):\n        out.update(plans_matched=0, plans=[], detail=\"no plan in this catalogue covers \" + code)\n        return out\n    doc = _get(\"countries/\" + code + \".json\")\n    if not doc:\n        raise RuntimeError(\"the index lists \" + code + \" but its file is missing; \"\n                           \"try again shortly\")\n\n    data_gb = _number(payload, \"data_gb\", 0, 1000)\n    days = _number(payload, \"days\", 1, 3650)\n    wanted = str(payload.get(\"plan\") or \"\").strip()\n    regional = payload.get(\"regional\", True) is not False\n    plans = []\n    for plan in doc.get(\"plans\") or []:\n        if wanted and plan.get(\"id\") != wanted:\n            continue\n        if not regional and plan.get(\"kind\") == \"region\":\n            continue\n        size = plan.get(\"data_bytes\")\n        if data_gb is not None and (not isinstance(size, int) or abs(size / GB - data_gb) > 0.05):\n            continue\n        if days is not None and plan.get(\"days\") != days:\n            continue\n        plans.append(plan)\n    if wanted and not plans:\n        raise ValueError(\"no plan \" + wanted + \" covers \" + code + \" in this catalogue\")\n\n    changed, unchanged, all_prices = [], 0, []\n    for plan in plans:\n        events = plan.get(\"events\") or []\n        prices = _prices(events)\n        all_prices += prices\n        if not events:\n            unchanged += 1\n            continue\n        size = plan.get(\"data_bytes\")\n        entry = {\"id\": plan.get(\"id\"), \"name\": plan.get(\"name\"), \"kind\": plan.get(\"kind\"),\n                 \"covers\": plan.get(\"covers\"), \"days\": plan.get(\"days\"),\n                 \"data_gb\": round(size / GB, 2) if isinstance(size, int) else None,\n                 \"listed\": plan.get(\"listed\"), \"events\": events}\n        if prices:\n            entry[\"last_price_change_at\"] = prices[-1][\"at\"]\n        changed.append(entry)\n    changed.sort(key=lambda e: e.get(\"last_price_change_at\") or \"\", reverse=True)\n    pct = [e[\"change_pct\"] for e in all_prices]\n    rises = [x for x in pct if x > 0]\n    falls = [x for x in pct if x < 0]\n    out.update(\n        plans_matched=len(plans),\n        plans_unchanged=unchanged,\n        price_changes=len(pct),\n        rises=len(rises),\n        falls=len(falls),\n        largest_rise_pct=max(rises) if rises else None,\n        largest_fall_pct=min(falls) if falls else None,\n        last_price_change_at=max((e[\"at\"] for e in all_prices), default=None),\n        price_change_dates=sorted({e[\"at\"] for e in all_prices}),\n        plans=changed,\n    )\n    return out\n"
+  },
+  "owner_pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "announce": false,
+  "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "note": "how stable is the price an agent was quoted for an eSIM",
+  "egress_hosts": [
+    "esim.modelmarket.dev"
+  ]
+}

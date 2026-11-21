@@ -29,7 +29,7 @@ Alien Monitor 实时展示整个生态系统，涵盖 Hub、Factory 和预言机
 
 | | 你将获得 | 打开 |
 | --- | --- | --- |
-| **MCP 工具防火墙（WARDEN）** | 对已配置的服务器执行一次扫描。若要在运行时强制使用已审核的定义，请配置 stdio 代理。 | `npx -y @aimarket/warden@0.33.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
+| **MCP 工具防火墙（WARDEN）** | 对已配置的服务器执行一次扫描。若要在运行时强制使用已审核的定义，请配置 stdio 代理。 | `npx -y @aimarket/warden@0.35.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **HISTOR 开放数据** | 官方注册表中每个远程 MCP 服务器公布的内容及每次变更，已签名，每月一次（CC BY 4.0） | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [Zenodo DOI](https://doi.org/10.5281/zenodo.23512759) |
 | **免费检查** | x402 端点、MCP diff、WARDEN 扫描、HISTOR 检查和工具列表的 token 成本——在浏览器中完成 | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | 将一条 allowlist 内的 GAIA 读数经由 Hub 和 Metis 发送，然后查看签名收据 | [play.modelmarket.dev](https://play.modelmarket.dev/) · [源码](https://github.com/alexar76/aimarket-playground) |

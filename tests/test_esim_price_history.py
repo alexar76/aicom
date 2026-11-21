@@ -87,3 +87,43 @@ def test_report_rates_and_window_estimate(tmp_path):
 
 def test_report_before_two_reads(tmp_path):
     assert eph.summarize(tmp_path / "missing", 600) == {"reads": 0, "note": "no two reads to compare yet"}
+
+
+def test_export_merges_backup_copies_bridge_and_live_reads_without_costs(tmp_path):
+    snap, live, backfill, out = tmp_path / "snap.json", tmp_path / "live", tmp_path / "backfill", tmp_path / "out"
+    region = {**plan("EU-2_1_7", 4.0), "countries": ["FR", "DE"], "kind": "region"}
+    # Two nightly copies: JP_1 falls 2.00 -> 1.50.
+    write_snapshot(snap, "2026-11-16T03:00:00.000Z", [plan("JP_1", 2.0), plan("JP_3", 3.0), region])
+    run(backfill, snap)
+    write_snapshot(snap, "2026-11-17T03:00:00.000Z", [plan("JP_1", 1.5), plan("JP_3", 3.0), region])
+    run(backfill, snap)
+    # The recorder starts later; between the last copy and its first read JP_3 rose 3.00 -> 3.30.
+    write_snapshot(snap, "2026-11-17T14:00:00.000Z", [plan("JP_1", 1.5), plan("JP_3", 3.3), region])
+    run(live, snap)
+    write_snapshot(snap, "2026-11-17T14:15:00.000Z", [plan("JP_1", 1.5), plan("JP_3", 3.3), {**region, "cost_usd": 3.0}])
+    run(live, snap)
+    assert eph.main(["export", "--state-dir", str(live), "--backfill-dir", str(backfill), "--out", str(out)]) == 0
+
+    index = json.loads((out / "index.json").read_text())
+    assert index["coverage"]["daily_copies"] == ["2026-11-16T03:00:00.000Z", "2026-11-17T03:00:00.000Z"]
+    assert index["coverage"]["live_from"] == "2026-11-17T14:00:00.000Z" and index["coverage"]["live_reads"] == 2
+    assert [(b["resolution"], b["plans"], b["rises"], b["falls"]) for b in index["batches"]] == [
+        ("daily", 1, 0, 1), ("bridge", 1, 1, 0), ("15min", 1, 0, 1)]
+    assert index["countries"] == {"DE": 1, "FR": 1, "JP": 2}
+    assert (index["price_changes"], index["rises"], index["falls"]) == (3, 1, 2)
+    assert index["live_rate"]["price_changes"] == 1  # only the 15-minute reads count towards the rate
+
+    jp = json.loads((out / "countries/JP.json").read_text())
+    events = {p["id"]: p["events"] for p in jp["plans"]}
+    assert [(e["resolution"], e["change_pct"]) for e in events["JP_1"]] == [("daily", -25.0)]
+    assert [(e["resolution"], e["change_pct"]) for e in events["JP_3"]] == [("bridge", 10.0)]
+    fr = json.loads((out / "countries/FR.json").read_text())
+    assert fr["plans"][0]["covers"] == 2 and fr["plans"][0]["events"][0]["change_pct"] == -25.0
+    published = (out / "index.json").read_text() + "".join(p.read_text() for p in (out / "countries").glob("*.json"))
+    for cost in (":1.5", ":3.3", ":4.0", ":3.0", '"cost'):
+        assert cost not in published  # percent only, never the wholesaler's costs
+
+    # Nothing read since: no rewrite. A new read: rewritten.
+    stamp = (out / "index.json").stat().st_mtime_ns
+    eph.main(["export", "--state-dir", str(live), "--backfill-dir", str(backfill), "--out", str(out)])
+    assert (out / "index.json").stat().st_mtime_ns == stamp

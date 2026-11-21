@@ -1,0 +1,51 @@
+{
+  "slug": "histor-changed",
+  "capability": {
+    "product_id": "hestia-agents",
+    "capability_id": "histor.changed_since@v1",
+    "name": "What changed in an MCP server's tools since the set you approved",
+    "description": "Give the server and the set you approved (its MTL/1 digest, or the tools array). From HISTOR's daily reads: unchanged (since when), or every change since the server last served your set — tools added, removed and modified with the fields that moved — and what the tool list costs a model in tokens now against then. HISTOR's own signed answer comes back with it.",
+    "price_per_call_usd": 0,
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "description": "the server's URL"
+        },
+        "package": {
+          "type": "string",
+          "description": "or npm:<name> / pypi:<name>"
+        },
+        "name": {
+          "type": "string",
+          "description": "or its MCP registry name"
+        },
+        "approved_digest": {
+          "type": "string",
+          "description": "MTL/1 digest, sha256-…"
+        },
+        "approved_tools": {
+          "type": "array",
+          "description": "or the tools/list you approved"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "publisher_id": "aicom",
+    "provider_pubkey": ""
+  },
+  "source": {
+    "kind": "template",
+    "handler": "\"\"\"histor.changed_since@v1: what changed in an MCP server's tools since the set you approved.\n\nGive the server (`endpoint`, `name` or `package`) and the set you approved: `approved_digest` (its\nMTL/1 digest, sha256-…) or `approved_tools` (the tools/list array then; HISTOR computes the digest).\nHISTOR, which reads public MCP servers every day, answers whether that set is still what the server\nserves. When it is not, the agent lists every change HISTOR recorded since the server last served\nyour set — tools added, removed and modified, with the fields that moved — and what the tool list\nnow costs a model in tokens against what it cost then (o200k_base, as HISTOR counts it).\n\nVerdicts: unchanged, changed, approved_set_never_observed (HISTOR never saw your set at this server:\nit cannot say what changed since), not_recorded (HISTOR does not read this server, or has no digest).\nHISTOR's own signed answer is returned as `histor_check` (verify it under HISTOR's did:key). Only\nhistor.modelmarket.dev is reached.\n\"\"\"\n# ruff: noqa: E501 — pinned witness keys and answer texts are kept whole\n\nfrom urllib.parse import quote\n\nHISTOR = \"https://histor.modelmarket.dev\"\nMAX_LISTED = 20\n\n\ndef _get(path):\n    reply = fetch(HISTOR + path, headers={\"accept\": \"application/json\"})  # noqa: F821 — the sandbox provides fetch()\n    if reply.status == 404:\n        return None\n    if not reply.ok:\n        raise RuntimeError(\"HISTOR answered \" + str(reply.status) + \" for \" + path.split(\"?\")[0])\n    return reply.json()\n\n\ndef _selector(payload):\n    for key in (\"endpoint\", \"package\", \"name\"):\n        value = payload.get(key)\n        if isinstance(value, str) and value.strip():\n            if len(value) > 500:\n                raise ValueError(key + \" is too long\")\n            return key, value.strip()\n    raise ValueError(\n        \"name the server: endpoint (a URL), package (npm:… or pypi:…) or name (registry name)\"\n    )\n\n\ndef _check(payload):\n    key, value = _selector(payload)\n    tools, digest = payload.get(\"approved_tools\"), payload.get(\"approved_digest\")\n    if isinstance(tools, list) and tools:\n        reply = fetch(HISTOR + \"/api/v1/check\", method=\"POST\", json={key: value, \"tools\": tools})  # noqa: F821\n        if not reply.ok:\n            raise RuntimeError(\"HISTOR's check answered \" + str(reply.status))\n        return reply.json()\n    if not isinstance(digest, str) or not digest.startswith(\"sha256-\") or len(digest) > 60:\n        raise ValueError(\n            \"send approved_digest (the MTL/1 digest, sha256-…) or approved_tools (the tools/list array)\"\n        )\n    return _get(\n        \"/api/v1/check?\"\n        + key\n        + \"=\"\n        + quote(value, safe=\"\")\n        + \"&toolSetDigest=\"\n        + quote(digest, safe=\"\")\n    )\n\n\ndef _fields(modified):\n    out = []\n    for item in modified or []:\n        if isinstance(item, dict):\n            out.append(\n                {\"tool\": item.get(\"tool\"), \"fields\": sorted((item.get(\"fields\") or {}).keys())}\n            )\n    return out\n\n\ndef handle(payload):\n    if not isinstance(payload, dict):\n        raise ValueError(\n            \"send an object: endpoint, package or name, and approved_digest or approved_tools\"\n        )\n    check = _check(payload)\n    if not check:\n        raise RuntimeError(\"HISTOR gave no answer for that server\")\n    approved = (check.get(\"query\") or {}).get(\"toolSetDigest\") or payload.get(\"approved_digest\")\n    target = check.get(\"target\") or {}\n    observed = check.get(\"observed\") or {}\n    match = check.get(\"match\")\n    out = {\n        \"approved_digest\": approved,\n        \"current_digest\": observed.get(\"toolSetDigest\"),\n        \"server\": {k: target.get(k) for k in (\"id\", \"name\", \"endpoint\", \"page\")},\n        \"histor_match\": match,\n        \"histor_note\": check.get(\"note\"),\n        \"last_observed\": observed.get(\"lastObserved\"),\n        \"histor_check\": check,\n    }\n    if match == \"same\":\n        out.update(\n            verdict=\"unchanged\",\n            unchanged_since=observed.get(\"unchangedSince\"),\n            detail=\"the server still serves the set you approved, as of HISTOR's last read\",\n        )\n        return out\n    if match == \"different\":\n        out.update(\n            verdict=\"approved_set_never_observed\",\n            detail=\"HISTOR never saw the set you approved at this server, so it cannot say what \"\n            \"changed since; the current set is current_digest\",\n        )\n        return out\n    if match != \"previously-observed\" or not target.get(\"id\"):\n        out.update(\n            verdict=\"not_recorded\",\n            detail=check.get(\"note\") or \"HISTOR has no observation to compare\",\n        )\n        return out\n    # The compact change feed (the full server record can pass the 256 KiB a fetch may bring back).\n    feed = _get(\"/api/v1/changes?watch=\" + target[\"id\"] + \"&limit=50\") or {}\n    cost = _get(\"/api/v1/servers/\" + target[\"id\"] + \"/cost?limit=50\") or {}\n    changes = feed.get(\"changes\") or []  # newest first\n    since = None\n    for i, change in enumerate(changes):\n        if change.get(\"from_toolset\") == approved:\n            since = i  # the newest move away from your set\n            break\n    window = changes if since is None else changes[: since + 1]\n    costs = {c.get(\"id\"): c for c in cost.get(\"changes\") or []}\n    listed = []\n    added, removed, modified = set(), set(), set()\n    for change in window[:MAX_LISTED]:\n        summary = change.get(\"summary\") if isinstance(change.get(\"summary\"), dict) else {}\n        moved = _fields(summary.get(\"modified\"))\n        added.update(summary.get(\"added\") or [])\n        removed.update(summary.get(\"removed\") or [])\n        modified.update(m[\"tool\"] for m in moved if m[\"tool\"])\n        delta = ((costs.get(change.get(\"id\")) or {}).get(\"totals\") or {}).get(\"sent\") or {}\n        listed.append(\n            {\n                \"observed_at\": change.get(\"observed_at\"),\n                \"added\": summary.get(\"added\") or [],\n                \"removed\": summary.get(\"removed\") or [],\n                \"modified\": moved,\n                \"tokens_delta\": delta.get(\"delta\"),\n                \"from\": change.get(\"from_toolset\"),\n                \"to\": change.get(\"to_toolset\"),\n            }\n        )\n    first = costs.get(window[-1].get(\"id\")) if since is not None and window else None\n    then = (((first or {}).get(\"totals\") or {}).get(\"sent\") or {}).get(\"before\")\n    now = ((cost.get(\"current\") or {}).get(\"totals\") or {}).get(\"sent\")\n    out.update(\n        verdict=\"changed\",\n        changed_at=window[-1].get(\"observed_at\") if since is not None and window else None,\n        seen_before=check.get(\"seenBefore\"),\n        changes_since=len(window) if since is not None else None,\n        changes=listed,\n        complete=since is not None and len(window) <= MAX_LISTED,\n        tools={\n            \"added\": sorted(added - removed),\n            \"removed\": sorted(removed - added),\n            \"modified\": sorted(modified),\n        },\n        tokens={\n            \"approved\": then,\n            \"now\": now,\n            \"delta\": (now - then) if isinstance(now, int) and isinstance(then, int) else None,\n            \"tokenizer\": (cost.get(\"current\") or {}).get(\"tokenizer\"),\n        },\n        scope=\"what HISTOR recorded between its daily reads; a server can serve other definitions to \"\n        \"another client or between reads\",\n    )\n    if since is None:\n        out[\"detail\"] = (\n            \"your set's last change is older than the \" + str(len(changes)) + \" changes HISTOR \"\n            \"lists for this server: the newest ones are shown, the full history is at the page\"\n        )\n    return out\n"
+  },
+  "owner_pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "announce": false,
+  "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "note": "the 'did it change since I approved it' check, with token growth",
+  "egress_hosts": [
+    "histor.modelmarket.dev"
+  ]
+}

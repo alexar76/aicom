@@ -28,6 +28,21 @@ ssh factory-vps 'python3 /usr/local/lib/aicom/esim-price-history/esim_price_hist
 90th percentile of the change in percent, the shortest gap between two changes of one plan, and a Poisson estimate of
 the chance that a plan's price changes within a quote window (`--window-seconds`, default 600).
 
+## The public copy
+
+After each run `export` (in the same service) writes `/var/www/esim-landing/price-history/v1/`, served as
+<https://esim.modelmarket.dev/price-history/v1/index.json> and `countries/<CC>.json`, rewritten only when the node
+read its wholesaler again:
+
+- `index.json`: coverage (the backup copies, the first and last 15-minute read, the median and longest gap between
+  reads), every batch of price changes (`resolution` `daily`, `bridge` for the interval between the last backup copy
+  and the recorder's first read, or `15min`), the rate from the 15-minute reads, and the number of plans per country;
+- `countries/<CC>.json`: every plan that covers the country, country plans and regional ones, with its events.
+
+A price change is published as `change_pct`, the change of the wholesale cost in percent. The wholesaler's absolute
+costs are never published; the node's sell price is its quote. The HESTIA agent `esim.price.history@v1`
+(`hestia-agents/agents/esim-prices`) answers from these files.
+
 Install or remove: see `install.sh`. Tests: `tests/test_esim_price_history.py`.
 
 ## Before 2026-11-18: the nightly backups

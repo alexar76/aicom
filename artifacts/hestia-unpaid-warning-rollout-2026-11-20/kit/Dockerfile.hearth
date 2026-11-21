@@ -1,0 +1,6 @@
+# The hearth: the running image (caller-named hosts rollout) plus the package with the unpaid warning.
+# unpaidbase-hestia-hearth:20261120 = sha256:73770388103ed584cfacbbfebcd09041d22c1690063d394daf9e1373eeed04f2
+FROM unpaidbase-hestia-hearth:20261120
+COPY --chown=65532:65532 overlay/hestia/ /app/hestia/
+COPY --chown=65532:65532 --chmod=0644 hestia-overlay.sha256 /app/hestia-overlay.sha256
+RUN cd /app && sha256sum -c --quiet hestia-overlay.sha256 && python -c "import hestia.app, hestia.payout; print('import ok')"

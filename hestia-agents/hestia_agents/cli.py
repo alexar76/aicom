@@ -79,6 +79,8 @@ def cmd_deploy(args: argparse.Namespace) -> int:
             continue
         out = response.json()
         print(f"  {slug}: {out['status']} -> {out['invoke_url']}")
+        for warning in out.get("warnings") or []:
+            print(f"  {slug}: WARNING {warning}")
     return 1 if failures else 0
 
 

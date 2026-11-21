@@ -1,0 +1,73 @@
+{
+ "recorded": "2026-11-20 ~21:30Z",
+ "go": {
+  "source": "https://sum.golang.org/latest",
+  "checkpoint": "go.sum database tree\n71806594\nxUPQqAKZKVZk32SSPMkEw1yTEYwjHuvzNSXrmU2tWR8=\n\n— sum.golang.org Az3groRPpWRRZQQy4L3OOX4NiHoOLIF/JGoUYrXJzCTNZ+8owiQhgQ7Aw3k8fbKSqoVqje92nN7wWgNjCP2WjeGw4wM=\n",
+  "log_key": "sum.golang.org+033de0ae+Ac4zctda0e5eza+HJyk9SxEdh+s3Ux18htTTAD8OuAn8"
+ },
+ "histor": {
+  "source": "https://histor.modelmarket.dev (checkpoint 2836615 with 7 cosignatures from histor_witnessed_vectors.json; /checkpoint and /api/v1/log/proof/consistency on 2026-11-20)",
+  "log_key": "histor.modelmarket.dev/log+ad3ca066+AfXpkWqXVW93sChXnhKsNzvGLTFAAredl1jLlEjbr4wU",
+  "witness_keys": {
+   "Mullvad (stagemole)": "witness.stagemole.eu+67f7aea0+BEqSG3yu9YrmcM3BHvQYTxwFj3uSWakQepafafpUqklv",
+   "Markovian Protocol": "markovianprotocol.com/witness+41b8827f+BJKLl8rBYM0oUxSaWh9rjTldTprEpYj/SWVIGgacA9XC",
+   "TrustFabric": "staging.witness.transparency.goog/ring-any-bells+2e1a8dc9+BG5JTpLc3FJtwzgh1Uv+Qelz9qeOH2bfWjS1s0s+y4rL",
+   "CrawlCheck": "crawlcheck.io/witness+f6b056e2+BCYE6WcaJVekqxEETT9IF/pKvxP7yZM6dLW65YDWpQpE",
+   "GDB Security": "witness.gdbsecurity.com+a1398f73+BAbIijGonVIk3ikDac+KKlSm1ELHOzcddhjjB6zB4BNf",
+   "Geomys (Navigli)": "witness.navigli.sunlight.geomys.org+a3e00fe2+BNy/co4C1Hn1p+INwJrfUlgz7W55dSZReusH/GhUhJ/G",
+   "IPng (krabbel)": "krabbel.ct.ipng.ch+4b10dbd8+BO4sLOtnhktlqMCejDx9C5LDd+/xZxbmBb6BP9ZD2Def"
+  },
+  "cosigned": "histor.modelmarket.dev/log\n2836615\ngVDLr8yv23VEQhK3ahYFDGtv+CZTAwpYujPBTWdP5ww=\n\n— histor.modelmarket.dev/log rTygZpA337OhALTHbDel+aDQDI+1jfvrihY8c+J72ttVGTSSeshukZLGgKZUNY3TOeen2i0U9dtUzNV1jnKzWsg3wgs=\n— crawlcheck.io/witness 9rBW4gAAAABq/pI5QxKvBehGnxILNiVNWarsqIMiYOVG6rF2MtIMCqhhGVtyD1rZhC+L3GeQM8lq5gzOZdeiZ0v0YAgy6JFwj7EXBA==\n— krabbel.ct.ipng.ch SxDb2AAAAABq/pI73HZ502ZIHnacqajv2fwEReX73FkjwofrQ0lMyfbJQ0xLGUBzFRA0bbb/h8qlyQKcz0jOwsXKznQtmupNwkBnAw==\n— markovianprotocol.com/witness QbiCfwAAAABq/pI3GUipYOgpcHU7zNimh/guVnq1Nhw4Hz3tgu8vESc6LB86BTFffSz7tL5e4FROXyHhbhNDxRFSu+g84Kathy75CA==\n— staging.witness.transparency.goog/ring-any-bells LhqNyQAAAABq/pI3qWi+LuaVBRFxbL8YZKT6qXp/aLiGcab07XbjU7W2CHRcXyITCay57JnB5inCWKdvbNJuC9a3wC/17YoxF+FmDg==\n— witness.gdbsecurity.com oTmPcwAAAABq/pI6zTTHtHL45HdKjad7k1qc/yZQJkOH8jX6jTZkX+YnUAK0yQn35S9szLbgYlAt2Q39lkJv8X/zcp/vQNH3z7IlAQ==\n— witness.navigli.sunlight.geomys.org o+AP4gAAAABq/pI6lJQiZL65qLMPUsRJYKYCxZPjdXHrnoe+ucep6HtgJ56hBESdmUuMOIKuxpdkSmXA5clyBDtzVw+CegytDqjLBg==\n— witness.stagemole.eu Z/euoAAAAABq/pI1eXyeqt+MWs+v1kZfuF/IzgmQOsAt/6BdNPY0mqp2FSzV1Nv4XCF4npdhU2dt393kDrFRFeBlZSm/qMwFFWK9BQ==\n",
+  "leaf_index": 1718605,
+  "leaf": "{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://verify.modelmarket.dev/ns/awr/v2\",\"https://verify.modelmarket.dev/ns/awr/mtl/v1\"],\"awrVersion\":\"2.0.0\",\"credentialSubject\":{\"evidence\":[{\"digestSRI\":\"sha256-VF6NNcmd4JR2QmYSl3TWXoFOnwIBqcmPB8hEvEOxj0s=\",\"kind\":\"mtl-subject-descriptor\"},{\"digestSRI\":\"sha256-WHuND1P77Oaf5e0IvgrCFkpZ8PVbXGI/YP/UgzBzEIo=\",\"id\":\"urn:uuid:8c904e9b-3cdc-48a7-bdce-cbd289cbb98c\",\"kind\":\"mtl-prior-label\"}],\"mcpTrustLabel\":{\"observedAt\":\"2026-11-06T20:59:56Z\",\"priorLabel\":{\"digestSRI\":\"sha256-WHuND1P77Oaf5e0IvgrCFkpZ8PVbXGI/YP/UgzBzEIo=\",\"id\":\"urn:uuid:8c904e9b-3cdc-48a7-bdce-cbd289cbb98c\",\"observedAt\":\"2026-11-06T02:58:40Z\"},\"profile\":\"MTL/1\",\"profileRevision\":\"1.2.0\",\"reproducibility\":\"deterministic\",\"scope\":\"The subject digest observed now differs from the subject digest of priorLabel: the advertised tool definitions changed between the two observations. A change is not an accusation; a version bump changes definitions too.\",\"server\":{\"name\":\"io.github.alexar76/aimarket-hub\",\"registry\":\"urn:awr:mtl:1:registry:registry.modelcontextprotocol.io\"},\"toolSet\":{\"count\":13,\"digestSRI\":\"sha256-+tgzggq0506M928osbUhi0t1DVKtNLSEajxgP4lCjww=\"}},\"method\":{\"id\":\"urn:awr:mtl:1:method:tool-set-continuity\",\"name\":\"MTL/1 tool-set continuity\"},\"verdict\":\"fail\",\"verifiedWork\":{\"digestSRI\":\"sha256-VF6NNcmd4JR2QmYSl3TWXoFOnwIBqcmPB8hEvEOxj0s=\",\"id\":\"urn:awr:mtl:1:subject:sha256:545e8d35c99de094764266129774d65e814e9f0201a9c98f07c844bc43b18f4b\"}},\"id\":\"urn:uuid:2f9770de-183d-4c22-a67d-7389a3ca9034\",\"issuer\":{\"id\":\"did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9\",\"name\":\"HISTOR (histor.modelmarket.dev)\"},\"proof\":{\"@context\":[\"https://www.w3.org/ns/credentials/v2\",\"https://verify.modelmarket.dev/ns/awr/v2\",\"https://verify.modelmarket.dev/ns/awr/mtl/v1\"],\"created\":\"2026-11-06T20:59:57Z\",\"cryptosuite\":\"eddsa-jcs-2022\",\"proofPurpose\":\"assertionMethod\",\"proofValue\":\"z59okC86AFUdbvvgj1nUyxfhYpuQaLdAtwWsCQTDhUeLsgG8BVj9949QVrnhHMe3BNvjS3ZSFnLZH3Cu9UBKvDwEH\",\"type\":\"DataIntegrityProof\",\"verificationMethod\":\"did:key:z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9#z6Mkw1CVxsPj9utYp7VXWEbuuGM9Ev47itwKu1UfKd5ByxR9\"},\"type\":[\"VerifiableCredential\",\"VerificationVerdict\",\"MCPTrustLabel\"],\"validFrom\":\"2026-11-06T20:59:57Z\"}",
+  "inclusion_proof": [
+   "30d254c0cba55d2ab4146bc2dda7cad52b6e858b8546ab05caadf241402001ee",
+   "61f10a36ec3ea02e82692a4a4c8e0e1253a2a49e4ecad968c799ff16bc39055e",
+   "55c7230eba874dfafab03ecdc23f5622a8acf02b8d9c2ea5a488c9e8c8ca7912",
+   "008d58f316f967d94e7c7f076b5be330cef5850bde85098470463569f3caff48",
+   "56392bf327bab066008e9ee23098f2ef85c5d952cc63d76fba447d4f5cbd048b",
+   "01d07012e27289caa594a095139b3bb259f2a95ddc9b0b503645ca3c3a33cf50",
+   "74bb0418ed1154e0790b62d752c55b9efd80ee02a50f259c6d14c0bd90a43b88",
+   "b27892dd11d54706b91011c48eca14be9c89b54693f1872095653e90aa9621a4",
+   "529f5609fcd7015834115ac75429b080f5023a987ff1c2dc35ccde6de16fc167",
+   "44a38069a5e8108d9c8991c3f91bf0492c700fbdc525134926ea21b3c0657d9d",
+   "ccc094e4d4fbdb5611705c360269a44abf3aa113c6c4ca685db3b0779f2d2e74",
+   "63c39397bfcec2883dab7f37e842634c28a385ebdb9908c55c5f17eca4aae1a9",
+   "8ca207bc055e54f5f7c3225551625644e0dfc2f5b73a0a61643aa2668f78d5f9",
+   "c30132a004fb992e0fc8aba7edf0aeb2a8e45c722c71b0426237e561645359c3",
+   "c9f72500175aca29d91d545ddd3d93657040858a0c36f0697df499d7d6594078",
+   "a6cdeec7862475c689631d00aa2b23b78310f046965e4f7003c236d8a6692108",
+   "8f6db9e486d620fb56d218662fd56f22722f206ec31ca67eef3536c076fbe31a",
+   "af0073126540156249841f89ddf526c6ef2d3cf194b1b1f947608b335b5c6848",
+   "4c3161c90d8352fd86aafb905c307660fd82f0555fdd174882f639598bf53f9d",
+   "304293aae9e8fab380b9f801767758ea26d3d794cba3a625062da0505d265e32",
+   "02fad707308d8172b37bf01c8c88674fb18b54071180c661a663839407b5b9a2",
+   "07083988ab914b9a3732b5a4ee76dc9c268bc64e07f40a78befd8f723bdf1cd9"
+  ],
+  "newer": "histor.modelmarket.dev/log\n3000827\nJ0HoZV16KQMzGPsMhdNZpbLI/tNm3CEp78+DdN6ie8k=\n\n— histor.modelmarket.dev/log rTygZi/VUbZISCOmq4myidnraB6wu1XJT/RV4CZqxs0OpGBk3cHhizRxYk7EMhAO+m9L0FLfZ+vEpA3MmybONhsFow0=\n",
+  "consistency_proof": [
+   "e732fa1d328af2c80f7d2bef66dd9ea41376767e6723fa4ddc3db19f91f45029",
+   "84b7a71b8ae9021ad61eaac3e4b811f535b3c72515b3c13e57cf145864c8f607",
+   "72bd092056566c338a9bf6f0c02ec7f3aa6f68225ede515d5736805f833ca1c9",
+   "ef2e25524134a41add88f3b40b62b9c0655e98839ce4c7c56eb9f55824012e78",
+   "2ee34b21e7b8e2fa017456c225c60e39b733ccdf87c923e77abd2cc1b5668177",
+   "b6425b719b1f544cc3b0cde8887291acf21810b591fd985f1a97f170e9b83d5f",
+   "dcbb4857a72ae2a2876378a35a9dce8d49e46497296a30d6b51ce2a6ed49b687",
+   "307f199ca395b2e167a2d9b66b43806fc82cd2eb3d14a1022240ef33f1f581f2",
+   "f9d722ce29b9c7c2177bf7267a9d099620713587f599ef57f36490f9c3656a7a",
+   "3b64754899e983ed4818c24b6e9402ace0dcf20aa0f57c57aab3b96a0f8f3c16",
+   "b0beb7723dedb5da308cde7bf029050a8638a2944a164881ca6d8d14895e26ef",
+   "37ef123e4e5605a8785e2929f1bdeb97395783535c9be142eeb179e108dc7b4f",
+   "4d1262a74a9028443c7ad9c729bd6c62a8d67ab730dad72eef3b679c1253f9a2",
+   "19f96be73f2861ef9c557d73f75ae5641cd4d616bcb7549b08df3a5ef21c2e01",
+   "11690bd86125ecf0d018c970f3a1761ee450219e29974f4f67de5e64d613ab4a",
+   "fd0124a7fc94c54ad9897721e79040325f7d4d5ff97d7b1cac33562985ea322f",
+   "aa825f187debaf18bfc2f67df21b6bc9b0299611399703716b99ccfe42735939",
+   "9f436ba2a8654475b95c65a7bd4677a67f4409f395de6c9e1f12d347218db902",
+   "dcc423d19f397f966be8c9594e14488e17271670c58f20b604fb58788ee4d780",
+   "5a6806ca334df3570dc3a3093231215e97d3b7a48d51e9121a57fca3dce1005a",
+   "7462df533b0098b0920b210619d0b5ca5cd0aa1a37e18f7465730431a0c4532e",
+   "e52b2b9e172b5f67e31b3f9b15e367a2658b98d16dfe1eb267f4ff59cab1adca"
+  ]
+ }
+}

@@ -1,0 +1,66 @@
+{
+  "slug": "x402-settlement",
+  "capability": {
+    "product_id": "hestia-agents",
+    "capability_id": "x402.settlement.check@v1",
+    "name": "x402 settlement check on Base: paid, to whom, how much, final",
+    "description": "Did this x402 payment really settle? Give the transaction hash, the address that should have been paid and the price (USDC smallest unit, or amount_usd). The agent reads the receipt from Base's public RPC and checks the transaction succeeded in a canonical block, that a USDC Transfer to pay_to carries exactly the amount, and, with payer and nonce, that the buyer's EIP-3009 authorization made that very transfer. Returns paid, paid_not_final, not_paid, failed, pending or wrong_chain, with confirmations and whether the block is finalized. Base and Base Sepolia.",
+    "price_per_call_usd": 0,
+    "input_schema": {
+      "type": "object",
+      "required": [
+        "tx",
+        "pay_to"
+      ],
+      "properties": {
+        "tx": {
+          "type": "string",
+          "description": "settlement transaction hash"
+        },
+        "pay_to": {
+          "type": "string",
+          "description": "the address that should be paid"
+        },
+        "amount": {
+          "description": "USDC smallest unit (6 decimals): 10000 = $0.01"
+        },
+        "amount_usd": {
+          "type": "string",
+          "description": "or the price in dollars"
+        },
+        "payer": {
+          "type": "string",
+          "description": "the buyer's address (optional)"
+        },
+        "nonce": {
+          "type": "string",
+          "description": "the EIP-3009 nonce the buyer signed (needs payer)"
+        },
+        "network": {
+          "enum": [
+            "base",
+            "base-sepolia"
+          ],
+          "default": "base"
+        }
+      }
+    },
+    "output_schema": {
+      "type": "object"
+    },
+    "publisher_id": "aicom",
+    "provider_pubkey": ""
+  },
+  "source": {
+    "kind": "template",
+    "handler": "\"\"\"x402.settlement.check@v1: did this x402 payment really settle on Base, to whom, for how much?\n\nA seller who serves on the strength of a transaction hash should not take the buyer's (or a\nfacilitator's) word for it. Give `tx` (the settlement transaction hash), `pay_to` (the address that\nshould have been paid) and the price, `amount` in USDC's smallest unit (6 decimals: 10000 is\n$0.01) or `amount_usd` (\"0.01\"). Optionally `payer` and `nonce`: the EIP-3009 authorization the\nbuyer signed, which binds this transfer to one invoice.\n\nThe agent reads the receipt from the chain's public RPC (mainnet.base.org, or sepolia.base.org for\n`network: \"base-sepolia\"`), and checks, as the AIMarket hub's own settlement check does:\n  - the chain is the one asked for, the transaction succeeded, its block is canonical;\n  - a USDC Transfer log from the token contract to `pay_to` for exactly the amount (more is\n    reported, never counted as exact);\n  - with `nonce`: an AuthorizationUsed log (payer, nonce) immediately before that Transfer, in the\n    same transaction — the transfer is the one that authorization made, not a coincidence;\n  - confirmations, and whether the block is at or below the chain's finalized block.\nVerdicts: paid (and finalized), paid_not_final, not_paid (the receipt has no such transfer),\nfailed (reverted), pending (no receipt yet), wrong_chain.\n\"\"\"\n\nfrom decimal import Decimal, InvalidOperation\n\nNETWORKS = {\n    \"base\": (8453, \"https://mainnet.base.org\", \"0x833589fcd6edb6e08f4c7c32d4f71b54bda02913\"),\n    \"base-sepolia\": (\n        84532,\n        \"https://sepolia.base.org\",\n        \"0x036cbd53842c5426634e7929541ec2318f3dcf7e\",\n    ),\n}\nTRANSFER = \"0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef\"\nAUTHORIZATION_USED = \"0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5\"\nHEX = \"0123456789abcdef\"\n\n\ndef _hex(value, where, size):\n    text = str(value or \"\").strip().lower()\n    if not (text.startswith(\"0x\") and len(text) == 2 + size and all(c in HEX for c in text[2:])):\n        raise ValueError(where + \" must be 0x and \" + str(size) + \" hex digits\")\n    return text\n\n\ndef _amount(payload):\n    if payload.get(\"amount\") is not None:\n        raw = payload[\"amount\"]\n        if isinstance(raw, bool) or not str(raw).strip().isdigit():\n            raise ValueError(\n                \"amount is USDC's smallest unit as a whole number, e.g. 10000 for $0.01\"\n            )\n        return int(str(raw).strip())\n    if payload.get(\"amount_usd\") is not None:\n        try:\n            value = Decimal(str(payload[\"amount_usd\"]).strip())\n        except InvalidOperation:\n            raise ValueError(\"amount_usd must be a decimal number such as 0.01\") from None\n        units = value * 1_000_000\n        if value <= 0 or units != units.to_integral_value():\n            raise ValueError(\"amount_usd must be positive with at most 6 decimals\")\n        return int(units)\n    raise ValueError(\"give the price: amount (smallest unit) or amount_usd\")\n\n\ndef _topic(address):\n    return \"0x\" + address[2:].zfill(64)\n\n\ndef _rpc(url, method, params):\n    reply = fetch(  # noqa: F821 — the sandbox provides fetch()\n        url,\n        method=\"POST\",\n        json={\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": method, \"params\": params},\n    )\n    if not reply.ok:\n        raise RuntimeError(\"the RPC answered HTTP \" + str(reply.status))\n    body = reply.json()\n    if \"error\" in body:\n        raise RuntimeError(\"the RPC refused \" + method + \": \" + str(body[\"error\"])[:160])\n    return body.get(\"result\")\n\n\ndef handle(payload):\n    if not isinstance(payload, dict):\n        raise ValueError(\"send an object: tx, pay_to, amount or amount_usd\")\n    network = str(payload.get(\"network\") or \"base\").strip().lower()\n    if network not in NETWORKS:\n        raise ValueError(\"network must be \" + \" or \".join(NETWORKS))\n    chain_id, url, usdc = NETWORKS[network]\n    tx = _hex(payload.get(\"tx\"), \"tx\", 64)\n    pay_to = _hex(payload.get(\"pay_to\"), \"pay_to\", 40)\n    amount = _amount(payload)\n    payer = _hex(payload[\"payer\"], \"payer\", 40) if payload.get(\"payer\") else None\n    nonce = _hex(payload[\"nonce\"], \"nonce\", 64) if payload.get(\"nonce\") else None\n    if nonce and not payer:\n        raise ValueError(\"a nonce binds an authorization by its payer: give payer too\")\n\n    out = {\n        \"network\": network,\n        \"chain_id\": chain_id,\n        \"tx\": tx,\n        \"token\": usdc,\n        \"pay_to\": pay_to,\n        \"amount\": amount,\n        \"amount_usd\": str(Decimal(amount) / 1_000_000),\n    }\n    checks = []\n\n    def check(name, ok, detail):\n        checks.append({\"check\": name, \"ok\": bool(ok), \"detail\": detail})\n        return bool(ok)\n\n    def done(verdict):\n        out[\"verdict\"] = verdict\n        out[\"paid\"] = verdict in (\"paid\", \"paid_not_final\")\n        out[\"checks\"] = checks\n        return out\n\n    served = int(str(_rpc(url, \"eth_chainId\", [])), 16)\n    if not check(\"chain\", served == chain_id, \"the RPC serves chain \" + str(served)):\n        return done(\"wrong_chain\")\n    receipt = _rpc(url, \"eth_getTransactionReceipt\", [tx])\n    if not receipt:\n        check(\"receipt\", False, \"no receipt: the transaction is unknown or not mined yet\")\n        return done(\"pending\")\n    if not check(\n        \"succeeded\",\n        int(receipt.get(\"status\", \"0x0\"), 16) == 1,\n        \"status \" + str(receipt.get(\"status\")),\n    ):\n        return done(\"failed\")\n    height = int(receipt[\"blockNumber\"], 16)\n    block_hash = str(receipt[\"blockHash\"]).lower()\n    block = _rpc(url, \"eth_getBlockByNumber\", [hex(height), False]) or {}\n    canonical = (\n        int(block.get(\"number\", \"0x0\"), 16) == height\n        and str(block.get(\"hash\", \"\")).lower() == block_hash\n    )\n    check(\n        \"canonical_block\",\n        canonical,\n        \"block \" + str(height) + (\" is\" if canonical else \" is NOT\") + \" the canonical one\",\n    )\n    out[\"block\"] = height\n    if block.get(\"timestamp\"):\n        out[\"block_time\"] = int(block[\"timestamp\"], 16)\n\n    logs = [\n        log\n        for log in receipt.get(\"logs\") or []\n        if not log.get(\"removed\") and str(log.get(\"address\", \"\")).lower() == usdc\n    ]\n    moves = []\n    for position, log in enumerate(logs):\n        topics = [str(t).lower() for t in log.get(\"topics\") or []]\n        if len(topics) == 3 and topics[0] == TRANSFER and topics[2] == _topic(pay_to):\n            moves.append((position, \"0x\" + topics[1][-40:], int(str(log.get(\"data\") or \"0x0\"), 16)))\n    exact = [m for m in moves if m[2] == amount and (payer is None or m[1] == payer)]\n    if exact:\n        found = \"a USDC transfer of \" + str(amount) + \" to pay_to\"\n    elif moves:\n        found = (\n            \"USDC to pay_to, but \"\n            + \", \".join(str(m[2]) + \" from \" + m[1] for m in moves)\n            + \", not \"\n            + str(amount)\n            + (\" from \" + payer if payer else \"\")\n        )\n    else:\n        found = \"no USDC transfer to pay_to in this transaction\"\n    check(\"transfer\", exact, found)\n    out[\"transfers_to_pay_to\"] = [{\"from\": m[1], \"amount\": m[2]} for m in moves]\n    if exact:\n        out[\"payer\"] = exact[0][1]\n    if nonce:\n        bound = False\n        for position, _sender, _value in exact:\n            if position > 0:\n                before = logs[position - 1]\n                topics = [str(t).lower() for t in before.get(\"topics\") or []]\n                bound = bound or (\n                    topics == [AUTHORIZATION_USED, _topic(payer), nonce]\n                    and int(before[\"logIndex\"], 16) + 1 == int(logs[position][\"logIndex\"], 16)\n                )\n        check(\n            \"authorization\",\n            bound,\n            \"AuthorizationUsed(payer, nonce) right before the transfer\"\n            if bound\n            else \"no AuthorizationUsed for this payer and nonce right before the transfer: \"\n            \"the transfer is not the one this authorization made\",\n        )\n    if not all(c[\"ok\"] for c in checks):\n        return done(\"not_paid\")\n\n    latest = int(str(_rpc(url, \"eth_blockNumber\", [])), 16)\n    final = _rpc(url, \"eth_getBlockByNumber\", [\"finalized\", False]) or {}\n    finalized_at = int(final.get(\"number\", \"0x0\"), 16)\n    out[\"confirmations\"] = max(0, latest - height + 1)\n    out[\"finalized\"] = height <= finalized_at\n    out[\"finalized_block\"] = finalized_at\n    return done(\"paid\" if out[\"finalized\"] else \"paid_not_final\")\n"
+  },
+  "owner_pubkey": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
+  "announce": false,
+  "payout_address": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+  "note": "a seller's check before serving on the strength of a transaction hash",
+  "egress_hosts": [
+    "mainnet.base.org",
+    "sepolia.base.org"
+  ]
+}

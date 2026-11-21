@@ -1,0 +1,6 @@
+{"set":"plain","pinFormat":2,"allow":true,"pinningFindings":[],"otherFindings":[]}
+{"set":"rich","pinFormat":2,"allow":true,"pinningFindings":[],"otherFindings":[]}
+{"set":"rich-changed","allow":false,"pinningFindings":["TOOL_DEF_DRIFT"]}
+{"set":"rich-hint-moved","allow":false,"findings":[{"gate":"pinning","code":"TOOL_DEF_DRIFT","message":"Tool definitions for \"demo\" changed since approval (pinned 22f6e202500d → now 0fc182263470). Possible rug-pull; re-approval required."}]}
+{"set":"hint-contradicts-description","warden":"0.33.0","allow":true,"findings":[{"gate":"pinning","code":"TOOL_DEF_UNPINNED","severity":"info"}]}
+{"set":"hint-contradicts-description","warden":"0.35.0","allow":true,"findings":[{"gate":"pinning","code":"TOOL_DEF_UNPINNED","severity":"info"}]}

@@ -3,7 +3,7 @@
 Deterministic AIMarket capability providers, built to run as HESTIA template
 tenants and sold under the operator's name (payouts to the treasury).
 
-**Catalogue of all thirteen agents, in five languages:** [English](docs/AGENTS.md) ·
+**Catalogue of all twenty-one agents, in five languages:** [English](docs/AGENTS.md) ·
 [Русский](docs/AGENTS.ru.md) · [Español](docs/AGENTS.es.md) · [Français](docs/AGENTS.fr.md) ·
 [中文](docs/AGENTS.zh.md) — what each answers, how to call it, an example request.
 
@@ -20,6 +20,10 @@ nothing. Determinism is what makes the receipt worth paying for.
 | `commit-referee` | `commit.referee@v1` | Did the reveal match — and could the committer have opened it another way |
 | `merkle-proof` | `merkle.proof@v1` | Is this entry in that log / that airdrop — and did the log only grow |
 | `x402-check` | `x402.authorization.check@v1` | Who signed this x402 payment, for what — and will USDC accept it |
+| `x402-settlement` | `x402.settlement.check@v1` | Did this x402 payment settle on Base — to whom, how much, bound to its authorization, final |
+| `esim-prices` | `esim.price.history@v1` | How the wholesale price of eSIM plans for a country moved — when, by how much, in batches |
+| `tlog-checkpoint` | `tlog.checkpoint.verify@v1` | Is this log checkpoint signed by the log and cosigned by your witnesses — and is my entry in it, did the log only grow |
+| `http-signature` | `http.signature.verify@v1` | Does this HTTP message's RFC 9421 signature verify — over exactly which components |
 | `mcp-diff` | `mcp.tools.diff@v1` | What changed in an MCP server you approved — and does it look like a rug pull |
 | `money-compute` | `money.compute@v1` | What this invoice, split or conversion comes to — to the last minor unit |
 | `signature-verify` | `signature.verify@v1` | Did this key sign this receipt, credential or answer — byte for byte |
@@ -28,6 +32,10 @@ nothing. Determinism is what makes the receipt worth paying for.
 | `stats-test` | `stats.test@v1` | Did B really beat A — and how many visitors would it take to know |
 | `aid-record` | `aid.record.read@v1` | What an AID client finds at `_agent.<domain>` — and is the record valid |
 | `aid-proof` | `aid.proof.verify@v1` | Did the endpoint prove the key its domain publishes (AID endpoint proof) |
+| `aid-discover` | `aid.discover@v1` | Does this domain's agent prove the key its DNS publishes — record and live proof in one call |
+| `histor-witnessed` | `histor.witnessed@v1` | Is this tool set in HISTOR's log, under a head seven independent witnesses co-signed |
+| `histor-changed` | `histor.changed_since@v1` | What changed in a server's tools since the set you approved — and the token cost now |
+| `warden-scan` | `warden.scan@v1` | Is this MCP tool list safe to show a model — WARDEN's static rules, callable |
 
 ## Quick start
 
@@ -295,9 +303,41 @@ response's status and signature headers, `now`) and applies every verifier rule 
 binding (B.7). It returns each check with its reason and the exact RFC 9421 signature base. It makes no
 request itself, so it judges the exchange it is told about.
 
+`aid-discover` does both in one call, against the live endpoint: the record, then a fresh proof
+request bound to the domain, with the hearth's per-call `CALL_NONCE` as the challenge. The caller
+names the hosts it may reach (`egress_input_fields`: `domain`, and `endpoint` when the record points
+elsewhere). Its handler is generated from the other two by `scripts/build_aid_discover.py`;
+`tests/test_aid_discover.py` runs it against an endpoint that signs real proofs.
+
 Tested against three exchanges recorded from `https://modelmarket.dev/mcp` (bound, unbound, and the 403 for
 an unserved domain), a second signer built on `cryptography`, the specification's example records, and real
 answers from both resolvers; the lookup also runs round by round under the hearth's guest code.
+
+
+### `histor-witnessed` and `histor-changed` — HISTOR's record, callable
+
+HISTOR reads public MCP servers every day and logs a signed label for each tool set it sees. These two
+agents read that record for a caller with no crypto library. `histor-witnessed` proves a label is in
+the log: its own RFC 8785 for the leaf, the RFC 9162 inclusion proof to the newest head the witnesses
+co-signed (`/api/v1/log/checkpoint/cosigned`, since 2026-11-20), the log's signature and seven witness
+cosignatures under keys pinned in the handler. `histor-changed` answers "did it change since I
+approved it": the changes since the server last served your set, and the token cost then and now.
+Both reach histor.modelmarket.dev only. Their tests run on answers recorded from HISTOR on 2026-11-20
+(`tests/histor_*_vectors.json`), including a checkpoint all seven witnesses co-signed.
+
+### `warden-scan` — WARDEN as a callable check, and the first JavaScript agent
+
+`agents/warden-scan/handler.js` is generated: `scripts/build_warden_scan.sh` bundles WARDEN's
+static scan from `../warden/src` with esbuild into one classic script for HESTIA's JavaScript
+sandbox (QuickJS-ng for WASI). Node's `node:crypto` (sha256), `Buffer` (base64url) and
+`TextDecoder` (strict UTF-8) come from `agents/warden-scan/src/node-shims.js`. The first line of
+the bundle names the WARDEN version it was built from.
+
+`tests/test_warden_scan.py` runs the committed bundle in the real engine and requires the same
+answers, byte for byte, that the same entry point gives under Node 20 with the real modules
+(`tests/warden_scan_expected.json`), and rebuilds the bundle when an esbuild is at hand (set
+`ESBUILD`) to check the committed file is current. The engine: `HESTIA_QJS_WASM`, as written by
+`../hestia/scripts/fetch_qjs_wasi.py`.
 
 ## Limits worth knowing before writing another
 

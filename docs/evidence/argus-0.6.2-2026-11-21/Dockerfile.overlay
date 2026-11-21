@@ -1,0 +1,12 @@
+# ARGUS 0.6.2 for the live ARGUS on attested: the running image (aicom-security:argus-0.6.1-20261120) with WARDEN
+# replaced by the npm 0.35.0 package (npm shasum d3ba314d…), /app/dist built from aicom 39416d961 (against 0.6.1: the
+# version constant) and that commit's package.json and package-lock.json. Every other file, the other packages in
+# node_modules included, stays the image's own.
+FROM aicom-security:argus-0.6.1-20261120
+USER 0:0
+RUN rm -rf /app/node_modules/@aimarket/warden /app/dist
+COPY --chown=0:0 warden/ /app/node_modules/@aimarket/warden/
+COPY --chown=0:0 dist/ /app/dist/
+COPY --chown=0:0 package.json package-lock.json /app/
+LABEL aicom.argus.overlay="argus-0.6.2-warden-0.35.0-20261121" skopos.source.commit="39416d961"
+USER node

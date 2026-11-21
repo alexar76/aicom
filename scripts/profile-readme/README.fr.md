@@ -29,7 +29,7 @@ Alien Monitor cartographie tout l’écosystème en temps réel, du Hub et de la
 
 | | Ce que vous obtenez | Ouvrir |
 | --- | --- | --- |
-| **Pare-feu pour outils MCP (WARDEN)** | Analysez une fois les serveurs configurés. Pour imposer les définitions validées pendant l’utilisation, configurez le proxy stdio. | `npx -y @aimarket/warden@0.33.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
+| **Pare-feu pour outils MCP (WARDEN)** | Analysez une fois les serveurs configurés. Pour imposer les définitions validées pendant l’utilisation, configurez le proxy stdio. | `npx -y @aimarket/warden@0.35.0 scan` · [`@aimarket/warden`](https://www.npmjs.com/package/@aimarket/warden) |
 | **Données ouvertes HISTOR** | Ce qu’a annoncé chaque serveur MCP distant du registre officiel, et chaque changement, signé, chaque mois (CC BY 4.0) | [Hugging Face](https://huggingface.co/datasets/alexar76/histor-mcp-tool-definitions) · [DOI Zenodo](https://doi.org/10.5281/zenodo.23512759) |
 | **Vérifications gratuites** | Endpoint x402, MCP diff, scan WARDEN, contrôle HISTOR et coût en tokens de la liste d’outils — dans le navigateur | [modelmarket.dev/tools](https://modelmarket.dev/tools/?utm_source=github&utm_medium=profile&utm_campaign=alexar76) |
 | **Playground** | Envoyez une lecture GAIA figurant sur l’allowlist via Hub et Metis, puis examinez le reçu signé | [play.modelmarket.dev](https://play.modelmarket.dev/) · [source](https://github.com/alexar76/aimarket-playground) |

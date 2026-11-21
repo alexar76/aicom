@@ -246,6 +246,10 @@ FACTORY_LOCAL_EXCLUDES = [
     # measure_distribution.py --edge root@…). Blocked factory publish 2026-11-20.
     # Pattern covers dated packs; Gitea keeps the trees.
     "artifacts/social-growth-*",
+    # HISTOR cosigned rollout kits embed private host literals and ops rebind
+    # scripts (rebind-after.sh). Blocked factory publish 2026-11-21. Pattern
+    # covers dated packs; Gitea keeps the trees.
+    "artifacts/histor-cosigned-*",
     # Local hub release kit with a checked-in release-venv (broken symlinks trip
     # verify_mirror_secrets wc redirects and stall the factory publish). Gitea only.
     "artifacts/hub-3.17.0-2026-10-31",

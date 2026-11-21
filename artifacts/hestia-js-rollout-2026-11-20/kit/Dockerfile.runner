@@ -1,0 +1,11 @@
+# The sandbox runner: the running image plus the same package and QuickJS-ng for WASI (pinned).
+# jsbase-hestia-runner:20261120 = sha256:c238bb8a9483ab3246fc88ae9fc074571c6d03cf9af263846170dc76d388b437, the image the container ran (build.sh tags it).
+FROM jsbase-hestia-runner:20261120
+COPY --chown=65532:65532 overlay/hestia/ /app/hestia/
+COPY --chown=65532:65532 --chmod=0644 hestia-overlay.sha256 /app/hestia-overlay.sha256
+# A plain directory COPY: --chmod would also give the created /opt/qjs-wasi 0644 (no traverse).
+COPY qjs/ /opt/qjs-wasi/
+ENV HESTIA_QJS_WASM=/opt/qjs-wasi/qjs-wasi.wasm
+RUN cd /app && sha256sum -c --quiet hestia-overlay.sha256 \
+ && echo "42a732a676ec2d93488c19411e0fad283bf72658fdad746f089914b523c783b1  /opt/qjs-wasi/qjs-wasi.wasm" | sha256sum -c --quiet \
+ && python -c "import hestia.sandbox, hestia.wasm_runner; print('import ok')"

@@ -5,11 +5,13 @@ After=docker.service
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/python3 /usr/local/lib/aicom/esim-price-history/esim_price_history.py record
+# The public copy (percent changes, no absolute costs): https://esim.modelmarket.dev/price-history/v1/
+ExecStartPost=/usr/bin/python3 /usr/local/lib/aicom/esim-price-history/esim_price_history.py export --out /var/www/esim-landing/price-history/v1
 Nice=10
 TimeoutStartSec=120
-# Reads the node's snapshot and asks it for one quote on localhost; writes only its own folder.
+# Reads the node's snapshot and asks it for one quote on localhost; writes only its own folder and the public copy.
 ProtectSystem=strict
-ReadWritePaths=/var/lib/aicom/esim-price-history
+ReadWritePaths=/var/lib/aicom/esim-price-history /var/www/esim-landing/price-history
 ProtectHome=yes
 PrivateTmp=yes
 NoNewPrivileges=yes
