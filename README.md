@@ -500,6 +500,7 @@ POST /api/admin/discovery/run   # JWT; see OpenAPI /api/docs
 <details>
 <summary><strong>Documentation index</strong></summary>
 
+- **[docs/quickstart-mcp-cursor.md](docs/quickstart-mcp-cursor.md)** — Try MCP in Cursor (`aimarket-mcp` paste + smoke)
 - **[docs/USER_GUIDE.md](docs/USER_GUIDE.md)** — illustrated user guide
 - **[External diagnostics](docs/factory-subcontracting.md)** — optional AIMarket purchases for repeated repair failures; budgets, provider contract and recovery (EN / RU / ES / FR / ZH)
 - **[docs/owner-guide.md](docs/owner-guide.md)** — platform owner handbook

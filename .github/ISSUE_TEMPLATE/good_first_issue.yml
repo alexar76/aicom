@@ -1,0 +1,52 @@
+name: Good first issue suggestion
+description: Propose a small, well-scoped task for a new contributor
+title: "[good first issue]: "
+labels: ["good first issue", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Suggest a task that a newcomer can finish in about a day. Keep the scope tight and list clear acceptance checks.
+  - type: input
+    id: suggested_title
+    attributes:
+      label: Suggested title
+      description: Short title for the eventual issue or PR.
+      placeholder: "docs: add one-line smoke for aimarket-mcp in Cursor"
+    validations:
+      required: true
+  - type: dropdown
+    id: repo
+    attributes:
+      label: Repo
+      description: Where the work should land.
+      options:
+        - aicom
+        - metis
+        - aimarket-mcp
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: why_small
+    attributes:
+      label: Why it's small (≤1 day)
+      description: What makes this bounded — files to touch, skills needed, what is out of scope.
+      placeholder: "One markdown file under docs/ plus a single README bullet. No API or deploy changes."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance checklist
+      description: Three concrete checks a reviewer can tick.
+      value: |
+        - [ ] 
+        - [ ] 
+        - [ ] 
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        If GitHub does not auto-apply labels on your fork, keep `good first issue` and `help wanted` in the title or body so triage can add them.
