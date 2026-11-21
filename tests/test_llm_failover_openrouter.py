@@ -16,7 +16,7 @@ def test_patch_metis_moves_deepseek_to_openrouter_and_kimi_on_parser_c():
                 "temperature": 0.5,
             },
             "intent_parser_b": {
-                "model": "minimax/minimax-m3",
+                "model": "qwen/qwen4-max",
                 "base_url": "https://openrouter.ai/api/v1",
                 "api_key_env": "OPENROUTER_API_KEY",
             },
@@ -29,8 +29,8 @@ def test_patch_metis_moves_deepseek_to_openrouter_and_kimi_on_parser_c():
         },
     }
     out = patch_metis_prod_yaml(data)
-    assert out["base_model"] == "minimax/minimax-m3"
+    assert out["base_model"] == "qwen/qwen4-max"
     assert out["api_key_env"] == "OPENROUTER_API_KEY"
-    assert out["modules"]["intent_parser_a"]["model"] == "minimax/minimax-m3"
+    assert out["modules"]["intent_parser_a"]["model"] == "qwen/qwen4-max"
     assert out["modules"]["intent_parser_c"]["model"] == "moonshotai/kimi-k3"
-    assert out["modules"]["intent_parser_b"]["model"] == "minimax/minimax-m3"
+    assert out["modules"]["intent_parser_b"]["model"] == "qwen/qwen4-max"

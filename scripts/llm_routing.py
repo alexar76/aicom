@@ -34,7 +34,7 @@ DEEPSEEK_BASE = "https://api.deepseek.com/v1"
 OPENROUTER_BASE = "https://openrouter.ai/api/v1"
 DS_PRO = "deepseek-v4-pro"
 DS_FLASH = "deepseek-v4-flash"
-MINIMAX = "minimax/minimax-m3"
+MINIMAX = "qwen/qwen4-max"
 KIMI_K3 = "moonshotai/kimi-k3"
 
 METIS_HDR = {"HTTP-Referer": "https://metis.modelmarket.dev", "X-Title": "Metis"}

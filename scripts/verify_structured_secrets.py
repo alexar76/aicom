@@ -291,8 +291,16 @@ def scan(root: Path) -> list[Finding]:
     findings: set[Finding] = set()
     for path in _files(root):
         # Never load/execute a module or configuration from the candidate tree.
-        with path.open("rb") as source:
-            findings.update(_scan_stream(path.relative_to(root).as_posix(), source, export_policy=True))
+        # Skip paths that vanish between walk and open (overlapping publish cleanup
+        # of a sibling tmp clone, or SIGTERM mid-rsync) — do not fail the gate on
+        # a TOCTOU race against a file that is no longer in the export.
+        try:
+            with path.open("rb") as source:
+                findings.update(
+                    _scan_stream(path.relative_to(root).as_posix(), source, export_policy=True)
+                )
+        except FileNotFoundError:
+            continue
     return sorted(findings, key=lambda f: (f.path, f.kind, f.sha256))
 
 

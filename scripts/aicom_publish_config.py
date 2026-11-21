@@ -253,9 +253,40 @@ FACTORY_LOCAL_EXCLUDES = [
     # Local hub release kit with a checked-in release-venv (broken symlinks trip
     # verify_mirror_secrets wc redirects and stall the factory publish). Gitea only.
     "artifacts/hub-3.17.0-2026-10-31",
+    # Hub 3.22.0 rollout kit embeds private host literals (factory gate 2026-11-21).
+    "artifacts/hub-3.22.0-rollout-2026-11-21",
+    "artifacts/nginx-container-rollout-2026-11-20",
+    "artifacts/external-mentions-2026-11-21",
+    # PingBlip stays off GitHub; series/redeploy packs hold absolute local ffconcat
+    # paths and large media that tripped verify_mirror_secrets (FileNotFoundError on
+    # PB71.ffconcat) during the atlas Pages fix publish. Gitea only.
+    "artifacts/pingblip-*",
+    # Hub version rollout kits embed private hostnames (competing-lab, skopos-vps)
+    # and ops paths. Blocked factory publish 2026-11-21 on hub-3.22.0. Gitea only.
+    "artifacts/hub-*-rollout-*",
+    # Local npm pack receipts (tgz + multi-MB pack.json). Not needed on the public
+    # factory; scanning them bloated verify_mirror_secrets and overlapping publishes
+    # deleted the temp clone mid-walk (FileNotFoundError on pack.json, exit 143).
+    "artifacts/npm-release-*",
     "**/release-venv",
     "**/release-venv/**",
     "docs/evidence/histor-migration-check-2026-11-11",
+    # Launchgate / billing / HISTOR release evidence packs are tens of thousands of
+    # tiny req/resp files; verify_mirror_secrets walks every file with wc and stalls
+    # factory publish for hours (SIGTERM'd mid-scan 2026-11-21). Gitea keeps them.
+    "docs/evidence/launchgate-*",
+    "docs/evidence/kevin-fake-billing-*",
+    "docs/evidence/kevin-annotations-*",
+    "docs/evidence/histor-warden-release-*",
+    "docs/evidence/histor-full-observations-*",
+    "docs/evidence/external-signals-*",
+    "docs/evidence/external-use-*",
+    "docs/evidence/acs38-*",
+    "docs/evidence/arhan-*",
+    "docs/evidence/textokit-*",
+    "docs/evidence/warden-thresholds-*",
+    "docs/evidence/jakub-review-*",
+    "docs/evidence/first-agent-call-*",
     # pytest tracebacks print the API keys the tests mint in temporary hub databases (aimk_…, 14 of them).
     # They are not real keys, but the token gate rightly refuses literals; Gitea keeps the logs.
     "docs/evidence/tensorfeed-receipts-2026-10-30/deploy/full-suite-live-v1-*.log",

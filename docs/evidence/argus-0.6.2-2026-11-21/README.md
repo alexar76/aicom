@@ -62,12 +62,27 @@ npm `shasum` a1b2f7c484f022872120fa89badf12d271a9e60a, integrity
 | Unpacked tarball vs npm `@alexar76/argus3@0.6.1` (registry tarball, shasum `ee28d634…`), `diff -rq` | 4 files: `README.md` (install pins), `package.json` (version, `@aimarket/warden` 0.33.0 → 0.35.0), `dist/cli/util.{js,d.ts}` (version). Bundled `node_modules` identical |
 | Package scan (524 files outside bundled `node_modules`) | no private-host entry from `scripts/.mirror-forbidden-hosts`; no private-key or token pattern; no `.env`, `.pem`, `.key` or `argus.config.json` |
 
-State on 2026-11-21 ~04:50Z: npm `@alexar76/argus3` latest is 0.6.1 (published 2026-11-20 10:49Z, shasum equal to the
-0.6.1 record); MCP registry `io.github.alexar76/argus3` 0.6.1 (2026-11-20 11:08Z). Publishing 0.6.2, the mirror, the
-tag and the registry entry are the owner's and colleague's steps: `docs/distribution/colleague-tasks.md` §141.
+## Published (checked 2026-11-21 ~10:05Z)
+
+- npm `@alexar76/argus3@0.6.2`, registry time 2026-11-21T09:04:58.903Z, `dist.shasum`
+  `a1b2f7c484f022872120fa89badf12d271a9e60a` and `dist.integrity`
+  `sha512-XXlzcWTfUA0GkuW43oCA9+tvSAmz+LkKSH3tyzNK6af2zR2tTzhZevDieKMU9xf+P/R+0LGgYV5TtL9+HN8tHQ==` —
+  the tarball above byte for byte (`sha256` `3fbc59c5…`); `latest` = 0.6.2. First `npm publish` of the
+  evidence tarball returned `+ @alexar76/argus3@0.6.2` (package processing); republish got E409 staged until
+  the packument and tarball were live (~10:03Z).
+- GitHub `alexar76/argus` tag/release [v0.6.2](https://github.com/alexar76/argus/releases/tag/v0.6.2)
+  (satellite main already carried `package.json` / `server.json` 0.6.2).
+- MCP registry `io.github.alexar76/argus3` **0.6.2** `isLatest=true` (release workflow
+  https://github.com/alexar76/argus/actions/runs/44888134587 succeeded after `release` environment
+  approval; a parallel workflow_dispatch got 400 duplicate version — expected).
 
 ## Not done
 
-- `@alexar76/argus3` 0.6.2 is not on npm.
 - `argus` and `argus-uni` on factory-vps (ARGUS 0.3.4 with WARDEN 0.8.2) were not touched.
 - No purchase was made after the switch.
+
+## npm
+
+Published by the owner 2026-11-21 09:04:58Z (registry `time`), tag `latest`. The registry tarball is byte-identical
+to `alexar76-argus3-0.6.2.tgz` (`cmp`, sha256 `3fbc59c5…`), shasum `a1b2f7c4…`, dependency `@aimarket/warden`
+0.35.0; jsDelivr serves 0.6.2. The mirror, the tag and the MCP registry entry are the colleague's steps.

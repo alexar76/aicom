@@ -1,0 +1,55 @@
+{
+ "schema_version": "0.1.0",
+ "agent_id": "npm:@agentskit/mcp@0.6.0",
+ "actor_chain": [
+  "histor-crawler",
+  "histor-sandbox (gVisor, no route out)",
+  "npm:@agentskit/mcp@0.6.0"
+ ],
+ "timestamp": "2026-11-16T21:50:15Z",
+ "claims": [
+  {
+   "claim": "emission-conformant",
+   "evidence": [
+    "urn:uuid:f1689b8f-36a4-41f4-ad38-64c85ce9a89a"
+   ]
+  }
+ ],
+ "integrity": {
+  "signed": true,
+  "chain_linked": true,
+  "timestamped": true,
+  "verifiable_by": [
+   "crawlcheck.io/witness",
+   "markovianprotocol.com/witness",
+   "staging.witness.transparency.goog/ring-any-bells",
+   "witness.navigli.sunlight.geomys.org",
+   "witness.stagemole.eu"
+  ]
+ },
+ "declared_vs_observed": {
+  "permitted": "the tool list the package publishes for this version",
+  "occurred": "tools/list answered with tool set sha256-Y4Mbt8eWRyp1rI6r2DO7QvU/xKHaZwV5+/4p39BS90c= when HISTOR installed and started version 0.6.0 in its sandbox"
+ },
+ "sampling": {
+  "sampled": false,
+  "audit_required": false
+ },
+ "record_id": "probe-agent_self_report",
+ "observation": {
+  "source": "agent_self_report",
+  "relationship": "direct",
+  "directness": "direct_observation"
+ },
+ "verification": {
+  "vantage": "substrate",
+  "method": "intercepted",
+  "basis": "substrate_intercepted",
+  "basis_engines": [
+   "external_authority"
+  ]
+ },
+ "provenance": [
+  "urn:uuid:f1689b8f-36a4-41f4-ad38-64c85ce9a89a"
+ ]
+}

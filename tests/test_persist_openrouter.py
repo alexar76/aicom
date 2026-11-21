@@ -33,7 +33,7 @@ def test_sync_openrouter_writes_provider_and_default(tmp_path, monkeypatch):
     assert raw["default_provider"] == OPENROUTER_PROVIDER_ID
     block = raw["providers"][OPENROUTER_PROVIDER_ID]
     assert block["base_url"] == "https://openrouter.ai/api/v1"
-    assert block["models"]["heavy"] == "minimax/minimax-m3"
+    assert block["models"]["heavy"] == "qwen/qwen4-max"
     assert block["api_key"] is None
     assert block["api_key_env"] == "OPENROUTER_API_KEY"
     assert block["api_key_file"] == "openrouter_api_key"

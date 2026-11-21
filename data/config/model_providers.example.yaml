@@ -112,8 +112,8 @@ providers:
     enabled: true
     health_check_endpoint: /v1/models
     models:
-      heavy: minimax/minimax-m3
-      light: minimax/minimax-m3
+      heavy: qwen/qwen4-max
+      light: qwen/qwen3.8-flash
     priority: 12
     provider_type: openai_compatible
     extra_headers:

@@ -8,6 +8,8 @@ on:
       - "seo-landings/**"
       - "scripts/build_seo_landings.py"
       - "scripts/build_ecosystem_landing.sh"
+      - "scripts/build_ecosystem_atlas.py"
+      - "scripts/github-io/**"
       - "docs/encyclopedia/**"
       - "docs/specs/**"
       - "argus/docs/use-case-external-operator.md"
@@ -90,6 +92,17 @@ jobs:
           test -f ecosystem-landing/learn/index.html
           test -f ecosystem-landing/oracles/index.html
           test -f ecosystem-landing/learn/orchestration-course/index.html
+
+      # Project Pages live at /aicom/. Root-absolute /ecosystem-atlas/* 404s on
+      # alexar76.github.io and the landing renders as unstyled HTML.
+      - name: Assert atlas CSS/JS use /aicom/ prefix
+        run: |
+          grep -F 'href="/aicom/ecosystem-atlas/assets/site.css' ecosystem-landing/index.html
+          grep -F 'src="/aicom/ecosystem-atlas/assets/scene.js' ecosystem-landing/index.html
+          if grep -E 'href="/ecosystem-atlas/|src="/ecosystem-atlas/' ecosystem-landing/index.html; then
+            echo "FAIL: bare /ecosystem-atlas/ asset URLs (missing /aicom project-Pages prefix)" >&2
+            exit 1
+          fi
 
       - name: Upload landing as Pages artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3.0.1

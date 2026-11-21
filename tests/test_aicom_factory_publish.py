@@ -78,6 +78,8 @@ def test_factory_publish_is_live_append_only():
     assert "chore(factory): sync" in text
     assert "import_factory_pr.sh" in text
     assert "_inject_factory_live_banner" in text
+    # Shallow tip clone avoids OOM on full history packs; still append-only push.
+    assert "clone --depth 1 --branch" in text
     assert (ROOT / "scripts" / "import_factory_pr.sh").is_file()
 
 

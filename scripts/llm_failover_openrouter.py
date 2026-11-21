@@ -30,7 +30,7 @@ if str(ROOT) not in sys.path:
 from core.json_state import write_text_atomic
 
 OPENROUTER_BASE = "https://openrouter.ai/api/v1"
-MINIMAX_MODEL = "minimax/minimax-m3"
+MINIMAX_MODEL = "qwen/qwen4-max"
 KIMI_K3_MODEL = "moonshotai/kimi-k3"
 METIS_REFERER = "https://metis.modelmarket.dev"
 FACTORY_REFERER = "https://magic-ai-factory.com"
@@ -229,7 +229,7 @@ prod = Path(sys.argv[1])
 api_key = json.loads(sys.stdin.read())["api_key"]
 data = yaml.safe_load(prod.read_text(encoding="utf-8")) or {}
 
-MINIMAX = "minimax/minimax-m3"
+MINIMAX = "qwen/qwen4-max"
 KIMI = "moonshotai/kimi-k3"
 BASE = "https://openrouter.ai/api/v1"
 HDR = {"HTTP-Referer": "https://metis.modelmarket.dev", "X-Title": "Metis"}

@@ -1,0 +1,75 @@
+{
+ "created": "2026-11-21T08:52:32.513294+00:00",
+ "modified": "2026-11-21T08:52:36.379909+00:00",
+ "id": 24415130,
+ "conceptrecid": "23914235",
+ "conceptdoi": "10.5281/zenodo.23914235",
+ "metadata": {
+  "title": "Package-malware feeds on npm and PyPI: study data, 2026-10 and the repeat of 2026-11-13",
+  "publication_date": "2026-11-21",
+  "description": "<p>Data of an open study of package-malware feeds on npm and PyPI: OpenSSF <code>malicious-packages</code> with the tools its records name (GitHub's malware advisories among them) and Vulnetix's GCVE advisory database. Version 6 keeps every file of version 5 (snapshots of 24 October 2026: what the registries did about 242,072 flags, how many flags left up are benign, what four open scanners catch, what each feed's records show) and adds the repeat measurement of 13 November 2026: the same 7,483 sampled flags checked again, feed withdrawals dated against our letters, new flags, six scanners on a second week of uploads and on DataDog's malware set read by people, Vulnetix's STIX indicators against the Tranco top 10,000, and the readings behind them.</p><p>The method was fixed before the results, and the repeat date before any feed data was read. No package file is included, and the names of packages read as benign are withheld. <code>code/verify_archive.py</code> and <code>code/repeat/verify_repeat.py</code> recompute every number from these files. The report in five languages is in <code>report/</code>. The data are CC BY 4.0; the code inside the archive is MIT, as its README says.</p><p>Write-up: <a href=\"https://github.com/alexar76/aicom/blob/main/docs/malware-feed-accuracy.md\">https://github.com/alexar76/aicom/blob/main/docs/malware-feed-accuracy.md</a></p>",
+  "access_right": "open",
+  "creators": [
+   {
+    "name": "Artamokhov, Aleksandr",
+    "affiliation": null
+   }
+  ],
+  "keywords": [
+   "malware",
+   "npm",
+   "PyPI",
+   "software supply chain",
+   "threat intelligence",
+   "false positives",
+   "open data",
+   "repeat measurement"
+  ],
+  "related_identifiers": [
+   {
+    "identifier": "https://github.com/alexar76/aicom/blob/main/docs/malware-feed-accuracy.md",
+    "relation": "isDocumentedBy",
+    "resource_type": "publication-report",
+    "scheme": "url"
+   }
+  ],
+  "version": "2026-11-21-v6",
+  "license": "cc-by-4.0",
+  "imprint_publisher": "Zenodo",
+  "upload_type": "dataset",
+  "prereserve_doi": {
+   "doi": "10.5281/zenodo.24415130",
+   "recid": 24415130
+  }
+ },
+ "title": "Package-malware feeds on npm and PyPI: study data, 2026-10 and the repeat of 2026-11-13",
+ "links": {
+  "self": "https://zenodo.org/api/deposit/depositions/24415130",
+  "html": "https://zenodo.org/deposit/24415130",
+  "badge": "https://zenodo.org/badge/doi/.svg",
+  "files": "https://zenodo.org/api/deposit/depositions/24415130/files",
+  "bucket": "https://zenodo.org/api/files/1570e6c7-3319-4ef8-9274-34895148ca4b",
+  "latest_draft": "https://zenodo.org/api/deposit/depositions/24415130",
+  "latest_draft_html": "https://zenodo.org/deposit/24415130",
+  "publish": "https://zenodo.org/api/deposit/depositions/24415130/actions/publish",
+  "edit": "https://zenodo.org/api/deposit/depositions/24415130/actions/edit",
+  "discard": "https://zenodo.org/api/deposit/depositions/24415130/actions/discard",
+  "newversion": "https://zenodo.org/api/deposit/depositions/24415130/actions/newversion"
+ },
+ "record_id": 24415130,
+ "owner": 1954651,
+ "files": [
+  {
+   "id": "88a059ec-3011-443c-839a-503edc705267",
+   "filename": "mfa-study-data-2026-11-21-v6.tar.gz",
+   "filesize": 1267571,
+   "checksum": "e5ff17082360adbec66426bc7c4c613a",
+   "links": {
+    "self": "https://zenodo.org/api/deposit/depositions/24415130/files/88a059ec-3011-443c-839a-503edc705267",
+    "download": "https://zenodo.org/api/records/24415130/draft/files/mfa-study-data-2026-11-21-v6.tar.gz/content"
+   }
+  }
+ ],
+ "state": "unsubmitted",
+ "submitted": false
+}

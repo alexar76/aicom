@@ -495,9 +495,11 @@ if [[ -z "$REMOTE" ]]; then
 fi
 
 echo "Cloning $(redact_remote "$REMOTE") (branch $BRANCH) …"
-# Full clone: live mode needs the tip + parents so we can append (never orphan).
-git_auth clone --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
-  git_auth clone "$REMOTE" "$WORKDIR/clone"
+# Shallow tip is enough for append-only: commit on HEAD and fast-forward push
+# (never --force / orphan). Full history OOMs (~1.5G+ packs) on typical laptops.
+# Same pattern as scripts/mirror_satellites.sh.
+git_auth clone --depth 1 --branch "$BRANCH" "$REMOTE" "$WORKDIR/clone" 2>/dev/null || {
+  git_auth clone --depth 1 "$REMOTE" "$WORKDIR/clone"
   cd "$WORKDIR/clone"
   git checkout -B "$BRANCH" 2>/dev/null || git checkout -b "$BRANCH"
   cd "$ROOT"

@@ -27,8 +27,8 @@ OPENROUTER_PROVIDER_ID = "openrouter_api"
 OPENROUTER_SECRET_REL = "secrets/llm/openrouter_api_key"
 PROFILE_MARKER_REL = "config/llm_active_profile"
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-DEFAULT_HEAVY = "minimax/minimax-m3"
-DEFAULT_LIGHT = "minimax/minimax-m3"
+DEFAULT_HEAVY = "qwen/qwen4-max"
+DEFAULT_LIGHT = "qwen/qwen3.8-flash"
 DEFAULT_CONTEXT_WINDOW = 200_000
 
 

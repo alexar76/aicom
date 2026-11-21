@@ -2693,6 +2693,10 @@ else:
       # and SECURITY.md, both kept by _copy_governance.
       export_simple "$sat_id" "mcp-tool-set-digest" "mcp-tool-set-digest" "mit"
       ;;
+    mcp-token-cost)
+      # npm CLI; ships LICENSE-MIT and LICENSE-APACHE (Apache-2.0 OR MIT). node_modules is gitignored there.
+      export_simple "$sat_id" "mcp-token-cost" "mcp-token-cost" "mit" "node_modules"
+      ;;
     domain-kit)
       # Same door as esim-kit: export_simple → _commit_and_push (existing sanitizer).
       local extra_excludes

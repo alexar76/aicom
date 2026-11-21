@@ -44,6 +44,8 @@ _BUILTIN_MODEL_USD_PER_MTOK: dict[str, float] = {
     # measured on this ecosystem's own traffic — remediation runs output-heavy because the
     # model returns whole files.
     "minimax/minimax-m3": 0.90,
+    "qwen/qwen4-max": 3.33,
+    "qwen/qwen3.8-flash": 0.36,
     "moonshotai/kimi-k3": 11.00,
     "deepseek/deepseek-v4-pro": 0.76,
     "deepseek/deepseek-v4-flash": 0.13,
@@ -69,6 +71,9 @@ _BUILTIN_MODEL_IN_OUT_PER_MTOK: dict[str, tuple[float, float]] = {
     # 2026-08-30; the source is named so the next person knows where to re-read it.
     # https://openrouter.ai/api/v1/models
     "minimax/minimax-m3": (0.30, 1.20),
+    # Read from the same price list on 2026-11-21, when the fleet moved off MiniMax.
+    "qwen/qwen4-max": (1.425, 4.275),
+    "qwen/qwen3.8-flash": (0.15, 0.47),
     "moonshotai/kimi-k3": (3.00, 15.00),
     "deepseek/deepseek-v4-pro": (0.4578, 0.9156),
     "deepseek/deepseek-v4-flash": (0.0806, 0.1613),
