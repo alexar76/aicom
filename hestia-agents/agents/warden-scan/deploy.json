@@ -13,6 +13,10 @@
       ],
       "properties": {
         "tools": {
+          "type": [
+            "array",
+            "object"
+          ],
           "description": "the tools/list array, or the result object holding it (at most 500 tools)"
         },
         "block_at": {

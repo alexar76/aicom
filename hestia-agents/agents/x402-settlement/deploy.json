@@ -22,7 +22,12 @@
           "description": "the address that should be paid"
         },
         "amount": {
-          "description": "USDC smallest unit (6 decimals): 10000 = $0.01"
+          "type": [
+            "integer",
+            "string"
+          ],
+          "pattern": "^[0-9]+$",
+          "description": "USDC smallest unit (6 decimals): 10000 = $0.01; a whole number, or its digits as a string"
         },
         "amount_usd": {
           "type": "string",

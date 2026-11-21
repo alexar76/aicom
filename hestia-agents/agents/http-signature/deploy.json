@@ -25,7 +25,11 @@
           "description": "{keyid: JWK | PEM | {alg, key}}"
         },
         "key": {
-          "description": "one key for every signature"
+          "type": [
+            "object",
+            "string"
+          ],
+          "description": "one key for every signature: a JWK, a PEM string or {alg, key}"
         },
         "label": {
           "type": "string",

@@ -599,7 +599,9 @@ AGENTS: dict[str, dict[str, Any]] = {
             "properties": {
                 "tx": {"type": "string", "description": "settlement transaction hash"},
                 "pay_to": {"type": "string", "description": "the address that should be paid"},
-                "amount": {"description": "USDC smallest unit (6 decimals): 10000 = $0.01"},
+                "amount": {"type": ["integer", "string"], "pattern": "^[0-9]+$",
+                           "description": "USDC smallest unit (6 decimals): 10000 = $0.01; a whole "
+                                          "number, or its digits as a string"},
                 "amount_usd": {"type": "string", "description": "or the price in dollars"},
                 "payer": {"type": "string", "description": "the buyer's address (optional)"},
                 "nonce": {"type": "string",
@@ -704,7 +706,8 @@ AGENTS: dict[str, dict[str, Any]] = {
                 "request": {"type": "object",
                             "description": "the request, for a response's ;req components"},
                 "keys": {"type": "object", "description": "{keyid: JWK | PEM | {alg, key}}"},
-                "key": {"description": "one key for every signature"},
+                "key": {"type": ["object", "string"],
+                        "description": "one key for every signature: a JWK, a PEM string or {alg, key}"},
                 "label": {"type": "string", "description": "check only this signature"},
                 "now": {"type": "integer", "description": "Unix seconds, to judge created/expires"},
                 "max_age": {"type": "integer", "description": "seconds a signature may be old"},
@@ -739,7 +742,8 @@ AGENTS: dict[str, dict[str, Any]] = {
             "type": "object",
             "required": ["tools"],
             "properties": {
-                "tools": {"description": "the tools/list array, or the result object holding it "
+                "tools": {"type": ["array", "object"],
+                          "description": "the tools/list array, or the result object holding it "
                                          "(at most 500 tools)"},
                 "block_at": {"enum": ["info", "low", "medium", "high", "critical"],
                              "default": "high",

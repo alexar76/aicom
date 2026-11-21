@@ -1818,6 +1818,35 @@ satellites:
     export_layout:
       root_from: mcp-tool-set-digest
     registries: []
+  - id: mcp-token-cost
+    # CLI (npm) + GitHub Action: what MCP servers cost in tokens, per server and per tool, against HISTOR's
+    # population curve, with prompt-cache checks and a CI budget. Owner 2026-11-21: alexar76/mcp-token-cost
+    # public; npm published; Action Marketplace listing enabled on release v0.1.0 (Continuous integration).
+    repo: mcp-token-cost
+    description: "What your MCP servers cost in tokens before you type a word: per server, per tool, against 46,000 measured servers, with prompt-cache checks and a CI budget."
+    description_i18n:
+      ru: "Сколько токенов съедают ваши MCP-серверы ещё до первого слова: по серверам и инструментам, на фоне 46 000 измеренных серверов, с проверкой кэша промптов и бюджетом в CI."
+      es: "Cuántos tokens cuestan tus servidores MCP antes de escribir nada: por servidor y por herramienta, frente a 46 000 servidores medidos, con comprobaciones de caché de prompts y un presupuesto para CI."
+      fr: "Ce que vos serveurs MCP coûtent en jetons avant le premier mot : par serveur et par outil, face à 46 000 serveurs mesurés, avec contrôle du cache de prompt et budget en CI."
+      zh: "MCP 服务器在你输入第一个字之前就消耗多少 token：按服务器和工具统计，对比 46,000 个实测服务器，并检查提示缓存、在 CI 中设定预算。"
+    topics:
+      - mcp
+      - model-context-protocol
+      - tokens
+      - context-window
+      - prompt-caching
+      - llm
+      - cli
+      - github-action
+    license: "Apache-2.0 OR MIT"
+    github_published: true
+    history: live
+    paths:
+      - mcp-token-cost
+    export_layout:
+      root_from: mcp-token-cost
+    registries:
+      - npm:mcp-token-cost
   - id: domain-kit
     # Same shape as esim-kit: monorepo directory domain-kit/, GitHub repo domain-operator-kit.
     # The kit sells domain registrations. SYMMARTYS RDAP is a separate registry-fact product.
