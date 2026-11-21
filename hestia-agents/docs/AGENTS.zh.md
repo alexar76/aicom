@@ -25,6 +25,7 @@
 | [merkle-proof](#merkle-proof) | `merkle.proof@v1` | $0.002 | Merkle 根与证明：RFC 6962 日志与 OpenZeppelin 树 |
 | [x402-check](#x402-check) | `x402.authorization.check@v1` | $0.003 | 谁签署了 x402 支付、用于什么、USDC 是否会接受 |
 | [x402-settlement](#x402-settlement) | `x402.settlement.check@v1` | $0.000 | 这笔 x402 付款是否已在 Base 上结算：付给谁、多少、是否最终确定 |
+| [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | $0.000 | 来自 Base 上 Uniswap v3 池的 ETH 或 BTC 价格，按时间加权，固定在某个区块 |
 | [esim-prices](#esim-prices) | `esim.price.history@v1` | $0.000 | 某个国家的 eSIM 套餐批发价格如何变化 |
 | [tlog-checkpoint](#tlog-checkpoint) | `tlog.checkpoint.verify@v1` | $0.000 | 透明日志检查点是否由日志签名并获得足够见证者联署 |
 | [http-signature](#http-signature) | `http.signature.verify@v1` | $0.000 | HTTP 消息的 RFC 9421 签名是否有效，覆盖了哪些内容 |
@@ -202,6 +203,27 @@
  "pay_to": "0xb73d8bc93b791510c4733c5c5ac2015a3c2930ec", "amount_usd": "0.022",
  "payer": "0x9d24d267cf8d9a8b9ed104b4856cde8830c266ef",
  "nonce": "0x84428e7eae7b08cac1ec9186e338e14fa5056d9f62bb9d92e1ea927370b8e779"}
+```
+
+### onchain-price
+
+ETH 或 BTC 以 USDC 计的价格，直接从链上读取：不询问任何交易所、数据供应商或价格 API。给出 `asset`
+（`ETH` 或 `BTC`）时，智能体读取 Base 上四个 Uniswap v3 WETH/USDC 或 cbBTC/USDC 池（费率 0.01、0.05、
+0.3 和 1 %），每个池都在同一区块用 Uniswap v3 工厂的 `getPool` 确认。它选取窗口内价格有变动的最深的池
+（无人交易的深池只是重复其最后一笔成交），返回其在 `window_s` 秒内的时间加权平均价（默认 1800，范围
+60 到 86400）：池自身的预言机 `observe([window, 0])` 给出两个 tick 累加值，二者之差除以窗口即平均
+tick，价格为 1.0001 的该次方，再按代币小数位换算。同时给出现价（`slot0`）、每个费率档的流动性和均价，
+以及各深档之间的偏差。给出 `pool` 时，可以是 Base 上任意 Uniswap v3 池：智能体检查它确由工厂部署，
+并给出 token0 以 token1 计的价格及其倒数。所有读取都固定在同一区块（`block`，或调用开始时的最新区块），
+因此相同输入和区块得到相同答案，任何人都能根据 Base 的公开状态重新计算。RPC 出错就是错误，绝不当作零。
+这不是全市场价格：USDC 按一美元计，没有成交量和市值。只访问 `mainnet.base.org`。免费。
+
+```json
+{"asset": "ETH", "window_s": 1800}
+```
+
+```json
+{"pool": "0xd0b53d9277642d899df5c87a3966a349a798f224", "block": 60400000}
 ```
 
 ### esim-prices

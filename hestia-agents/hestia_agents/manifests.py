@@ -610,6 +610,38 @@ AGENTS: dict[str, dict[str, Any]] = {
             },
         },
     },
+    "onchain-price": {
+        "capability_id": "crypto.price.onchain@v1",
+        "name": "ETH and BTC price from Uniswap v3 pools on Base (on-chain, time-weighted)",
+        "description": (
+            "The price of ETH or BTC in USDC, read from the chain itself: no exchange, data vendor "
+            "or price API. The agent reads the four Uniswap v3 WETH/USDC or cbBTC/USDC pools on "
+            "Base (each confirmed by the Uniswap v3 factory at the same block), takes the deepest "
+            "pool whose price moved in the window, and gives its time-weighted average over "
+            "window_s (the pool's own oracle, observe) beside the spot price, with every tier as a "
+            "cross-check. Or give any Uniswap v3 pool on Base. Every read is pinned to one block, "
+            "so a result can be checked again later. Not a market-wide price: USDC is taken as "
+            "one dollar, and there is no volume or market capitalisation."
+        ),
+        "price_per_call_usd": 0,
+        "note": "a price an agent can recompute from public chain state",
+        "egress_hosts": ["mainnet.base.org"],
+        "sandbox_only": True,
+        "probe": {"asset": "ETH", "block": 60400000, "window_s": 600},
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "asset": {"enum": ["ETH", "BTC"],
+                          "description": "priced in USDC from the WETH or cbBTC pools"},
+                "pool": {"type": "string",
+                         "description": "or any Uniswap v3 pool address on Base"},
+                "window_s": {"type": "integer", "minimum": 60, "maximum": 86400, "default": 1800,
+                             "description": "seconds the average covers"},
+                "block": {"type": ["integer", "string"],
+                          "description": "Base block number to read at (default: the latest)"},
+            },
+        },
+    },
     "esim-prices": {
         "capability_id": "esim.price.history@v1",
         "name": "eSIM wholesale price history by country",
@@ -707,7 +739,8 @@ AGENTS: dict[str, dict[str, Any]] = {
                             "description": "the request, for a response's ;req components"},
                 "keys": {"type": "object", "description": "{keyid: JWK | PEM | {alg, key}}"},
                 "key": {"type": ["object", "string"],
-                        "description": "one key for every signature: a JWK, a PEM string or {alg, key}"},
+                        "description": "one key for every signature: a JWK, a PEM string "
+                                       "or {alg, key}"},
                 "label": {"type": "string", "description": "check only this signature"},
                 "now": {"type": "integer", "description": "Unix seconds, to judge created/expires"},
                 "max_age": {"type": "integer", "description": "seconds a signature may be old"},

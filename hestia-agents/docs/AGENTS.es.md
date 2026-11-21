@@ -31,6 +31,7 @@ correo como dato personal, y rechaza las frases clásicas de inyección. Llamand
 | [merkle-proof](#merkle-proof) | `merkle.proof@v1` | $0.002 | raíces y pruebas de Merkle: registros RFC 6962 y árboles OpenZeppelin |
 | [x402-check](#x402-check) | `x402.authorization.check@v1` | $0.003 | quién firmó un pago x402, para qué, y si USDC lo aceptará |
 | [x402-settlement](#x402-settlement) | `x402.settlement.check@v1` | $0.000 | si este pago x402 se liquidó en Base: a quién, cuánto y si es definitivo |
+| [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | $0.000 | el precio de ETH o BTC según los pools de Uniswap v3 en Base, ponderado en el tiempo y fijado a un bloque |
 | [esim-prices](#esim-prices) | `esim.price.history@v1` | $0.000 | cómo ha cambiado el precio mayorista de los planes eSIM de un país |
 | [tlog-checkpoint](#tlog-checkpoint) | `tlog.checkpoint.verify@v1` | $0.000 | si un checkpoint de un registro de transparencia está firmado por el registro y cofirmado por suficientes testigos |
 | [http-signature](#http-signature) | `http.signature.verify@v1` | $0.000 | si la firma RFC 9421 de un mensaje HTTP es válida y qué cubre |
@@ -287,6 +288,33 @@ confirmaciones. Base y Base Sepolia (`network`); solo alcanza sus RPC públicos.
  "pay_to": "0xb73d8bc93b791510c4733c5c5ac2015a3c2930ec", "amount_usd": "0.022",
  "payer": "0x9d24d267cf8d9a8b9ed104b4856cde8830c266ef",
  "nonce": "0x84428e7eae7b08cac1ec9186e338e14fa5056d9f62bb9d92e1ea927370b8e779"}
+```
+
+### onchain-price
+
+El precio de ETH o BTC en USDC, leído de la propia cadena: no se consulta ningún exchange,
+proveedor de datos ni API de precios. Con `asset` (`ETH` o `BTC`) el agente lee los cuatro pools
+de Uniswap v3 WETH/USDC o cbBTC/USDC en Base (comisiones 0,01, 0,05, 0,3 y 1 %), cada uno
+confirmado con `getPool` de la factory de Uniswap v3 en el mismo bloque. Toma el pool más profundo
+cuyo precio se movió durante la ventana (un pool profundo sin operaciones solo repite su última
+operación) y devuelve su media ponderada en el tiempo sobre `window_s` segundos (1800 por defecto,
+de 60 a 86400): el oráculo del propio pool, `observe([window, 0])`, da dos acumuladores de tick;
+su diferencia sobre la ventana es el tick medio, y el precio es 1,0001 elevado a él, ajustado por
+los decimales de los tokens. Incluye el precio al contado (`slot0`), cada nivel con su liquidez y
+su media, y cuánto coinciden los niveles profundos. Con `pool`, cualquier pool de Uniswap v3 en
+Base: el agente comprueba que lo desplegó la factory y da el precio de token0 en token1 y al
+revés. Todas las lecturas se fijan a un bloque (`block`, o el último al empezar la llamada), así
+que la misma entrada y el mismo bloque dan la misma respuesta, y cualquiera puede recalcularla
+con el estado público de Base. Un error del RPC es un error, nunca un cero. No es un precio de
+todo el mercado: USDC se toma como un dólar y no hay volumen ni capitalización. Solo accede a
+`mainnet.base.org`. Gratis.
+
+```json
+{"asset": "ETH", "window_s": 1800}
+```
+
+```json
+{"pool": "0xd0b53d9277642d899df5c87a3966a349a798f224", "block": 60400000}
 ```
 
 ### esim-prices
