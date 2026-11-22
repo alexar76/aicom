@@ -3,7 +3,7 @@
 Deterministic AIMarket capability providers, built to run as HESTIA template
 tenants and sold under the operator's name (payouts to the treasury).
 
-**Catalogue of all twenty-nine agents, in five languages:** [English](docs/AGENTS.md) ·
+**Catalogue of all thirty-one agents, in five languages:** [English](docs/AGENTS.md) ·
 [Русский](docs/AGENTS.ru.md) · [Español](docs/AGENTS.es.md) · [Français](docs/AGENTS.fr.md) ·
 [中文](docs/AGENTS.zh.md) — what each answers, how to call it, an example request.
 
@@ -23,7 +23,8 @@ what they read; their tests replay replies recorded from those hosts (`scripts/r
 | `merkle-proof` | `merkle.proof@v1` | Is this entry in that log / that airdrop — and did the log only grow |
 | `x402-check` | `x402.authorization.check@v1` | Who signed this x402 payment, for what — and will USDC accept it |
 | `x402-settlement` | `x402.settlement.check@v1` | Did this x402 payment settle on Base — to whom, how much, bound to its authorization, final |
-| `onchain-price` | `crypto.price.onchain@v1` | The ETH or BTC price in USDC from Uniswap v3 pools on Base — time-weighted, pinned to a block |
+| `x402-seller` | `x402.seller.record@v1` | Who has actually paid this x402 payee on Base — payments, payers, returning payers, per day |
+| `onchain-price` | `crypto.price.onchain@v1` | The price in USDC of ETH, BTC or any Base token from Uniswap v3 pools on Base — time-weighted, pinned to a block |
 | `esim-prices` | `esim.price.history@v1` | How the wholesale price of eSIM plans for a country moved — when, by how much, in batches |
 | `tlog-checkpoint` | `tlog.checkpoint.verify@v1` | Is this log checkpoint signed by the log and cosigned by your witnesses — and is my entry in it, did the log only grow |
 | `http-signature` | `http.signature.verify@v1` | Does this HTTP message's RFC 9421 signature verify — over exactly which components |
@@ -38,6 +39,7 @@ what they read; their tests replay replies recorded from those hosts (`scripts/r
 | `aid-discover` | `aid.discover@v1` | Does this domain's agent prove the key its DNS publishes — record and live proof in one call |
 | `histor-witnessed` | `histor.witnessed@v1` | Is this tool set in HISTOR's log, under a head seven independent witnesses co-signed |
 | `histor-changed` | `histor.changed_since@v1` | What changed in a server's tools since the set you approved — and the token cost now |
+| `mcp-money-changes` | `mcp.money_tools.changes@v1` | Which public MCP servers changed tools that move value or hold keys — seven days from HISTOR's money-tool feed |
 | `warden-scan` | `warden.scan@v1` | Is this MCP tool list safe to show a model — WARDEN's static rules, callable |
 | `registry-entry` | `registry.entry.verify@v1` | Do an MCP registry entry's packages and domain still name it — by the registry's own rules |
 | `package-provenance` | `package.provenance.verify@v1` | Was this npm or PyPI release built where it says, and is that on Sigstore's log |

@@ -75,7 +75,7 @@ def test_free_and_missing_pages() -> None:
 def test_a_payee_with_payments_looks_payable() -> None:
     def tamper(url, raw):
         # The payee's log query is the only RPC answer that is a list: give it two payments.
-        if "publicnode" in url:
+        if "base-rpc.hestia" in url:
             doc = json.loads(raw["text"])
             for item in doc:
                 if isinstance(item.get("result"), list):
@@ -131,7 +131,7 @@ def test_a_payto_other_than_the_one_the_hub_pinned_is_flagged() -> None:
     # The chain calls are keyed by the payTo they ask about; answer them for the new one.
     for key in list(handle_fetched):
         k = json.loads(key)
-        if "publicnode" in k[1] and "6b5af9924f4cd35643c11a9fd1c983f77261a6e1" in (k[3] or ""):
+        if "base-rpc.hestia" in k[1] and "6b5af9924f4cd35643c11a9fd1c983f77261a6e1" in (k[3] or ""):
             new_key = json.dumps(
                 [
                     k[0],
@@ -190,6 +190,7 @@ def test_bad_input_is_refused_before_any_fetch(payload, message) -> None:
 def test_manifest_reaches_the_named_host_the_base_rpcs_and_the_hub() -> None:
     body = deploy_body(SLUG)
     assert body["egress_hosts"] == [
+        "base-rpc.hestia.modelmarket.dev",
         "base-rpc.publicnode.com",
         "base-sepolia-rpc.publicnode.com",
         "modelmarket.dev",

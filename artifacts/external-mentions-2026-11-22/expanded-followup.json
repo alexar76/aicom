@@ -1,0 +1,138 @@
+{
+  "observed_date": "2026-11-22",
+  "timezone": "Europe/Amsterdam",
+  "comparison_sources": [
+    "evidence.json",
+    "../external-mentions-2026-11-21",
+    "../external-signals-2026-11-18"
+  ],
+  "new_or_updated_external_observations": [
+    {
+      "operator": "mcpcost",
+      "type": "independent stdio package probe",
+      "scope": "Successful initialize and tools/list in a network-off probe. The two timestamps were checked against the machine-readable records.",
+      "records": [
+        {
+          "product": "WARDEN",
+          "version": "0.36.0",
+          "tools": 9,
+          "probe_utc": "2026-11-22T08:51:42.442Z",
+          "url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/warden.json"
+        },
+        {
+          "product": "ARGUS-3",
+          "version": "0.6.2",
+          "tools": 3,
+          "probe_utc": "2026-11-22T08:51:58.082Z",
+          "url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/argus3.json"
+        }
+      ],
+      "methodology": "https://mcpcost.ulehla.dev/methodology"
+    },
+    {
+      "operator": "The Agent Forge",
+      "type": "independent catalog smoke test",
+      "product": "ARGUS-3",
+      "version": "0.6.2",
+      "tools": 3,
+      "probe_utc": "2026-11-22T10:30:55.030Z",
+      "report_id": "8e474758-d817-4cc8-96b8-2453a8b4ae50",
+      "source": "https://theagentforge.io/t/npm%3A%40alexar76%2Fargus3#reports",
+      "api": "https://theagentforge.io/api/v1/check?id=npm%3A%40alexar76%2Fargus3",
+      "corroborations": 0
+    },
+    {
+      "operator": "verify402",
+      "type": "independent unpaid x402 quote check",
+      "date": "2026-11-22",
+      "route": "https://modelmarket.dev/x402/histor-check",
+      "outcome": "PASS",
+      "network": "Base",
+      "quoted_usd": 0.001,
+      "quote_window_minutes": 5,
+      "source": "https://vex402.online/board",
+      "source_code": "https://github.com/a32116150-ctrl/verify402",
+      "scope": "PaymentRequired validation. No transfer, receipt or service delivery measured."
+    },
+    {
+      "operator": "Infoharmoni Atlas",
+      "type": "updated rolling counter on a known catalog page",
+      "snapshot_date": "2026-11-21",
+      "source": "https://atlas.infoharmoni.com/s/modelmarket.dev/",
+      "registry_paid_calls_30d": 64,
+      "prior_registry_paid_calls_30d": 61,
+      "endpoints": 7,
+      "prior_endpoints": 8,
+      "limits": "Registry figures may include own calls. Atlas reports one Base payment on 2026-11-20 without a public transaction hash or buyer identifier."
+    }
+  ],
+  "growth_opportunities": [
+    {
+      "priority": 1,
+      "target": "mcpcost / HISTOR package visibility",
+      "catalog_status_source": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+      "official_registry_source": "https://registry.modelcontextprotocol.io/v0.1/servers/io.github.alexar76%2Fhistor/versions/latest",
+      "probe_placeholder_source": "https://github.com/ondraulehla/mcpcost/blob/main/probe/stdio-run.ts#L144-L149",
+      "probe_classification_source": "https://github.com/ondraulehla/mcpcost/blob/main/probe/stdio-classify.ts#L42-L49",
+      "wheel": "aimarket-histor 0.10.0 from PyPI",
+      "wheel_sha256": "57b72e30600faf2863d6faa1d073e84613a65bc6570e21a9bdd15f3413e62f52",
+      "local_probe_results": {
+        "HISTOR_MCP_REMOTE_unset": {
+          "exit": 0,
+          "tools": [
+            "histor_changes",
+            "histor_check",
+            "histor_server"
+          ]
+        },
+        "invalid_placeholder": {
+          "exit": 2,
+          "usage": true
+        },
+        "valid_https_url": {
+          "exit": 0,
+          "tools": [
+            "histor_changes",
+            "histor_check",
+            "histor_server"
+          ]
+        }
+      },
+      "proposal": "Ask the project to re-probe with the optional URL unset or with the documented HTTPS default. Success: external record reports alive with three tools."
+    },
+    {
+      "priority": 2,
+      "target": "Kertivo paid x402 verification",
+      "unpaid_status_source": "https://kertivo.com/status.json?host=modelmarket.dev",
+      "paid_archive_source": "https://kertivo.com/trust-index/runs",
+      "archive_rows_checked": 642,
+      "runs_checked": 7,
+      "all_archive_jsonl_checksums_match": true,
+      "modelmarket_or_attested_exact_matches": 0,
+      "proposal": "Offer one route, /x402/histor-check, for independent verification of payment, service response and receipt."
+    },
+    {
+      "priority": 3,
+      "target": "ServerDex / field-level MCP diffs",
+      "author_explanation": "https://dev.to/serverdex/comment/3lop2",
+      "question": "https://dev.to/eliashivemind/comment/3lp71",
+      "dataset_description": "https://dev.to/serverdex/i-scanned-220000-mcp-tool-descriptions-for-prompt-injection-the-scare-is-overblown-but-1-in-4-6pk",
+      "example_histor_fingerprints": "https://histor.modelmarket.dev/api/v1/servers/a9a47b63e52b8e27/fingerprints?format=vercel-ai",
+      "example_fingerprints_verified": 13,
+      "proposal": "Compare observations on a matched endpoint set using the same canonicalization, then use field-level records to explain a dated difference."
+    }
+  ],
+  "coverage": {
+    "gh_archive": {
+      "amsterdam_hours": "00:00–14:59",
+      "hour_files": 15,
+      "public_events": 550384,
+      "exact_new_independent_matching_events": 0,
+      "next_hour_http_status": 404,
+      "reference": "https://www.gharchive.org/"
+    },
+    "other_surfaces": "GitLab exact project lookup, public DEV and social indexing, technical articles, region-specific search including Habr and Qiita, scholarly and old citation baselines.",
+    "access_limits": "Codeberg and grep.app throttled. Confirmed public evidence only. Some social surfaces and Dev Signal primary page did not expose usable public results.",
+    "reuse_result": "No new independently confirmed production integration or use of the HISTOR dataset in the checked scope."
+  }
+}

@@ -1,12 +1,17 @@
-"""crypto.price.onchain@v1: the price of ETH or BTC, read from Uniswap v3 pools on Base.
+"""crypto.price.onchain@v1: the price of ETH, BTC or any Base token, from Uniswap v3 pools on Base.
 
-No exchange, data vendor or price API is asked. The agent reads public chain state from Base's RPC
-(mainnet.base.org) and does the arithmetic itself:
+No exchange, data vendor or price API is asked. The agent reads public chain state through the
+hearth's Base RPC pool (base-rpc.hestia.modelmarket.dev; else base-rpc.publicnode.com) and does the
+arithmetic itself:
 
   - `asset` "ETH" or "BTC": the four Uniswap v3 pools of WETH/USDC or cbBTC/USDC (fee tiers 0.01 %,
     0.05 %, 0.3 %, 1 %), each confirmed by the Uniswap v3 factory's getPool at the same block. The
     price comes from the pool with the most in-range liquidity among those whose price moved in the
     window (a deep pool nobody traded only repeats its last trade); the others are a cross-check.
+  - or `token`: any ERC-20 on Base. The factory's getPool finds its Uniswap v3 pools with USDC and
+    with WETH (four fee tiers each); the price comes from the deepest USDC pool whose price moved in
+    the window, else from the deepest WETH pool times the ETH price above. When both routes price
+    it, how far apart they are is a check. A thin pool's price is cheap to move: read `liquidity`.
   - or `pool`: any Uniswap v3 pool on Base; the agent checks the factory deployed it and prices
     token0 in token1 and back.
 
@@ -24,7 +29,10 @@ from decimal import Decimal, getcontext
 
 getcontext().prec = 60
 
-RPC = "https://mainnet.base.org"
+# Without the hearth's pool: base-rpc.publicnode.com. A token is priced from up to eight pools
+# plus the ETH leg, about fifty reads, more than mainnet.base.org allows a second.
+RPC = "https://base-rpc.publicnode.com"
+TOKEN_RPC = RPC
 CHAIN_ID = 8453
 FACTORY = "0x33128a8fc17869897dce68ed026d694621f6fdfd"
 USDC = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
@@ -92,11 +100,30 @@ def _int(word, bits=256, signed=False):
     return value
 
 
-def _batch(calls):
+# The hearth's pool of free Base RPCs (hestia.rpc_pool) is tried first for Base mainnet. A hearth
+# without it refuses that name, and the agent then reads the public RPC for the rest of the call.
+POOL = "https://base-rpc.hestia.modelmarket.dev"
+_POOL_FOR = {"https://base-rpc.publicnode.com"}
+_no_pool = []
+
+
+def _post(url, body):
+    if url in _POOL_FOR and not _no_pool:
+        try:
+            reply = fetch(POOL, method="POST", json=body)  # noqa: F821 — the sandbox provides fetch()
+        except Exception:  # noqa: BLE001 — the hearth refused the name: no pool on this hearth
+            reply = None
+        if reply is not None and reply.status not in (0, 429) and reply.status < 500:
+            return reply
+        _no_pool.append(True)
+    return fetch(url, method="POST", json=body)  # noqa: F821
+
+
+def _batch(calls, rpc=RPC):
     """One JSON-RPC batch: the sandbox allows six fetches per call, so reads go together."""
     body = [{"jsonrpc": "2.0", "id": i + 1, "method": m, "params": p}
             for i, (m, p) in enumerate(calls)]
-    reply = fetch(RPC, method="POST", json=body)  # noqa: F821 — the sandbox provides fetch()
+    reply = _post(rpc, body)
     if not reply.ok:
         raise RuntimeError("the RPC answered HTTP " + str(reply.status))
     answers = reply.json()
@@ -190,8 +217,8 @@ def _window(payload):
     return window
 
 
-def _head(block):
-    chain, head = _batch([("eth_chainId", []), ("eth_getBlockByNumber", [block, False])])
+def _head(block, rpc=RPC):
+    chain, head = _batch([("eth_chainId", []), ("eth_getBlockByNumber", [block, False])], rpc)
     served = _result(chain)
     if served is None or int(served, 16) != CHAIN_ID:
         raise RuntimeError("the RPC does not serve Base (chain " + str(served) + ")")
@@ -202,7 +229,7 @@ def _head(block):
             "timestamp": int(head["timestamp"], 16)}
 
 
-def _asset(asset, window, head, checks):
+def _asset(asset, window, head, checks, rpc=RPC):
     token, decimals, symbol, pools = ASSETS[asset]
     at = hex(head["number"])
     calls = []
@@ -210,7 +237,7 @@ def _asset(asset, window, head, checks):
         calls += [_call(FACTORY, GET_POOL + _word(token) + _word(USDC) + _u(fee), at),
                   _call(pool, LIQUIDITY, at), _call(pool, SLOT0, at),
                   _call(pool, _observe_data(window), at)]
-    answers = _strict(_batch(calls), may_revert=set(range(3, len(calls), 4)))
+    answers = _strict(_batch(calls, rpc), may_revert=set(range(3, len(calls), 4)))
     usdc_first = USDC < token  # Uniswap orders token0 < token1 by address
     scale = Decimal(10) ** (decimals - 6 if not usdc_first else 6 - decimals)
     tiers = []
@@ -332,28 +359,145 @@ def _pool(pool, window, head, checks):
     }
 
 
+FEES = (100, 500, 3000, 10000)
+WETH = ASSETS["ETH"][0]
+# Two routes priced the same token this far apart (percent) do not agree.
+ROUTES_AGREE_PCT = Decimal(2)
+
+
+def _in_quote(raw, token, decimals, quote, quote_decimals):
+    """Quote units per token from a pool's raw price (token1 per token0, smallest units)."""
+    if raw is None or raw == 0:
+        return None
+    if token < quote:  # the token is token0
+        return raw * Decimal(10) ** (decimals - quote_decimals)
+    return 1 / (raw * Decimal(10) ** (quote_decimals - decimals))
+
+
+def _route(rows):
+    usable = [r for r in rows if r["twap"] is not None and r["liquidity"] > 0]
+    traded = [r for r in usable if r["traded"]]
+    return max(traded or usable, key=lambda r: r["liquidity"]) if usable else None
+
+
+def _token(token, window, head, checks):
+    """Any ERC-20 on Base: its Uniswap v3 pools with USDC and WETH, found through the factory."""
+    for asset, (address, _d, _s, _p) in ASSETS.items():
+        if token == address:
+            return _asset(asset, window, head, checks, TOKEN_RPC)
+    if token == USDC:
+        raise ValueError("USDC is the quote here; it is taken as one dollar")
+    at = hex(head["number"])
+    pairs = [(quote, fee) for quote in (USDC, WETH) for fee in FEES]
+    found = _strict(_batch(
+        [_call(FACTORY, GET_POOL + _word(min(token, q)) + _word(max(token, q)) + _u(fee), at)
+         for q, fee in pairs] + [_call(token, DECIMALS, at), _call(token, SYMBOL, at)], TOKEN_RPC),
+        may_revert={len(pairs), len(pairs) + 1})
+    dec = _result(found[len(pairs)])
+    if not dec or len(dec) < 3:
+        raise ValueError(token + " does not answer decimals() as an ERC-20 at block "
+                         + str(head["number"]))
+    decimals, symbol = _int(dec[2:]), _string(_result(found[len(pairs) + 1])) or token
+    pools = [(q, fee, "0x" + got[-40:]) for (q, fee), got in
+             zip(pairs, (_result(a) for a in found[:len(pairs)]), strict=True)
+             if got and int(got, 16) != 0]
+    checks.append({"check": "factory_pools", "ok": bool(pools),
+                   "detail": str(len(pools)) + " Uniswap v3 pools of " + symbol
+                             + " with USDC or WETH, from the factory's getPool"})
+    if not pools:
+        raise ValueError("no Uniswap v3 pool of " + symbol + " with USDC or WETH on Base at block "
+                         + str(head["number"]))
+    calls = []
+    for _q, _fee, pool in pools:
+        calls += [_call(pool, LIQUIDITY, at), _call(pool, SLOT0, at),
+                  _call(pool, _observe_data(window), at)]
+    answers = _strict(_batch(calls, TOKEN_RPC), may_revert=set(range(2, len(calls), 3)))
+    rows = []
+    for i, (quote, fee, pool) in enumerate(pools):
+        liq, slot0, observed = (_result(a) for a in answers[3 * i:3 * i + 3])
+        qdec = 6 if quote == USDC else 18
+        spot_raw, spot_tick = _spot(slot0)
+        mean = _mean_tick(observed, window)
+        rows.append({
+            "quote": "USDC" if quote == USDC else "WETH", "fee_pct": str(Decimal(fee) / 10000),
+            "pool": pool, "liquidity": _int(liq[2:]) if liq else 0,
+            "twap": _in_quote(_raw_price(mean) if mean is not None else None, token, decimals,
+                              quote, qdec),
+            "spot": _in_quote(spot_raw, token, decimals, quote, qdec),
+            "traded": mean is not None and mean != spot_tick,
+        })
+    by_usdc = _route([r for r in rows if r["quote"] == "USDC"])
+    by_weth = _route([r for r in rows if r["quote"] == "WETH"])
+    eth = None
+    if by_weth is not None:
+        eth_checks = []
+        eth = _asset("ETH", window, head, eth_checks, TOKEN_RPC)
+        checks.extend({**c, "check": "eth_" + c["check"]} for c in eth_checks)
+        eth_usd = Decimal(eth["price_usd"])
+        by_weth = {**by_weth, "usd": by_weth["twap"] * eth_usd,
+                   "spot_usd": by_weth["spot"] * eth_usd if by_weth["spot"] else None}
+    if by_usdc is not None:
+        by_usdc = {**by_usdc, "usd": by_usdc["twap"], "spot_usd": by_usdc["spot"]}
+    routes = [r for r in (by_usdc, by_weth) if r is not None]
+    if not routes:
+        raise RuntimeError("no pool of " + symbol + " could price this window; try a shorter "
+                           "window_s")
+    best = next((r for r in routes if r["traded"]), routes[0])
+    checks.append({"check": "traded_pool", "ok": best["traded"],
+                   "detail": ("the price moved in the chosen pool during the window" if
+                              best["traded"] else "no chosen pool traded in the window: the "
+                              "average is its last trade before it")})
+    if len(routes) == 2:
+        gap = abs(routes[0]["usd"] - routes[1]["usd"]) / best["usd"] * 100
+        checks.append({"check": "routes_agree", "ok": gap <= ROUTES_AGREE_PCT,
+                       "detail": "the USDC and WETH routes are "
+                                 + str(gap.quantize(Decimal("0.0001"))) + " % apart"})
+    out = {
+        "token": token, "symbol": symbol, "decimals": decimals, "quote": "USDC",
+        "price_usd": _fmt(best["usd"], 12), "spot_usd": _fmt(best["spot_usd"], 12),
+        "spot_vs_twap_pct": _pct(best["spot_usd"], best["usd"]) if best["spot_usd"] else None,
+        "route": "direct USDC pool" if best["quote"] == "USDC" else "WETH pool x ETH/USDC",
+        "pool": best["pool"], "fee_pct": best["fee_pct"],
+        "pools": [{**r, "twap": _fmt(r["twap"], 12), "spot": _fmt(r["spot"], 12),
+                   "price_unit": r["quote"] + " per " + symbol} for r in rows],
+    }
+    if eth is not None:
+        out["eth_usd"] = eth["price_usd"]
+    return out
+
+
 def handle(payload):
     if not isinstance(payload, dict):
-        raise ValueError("send an object: asset (\"ETH\" or \"BTC\") or pool")
+        raise ValueError("send an object: asset (\"ETH\" or \"BTC\"), token or pool")
     window = _window(payload)
     block = _block(payload)
     asset = str(payload.get("asset") or "").strip().upper()
+    token = None
     if payload.get("pool"):
         pool = _address(payload["pool"], "pool")
+    elif payload.get("token"):
+        pool, token = None, _address(payload["token"], "token")
     elif asset in ASSETS:
         pool = None
     else:
         raise ValueError("give asset: " + " or ".join(ASSETS)
-                         + ", or pool: a Uniswap v3 pool address on Base")
-    head = _head(block)
+                         + ", token: an ERC-20 address on Base, or pool: a Uniswap v3 pool "
+                           "address on Base")
+    head = _head(block, TOKEN_RPC if token else RPC)
     checks = [{"check": "chain", "ok": True, "detail": "the RPC serves Base (8453)"}]
-    out = _pool(pool, window, head, checks) if pool else _asset(asset, window, head, checks)
+    if pool:
+        out = _pool(pool, window, head, checks)
+    elif token:
+        out = _token(token, window, head, checks)
+    else:
+        out = _asset(asset, window, head, checks)
     out.update({
         "window_s": window,
         "block": head["number"],
         "block_hash": head["hash"],
         "block_time": head["timestamp"],
-        "source": "Uniswap v3 pools on Base, read from " + RPC + " at this block",
+        "source": "Uniswap v3 pools on Base, read from " + (RPC if _no_pool else POOL)
+                  + " at this block",
         "method": "time-weighted average of the pool's oracle ticks over window_s; spot from slot0",
         "limits": "what these pools priced, not a market-wide price; USDC is taken as one dollar; "
                   "no volume or market capitalisation",

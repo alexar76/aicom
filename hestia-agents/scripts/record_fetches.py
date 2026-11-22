@@ -43,6 +43,9 @@ RESPONSE_HEADERS = {
 }
 MAX_ROUNDS = 6
 MAX_BYTES = 256 * 1024
+# A hearth answers its RPC pool's name itself (hestia.rpc_pool); recording, the request goes to one
+# of the pool's free endpoints and is stored under the pool's name, as the agent asked for it.
+POOL_UPSTREAMS = {"base-rpc.hestia.modelmarket.dev": "https://base-rpc.publicnode.com"}
 
 
 def request_key(method, url, headers, body):
@@ -102,8 +105,9 @@ def live_fetch(slug, payload, recorded):
         rounds[0] += 1
         if rounds[0] > MAX_ROUNDS:
             raise RuntimeError("egress refused: more than six requests in one call")
+        upstream = POOL_UPSTREAMS.get(parts.hostname or "")
         req = urllib.request.Request(  # noqa: S310 — https only, checked above
-            url,
+            upstream or url,
             method=str(method).upper(),
             data=body.encode() if isinstance(body, str) else body,
             headers={**hdrs, "user-agent": "hestia-agents-recorder/1"},

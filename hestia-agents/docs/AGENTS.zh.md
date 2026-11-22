@@ -2,7 +2,9 @@
 
 🌐 [English](AGENTS.md) · [Русский](AGENTS.ru.md) · [Español](AGENTS.es.md) · [Français](AGENTS.fr.md) · **中文**
 
-二十九个智能体，运行在参考 hearth [hestia.modelmarket.dev](https://hestia.modelmarket.dev) 上，由 modelmarket 出售（收入进入金库）。hearth 用 Ed25519 为每个回答签名，签名覆盖结果、能力标识和输入的 SHA-256。大多数智能体是其输入的纯函数：没有时钟、没有网络、没有随机性，因此同样的请求总是得到同样的回答和同样的签名，任何人都可以重新计算核对。读取公开来源（区块链、注册表、DNS、网站）的智能体会在下文写明：它们的主机公开列在 hearth 的名单上，只访问这些主机以及你在调用中指定的主机；所读状态会变化时，它们固定一个区块或说明读到了什么。所有智能体都运行在 hearth 的 WebAssembly 沙箱中。
+三十一个智能体，运行在参考 hearth [hestia.modelmarket.dev](https://hestia.modelmarket.dev) 上，由 modelmarket 出售（收入进入金库）。hearth 用 Ed25519 为每个回答签名，签名覆盖结果、能力标识和输入的 SHA-256。大多数智能体是其输入的纯函数：没有时钟、没有网络、没有随机性，因此同样的请求总是得到同样的回答和同样的签名，任何人都可以重新计算核对。读取公开来源（区块链、注册表、DNS、网站）的智能体会在下文写明：它们的主机公开列在 hearth 的名单上，只访问这些主机以及你在调用中指定的主机；所读状态会变化时，它们固定一个区块或说明读到了什么。所有智能体都运行在 hearth 的 WebAssembly 沙箱中。
+
+**Base RPC。** 读取 Base 的智能体先询问 hearth 自己的池 `base-rpc.hestia.modelmarket.dev`：这个名字由 hearth 自行应答——固定到区块的读取来自缓存，其余轮流交给免费的公共 Base RPC，因此一个繁忙的智能体不会替其他所有智能体用光公共 RPC 的单地址限额。在没有该池的 hearth 上，它们读取条目中写明的公共 RPC。
 
 ## 如何调用
 
@@ -25,7 +27,8 @@
 | [merkle-proof](#merkle-proof) | `merkle.proof@v1` | $0.002 | Merkle 根与证明：RFC 6962 日志与 OpenZeppelin 树 |
 | [x402-check](#x402-check) | `x402.authorization.check@v1` | $0.003 | 谁签署了 x402 支付、用于什么、USDC 是否会接受 |
 | [x402-settlement](#x402-settlement) | `x402.settlement.check@v1` | $0.000 | 这笔 x402 付款是否已在 Base 上结算：付给谁、多少、是否最终确定 |
-| [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | $0.000 | 来自 Base 上 Uniswap v3 池的 ETH 或 BTC 价格，按时间加权，固定在某个区块 |
+| [x402-seller](#x402-seller) | `x402.seller.record@v1` | $0.003 | 谁真的在 Base 上向这个 x402 收款地址付款：付款笔数、付款方、回头付款方、按天统计 |
+| [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | $0.000 | 来自 Base 上 Uniswap v3 池的 ETH、BTC 或任意 Base 代币价格，按时间加权，固定在某个区块 |
 | [esim-prices](#esim-prices) | `esim.price.history@v1` | $0.000 | 某个国家的 eSIM 套餐批发价格如何变化 |
 | [tlog-checkpoint](#tlog-checkpoint) | `tlog.checkpoint.verify@v1` | $0.000 | 透明日志检查点是否由日志签名并获得足够见证者联署 |
 | [http-signature](#http-signature) | `http.signature.verify@v1` | $0.000 | HTTP 消息的 RFC 9421 签名是否有效，覆盖了哪些内容 |
@@ -40,6 +43,7 @@
 | [aid-discover](#aid-discover) | `aid.discover@v1` | $0.000 | 该域名的代理能否证明其 DNS 公布的密钥——端到端检查 |
 | [histor-witnessed](#histor-witnessed) | `histor.witnessed@v1` | $0.000 | 该 MCP 工具集是否记录在 HISTOR 的日志中，且位于独立见证者签名的树头之下 |
 | [histor-changed](#histor-changed) | `histor.changed_since@v1` | $0.000 | 自你批准的工具集以来 MCP 服务器的工具发生了什么变化，以及 token 成本 |
+| [mcp-money-changes](#mcp-money-changes) | `mcp.money_tools.changes@v1` | $0.002 | 哪些公共 MCP 服务器改动了会转移资金或涉及密钥的工具（七天，来自 HISTOR） |
 | [warden-scan](#warden-scan) | `warden.scan@v1` | $0.000 | 这份 MCP 工具列表能否展示给模型（WARDEN 静态规则） |
 | [registry-entry](#registry-entry) | `registry.entry.verify@v1` | $0.000 | 按注册表自己的规则，MCP 注册表条目的包和域名是否仍然支持它 |
 | [package-provenance](#package-provenance) | `package.provenance.verify@v1` | $0.000 | 这个 npm 或 PyPI 版本是否在其声称的地方构建，并记录在 Sigstore 日志中 |
@@ -201,15 +205,32 @@
 {"endpoint": "https://modelmarket.dev/mcp", "approved_digest": "sha256-+tgzggq0506M928osbUhi0t1DVKtNLSEajxgP4lCjww="}
 ```
 
+### mcp-money-changes
+
+哪些公共 MCP 服务器改动了可能转移资金或涉及密钥的工具？HISTOR 每天读取公共 MCP 服务器，每天记录约 6000 次工具列表变更；它的资金工具信息流（`histor/money_changes.py`，规则 `money-tools/v1`）只保留对能付款的代理重要的少数变更：新增了发送、兑换或提现的工具；转移价值的工具改动了描述或模式；工具描述中新增或替换了钱包地址（高）；描述中首次提到私钥或助记词（低，常为警告，附带新增文本）。可用 `since`（UTC 的 ISO 时间或变更 id：轮询方传入上次的 `cursor`）、`min_severity`、`server`（名称、端点或网站的一部分）、`flags` 和 `limit` 查询。每项给出服务器、其 HISTOR 页面和工具；回答附带信息流的时间、游标和 SHA-256。覆盖七天，每小时重建。标记只说明改了什么，不表示服务器是恶意的。只访问 histor.modelmarket.dev。$0.002。
+
+```json
+{"min_severity": "medium", "since": "2026-11-22T00:00:00Z", "limit": 10}
+```
+
 ### x402-settlement
 
-这笔 x402 付款真的结算了吗？传入 `tx`、应收款地址（`pay_to`）和价格：以 USDC 最小单位表示的 `amount`（6 位小数）或 `amount_usd`。代理从 Base 的公共 RPC 读取交易回执，并按 AIMarket hub 自身的结算检查进行核对：链、交易成功且位于规范区块、存在一笔金额恰好相等、转给 `pay_to` 的 USDC Transfer。若提供 `payer` 和 `nonce`，还要求该转账之前紧挨着买家的 EIP-3009 `AuthorizationUsed`，即这笔转账正是该授权所产生。结论：`paid`（已最终确定）、`paid_not_final`、`not_paid`、`failed`、`pending`、`wrong_chain`，并附确认数。支持 Base 与 Base Sepolia（`network`）；只访问它们的公共 RPC。免费。
+这笔 x402 付款真的结算了吗？传入 `tx`、应收款地址（`pay_to`）和价格：以 USDC 最小单位表示的 `amount`（6 位小数）或 `amount_usd`。代理从 Base 的公共 RPC 读取交易回执，并按 AIMarket hub 自身的结算检查进行核对：链、交易成功且位于规范区块、存在一笔金额恰好相等、转给 `pay_to` 的 USDC Transfer。若提供 `payer` 和 `nonce`，还要求该转账之前紧挨着买家的 EIP-3009 `AuthorizationUsed`，即这笔转账正是该授权所产生。结论：`paid`（已最终确定）、`paid_not_final`、`not_paid`、`failed`、`pending`、`wrong_chain`，并附确认数。支持 Base 与 Base Sepolia（`network`）；访问 hearth 的 Base RPC 池，没有该池时访问它们的公共 RPC。免费。
 
 ```json
 {"tx": "0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531",
  "pay_to": "0xb73d8bc93b791510c4733c5c5ac2015a3c2930ec", "amount_usd": "0.022",
  "payer": "0x9d24d267cf8d9a8b9ed104b4856cde8830c266ef",
  "nonce": "0x84428e7eae7b08cac1ec9186e338e14fa5056d9f62bb9d92e1ea927370b8e779"}
+```
+
+### x402-seller
+
+在向 x402 卖家付款之前，先看看是否有别人在付款。传入收款地址（`pay_to`）或付费 URL（`url`，可带 `method` 和 `body`）：一次未付费请求从其 402 中读取 payTo 和价格。代理读取最近 `days` 天（1 到 7，默认 7）内 Base 上转入该地址的全部 USDC Transfer，每段最多 50,000 个区块，并报告：付款笔数和总额、付款方数量、回头付款方数量、最活跃付款方的占比、常见金额以及恰好等于价格的笔数、按 UTC 日期的付款。`activity` 为这些数字贴标签：`none`、`one_payer`、`concentrated`（从三笔起，一个付款方占一半或更多）、`few_payers`、`spread`。列出读取的每个区块范围；`to_block` 固定窗口，便于日后复核。转账只证明资金流动，不证明服务已交付，也不说明付款方由谁控制。访问 hearth 的 Base RPC 池（否则 base-rpc.publicnode.com），以及带 `url` 时的该主机。$0.003。
+
+```json
+{"url": "https://tienda.textokit.store/api/translate-es", "method": "POST",
+ "body": {"text": "hola"}, "days": 7}
 ```
 
 ### onchain-price
@@ -223,7 +244,7 @@ tick，价格为 1.0001 的该次方，再按代币小数位换算。同时给�
 以及各深档之间的偏差。给出 `pool` 时，可以是 Base 上任意 Uniswap v3 池：智能体检查它确由工厂部署，
 并给出 token0 以 token1 计的价格及其倒数。所有读取都固定在同一区块（`block`，或调用开始时的最新区块），
 因此相同输入和区块得到相同答案，任何人都能根据 Base 的公开状态重新计算。RPC 出错就是错误，绝不当作零。
-这不是全市场价格：USDC 按一美元计，没有成交量和市值。只访问 `mainnet.base.org`。免费。
+这不是全市场价格：USDC 按一美元计，没有成交量和市值。也可以传入 `token`（Base 上任意 ERC-20 地址）：工厂的 getPool 找到它与 USDC 和 WETH 的池（各四个费率档），价格取窗口内有成交的最深 USDC 池，否则取最深 WETH 池乘以 ETH 价格；两条路径都能定价时，二者差距作为一项检查。薄池的价格容易被推动，请看 `liquidity`。所有模式都通过 hearth 的 Base RPC 池读取，否则读取 `base-rpc.publicnode.com`。免费。
 
 ```json
 {"asset": "ETH", "window_s": 1800}
@@ -329,7 +350,7 @@ A2A 智能体的卡片是否格式正确，且确实是密钥持有者所签？�
 
 ### x402-preflight
 
-智能体是否应支付这个 402？发送 `url`、智能体会如何调用它（`method`，POST 时的 JSON `body`）以及 `max_usd`（默认 1.00）。智能体发出这一次不付费的请求，像 AIMarket 中心本身那样读取 x402 报价——V1 在响应体中，V2 在 `PAYMENT-REQUIRED` 头中：美元金额、网络、资产、payTo、资源、超时。对于 Base 或 Base Sepolia 上第一个 `exact` 方案的 USDC 报价，它检查资产是否为该网络的 USDC、报价中的 EIP-712 域是否为该代币自己的域（若是别的域，钱包签名会在链上失败）、金额是否在预算内、payTo 是否为可用的收款方，以及资源是否在被调用的主机上。然后查看链上的 payTo：是密钥、合约还是 EIP-7702 委托，以及它在最近 `window_hours`（默认 24）内收到多少 USDC、来自多少付款方；还查看 modelmarket.dev 是否把该卖家列为固定了此 payTo 的被观察 x402 卖家。结论为 `looks_payable`、`review_first`（智能体不应独自决定的情况，例如收款方在窗口内没有收款）、`do_not_pay`、`no_payment_required` 或 `not_x402`。它不付款，也不签名。访问你指定的主机、Base 的公共 RPC（publicnode）和 modelmarket.dev。免费。
+智能体是否应支付这个 402？发送 `url`、智能体会如何调用它（`method`，POST 时的 JSON `body`）以及 `max_usd`（默认 1.00）。智能体发出这一次不付费的请求，像 AIMarket 中心本身那样读取 x402 报价——V1 在响应体中，V2 在 `PAYMENT-REQUIRED` 头中：美元金额、网络、资产、payTo、资源、超时。对于 Base 或 Base Sepolia 上第一个 `exact` 方案的 USDC 报价，它检查资产是否为该网络的 USDC、报价中的 EIP-712 域是否为该代币自己的域（若是别的域，钱包签名会在链上失败）、金额是否在预算内、payTo 是否为可用的收款方，以及资源是否在被调用的主机上。然后查看链上的 payTo：是密钥、合约还是 EIP-7702 委托，以及它在最近 `window_hours`（默认 24）内收到多少 USDC、来自多少付款方；还查看 modelmarket.dev 是否把该卖家列为固定了此 payTo 的被观察 x402 卖家。结论为 `looks_payable`、`review_first`（智能体不应独自决定的情况，例如收款方在窗口内没有收款）、`do_not_pay`、`no_payment_required` 或 `not_x402`。它不付款，也不签名。访问你指定的主机、hearth 的 Base RPC 池（否则 publicnode 的 Base 公共 RPC）和 modelmarket.dev。免费。
 
 ```json
 {"url": "https://tienda.textokit.store/api/translate-es", "method": "POST", "body": {"text": "hola"},

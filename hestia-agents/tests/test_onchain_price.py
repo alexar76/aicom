@@ -1,8 +1,14 @@
 """crypto.price.onchain@v1 against Base as it was at block 60 400 000.
 
-`onchain_price_vectors.json` holds what https://mainnet.base.org answered on 2026-11-21 for every
+`onchain_price_vectors.json` holds what https://mainnet.base.org answered on 2026-11-21 (served to the
+agent here as the hearth's pool, base-rpc.hestia.modelmarket.dev: the same JSON-RPC answers) for every
 JSON-RPC batch the agent sends for ETH (600 s window), BTC (1800 s), BTC over a day, and the
 WETH/USDC 0.05 % pool by address, all pinned to block 60 400 000. The fake RPC answers from it.
+`token_degen` and `token_eurc` hold what https://base-rpc.publicnode.com answered on 2026-11-22 (keyed
+under the pool's name) for a
+token by address at block 60 800 000 (scripts/record_fetches.py): DEGEN, priced through its USDC pool
+with its WETH pools as the cross-check, and EURC, whose USDC pool did not trade in the window, so its
+price comes from its WETH pool times ETH/USDC.
 """
 # ruff: noqa: E501 — recorded values
 
@@ -42,7 +48,7 @@ def load(rpc=None, tamper=None):
     asked = []
 
     def fetch(url, method="GET", headers=None, body=None, json=None):  # noqa: A002
-        assert url == "https://mainnet.base.org" and method == "POST"
+        assert url == "https://base-rpc.hestia.modelmarket.dev" and method == "POST"
         key = __import__("json").dumps(json, sort_keys=True)
         asked.append(json)
         answer = copy.deepcopy(rpc[key])
@@ -180,11 +186,87 @@ def test_bad_input_is_refused_before_any_fetch(payload, message) -> None:
     assert asked == []
 
 
-def test_manifest_declares_only_the_base_rpc_and_is_free() -> None:
+def test_manifest_declares_the_pool_and_the_public_rpc_and_is_free() -> None:
     meta = AGENTS["onchain-price"]
-    assert meta["egress_hosts"] == ["mainnet.base.org"] and meta["price_per_call_usd"] == 0
+    assert meta["egress_hosts"] == ["base-rpc.hestia.modelmarket.dev", "base-rpc.publicnode.com"]
+    assert meta["price_per_call_usd"] == 0
     assert meta["sandbox_only"] is True
     body = deploy_body("onchain-price")
     assert body["capability"]["capability_id"] == "crypto.price.onchain@v1"
     handle, _ = load()
     assert handle(meta["probe"])["price_usd"] == "1700.931300"
+
+
+def _token(case, tamper=None, payload=None):
+    from replay import load as replay
+
+    handle, asked, _ = replay("onchain-price", copy.deepcopy(V[case]["fetched"]), tamper)
+    return handle(payload or V[case]["payload"]), asked
+
+
+def _ok(out):
+    return {c["check"]: c["ok"] for c in out["checks"]}
+
+
+def test_a_token_with_a_traded_usdc_pool_is_priced_directly() -> None:
+    out, asked = _token("token_degen")
+    assert set(asked) == {"https://base-rpc.hestia.modelmarket.dev"} and len(asked) <= 6
+    assert out["symbol"] == "DEGEN" and out["decimals"] == 18 and out["quote"] == "USDC"
+    assert out["route"] == "direct USDC pool" and out["fee_pct"] == "0.3"
+    assert out["price_usd"] == "0.000698354394015" and out["block"] == 60800000
+    checks = _ok(out)
+    assert checks["factory_pools"] and checks["traded_pool"] and checks["routes_agree"]
+    assert {p["quote"] for p in out["pools"]} == {"USDC", "WETH"}
+    assert all(p["price_unit"] == p["quote"] + " per DEGEN" for p in out["pools"])
+    assert out["source"].startswith("Uniswap v3 pools on Base, read from https://base-rpc.hestia.modelmarket.dev")
+
+
+def test_a_token_priced_through_weth_multiplies_by_eth() -> None:
+    out, _ = _token("token_eurc")
+    assert out["symbol"] == "EURC" and out["route"] == "WETH pool x ETH/USDC"
+    weth = next(p for p in out["pools"] if p["pool"] == out["pool"])
+    assert weth["quote"] == "WETH" and weth["traded"]
+    price = Decimal(weth["twap"]) * Decimal(out["eth_usd"])
+    assert abs(price - Decimal(out["price_usd"])) / price < Decimal("1e-9")
+    assert _ok(out)["routes_agree"] and _ok(out)["eth_deepest_traded_pool"]
+
+
+def _zero_pools(json_body, raw):
+    import json as _json
+
+    if "base-rpc.hestia" not in json_body:
+        return raw
+    answers = _json.loads(raw["text"])
+    if len(answers) == 10:  # the getPool batch: eight pools, decimals, symbol
+        for a in answers[:8]:
+            a["result"] = "0x" + "0" * 64
+        raw = dict(raw, text=_json.dumps(answers))
+    return raw
+
+
+def test_a_token_without_pools_is_refused() -> None:
+    with pytest.raises(ValueError, match="no Uniswap v3 pool of DEGEN with USDC or WETH"):
+        _token("token_degen", tamper=_zero_pools)
+
+
+def test_an_address_that_is_not_a_token_is_refused() -> None:
+    import json as _json
+
+    def no_decimals(url, raw):
+        answers = _json.loads(raw["text"])
+        if isinstance(answers, list) and len(answers) == 10:
+            answers[8] = {"jsonrpc": "2.0", "id": 9, "error": {"code": 3, "message": "execution reverted"}}
+            raw = dict(raw, text=_json.dumps(answers))
+        return raw
+
+    with pytest.raises(ValueError, match="does not answer decimals"):
+        _token("token_degen", tamper=no_decimals)
+
+
+def test_a_bad_token_address_is_refused_before_any_fetch() -> None:
+    from replay import load as replay
+
+    handle, asked, _ = replay("onchain-price", {})
+    with pytest.raises(ValueError, match="token must be a 0x address"):
+        handle({"token": "DEGEN"})
+    assert asked == []

@@ -6,8 +6,9 @@ should have been paid) and the price, `amount` in USDC's smallest unit (6 decima
 $0.01) or `amount_usd` ("0.01"). Optionally `payer` and `nonce`: the EIP-3009 authorization the
 buyer signed, which binds this transfer to one invoice.
 
-The agent reads the receipt from the chain's public RPC (mainnet.base.org, or sepolia.base.org for
-`network: "base-sepolia"`), and checks, as the AIMarket hub's own settlement check does:
+The agent reads the receipt through the hearth's Base RPC pool (else mainnet.base.org;
+sepolia.base.org for `network: "base-sepolia"`), and checks, as the AIMarket hub's own settlement
+check does:
   - the chain is the one asked for, the transaction succeeded, its block is canonical;
   - a USDC Transfer log from the token contract to `pay_to` for exactly the amount (more is
     reported, never counted as exact);
@@ -64,12 +65,27 @@ def _topic(address):
     return "0x" + address[2:].zfill(64)
 
 
+# The hearth's pool of free Base RPCs (hestia.rpc_pool) is tried first for Base mainnet. A hearth
+# without it refuses that name, and the agent then reads the public RPC for the rest of the call.
+POOL = "https://base-rpc.hestia.modelmarket.dev"
+_POOL_FOR = {"https://mainnet.base.org"}
+_no_pool = []
+
+
+def _post(url, body):
+    if url in _POOL_FOR and not _no_pool:
+        try:
+            reply = fetch(POOL, method="POST", json=body)  # noqa: F821 — the sandbox provides fetch()
+        except Exception:  # noqa: BLE001 — the hearth refused the name: no pool on this hearth
+            reply = None
+        if reply is not None and reply.status not in (0, 429) and reply.status < 500:
+            return reply
+        _no_pool.append(True)
+    return fetch(url, method="POST", json=body)  # noqa: F821
+
+
 def _rpc(url, method, params):
-    reply = fetch(  # noqa: F821 — the sandbox provides fetch()
-        url,
-        method="POST",
-        json={"jsonrpc": "2.0", "id": 1, "method": method, "params": params},
-    )
+    reply = _post(url, {"jsonrpc": "2.0", "id": 1, "method": method, "params": params})
     if not reply.ok:
         raise RuntimeError("the RPC answered HTTP " + str(reply.status))
     body = reply.json()

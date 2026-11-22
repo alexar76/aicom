@@ -70,7 +70,7 @@ def test_a_real_settlement_bound_to_its_authorization_is_paid_and_final() -> Non
     assert all(c["ok"] for c in out["checks"]) and [c["check"] for c in out["checks"]][-1] == "authorization"
     assert out["block"] == 52165064 and out["finalized"] is True and out["payer"] == PAYER
     assert out["confirmations"] == int(V["latest"], 16) - 52165064 + 1
-    assert len(asked) == 5 and {u for u, _ in asked} == {"https://mainnet.base.org"}
+    assert len(asked) == 5 and {u for u, _ in asked} == {"https://base-rpc.hestia.modelmarket.dev"}
 
 
 def test_the_hub_bridges_payment_to_coinmarketcap_by_dollars() -> None:
@@ -133,4 +133,5 @@ def test_input_is_checked() -> None:
 
 
 def test_the_manifest_reaches_the_two_public_rpcs_only() -> None:
-    assert deploy_body("x402-settlement")["egress_hosts"] == ["mainnet.base.org", "sepolia.base.org"]
+    assert deploy_body("x402-settlement")["egress_hosts"] == [
+        "base-rpc.hestia.modelmarket.dev", "mainnet.base.org", "sepolia.base.org"]

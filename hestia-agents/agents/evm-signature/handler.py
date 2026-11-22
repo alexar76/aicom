@@ -459,13 +459,29 @@ def unwrap_6492(raw):
     return factory, parts[0], parts[1]
 
 
+# The hearth's pool of free Base RPCs (hestia.rpc_pool) is tried first for Base mainnet. A hearth
+# without it refuses that name, and the agent then reads the public RPC for the rest of the call.
+POOL = "https://base-rpc.hestia.modelmarket.dev"
+_POOL_FOR = {"https://mainnet.base.org"}
+_no_pool = []
+
+
+def _post(url, body):
+    if url in _POOL_FOR and not _no_pool:
+        try:
+            reply = fetch(POOL, method="POST", json=body)  # noqa: F821 — the sandbox provides fetch()
+        except Exception:  # noqa: BLE001 — the hearth refused the name: no pool on this hearth
+            reply = None
+        if reply is not None and reply.status not in (0, 429) and reply.status < 500:
+            return reply
+        _no_pool.append(True)
+    return fetch(url, method="POST", json=body)  # noqa: F821
+
+
 def _rpc_batch(url, calls):
-    reply = fetch(  # noqa: F821 — the sandbox provides fetch()
+    reply = _post(
         url,
-        method="POST",
-        json=[
-            {"jsonrpc": "2.0", "id": i, "method": m, "params": p} for i, (m, p) in enumerate(calls)
-        ],
+        [{"jsonrpc": "2.0", "id": i, "method": m, "params": p} for i, (m, p) in enumerate(calls)],
     )
     if not reply.ok:
         raise RuntimeError("the RPC answered HTTP " + str(reply.status))

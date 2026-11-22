@@ -158,7 +158,7 @@ def test_the_same_wallet_refuses_another_amount() -> None:
 
 
 def test_a_signature_that_does_not_recover_to_an_address_without_code_is_invalid() -> None:
-    url = "https://mainnet.base.org"
+    url = "https://base-rpc.hestia.modelmarket.dev"
     payload = {
         "signer": "0x0000000000000000000000000000000000000001",
         "signature": MAIL_SIG,
@@ -223,7 +223,7 @@ def test_an_erc6492_wrapped_signature_is_unwrapped_and_sent_whole_to_the_validat
             "hash": "0x" + digest.hex(),
             "block": 10,
         },
-        {rpc_key("https://mainnet.base.org", calls): rpc_reply(["0x2105", "0x", "0x01"])},
+        {rpc_key("https://base-rpc.hestia.modelmarket.dev", calls): rpc_reply(["0x2105", "0x", "0x01"])},
     )
     assert (
         out["valid"]
@@ -233,7 +233,7 @@ def test_an_erc6492_wrapped_signature_is_unwrapped_and_sent_whole_to_the_validat
 
 
 def test_an_rpc_on_another_chain_is_an_error_not_an_answer() -> None:
-    url = "https://mainnet.base.org"
+    url = "https://base-rpc.hestia.modelmarket.dev"
     payload = {"signer": "0x" + "22" * 20, "signature": "0x" + "00" * 70, "hash": "0x" + "00" * 32}
     head = rpc_key(url, [("eth_chainId", []), ("eth_blockNumber", [])])
     with pytest.raises(RuntimeError, match="serves chain 1"):
@@ -303,6 +303,7 @@ def test_bad_input_is_refused_before_any_fetch(payload, message) -> None:
 def test_manifest_reaches_only_the_three_rpcs_and_the_probe_needs_none() -> None:
     meta = AGENTS[SLUG]
     assert deploy_body(SLUG)["egress_hosts"] == [
+        "base-rpc.hestia.modelmarket.dev",
         "mainnet.base.org",
         "sepolia.base.org",
         "ethereum-rpc.publicnode.com",

@@ -589,7 +589,7 @@ AGENTS: dict[str, dict[str, Any]] = {
         ),
         "price_per_call_usd": 0,
         "note": "a seller's check before serving on the strength of a transaction hash",
-        "egress_hosts": ["mainnet.base.org", "sepolia.base.org"],
+        "egress_hosts": ["base-rpc.hestia.modelmarket.dev", "mainnet.base.org", "sepolia.base.org"],
         "sandbox_only": True,
         "probe": {"tx": "0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531",
                   "pay_to": "0xb73d8bc93b791510c4733c5c5ac2015a3c2930ec", "amount": 22000},
@@ -610,22 +610,101 @@ AGENTS: dict[str, dict[str, Any]] = {
             },
         },
     },
+    "mcp-money-changes": {
+        "capability_id": "mcp.money_tools.changes@v1",
+        "name": "Public MCP servers that changed tools which move value or hold keys",
+        "description": (
+            "Which public MCP servers changed a tool that can move money or touch keys? From "
+            "HISTOR's daily reads of public MCP servers (about 6,000 tool-list changes a day), the "
+            "few that matter to an agent that can pay: a tool added that sends, swaps or "
+            "withdraws; "
+            "a value-moving tool whose description or schema changed; a wallet address added to or "
+            "replaced in a tool's description; a new mention of private keys or seed phrases. "
+            "Filter by time or change id (a poller passes the last cursor), severity, server and "
+            "flag. Each item names the server, its HISTOR page and the tools; the answer carries "
+            "the feed's time, cursor and SHA-256. Seven days, rebuilt hourly by fixed rules "
+            "(money-tools/v1). A flag says what changed, not that a server is malicious."
+        ),
+        "price_per_call_usd": 0.002,
+        "note": "a watch list of payment and wallet tools across public MCP servers",
+        "egress_hosts": ["histor.modelmarket.dev"],
+        "sandbox_only": True,
+        "probe": {"min_severity": "medium", "limit": 5},
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "since": {"type": ["string", "integer"],
+                          "description": "ISO time in UTC, or a change id (the last cursor)"},
+                "min_severity": {"enum": ["low", "medium", "high"], "default": "low"},
+                "server": {"type": ["string", "array"],
+                           "description": "part of a server's name, endpoint or website"},
+                "flags": {"type": ["string", "array"],
+                          "description": "e.g. address_replaced, added_moves_value, mentions_keys"},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 100, "default": 25},
+            },
+        },
+    },
+    "x402-seller": {
+        "capability_id": "x402.seller.record@v1",
+        "name": "x402 seller record on Base: who has actually paid this payee",
+        "description": (
+            "Before paying an x402 seller, see whether anyone else does. Give the payee address "
+            "(pay_to) or the paid URL (one unpaid request reads payTo and price from its 402). The "
+            "agent reads every USDC Transfer to that address on Base over the last 1 to 7 days and "
+            "reports how many payments, how much, from how many payers, who came back, the share "
+            "of the busiest payer, the common amounts and how many were exactly the price, "
+            "payments per day, and an activity label (none, one_payer, concentrated, few_payers, "
+            "spread) defined in the answer. Every block range it read is listed; to_block pins "
+            "the window so the result can be checked again. A transfer proves money moved, not "
+            "that a service was delivered or who controls the payers."
+        ),
+        "price_per_call_usd": 0.003,
+        "note": "the paid-volume half of an x402 seller check; x402.preflight@v1 is the terms "
+                "half",
+        "egress_hosts": ["base-rpc.hestia.modelmarket.dev", "base-rpc.publicnode.com"],
+        "egress_input_fields": ["url"],
+        "sandbox_only": True,
+        "probe": {"pay_to": "0x5FBbbCbF2Ade44F5c604E5E55f11945E1ADdD231", "days": 1,
+                  "to_block": 60800000},
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "pay_to": {"type": "string", "description": "the payee address (0x…)"},
+                "url": {"type": "string",
+                        "description": "or a paid https URL; its 402 gives payTo and price"},
+                "method": {"enum": ["GET", "POST"], "default": "GET",
+                           "description": "how to call url"},
+                "body": {"type": "object", "description": "JSON body for a POST to url"},
+                "days": {"type": "integer", "minimum": 1, "maximum": 7, "default": 7},
+                "to_block": {"type": ["integer", "string"],
+                             "description": "last Base block of the window (default: latest "
+                                            "minus 12 confirmations)"},
+                "amount_usd": {"type": "string",
+                               "description": "the price, to count payments at exactly it"},
+                "amount": {"type": ["integer", "string"], "pattern": "^[0-9]+$",
+                           "description": "or the price in USDC's smallest unit"},
+            },
+        },
+    },
     "onchain-price": {
         "capability_id": "crypto.price.onchain@v1",
-        "name": "ETH and BTC price from Uniswap v3 pools on Base (on-chain, time-weighted)",
+        "name": ("ETH, BTC or any Base token price from Uniswap v3 pools on Base "
+                 "(on-chain, time-weighted)"),
         "description": (
             "The price of ETH or BTC in USDC, read from the chain itself: no exchange, data vendor "
             "or price API. The agent reads the four Uniswap v3 WETH/USDC or cbBTC/USDC pools on "
             "Base (each confirmed by the Uniswap v3 factory at the same block), takes the deepest "
             "pool whose price moved in the window, and gives its time-weighted average over "
             "window_s (the pool's own oracle, observe) beside the spot price, with every tier as a "
-            "cross-check. Or give any Uniswap v3 pool on Base. Every read is pinned to one block, "
+            "cross-check. Or give any token on Base: its pools with USDC or WETH, found through "
+            "the factory, price it in USDC. Or give any Uniswap v3 pool on Base. Every read is "
+            "pinned to one block, "
             "so a result can be checked again later. Not a market-wide price: USDC is taken as "
             "one dollar, and there is no volume or market capitalisation."
         ),
         "price_per_call_usd": 0,
         "note": "a price an agent can recompute from public chain state",
-        "egress_hosts": ["mainnet.base.org"],
+        "egress_hosts": ["base-rpc.hestia.modelmarket.dev", "base-rpc.publicnode.com"],
         "sandbox_only": True,
         "probe": {"asset": "ETH", "block": 60400000, "window_s": 600},
         "input_schema": {
@@ -633,6 +712,9 @@ AGENTS: dict[str, dict[str, Any]] = {
             "properties": {
                 "asset": {"enum": ["ETH", "BTC"],
                           "description": "priced in USDC from the WETH or cbBTC pools"},
+                "token": {"type": "string",
+                          "description": "or any ERC-20 address on Base, priced in USDC through "
+                                         "its Uniswap v3 pools with USDC or WETH"},
                 "pool": {"type": "string",
                          "description": "or any Uniswap v3 pool address on Base"},
                 "window_s": {"type": "integer", "minimum": 60, "maximum": 86400, "default": 1800,
@@ -915,7 +997,8 @@ AGENTS: dict[str, dict[str, Any]] = {
         ),
         "price_per_call_usd": 0,
         "note": "a smart-wallet signature an x402 seller or an agent can check before trusting it",
-        "egress_hosts": ["mainnet.base.org", "sepolia.base.org", "ethereum-rpc.publicnode.com"],
+        "egress_hosts": ["base-rpc.hestia.modelmarket.dev", "mainnet.base.org", "sepolia.base.org",
+                         "ethereum-rpc.publicnode.com"],
         "sandbox_only": True,
         "probe": {"signer": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
                   "hash": "0xbe609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
@@ -1044,7 +1127,8 @@ AGENTS: dict[str, dict[str, Any]] = {
         "price_per_call_usd": 0,
         "note": "before an agent pays an x402 402: is it what it looks like",
         "probe": {"url": "https://modelmarket.dev/llms.txt"},
-        "egress_hosts": ["base-rpc.publicnode.com", "base-sepolia-rpc.publicnode.com",
+        "egress_hosts": ["base-rpc.hestia.modelmarket.dev", "base-rpc.publicnode.com",
+                         "base-sepolia-rpc.publicnode.com",
                          "modelmarket.dev"],
         "egress_input_fields": ["url"],
         "sandbox_only": True,

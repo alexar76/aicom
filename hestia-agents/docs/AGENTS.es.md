@@ -2,7 +2,7 @@
 
 🌐 [English](AGENTS.md) · [Русский](AGENTS.ru.md) · **Español** · [Français](AGENTS.fr.md) · [中文](AGENTS.zh.md)
 
-Veintinueve agentes que corren en el hearth de referencia, [hestia.modelmarket.dev](https://hestia.modelmarket.dev),
+Treinta y un agentes que corren en el hearth de referencia, [hestia.modelmarket.dev](https://hestia.modelmarket.dev),
 vendidos por modelmarket (los cobros van a la tesorería). El hearth firma cada respuesta con Ed25519 sobre el
 resultado, la capacidad y el SHA-256 de la entrada. La mayoría son funciones puras de su entrada: sin reloj, sin
 red, sin aleatoriedad; la misma petición recibe siempre la misma respuesta y la misma firma, y cualquiera puede
@@ -10,6 +10,11 @@ volver a calcularla. Los que leen fuentes públicas (una cadena, un registro, el
 hosts figuran públicamente en la lista del hearth, solo llegan a ellos y al host que usted nombre en la llamada, y
 cuando el estado que leen cambia fijan un bloque o dicen qué leyeron. Todos corren en el sandbox WebAssembly del
 hearth.
+
+**RPC de Base.** Los agentes que leen Base preguntan primero al pool propio del hearth,
+`base-rpc.hestia.modelmarket.dev`: el hearth atiende ese nombre él mismo, desde una caché para lecturas fijadas a
+un bloque y desde RPC públicos gratuitos de Base por turnos, para que un agente ocupado no agote el límite por
+dirección de un RPC público para los demás. En un hearth sin el pool leen el RPC público que nombra su entrada.
 
 ## Cómo llamarlos
 
@@ -35,7 +40,8 @@ correo como dato personal, y rechaza las frases clásicas de inyección. Llamand
 | [merkle-proof](#merkle-proof) | `merkle.proof@v1` | $0.002 | raíces y pruebas de Merkle: registros RFC 6962 y árboles OpenZeppelin |
 | [x402-check](#x402-check) | `x402.authorization.check@v1` | $0.003 | quién firmó un pago x402, para qué, y si USDC lo aceptará |
 | [x402-settlement](#x402-settlement) | `x402.settlement.check@v1` | $0.000 | si este pago x402 se liquidó en Base: a quién, cuánto y si es definitivo |
-| [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | $0.000 | el precio de ETH o BTC según los pools de Uniswap v3 en Base, ponderado en el tiempo y fijado a un bloque |
+| [x402-seller](#x402-seller) | `x402.seller.record@v1` | $0.003 | quién paga de verdad a este beneficiario x402 en Base: pagos, pagadores, recurrentes, por día |
+| [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | $0.000 | el precio de ETH, BTC o cualquier token de Base según los pools de Uniswap v3 en Base, ponderado en el tiempo y fijado a un bloque |
 | [esim-prices](#esim-prices) | `esim.price.history@v1` | $0.000 | cómo ha cambiado el precio mayorista de los planes eSIM de un país |
 | [tlog-checkpoint](#tlog-checkpoint) | `tlog.checkpoint.verify@v1` | $0.000 | si un checkpoint de un registro de transparencia está firmado por el registro y cofirmado por suficientes testigos |
 | [http-signature](#http-signature) | `http.signature.verify@v1` | $0.000 | si la firma RFC 9421 de un mensaje HTTP es válida y qué cubre |
@@ -50,6 +56,7 @@ correo como dato personal, y rechaza las frases clásicas de inyección. Llamand
 | [aid-discover](#aid-discover) | `aid.discover@v1` | $0.000 | si el agente del dominio demuestra la clave que publica su DNS, de principio a fin |
 | [histor-witnessed](#histor-witnessed) | `histor.witnessed@v1` | $0.000 | si este conjunto de herramientas MCP está en el registro de HISTOR, bajo una cabeza que firmaron testigos independientes |
 | [histor-changed](#histor-changed) | `histor.changed_since@v1` | $0.000 | qué cambió en las herramientas de un servidor MCP desde el conjunto que aprobó, y su coste en tokens |
+| [mcp-money-changes](#mcp-money-changes) | `mcp.money_tools.changes@v1` | $0.002 | qué servidores MCP públicos cambiaron herramientas que mueven valor o tocan claves (siete días, de HISTOR) |
 | [warden-scan](#warden-scan) | `warden.scan@v1` | $0.000 | si esta lista de herramientas MCP es segura para mostrarla a un modelo (reglas estáticas de WARDEN) |
 | [registry-entry](#registry-entry) | `registry.entry.verify@v1` | $0.000 | si los paquetes y el dominio de una entrada del registro MCP aún la respaldan, con las reglas del propio registro |
 | [package-provenance](#package-provenance) | `package.provenance.verify@v1` | $0.000 | si esta versión de npm o PyPI se construyó donde dice, y si consta en el registro de Sigstore |
@@ -283,6 +290,24 @@ Gratis.
 {"endpoint": "https://modelmarket.dev/mcp", "approved_digest": "sha256-+tgzggq0506M928osbUhi0t1DVKtNLSEajxgP4lCjww="}
 ```
 
+### mcp-money-changes
+
+¿Qué servidores MCP públicos cambiaron una herramienta que puede mover dinero o tocar claves? HISTOR
+lee servidores MCP públicos cada día y registra unos 6000 cambios de listas de herramientas al día; su
+feed de herramientas de dinero (`histor/money_changes.py`, reglas `money-tools/v1`) guarda los pocos
+que importan a un agente que puede pagar: una herramienta añadida que envía, intercambia o retira; una
+herramienta que mueve valor cuya descripción o esquema cambió; una dirección de cartera añadida o
+sustituida en una descripción (alta); una nueva mención de claves privadas o frases semilla (baja, a
+menudo un aviso: se incluye el texto añadido). Pregunte con `since` (hora ISO en UTC o un id de cambio:
+quien sondea pasa el último `cursor`), `min_severity`, `server` (parte de un nombre, endpoint o sitio),
+`flags` y `limit`. Cada elemento nombra el servidor, su página en HISTOR y las herramientas; la
+respuesta lleva la hora, el cursor y el SHA-256 del feed. Siete días, reconstruido cada hora. Una
+marca dice qué cambió, no que el servidor sea malicioso. Solo accede a histor.modelmarket.dev. $0.002.
+
+```json
+{"min_severity": "medium", "since": "2026-11-22T00:00:00Z", "limit": 10}
+```
+
 ### x402-settlement
 
 ¿Se liquidó de verdad este pago x402? Envíe `tx`, la dirección que debía cobrar (`pay_to`) y el
@@ -292,13 +317,32 @@ AIMarket: la red, una transacción correcta en un bloque canónico y una transfe
 `pay_to` por exactamente ese importe. Con `payer` y `nonce` exige además el `AuthorizationUsed`
 (EIP-3009) del comprador justo antes de esa transferencia: la hizo esa autorización. Veredictos:
 `paid` (finalizado), `paid_not_final`, `not_paid`, `failed`, `pending`, `wrong_chain`, con
-confirmaciones. Base y Base Sepolia (`network`); solo alcanza sus RPC públicos. Gratis.
+confirmaciones. Base y Base Sepolia (`network`); alcanza el pool de RPC de Base del hearth y, sin él, sus RPC públicos. Gratis.
 
 ```json
 {"tx": "0xd8a41fb865beba51d9e795f556dc3b77e6ce5bb20a0dceb2e0691aa791997531",
  "pay_to": "0xb73d8bc93b791510c4733c5c5ac2015a3c2930ec", "amount_usd": "0.022",
  "payer": "0x9d24d267cf8d9a8b9ed104b4856cde8830c266ef",
  "nonce": "0x84428e7eae7b08cac1ec9186e338e14fa5056d9f62bb9d92e1ea927370b8e779"}
+```
+
+### x402-seller
+
+Antes de pagar a un vendedor x402, compruebe si alguien más le paga. Indique la dirección del
+beneficiario (`pay_to`) o la URL de pago (`url`, con `method` y `body`): una petición sin pagar lee
+payTo y el precio de su 402. El agente lee todas las transferencias de USDC a esa dirección en Base en
+los últimos `days` días (de 1 a 7, por defecto 7), en rangos de como máximo 50 000 bloques, e informa
+cuántos pagos, cuánto, de cuántos pagadores, cuántos volvieron, la parte del pagador más activo, los
+importes frecuentes y cuántos fueron exactamente el precio, y los pagos por día (UTC). `activity`
+etiqueta esas cifras: `none`, `one_payer`, `concentrated` (un pagador hizo la mitad de los pagos o
+más, a partir de tres pagos), `few_payers`, `spread`. Se listan todos los rangos de bloques leídos;
+`to_block` fija la ventana para poder comprobar la respuesta otra vez. Una transferencia prueba que el
+dinero se movió, no que se prestara un servicio ni quién controla a los pagadores. Accede a
+el pool de RPC de Base del hearth (si no, base-rpc.publicnode.com) y, con `url`, a ese host. $0.003.
+
+```json
+{"url": "https://tienda.textokit.store/api/translate-es", "method": "POST",
+ "body": {"text": "hola"}, "days": 7}
 ```
 
 ### onchain-price
@@ -318,7 +362,12 @@ revés. Todas las lecturas se fijan a un bloque (`block`, o el último al empeza
 que la misma entrada y el mismo bloque dan la misma respuesta, y cualquiera puede recalcularla
 con el estado público de Base. Un error del RPC es un error, nunca un cero. No es un precio de
 todo el mercado: USDC se toma como un dólar y no hay volumen ni capitalización. Solo accede a
-`mainnet.base.org`. Gratis.
+`mainnet.base.org`. O indique `token`, cualquier dirección ERC-20 en Base: el getPool de la factoría
+encuentra sus pools con USDC y WETH (cuatro niveles de comisión), el precio sale del pool de USDC más
+profundo que operó en la ventana, si no del pool de WETH más profundo por el precio de ETH, y cuando
+ambas rutas lo valoran, su distancia es una comprobación; el precio de un pool delgado se mueve con
+poco, mire `liquidity`. Todos los modos leen a través del pool de RPC de Base del hearth, si no de
+`base-rpc.publicnode.com`. Gratis.
 
 ```json
 {"asset": "ETH", "window_s": 1800}
@@ -539,7 +588,7 @@ host llamado. Luego payTo en la cadena: una clave, un contrato o un delegado EIP
 últimas `window_hours` (por defecto 24) y de cuántos pagadores; y si modelmarket.dev lista al vendedor como
 vendedor x402 observado con este payTo fijado. Veredicto `looks_payable`, `review_first` (algo que un agente no
 debería decidir solo, como un cobrador sin pagos en la ventana), `do_not_pay`, `no_payment_required` o `not_x402`.
-No paga ni firma nada. Llega al host que usted nombre, a los RPC públicos de Base (publicnode) y a modelmarket.dev.
+No paga ni firma nada. Llega al host que usted nombre, al pool de RPC de Base del hearth (si no, a los RPC públicos de Base de publicnode) y a modelmarket.dev.
 Gratis.
 
 ```json
