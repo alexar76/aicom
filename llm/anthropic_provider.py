@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING
 
 import httpx
 
+from llm.model_usage import ModelUsage
+
 from llm.provider_secrets import resolve_provider_api_key
 from llm.credential_redaction import CredentialStreamRedactor, redact_credential
 
@@ -103,9 +105,12 @@ class AnthropicProvider(LLMProvider):
             if cfg.stop_sequences:
                 payload["stop_sequences"] = cfg.stop_sequences
 
-            response = await self._client.post("/messages", json=payload, timeout=cfg.timeout_sec)
-            response.raise_for_status()
-            result = response.json()
+            with ModelUsage(self.name, self.base_url, active_model, cfg, wire="anthropic") as call:
+                response = await self._client.post("/messages", json=payload, timeout=cfg.timeout_sec)
+                call.sent(response)
+                response.raise_for_status()
+                result = response.json()
+                call.observe(result)
             text = redact_credential(self._extract_text(result), self.api_key)
             # Same signal, this API's spelling. A reply that stopped at `max_tokens` is cut off,
             # and returning it as a finished answer is how a half-written file reaches a build.
@@ -178,42 +183,46 @@ class AnthropicProvider(LLMProvider):
 
         redactor = CredentialStreamRedactor(self.api_key)
         try:
-            async with self._client.stream("POST", "/messages", json=payload, timeout=cfg.timeout_sec) as response:
-                response.raise_for_status()
-                async for line in response.aiter_lines():
-                    if not line.startswith("data: "):
-                        continue
-                    chunk = line[6:].strip()
-                    if not chunk or chunk == "[DONE]":
-                        continue
-                    try:
-                        data = json.loads(chunk)
-                    except json.JSONDecodeError:
-                        continue
-                    kind = data.get("type")
-                    if kind == "message_delta":
-                        # Where this API says how it ended. Handling only content_block_delta
-                        # dropped it, so a stream that hit max_tokens ended exactly like one
-                        # that finished.
-                        reason = (data.get("delta") or {}).get("stop_reason")
-                        if reason:
-                            cfg.finish_reason = redact_credential(str(reason), self.api_key)
-                        continue
-                    if kind == "error":
-                        # An error FRAME mid-stream is not an exception: the response is a 200
-                        # and the loop simply ran out of lines, so the partial text was
-                        # reported as a complete answer.
-                        err = (data.get("error") or {}).get("message") or "stream error"
-                        cfg.finish_reason = "error"
-                        raise RuntimeError(f"{self.name} stream error: {redact_credential(str(err), self.api_key)}")
-                    if kind == "content_block_delta":
-                        delta = data.get("delta") or {}
-                        text = delta.get("text", "")
-                        if text:
-                            out_tokens += 1
-                            safe_text = redactor.feed(text)
-                            if safe_text:
-                                yield safe_text
+            with ModelUsage(self.name, self.base_url, active_model, cfg, wire="anthropic", stream=True) as call:
+                async with self._client.stream("POST", "/messages", json=payload, timeout=cfg.timeout_sec) as response:
+                    call.sent(response)
+                    response.raise_for_status()
+                    async for line in response.aiter_lines():
+                        if not line.startswith("data: "):
+                            continue
+                        chunk = line[6:].strip()
+                        if not chunk or chunk == "[DONE]":
+                            continue
+                        try:
+                            data = json.loads(chunk)
+                        except json.JSONDecodeError:
+                            continue
+                        kind = data.get("type")
+                        call.observe(data.get("message") if kind == "message_start" else data)
+                        if kind == "message_delta":
+                            # Where this API says how it ended. Handling only content_block_delta
+                            # dropped it, so a stream that hit max_tokens ended exactly like one
+                            # that finished.
+                            reason = (data.get("delta") or {}).get("stop_reason")
+                            if reason:
+                                cfg.finish_reason = redact_credential(str(reason), self.api_key)
+                            continue
+                        if kind == "error":
+                            # An error FRAME mid-stream is not an exception: the response is a 200
+                            # and the loop simply ran out of lines, so the partial text was
+                            # reported as a complete answer.
+                            err = (data.get("error") or {}).get("message") or "stream error"
+                            cfg.finish_reason = "error"
+                            raise RuntimeError(f"{self.name} stream error: {redact_credential(str(err), self.api_key)}")
+                        if kind == "content_block_delta":
+                            delta = data.get("delta") or {}
+                            text = delta.get("text", "")
+                            if text:
+                                out_tokens += 1
+                                safe_text = redactor.feed(text)
+                                if safe_text:
+                                    yield safe_text
+
             remaining = redactor.finish()
             if remaining:
                 yield remaining

@@ -17,6 +17,8 @@ from typing import TYPE_CHECKING
 
 import httpx
 
+from llm.model_usage import ModelUsage
+
 from llm.provider_secrets import resolve_provider_api_key
 from llm.credential_redaction import CredentialStreamRedactor, redact_credential
 
@@ -116,13 +118,18 @@ class OpenAICompatibleProvider(LLMProvider):
             if cfg.stop_sequences:
                 payload["stop"] = cfg.stop_sequences
 
-            response = await self._client.post(
-                "/chat/completions",
-                json=payload,
-                timeout=cfg.timeout_sec,
-            )
-            response.raise_for_status()
-            result = response.json()
+            with ModelUsage(self.name, self.base_url, active_model, cfg, wire="openai") as call:
+                if call.host == "openrouter.ai":
+                    payload["usage"] = {"include": True}
+                response = await self._client.post(
+                    "/chat/completions",
+                    json=payload,
+                    timeout=cfg.timeout_sec,
+                )
+                call.sent(response)
+                response.raise_for_status()
+                result = response.json()
+                call.observe(result)
 
             latency = (time.time() - start_time) * 1000
             usage = result.get("usage") or {}
@@ -226,36 +233,43 @@ class OpenAICompatibleProvider(LLMProvider):
                 "stream": True,
             }
 
-            async with self._client.stream(
-                "POST", "/chat/completions", json=payload, timeout=cfg.timeout_sec
-            ) as response:
-                response.raise_for_status()
-                async for line in response.aiter_lines():
-                    if line.startswith("data: "):
-                        data_str = line[6:].strip()
-                        if data_str == "[DONE]":
-                            break
-                        if data_str:
-                            import json
-                            data = json.loads(data_str)
-                            if data.get("error"):
-                                error = data["error"]
-                                message = error.get("message", "stream error") if isinstance(error, dict) else str(error)
-                                cfg.finish_reason = "error"
-                                raise RuntimeError(redact_credential(str(message), self.api_key))
-                            choice = (data.get("choices") or [{}])[0]
-                            # The terminal chunk carries it; a stream that ran out of budget
-                            # otherwise ends exactly like one that finished, and the caller
-                            # cannot tell a complete answer from a severed one.
-                            if choice.get("finish_reason"):
-                                cfg.finish_reason = redact_credential(str(choice["finish_reason"]), self.api_key)
-                            delta = choice.get("delta", {})
-                            content = delta.get("content", "")
-                            if content:
-                                total_tokens += 1
-                                safe_content = redactor.feed(content)
-                                if safe_content:
-                                    yield safe_content
+            with ModelUsage(self.name, self.base_url, active_model, cfg, wire="openai", stream=True) as call:
+                if call.host == "openrouter.ai":
+                    payload["usage"] = {"include": True}
+                if call.host in {"openrouter.ai", "api.openai.com", "api.deepseek.com"}:
+                    payload["stream_options"] = {"include_usage": True}
+                async with self._client.stream(
+                    "POST", "/chat/completions", json=payload, timeout=cfg.timeout_sec
+                ) as response:
+                    call.sent(response)
+                    response.raise_for_status()
+                    async for line in response.aiter_lines():
+                        if line.startswith("data: "):
+                            data_str = line[6:].strip()
+                            if data_str == "[DONE]":
+                                break
+                            if data_str:
+                                import json
+                                data = json.loads(data_str)
+                                call.observe(data)
+                                if data.get("error"):
+                                    error = data["error"]
+                                    message = error.get("message", "stream error") if isinstance(error, dict) else str(error)
+                                    cfg.finish_reason = "error"
+                                    raise RuntimeError(redact_credential(str(message), self.api_key))
+                                choice = (data.get("choices") or [{}])[0]
+                                # The terminal chunk carries it; a stream that ran out of budget
+                                # otherwise ends exactly like one that finished, and the caller
+                                # cannot tell a complete answer from a severed one.
+                                if choice.get("finish_reason"):
+                                    cfg.finish_reason = redact_credential(str(choice["finish_reason"]), self.api_key)
+                                delta = choice.get("delta", {})
+                                content = delta.get("content", "")
+                                if content:
+                                    total_tokens += 1
+                                    safe_content = redactor.feed(content)
+                                    if safe_content:
+                                        yield safe_content
 
             remaining = redactor.finish()
             if remaining:

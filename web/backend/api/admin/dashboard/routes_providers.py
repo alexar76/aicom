@@ -52,6 +52,8 @@ from web.backend.core.admin_roles import AdminRole, normalize_role, rank, requir
 from finance_stats import compute_dashboard_revenue
 from llm.bootstrap_providers import ensure_model_providers_file
 from llm.factory_defaults import FACTORY_CONTEXT_WINDOW_DEFAULT, FACTORY_MAX_OUTPUT_TOKENS_HEAVY
+from llm.model_usage import ModelUsage
+from llm.provider import GenerationConfig
 from llm.provider_secrets import resolve_provider_api_key, save_provider_config
 from web.backend.services.catalog_hardening import harden_catalog_products
 from web.backend.services.product_naming import resolve_product_name
@@ -311,32 +313,37 @@ async def test_provider(provider_name: str, request: Request):
     
     start_time = time.time()
     try:
-        async with httpx.AsyncClient(timeout=15) as client:
-            resp = await client.post(chat_endpoint, json=payload, headers=headers)
-            latency_ms = round((time.time() - start_time) * 1000)
-            
-            if resp.status_code != 200:
-                return {
-                    "success": False,
-                    "status_code": resp.status_code,
-                    "latency_ms": latency_ms,
-                    "model": model_name,
-                    "error": _redact_provider_echo(resp.text, api_key)[:500],
-                }
-            
-            data = resp.json()
-            response_text = ""
-            if "choices" in data and len(data["choices"]) > 0:
-                response_text = data["choices"][0].get("message", {}).get("content", "")
-            
+        usage_config = GenerationConfig(task_type="provider_test", model_role=model_role)
+        with ModelUsage(provider_name, base_url, model_name, usage_config) as call:
+            if call.host == "openrouter.ai":
+                payload["usage"] = {"include": True}
+            async with httpx.AsyncClient(timeout=15) as client:
+                resp = await client.post(chat_endpoint, json=payload, headers=headers)
+            call.sent(resp)
+            data = resp.json() if resp.status_code == 200 else None
+            call.observe(data)
+
+        latency_ms = round((time.time() - start_time) * 1000)
+        if resp.status_code != 200:
             return {
-                "success": True,
+                "success": False,
                 "status_code": resp.status_code,
                 "latency_ms": latency_ms,
                 "model": model_name,
-                "response": _redact_provider_echo(response_text, api_key)[:500],
-                "prompt": prompt,
+                "error": _redact_provider_echo(resp.text, api_key)[:500],
             }
+
+        response_text = ""
+        if "choices" in data and len(data["choices"]) > 0:
+            response_text = data["choices"][0].get("message", {}).get("content", "")
+        return {
+            "success": True,
+            "status_code": resp.status_code,
+            "latency_ms": latency_ms,
+            "model": model_name,
+            "response": _redact_provider_echo(response_text, api_key)[:500],
+            "prompt": prompt,
+        }
     except Exception as e:
         latency_ms = round((time.time() - start_time) * 1000)
         return {

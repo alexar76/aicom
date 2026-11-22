@@ -4,11 +4,12 @@
 agent here as the hearth's pool, base-rpc.hestia.modelmarket.dev: the same JSON-RPC answers) for every
 JSON-RPC batch the agent sends for ETH (600 s window), BTC (1800 s), BTC over a day, and the
 WETH/USDC 0.05 % pool by address, all pinned to block 60 400 000. The fake RPC answers from it.
-`token_degen` and `token_eurc` hold what https://base-rpc.publicnode.com answered on 2026-11-22 (keyed
-under the pool's name) for a
-token by address at block 60 800 000 (scripts/record_fetches.py): DEGEN, priced through its USDC pool
-with its WETH pools as the cross-check, and EURC, whose USDC pool did not trade in the window, so its
-price comes from its WETH pool times ETH/USDC.
+`token_degen`, `token_eurc` and `token_aero` hold what https://base-rpc.publicnode.com answered on
+2026-11-22 at 16:30Z (keyed under the pool's name) for a token by address at block 60 800 000
+(scripts/record_fetches.py; the token's reads go through Multicall3): DEGEN, whose traded USDC pool
+is far too thin and whose WETH pool prices it; EURC, whose deep USDC pool did not trade in the
+window, so its price is that pool's last trade; and AERO, priced through WETH with the USDC route as
+the cross-check.
 """
 # ruff: noqa: E501 — recorded values
 
@@ -208,59 +209,171 @@ def _ok(out):
     return {c["check"]: c["ok"] for c in out["checks"]}
 
 
-def test_a_token_with_a_traded_usdc_pool_is_priced_directly() -> None:
+# Multicall3's aggregate3, read and written here independently of the handler.
+def _w(text, i):
+    return int(text[64 * i:64 * i + 64], 16)
+
+
+def _decode(result):
+    text = result[2:]
+    start = _w(text, 0) // 32
+    out = []
+    for k in range(_w(text, start)):
+        item = start + 1 + _w(text, start + 1 + k) // 32
+        data = item + _w(text, item + 1) // 32
+        out.append((_w(text, item) == 1, text[64 * (data + 1):64 * (data + 1) + 2 * _w(text, data)]))
+    return out
+
+
+def _encode(entries):
+    heads, tails, offset = [], [], 32 * len(entries)
+    for ok, data in entries:
+        body = (format(int(ok), "064x") + format(64, "064x") + format(len(data) // 2, "064x")
+                + data + "0" * ((64 - len(data) % 64) % 64))
+        heads.append(format(offset, "064x"))
+        tails.append(body)
+        offset += len(body) // 2
+    return "0x" + format(32, "064x") + format(len(entries), "064x") + "".join(heads) + "".join(tails)
+
+
+def _multicall_reply(raw):
+    """The JSON-RPC answers of a reply, and the index of the aggregate3 answer in it (or None)."""
+    answers = json.loads(raw["text"])
+    if not isinstance(answers, list):
+        return answers, None
+    for i, a in enumerate(answers):
+        result = a.get("result") or ""
+        if len(result) > 130 and int(result[2:66], 16) == 32:
+            return answers, i
+    return answers, None
+
+
+def _edit_multicall(edit, which):
+    """A tamper that rewrites the aggregate3 entries of the token batch ("token") or pool batch."""
+    def tamper(url, raw):
+        answers, i = _multicall_reply(raw)
+        if i is None or ((len(answers) == 2) != (which == "token")):
+            return raw
+        entries = edit(_decode(answers[i]["result"]))
+        answers[i]["result"] = _encode(entries)
+        return dict(raw, text=json.dumps(answers))
+    return tamper
+
+
+DEGEN_WETH_03 = "0xc9034c3e7f58003e6ae0c8438e7c8f4598d5acaa"
+
+
+def test_a_thin_traded_usdc_pool_does_not_outrank_a_deep_weth_pool() -> None:
+    """DEGEN's USDC pool traded, but about 57 cents moves it 1 %; its WETH pool takes 1,632 dollars."""
     out, asked = _token("token_degen")
-    assert set(asked) == {"https://base-rpc.hestia.modelmarket.dev"} and len(asked) <= 6
-    assert out["symbol"] == "DEGEN" and out["decimals"] == 18 and out["quote"] == "USDC"
-    assert out["route"] == "direct USDC pool" and out["fee_pct"] == "0.3"
-    assert out["price_usd"] == "0.000698354394015" and out["block"] == 60800000
-    checks = _ok(out)
-    assert checks["factory_pools"] and checks["traded_pool"] and checks["routes_agree"]
-    assert {p["quote"] for p in out["pools"]} == {"USDC", "WETH"}
+    assert set(asked) == {"https://base-rpc.hestia.modelmarket.dev"} and len(asked) == 4
+    assert (out["symbol"], out["name"], out["decimals"]) == ("DEGEN", "Degen", 18)
+    assert out["supply_on_base"] == "35810176131.601100956438763166" and out["quote"] == "USDC"
+    assert out["route"] == "WETH pool x ETH/USDC" and out["pool"] == DEGEN_WETH_03 and out["fee_pct"] == "0.3"
+    assert out["price_usd"] == "0.000700359893396" and out["price_basis"] == "twap"
+    assert out["depth_1pct_usd"] == "1632.54" and out["block"] == 60800000
+    usdc = next(p for p in out["pools"] if p["quote"] == "USDC" and p["fee_pct"] == "0.3")
+    assert usdc["traded"] and usdc["depth_1pct_usd"] == "0.57057730" and "not a market price" in usdc["note"]
+    assert _ok(out)["traded_pool"] and "routes_agree" not in _ok(out)
     assert all(p["price_unit"] == p["quote"] + " per DEGEN" for p in out["pools"])
     assert out["source"].startswith("Uniswap v3 pools on Base, read from https://base-rpc.hestia.modelmarket.dev")
+    assert "anyone can deploy a token called USDC" in out["limits"]
 
 
-def test_a_token_priced_through_weth_multiplies_by_eth() -> None:
-    out, _ = _token("token_eurc")
-    assert out["symbol"] == "EURC" and out["route"] == "WETH pool x ETH/USDC"
+def test_a_token_priced_through_weth_multiplies_by_eth_and_the_usdc_route_agrees() -> None:
+    out, _ = _token("token_aero")
+    assert (out["symbol"], out["name"]) == ("AERO", "Aerodrome")
+    assert out["route"] == "WETH pool x ETH/USDC" and out["price_basis"] == "twap"
     weth = next(p for p in out["pools"] if p["pool"] == out["pool"])
-    assert weth["quote"] == "WETH" and weth["traded"]
+    assert weth["quote"] == "WETH" and weth["traded"] and "note" not in weth
     price = Decimal(weth["twap"]) * Decimal(out["eth_usd"])
     assert abs(price - Decimal(out["price_usd"])) / price < Decimal("1e-9")
-    assert _ok(out)["routes_agree"] and _ok(out)["eth_deepest_traded_pool"]
+    agree = next(c for c in out["checks"] if c["check"] == "routes_agree")
+    assert agree["ok"] and "0.1066 %" in agree["detail"]
+    assert _ok(out)["eth_deepest_traded_pool"]
 
 
-def _zero_pools(json_body, raw):
-    import json as _json
+def test_the_token_price_follows_from_the_recorded_oracle_words() -> None:
+    """AERO in WETH from the two tick accumulators observe() returned, decoded here."""
+    out, _ = _token("token_aero")
+    fetched = V["token_aero"]["fetched"]
+    replies = [json.loads(raw["text"]) for raw in fetched.values()]
+    pools = next(r for r in replies if isinstance(r, list) and len(r) == 1 and len(r[0].get("result", "")) > 2000)
+    entries = _decode(pools[0]["result"])
+    i = [p["pool"] for p in out["pools"]].index(out["pool"])
+    ok, data = entries[3 * i + 2]  # liquidity, slot0, observe for each pool, in order
+    assert ok
+    words = [data[j:j + 64] for j in range(0, len(data), 64)]
+    start = int(words[0], 16) // 32
 
-    if "base-rpc.hestia" not in json_body:
-        return raw
-    answers = _json.loads(raw["text"])
-    if len(answers) == 10:  # the getPool batch: eight pools, decimals, symbol
-        for a in answers[:8]:
-            a["result"] = "0x" + "0" * 64
-        raw = dict(raw, text=_json.dumps(answers))
-    return raw
+    def signed(word):
+        value = int(word, 16)
+        return value - (1 << 256) if value >= 1 << 255 else value
+
+    mean = Decimal(signed(words[start + 2]) - signed(words[start + 1])) / Decimal(1800)
+    # WETH (0x4200…) sorts before AERO (0x9401…): token0 is WETH, so AERO in WETH is 1 / 1.0001^tick.
+    in_weth = 1 / Decimal("1.0001") ** mean
+    assert abs(in_weth - Decimal(out["pools"][i]["twap"])) / in_weth < Decimal("1e-9")
+
+
+def test_when_no_deep_pool_traded_the_price_is_the_deepest_pools_last_trade() -> None:
+    """EURC: its WETH pool traded, but 34 cents moves it 1 %; the USDC pool that takes 41,456 did not."""
+    out, _ = _token("token_eurc")
+    assert out["symbol"] == "EURC" and out["route"] == "direct USDC pool" and out["fee_pct"] == "0.05"
+    assert out["price_basis"] == "last_trade" and out["price_usd"] == "1.095154506677"
+    assert out["depth_1pct_usd"] == "41456.44"
+    traded = next(c for c in out["checks"] if c["check"] == "traded_pool")
+    assert traded["ok"] is False and "last trade" in traded["detail"]
+
+
+def test_with_no_oracle_reaching_back_the_spot_price_is_given_and_flagged() -> None:
+    def no_observe(entries):
+        return [(False, "") if k % 3 == 2 else e for k, e in enumerate(entries)]
+
+    # The ETH leg is its own batch and keeps its averages; only the token's pools lose theirs.
+    out, _ = _token("token_aero", tamper=_edit_multicall(no_observe, "pools"))
+    assert out["price_basis"] == "spot" and out["price_usd"] == out["spot_usd"]
+    assert out["spot_vs_twap_pct"] is None and out["pool"] == "0x3d5d143381916280ff91407febeb52f2b60f33cf"
+    assert "one swap can move" in next(c for c in out["checks"] if c["check"] == "traded_pool")["detail"]
 
 
 def test_a_token_without_pools_is_refused() -> None:
+    def no_pools(entries):
+        return [(True, "0" * 64) if k < 8 else e for k, e in enumerate(entries)]
+
     with pytest.raises(ValueError, match="no Uniswap v3 pool of DEGEN with USDC or WETH"):
-        _token("token_degen", tamper=_zero_pools)
+        _token("token_degen", tamper=_edit_multicall(no_pools, "token"))
 
 
 def test_an_address_that_is_not_a_token_is_refused() -> None:
-    import json as _json
-
-    def no_decimals(url, raw):
-        answers = _json.loads(raw["text"])
-        if isinstance(answers, list) and len(answers) == 10:
-            answers[8] = {"jsonrpc": "2.0", "id": 9, "error": {"code": 3, "message": "execution reverted"}}
-            raw = dict(raw, text=_json.dumps(answers))
-        return raw
+    def no_decimals(entries):
+        return [(False, "") if k == 8 else e for k, e in enumerate(entries)]
 
     with pytest.raises(ValueError, match="does not answer decimals"):
-        _token("token_degen", tamper=no_decimals)
+        _token("token_degen", tamper=_edit_multicall(no_decimals, "token"))
+
+
+def test_an_address_without_code_is_refused() -> None:
+    def no_code(url, raw):
+        answers, i = _multicall_reply(raw)
+        if i is None or len(answers) != 2:
+            return raw
+        answers[0]["result"] = "0x"
+        return dict(raw, text=json.dumps(answers))
+
+    with pytest.raises(ValueError, match="there is no contract at 0x4ed4"):
+        _token("token_degen", tamper=no_code)
+
+
+def test_a_token_name_is_printable_text_of_at_most_64_characters() -> None:
+    def long_name(entries):
+        text = ("‮USDC\n" * 40).encode()
+        data = format(32, "064x") + format(len(text), "064x") + text.hex()
+        data += "0" * ((64 - len(data) % 64) % 64)
+        return [(True, data) if k == 10 else e for k, e in enumerate(entries)]
+
+    out, _ = _token("token_degen", tamper=_edit_multicall(long_name, "token"))
+    assert len(out["name"]) == 64 and out["name"].startswith("USDCUSDC") and "\n" not in out["name"]
 
 
 def test_a_bad_token_address_is_refused_before_any_fetch() -> None:

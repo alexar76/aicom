@@ -3,11 +3,12 @@
 `x402_seller_vectors.json` holds what the Base RPC (base-rpc.publicnode.com, recorded under the hearth
 pool's name base-rpc.hestia.modelmarket.dev) and, for one case, the seller answered on 2026-11-22
 (scripts/record_fetches.py) for three sellers the modelmarket.dev hub observes with their
-consent, over the window ending at Base block 60 800 000:
-  - oracleinsight: 0x5FBbbC…D231, seven days, no USDC received;
-  - aemb: 0xD00427…88E9, three days, no USDC received;
-  - textokit_url: the payee read from tienda.textokit.store's x402 V1 402 ($0.003 per call), seven
-    days, one transfer of $0.001.
+consent, over the window ending at Base block 60 800 000 (0.2-second blocks: 18,000 an hour):
+  - oracleinsight: 0x5FBbbC…D231, 24 hours, no USDC received;
+  - textokit_url: the payee read from tienda.textokit.store's x402 V1 402 ($0.003 per call), 24 hours,
+    one transfer of $0.001;
+  - aemb: 0xD00427…88E9, 48 hours, recorded while another job on the same address was reading the
+    same RPC: part of the window answered 429, so the answer is incomplete and says so.
 The busier cases add made-up Transfer logs to the recorded replies; everything else is as recorded.
 """
 # ruff: noqa: E501 — recorded values
@@ -73,23 +74,26 @@ def run(case, payload=None, tamper=None):
     return handle(payload or V[case]["payload"]), asked
 
 
-def test_a_payee_nobody_paid_reads_seven_days_in_six_requests() -> None:
+def test_a_payee_nobody_paid_reads_a_day_by_block_time() -> None:
     out, asked = run("oracleinsight")
     assert out["activity"] == "none" and out["transfers"] == 0 and out["total_usd"] == "0"
     assert out["window"] == {
         **out["window"],
-        "days": 7,
-        "from_block": 60497601,
+        "hours": 24,
+        "from_block": 60368001,
         "to_block": 60800000,
+        "covered_hours": 24.0,
+        "from_at": "2026-11-21T12:26:15Z",
+        "to_at": "2026-11-22T12:26:15Z",
         "complete": True,
         "missing": [],
     }
     covered = sorted((r["from_block"], r["to_block"]) for r in out["window"]["read"])
-    assert covered[0][0] == 60497601 and covered[-1][1] == 60800000
+    assert covered[0][0] == 60368001 and covered[-1][1] == 60800000
     assert all(b - a + 1 <= 50000 for a, b in covered)
     assert all(covered[i][1] + 1 == covered[i + 1][0] for i in range(len(covered) - 1))
     assert len(asked) <= 6
-    assert out["notes"] == ["No USDC reached this address on Base in the last 7 days."]
+    assert out["notes"] == ["No USDC reached this address on Base in the window (24.0 h by block time)."]
 
 
 def test_the_payee_and_price_come_from_the_sellers_402() -> None:
@@ -137,9 +141,9 @@ def test_a_busy_payee_is_counted_by_payer_amount_and_day() -> None:
         {"usd": "0.01", "transfers": 4},
         {"usd": "0.25", "transfers": 1},
     ]
-    assert out["by_day"] == [
-        {"date": "2025-11-17", "transfers": 2, "usd": "0.02"},
-        {"date": "2025-11-18", "transfers": 3, "usd": "0.27"},
+    assert out["by_hour"] == [
+        {"hour": "2025-11-17T00Z", "transfers": 2, "usd": "0.02"},
+        {"hour": "2025-11-18T00Z", "transfers": 3, "usd": "0.27"},
     ]
     assert out["first_at"] == "2025-11-17T00:00:10Z" and out["last_at"] == "2025-11-18T00:00:20Z"
     assert out["notes"] == []
@@ -213,8 +217,10 @@ def test_another_chain_is_refused() -> None:
         ({}, "give pay_to"),
         ({"pay_to": "0x123"}, "pay_to must be a 0x address"),
         ({"pay_to": "0x" + "0" * 40}, "zero address"),
-        ({"pay_to": ORACLE, "days": 8}, "days must be a whole number from 1 to 7"),
-        ({"pay_to": ORACLE, "days": True}, "days must be a whole number"),
+        ({"pay_to": ORACLE, "days": 7}, "days is 1 or 2; give hours"),
+        ({"pay_to": ORACLE, "days": True}, "days is 1 or 2"),
+        ({"pay_to": ORACLE, "hours": 49}, "hours must be a whole number from 1 to 48"),
+        ({"pay_to": ORACLE, "hours": 0}, "hours must be a whole number from 1 to 48"),
         ({"pay_to": ORACLE, "to_block": "latest"}, "to_block must be a block number"),
         ({"pay_to": ORACLE, "amount_usd": "0.0000001"}, "at most 6 decimals"),
         ({"url": "http://example.com/x"}, "url must be an https URL"),
@@ -250,3 +256,18 @@ def test_manifest_reaches_one_rpc_and_the_called_url_and_is_priced() -> None:
     assert AGENTS[SLUG]["egress_input_fields"] == ["url"]
     assert body["capability"]["price_per_call_usd"] == 0.003
     assert body["capability"]["capability_id"] == "x402.seller.record@v1"
+
+
+def test_a_window_the_rpc_refused_in_part_is_a_floor_and_says_so() -> None:
+    out, asked = run("aemb")
+    assert out["window"]["hours"] == 48 and out["window"]["covered_hours"] == 48.0
+    assert out["window"]["complete"] is False and out["window"]["missing"]
+    assert all("429" in m["reason"] for m in out["window"]["missing"])
+    assert out["notes"][0].startswith("Some block ranges could not be read")
+    assert len(asked) <= 6
+
+
+def test_two_days_is_48_hours() -> None:
+    payload = {k: v for k, v in V["aemb"]["payload"].items() if k != "hours"}
+    out, _ = run("aemb", {**payload, "days": 2})
+    assert out["window"]["hours"] == 48 and out["window"]["from_block"] == 60800000 - 48 * 18000 + 1

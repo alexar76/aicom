@@ -2,15 +2,17 @@
 
 A 402 says what a seller asks; the chain says whether anyone pays it. Give `pay_to` (the address an
 offer names) or `url` (a paid resource: the agent makes one unpaid request, reads the first exact USDC
-offer on Base, V1 body or V2 PAYMENT-REQUIRED header, and takes its payTo and price). `days` is the
-window, 1 to 7 (default 7). `to_block` pins the window's last block, so a result can be checked again.
+offer on Base, V1 body or V2 PAYMENT-REQUIRED header, and takes its payTo and price). `hours` is the
+window, 1 to 48 (default 24). `to_block` pins the window's last block, so a result can be checked again.
+Base blocks are 0.2 s apart (18,000 an hour), so a window is counted in blocks and the timestamps of its
+first and last block are read with the logs: the answer says the hours it actually covered.
 
 The agent reads every USDC Transfer to that address in the window from Base's public RPC, in ranges
 of at most 50,000 blocks, and reports what the transfers show and nothing more:
   - how many, how much, from how many payers; payers who came back (two or more payments) and the
     share of the busiest payer;
   - the most common amounts and, with a price, how many payments were exactly that price;
-  - payments per UTC day, the first and the last;
+  - payments per UTC hour, the first and the last;
   - every range it read, with its blocks, and whether the window is complete.
 
 `activity` is a label for those numbers, defined here so anyone can recompute it: none (no transfer),
@@ -32,7 +34,8 @@ RPC = "https://base-rpc.publicnode.com"
 CHAIN_ID = "0x2105"  # 8453, Base mainnet
 USDC = "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
 TRANSFER = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
-BLOCKS_PER_DAY = 43200  # Base targets 2-second blocks
+BLOCKS_PER_HOUR = 18000  # Base blocks are 0.2 s apart (2026-11-22: 3,024,000 blocks = 7 days)
+MAX_HOURS = 48  # 864,000 blocks = 18 log reads, what fits the hearth's six requests
 CONFIRMATIONS = 12
 RANGE = 50000  # the most blocks base-rpc.publicnode.com serves in one eth_getLogs
 ROUNDS = 6  # the hearth allows six requests per call
@@ -254,10 +257,15 @@ def _iso(ts):
 
 
 def _read(pay_to, start, end, rounds, check_chain):
-    """Every transfer to pay_to in [start, end]; ranges that could not be read are listed."""
+    """Every transfer to pay_to in [start, end], the window's first and last block times; ranges that
+    could not be read are listed."""
     transfers, read, missing, seen = [], [], [], set()
+    times = {}
     for n, ranges in enumerate(_slices(start, end, rounds)):
         calls = [("eth_chainId", [])] if check_chain and n == 0 else []
+        if n == 0:
+            calls += [("eth_getBlockByNumber", [hex(start), False]),
+                      ("eth_getBlockByNumber", [hex(end), False])]
         calls += [_logs_call(pay_to, a, b) for a, b in ranges]
         try:
             answers = _batch(calls)
@@ -271,6 +279,11 @@ def _read(pay_to, start, end, rounds, check_chain):
                 raise RuntimeError(
                     "the RPC is not Base mainnet (chain " + str(chain.get("result")) + ")"
                 )
+        if n == 0:
+            for name in ("from", "to"):
+                block = answers.pop(0).get("result")
+                if isinstance(block, dict) and block.get("timestamp"):
+                    times[name] = int(block["timestamp"], 16)
         for (a, b), answer in zip(ranges, answers, strict=False):
             logs = answer.get("result")
             if not isinstance(logs, list):
@@ -302,7 +315,7 @@ def _read(pay_to, start, end, rounds, check_chain):
                         "tx": log.get("transactionHash"),
                     }
                 )
-    return transfers, read, missing
+    return transfers, read, missing, times
 
 
 def _summary(transfers, pay_to, price):
@@ -317,10 +330,10 @@ def _summary(transfers, pay_to, price):
     amounts = {}
     for t in transfers:
         amounts[t["atomic"]] = amounts.get(t["atomic"], 0) + 1
-    days = {}
+    hours = {}
     for t in transfers:
         if t["ts"] is not None:
-            row = days.setdefault(_day(t["ts"]), [0, 0])
+            row = hours.setdefault(_iso(t["ts"] - t["ts"] % 3600)[:13] + "Z", [0, 0])
             row[0] += 1
             row[1] += t["atomic"]
     stamped = sorted(t["ts"] for t in transfers if t["ts"] is not None)
@@ -350,8 +363,8 @@ def _summary(transfers, pay_to, price):
             {"usd": _usd(a), "transfers": n}
             for a, n in sorted(amounts.items(), key=lambda kv: (-kv[1], kv[0]))[:TOP]
         ],
-        "by_day": [
-            {"date": d, "transfers": n, "usd": _usd(s)} for d, (n, s) in sorted(days.items())
+        "by_hour": [
+            {"hour": h, "transfers": n, "usd": _usd(s)} for h, (n, s) in sorted(hours.items())
         ],
         "first_at": _iso(stamped[0]) if stamped else None,
         "last_at": _iso(stamped[-1]) if stamped else None,
@@ -363,13 +376,13 @@ def _summary(transfers, pay_to, price):
     return out
 
 
-def _notes(summary, days, complete):
+def _notes(summary, covered, complete):
     notes = []
     n = summary["transfers"]
     if not complete:
         notes.append("Some block ranges could not be read (see missing): the counts are a floor.")
     if n == 0:
-        notes.append("No USDC reached this address on Base in the last " + str(days) + " days.")
+        notes.append("No USDC reached this address on Base in the window (" + covered + ").")
         return notes
     if summary["activity"] == "one_payer":
         notes.append("Every payment came from one address.")
@@ -398,8 +411,17 @@ def _notes(summary, days, complete):
 
 def handle(payload):
     if not isinstance(payload, dict):
-        raise ValueError("send an object: pay_to or url, optionally days, to_block, amount_usd")
-    days = _int_field(payload, "days", 1, 7, 7)
+        raise ValueError("send an object: pay_to or url, optionally hours, to_block, amount_usd")
+    if payload.get("days") is not None and payload.get("hours") is None:
+        days = payload["days"]
+        if isinstance(days, bool) or days not in (1, 2):
+            raise ValueError(
+                "days is 1 or 2; give hours (1 to 48): Base blocks are 0.2 s apart, so a week would be "
+                "61 log reads, more than one call can make"
+            )
+        hours = 24 * days
+    else:
+        hours = _int_field(payload, "hours", 1, MAX_HOURS, 24)
     price = _price(payload)
     used = 0
     offer = None
@@ -423,7 +445,7 @@ def handle(payload):
             end = int(text, 16) if text.startswith("0x") else int(text)
         except ValueError:
             raise ValueError("to_block must be a block number") from None
-        if isinstance(raw, bool) or end < BLOCKS_PER_DAY * days:
+        if isinstance(raw, bool) or end < BLOCKS_PER_HOUR * hours:
             raise ValueError("to_block must be a Base block number")
         check_chain = True
     else:
@@ -438,20 +460,27 @@ def handle(payload):
             raise RuntimeError("the RPC did not give the latest block")
         end = int(latest, 16) - CONFIRMATIONS
         check_chain = False
-    start = end - BLOCKS_PER_DAY * days + 1
+    start = end - BLOCKS_PER_HOUR * hours + 1
 
     # One round stays in hand: on a hearth without the RPC pool, the first request is refused.
-    transfers, read, missing = _read(pay_to, start, end, ROUNDS - used - 1, check_chain)
+    transfers, read, missing, times = _read(pay_to, start, end, ROUNDS - used - 1, check_chain)
     complete = not missing
+    covered_h = None
+    if "from" in times and "to" in times:
+        covered_h = round((times["to"] - times["from"]) / 3600, 2)
+    covered = (str(covered_h) + " h by block time") if covered_h is not None else (str(hours) + " h at 0.2 s a block")
     summary = _summary(transfers, pay_to, price)
     out = {
         "pay_to": pay_to,
         "network": "eip155:8453",
         "asset": USDC,
         "window": {
-            "days": days,
+            "hours": hours,
             "from_block": start,
             "to_block": end,
+            "from_at": _iso(times["from"]) if "from" in times else None,
+            "to_at": _iso(times["to"]) if "to" in times else None,
+            "covered_hours": covered_h,
             "complete": complete,
             "read": read,
             "missing": missing,
@@ -464,6 +493,11 @@ def handle(payload):
             "amount_usd": _usd(offer["amount_atomic"]) if offer.get("amount_atomic") else None,
         }
     out.update(summary)
-    out["notes"] = _notes(summary, days, complete)
+    out["notes"] = _notes(summary, covered, complete)
+    if covered_h is not None and abs(covered_h - hours) > 0.1 * hours:
+        out["notes"].append(
+            "Base's block time is not 0.2 s in this window: " + str(hours) + " h of blocks covered "
+            + str(covered_h) + " h."
+        )
     out["source"] = RPC + " (eth_getLogs, USDC Transfer logs to pay_to)"
     return out

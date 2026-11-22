@@ -1498,6 +1498,13 @@ def test_a_payment_pay_builds_is_redeemed_by_its_secret_and_by_nobody_watching(
         assert refusal.startswith("  402 ") and "hestia-agents pay" not in refusal, refusal
 
     assert cli.main(call) == 0
-    assert capsys.readouterr().out.startswith("  result   : ")
-    assert cli.main(call) == 2, "one payment, one call"
-    assert capsys.readouterr().out == "  402 that payment nonce has already been spent\n"
+    first = capsys.readouterr().out
+    assert first.startswith("  result   : ")
+    # The same paid call again is delivered again, not run again: the hearth keeps the answer it
+    # gave for that payment and request (a buyer whose connection dropped gets what it paid for).
+    assert cli.main(call) == 0
+    assert capsys.readouterr().out == first
+    # Another request on the same payment is not another call.
+    other = api.post("/t/json-canonical/invoke", json={"document": {"other": 1}},
+                     headers={"X-Payment": tx, "X-Payment-Secret": secret})
+    assert other.status_code in (402, 409) and "result" not in other.json(), other.text

@@ -42,7 +42,7 @@ foyer, rien n'est filtré.
 | [merkle-proof](#merkle-proof) | `merkle.proof@v1` | 0,002 $ | racines et preuves de Merkle : journaux RFC 6962 et arbres OpenZeppelin |
 | [x402-check](#x402-check) | `x402.authorization.check@v1` | 0,003 $ | qui a signé un paiement x402, pour quoi, et USDC l'acceptera-t-il |
 | [x402-settlement](#x402-settlement) | `x402.settlement.check@v1` | 0,000 $ | ce paiement x402 a-t-il été réglé sur Base : à qui, combien, et est-ce définitif |
-| [x402-seller](#x402-seller) | `x402.seller.record@v1` | 0,003 $ | qui paie vraiment ce bénéficiaire x402 sur Base : paiements, payeurs, payeurs revenus, par jour |
+| [x402-seller](#x402-seller) | `x402.seller.record@v1` | 0,003 $ | qui paie vraiment ce bénéficiaire x402 sur Base : paiements, payeurs, payeurs revenus, par heure |
 | [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | 0,000 $ | le prix de l'ETH, du BTC ou de tout token de Base selon les pools Uniswap v3 sur Base, moyenné dans le temps, à un bloc donné |
 | [esim-prices](#esim-prices) | `esim.price.history@v1` | 0,000 $ | comment a évolué le prix de gros des forfaits eSIM d'un pays |
 | [tlog-checkpoint](#tlog-checkpoint) | `tlog.checkpoint.verify@v1` | 0,000 $ | ce checkpoint de journal de transparence est-il signé par le journal et cosigné par assez de témoins |
@@ -336,9 +336,9 @@ les confirmations. Base et Base Sepolia (`network`) ; il atteint le pool RPC Bas
 Avant de payer un vendeur x402, voyez si quelqu'un d'autre le paie. Donnez l'adresse du bénéficiaire
 (`pay_to`) ou l'URL payante (`url`, avec `method` et `body`) : une requête non payée lit payTo et le
 prix dans son 402. L'agent lit tous les transferts d'USDC vers cette adresse sur Base sur les derniers
-`days` jours (de 1 à 7, 7 par défaut), par plages d'au plus 50 000 blocs, et indique combien de
+`hours` heures (de 1 à 48, 24 par défaut ; les blocs de Base sont espacés de 0,2 s et la réponse donne les heures réellement couvertes d'après le temps des blocs), par plages d'au plus 50 000 blocs, et indique combien de
 paiements, pour quel montant, de combien de payeurs, combien sont revenus, la part du payeur le plus
-actif, les montants fréquents et combien étaient exactement au prix, et les paiements par jour (UTC).
+actif, les montants fréquents et combien étaient exactement au prix, et les paiements par heure (UTC).
 `activity` étiquette ces chiffres : `none`, `one_payer`, `concentrated` (un payeur a fait la moitié
 des paiements ou plus, à partir de trois paiements), `few_payers`, `spread`. Chaque plage de blocs lue
 est listée ; `to_block` fixe la fenêtre pour vérifier la réponse plus tard. Un transfert prouve que
@@ -347,7 +347,7 @@ le pool RPC Base du foyer (sinon base-rpc.publicnode.com) et, avec `url`, cet h�
 
 ```json
 {"url": "https://tienda.textokit.store/api/translate-es", "method": "POST",
- "body": {"text": "hola"}, "days": 7}
+ "body": {"text": "hola"}, "hours": 24}
 ```
 
 ### onchain-price
@@ -367,11 +367,24 @@ en token1 et l'inverse. Toutes les lectures sont fixées à un bloc (`block`, ou
 de l'appel) : même entrée et même bloc, même réponse, que chacun peut recalculer depuis l'état
 public de Base. Une erreur du RPC est une erreur, jamais un zéro. Ce n'est pas un prix de tout le
 marché : l'USDC est compté pour un dollar, sans volume ni capitalisation. Il n'accède qu'à
-`mainnet.base.org`. Ou donnez `token`, toute adresse ERC-20 sur Base : le getPool de la factory
-trouve ses pools avec USDC et WETH (quatre niveaux de frais), le prix vient du pool USDC le plus
-profond qui a échangé dans la fenêtre, sinon du pool WETH le plus profond multiplié par le prix de
-l'ETH, et quand les deux routes le chiffrent, leur écart est une vérification ; le prix d'un pool
-mince se déplace facilement, lisez `liquidity`. Tous les modes lisent par le pool RPC Base du foyer, sinon
+`mainnet.base.org`. Ou donnez `token`, toute adresse ERC-20 sur Base : l'agent
+vérifie que l'adresse porte un contrat, lit ce que le contrat dit de lui-même (`name`, `symbol`,
+`decimals` et `supply_on_base` d'après `totalSupply` ; pour un token passé par un pont, seulement la
+part pontée), et le getPool de la factory trouve ses pools avec USDC et WETH (quatre niveaux de
+frais). La profondeur est le côté token de la liquidité du pool au prix actuel, comptée dans le token
+lui-même, si bien que les pools USDC et WETH se comparent ; le prix vient du pool le plus profond dont
+le prix a bougé dans la fenêtre, parmi les pools d'au moins 1 % de la profondeur du plus profond (un
+pool WETH multiplié par le prix de l'ETH). `depth_1pct_usd` indique combien de dollars du token un
+seul swap devrait vendre dans un pool pour en baisser le prix de 1 % si la liquidité près du prix
+restait la même ; les pools sous 1 % de la profondeur du pool retenu portent une note au lieu de
+passer pour un prix de marché. `price_basis` vaut `twap`, ou `last_trade` si aucun pool profond n'a
+bougé dans la fenêtre (la moyenne du plus profond est alors son dernier échange), ou `spot` si aucun
+oracle ne remonte aussi loin, signalé car un seul swap peut le déplacer. Quand le pool échangé le
+plus profond de l'autre cotation est assez profond, leur écart est une vérification. Les lectures du
+token passent par Multicall3, un `eth_call` par étape (une vingtaine d'appels RPC par token, la
+partie ETH comprise) ; chaque lecture rend ce que rendrait un `eth_call` direct à ce bloc. Le nom et
+le symbole sont les mots du contrat : n'importe qui peut déployer un token appelé USDC, fiez-vous à
+l'adresse. Tous les modes lisent par le pool RPC Base du foyer, sinon
 `base-rpc.publicnode.com`. Gratuit.
 
 ```json

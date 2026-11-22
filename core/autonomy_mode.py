@@ -57,10 +57,11 @@ def is_full_autonomy(*, config: dict[str, Any] | None = None) -> bool:
         return False
     if get_autonomy_mode(config=config) != "full":
         return False
-    return _auto_pipeline_enabled(config=config)
+    return is_autonomous_development_enabled(config=config)
 
 
-def _auto_pipeline_enabled(*, config: dict[str, Any] | None = None) -> bool:
+def is_autonomous_development_enabled(*, config: dict[str, Any] | None = None) -> bool:
+    """Read the Autonomous development setting used for background product work."""
     if config is not None:
         general = config.get("general")
         if isinstance(general, dict) and "auto_pipeline" in general:

@@ -518,6 +518,7 @@ class DirectorWorker:
 
     async def run_discovery_cycle(self) -> dict:
         """Periodic discovery refresh without forcing product creation."""
+        from core.autonomy_mode import is_autonomous_development_enabled
         from core.factory_hold import is_factory_on_hold
 
         if is_factory_on_hold():
@@ -528,6 +529,14 @@ class DirectorWorker:
                 "success": True,
                 "skipped": True,
                 "reason": "factory_on_hold",
+                "timestamp": time.time(),
+            }
+        if not is_autonomous_development_enabled():
+            logger.info("Autonomous development is off — skipping scheduled discovery")
+            return {
+                "success": True,
+                "skipped": True,
+                "reason": "autonomous_development_disabled",
                 "timestamp": time.time(),
             }
         try:
@@ -574,7 +583,11 @@ class DirectorWorker:
                 top.get("score_total"),
             )
             now = time.time()
-            if self._discovery_auto_enqueue and not is_factory_on_hold():
+            if (
+                self._discovery_auto_enqueue
+                and is_autonomous_development_enabled()
+                and not is_factory_on_hold()
+            ):
                 elapsed_min = (now - self._last_discovery_enqueue_time) / 60.0
                 if elapsed_min >= max(1, self._discovery_auto_enqueue_cooldown_min):
                     await self._auto_create_product()

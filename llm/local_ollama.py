@@ -13,6 +13,8 @@ from typing import TYPE_CHECKING
 
 import httpx
 
+from llm.model_usage import ModelUsage
+
 from .provider import (
     GenerationConfig,
     LLMProvider,
@@ -72,9 +74,12 @@ class LocalOllamaProvider(LLMProvider):
                 },
             }
 
-            response = await self._client.post("/api/generate", json=payload, timeout=cfg.timeout_sec)
-            response.raise_for_status()
-            result = response.json()
+            with ModelUsage(self.name, self.base_url, self.model, cfg, wire="ollama") as call:
+                response = await self._client.post("/api/generate", json=payload, timeout=cfg.timeout_sec)
+                call.sent(response)
+                response.raise_for_status()
+                result = response.json()
+                call.observe(result)
 
             latency = (time.time() - start_time) * 1000
             tokens_used = result.get("eval_count", 0)
@@ -118,20 +123,23 @@ class LocalOllamaProvider(LLMProvider):
                 },
             }
 
-            async with self._client.stream(
-                "POST", "/api/generate", json=payload, timeout=cfg.timeout_sec
-            ) as response:
-                response.raise_for_status()
-                async for line in response.aiter_lines():
-                    if line.strip():
-                        import json
-                        data = json.loads(line)
-                        if data.get("done") and data.get("done_reason"):
-                            cfg.finish_reason = str(data["done_reason"])
-                        token = data.get("response", "")
-                        if token:
-                            total_tokens += 1
-                            yield token
+            with ModelUsage(self.name, self.base_url, self.model, cfg, wire="ollama", stream=True) as call:
+                async with self._client.stream(
+                    "POST", "/api/generate", json=payload, timeout=cfg.timeout_sec
+                ) as response:
+                    call.sent(response)
+                    response.raise_for_status()
+                    async for line in response.aiter_lines():
+                        if line.strip():
+                            import json
+                            data = json.loads(line)
+                            call.observe(data)
+                            if data.get("done") and data.get("done_reason"):
+                                cfg.finish_reason = str(data["done_reason"])
+                            token = data.get("response", "")
+                            if token:
+                                total_tokens += 1
+                                yield token
 
             latency = (time.time() - start_time) * 1000
             if cfg.finish_reason == "length":

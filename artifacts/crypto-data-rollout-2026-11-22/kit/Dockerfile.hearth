@@ -1,0 +1,8 @@
+# The running hearth (0e1df4ad9965, catalogue narrow-screen rollout 2026-11-22 11:51Z) with the RPC pool and per-call
+# RPC budgets (aicom fb6d768b0 / 8ef0a5784): four files of /app/hestia, and the agent catalogue rebuilt for the new agents.
+ARG BASE=rpcpoolbase-hestia-hearth:20261122
+FROM ${BASE}
+COPY --chown=65532:65532 overlay/hestia/hestia/rpc_pool.py overlay/hestia/hestia/egress.py overlay/hestia/hestia/config.py overlay/hestia/hestia/app.py /app/hestia/
+COPY --chown=65532:65532 overlay/hestia/docs/agents/ /app/docs/agents/
+COPY --chown=65532:65532 agents-overlay.sha256 code-overlay.sha256 /app/
+RUN cd /app/docs && sha256sum -c --quiet /app/agents-overlay.sha256 && cd /app/hestia && sha256sum -c --quiet /app/code-overlay.sha256

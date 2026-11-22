@@ -27,7 +27,7 @@
 | [merkle-proof](#merkle-proof) | `merkle.proof@v1` | $0.002 | Merkle 根与证明：RFC 6962 日志与 OpenZeppelin 树 |
 | [x402-check](#x402-check) | `x402.authorization.check@v1` | $0.003 | 谁签署了 x402 支付、用于什么、USDC 是否会接受 |
 | [x402-settlement](#x402-settlement) | `x402.settlement.check@v1` | $0.000 | 这笔 x402 付款是否已在 Base 上结算：付给谁、多少、是否最终确定 |
-| [x402-seller](#x402-seller) | `x402.seller.record@v1` | $0.003 | 谁真的在 Base 上向这个 x402 收款地址付款：付款笔数、付款方、回头付款方、按天统计 |
+| [x402-seller](#x402-seller) | `x402.seller.record@v1` | $0.003 | 谁真的在 Base 上向这个 x402 收款地址付款：付款笔数、付款方、回头付款方、按小时统计 |
 | [onchain-price](#onchain-price) | `crypto.price.onchain@v1` | $0.000 | 来自 Base 上 Uniswap v3 池的 ETH、BTC 或任意 Base 代币价格，按时间加权，固定在某个区块 |
 | [esim-prices](#esim-prices) | `esim.price.history@v1` | $0.000 | 某个国家的 eSIM 套餐批发价格如何变化 |
 | [tlog-checkpoint](#tlog-checkpoint) | `tlog.checkpoint.verify@v1` | $0.000 | 透明日志检查点是否由日志签名并获得足够见证者联署 |
@@ -226,11 +226,11 @@
 
 ### x402-seller
 
-在向 x402 卖家付款之前，先看看是否有别人在付款。传入收款地址（`pay_to`）或付费 URL（`url`，可带 `method` 和 `body`）：一次未付费请求从其 402 中读取 payTo 和价格。代理读取最近 `days` 天（1 到 7，默认 7）内 Base 上转入该地址的全部 USDC Transfer，每段最多 50,000 个区块，并报告：付款笔数和总额、付款方数量、回头付款方数量、最活跃付款方的占比、常见金额以及恰好等于价格的笔数、按 UTC 日期的付款。`activity` 为这些数字贴标签：`none`、`one_payer`、`concentrated`（从三笔起，一个付款方占一半或更多）、`few_payers`、`spread`。列出读取的每个区块范围；`to_block` 固定窗口，便于日后复核。转账只证明资金流动，不证明服务已交付，也不说明付款方由谁控制。访问 hearth 的 Base RPC 池（否则 base-rpc.publicnode.com），以及带 `url` 时的该主机。$0.003。
+在向 x402 卖家付款之前，先看看是否有别人在付款。传入收款地址（`pay_to`）或付费 URL（`url`，可带 `method` 和 `body`）：一次未付费请求从其 402 中读取 payTo 和价格。代理读取最近 `hours` 小时（1 到 48，默认 24；Base 区块间隔 0.2 秒，回答给出按区块时间实际覆盖的小时数）内 Base 上转入该地址的全部 USDC Transfer，每段最多 50,000 个区块，并报告：付款笔数和总额、付款方数量、回头付款方数量、最活跃付款方的占比、常见金额以及恰好等于价格的笔数、按 UTC 小时的付款。`activity` 为这些数字贴标签：`none`、`one_payer`、`concentrated`（从三笔起，一个付款方占一半或更多）、`few_payers`、`spread`。列出读取的每个区块范围；`to_block` 固定窗口，便于日后复核。转账只证明资金流动，不证明服务已交付，也不说明付款方由谁控制。访问 hearth 的 Base RPC 池（否则 base-rpc.publicnode.com），以及带 `url` 时的该主机。$0.003。
 
 ```json
 {"url": "https://tienda.textokit.store/api/translate-es", "method": "POST",
- "body": {"text": "hola"}, "days": 7}
+ "body": {"text": "hola"}, "hours": 24}
 ```
 
 ### onchain-price
@@ -244,7 +244,7 @@ tick，价格为 1.0001 的该次方，再按代币小数位换算。同时给�
 以及各深档之间的偏差。给出 `pool` 时，可以是 Base 上任意 Uniswap v3 池：智能体检查它确由工厂部署，
 并给出 token0 以 token1 计的价格及其倒数。所有读取都固定在同一区块（`block`，或调用开始时的最新区块），
 因此相同输入和区块得到相同答案，任何人都能根据 Base 的公开状态重新计算。RPC 出错就是错误，绝不当作零。
-这不是全市场价格：USDC 按一美元计，没有成交量和市值。也可以传入 `token`（Base 上任意 ERC-20 地址）：工厂的 getPool 找到它与 USDC 和 WETH 的池（各四个费率档），价格取窗口内有成交的最深 USDC 池，否则取最深 WETH 池乘以 ETH 价格；两条路径都能定价时，二者差距作为一项检查。薄池的价格容易被推动，请看 `liquidity`。所有模式都通过 hearth 的 Base RPC 池读取，否则读取 `base-rpc.publicnode.com`。免费。
+这不是全市场价格：USDC 按一美元计，没有成交量和市值。也可以传入 `token`（Base 上任意 ERC-20 地址）：智能体检查该地址是否有合约，读取合约对自身的说明（`name`、`symbol`、`decimals`，以及来自 `totalSupply` 的 `supply_on_base`；跨链桥来的代币只是桥过来的部分），工厂的 getPool 找到它与 USDC 和 WETH 的池（各四个费率档）。深度是池在当前价格附近流动性中代币一侧的数量，以代币本身计，因此 USDC 池和 WETH 池可以比较；价格取窗口内价格有变动的最深的池，只在深度不低于最深池 1 % 的池中选择（WETH 池乘以 ETH 价格）。`depth_1pct_usd` 表示在价格附近流动性不变的前提下，一笔交易需要向池中卖出多少美元的该代币才能使价格下跌 1 %；深度不到所选池 1 % 的池会附注说明，而不会被当作市场价格。`price_basis` 为 `twap`；若窗口内没有深池价格变动则为 `last_trade`（此时最深池的均价就是它窗口前的最后一笔成交）；若没有任何池的预言机能回溯到窗口起点则为 `spot` 并加以标注，因为一笔交易就能移动它。另一种报价中有成交的最深池足够深时，二者差距作为一项检查。代币的读取通过 Multicall3 进行，每一步一次 `eth_call`（每个代币连同 ETH 部分约二十次 RPC 调用）；每次读取的结果与在该区块直接 `eth_call` 相同。名称和符号是合约自己说的：任何人都能部署名为 USDC 的代币，请以地址为准。所有模式都通过 hearth 的 Base RPC 池读取，否则读取 `base-rpc.publicnode.com`。免费。
 
 ```json
 {"asset": "ETH", "window_s": 1800}

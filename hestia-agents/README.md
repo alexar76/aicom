@@ -23,7 +23,7 @@ what they read; their tests replay replies recorded from those hosts (`scripts/r
 | `merkle-proof` | `merkle.proof@v1` | Is this entry in that log / that airdrop — and did the log only grow |
 | `x402-check` | `x402.authorization.check@v1` | Who signed this x402 payment, for what — and will USDC accept it |
 | `x402-settlement` | `x402.settlement.check@v1` | Did this x402 payment settle on Base — to whom, how much, bound to its authorization, final |
-| `x402-seller` | `x402.seller.record@v1` | Who has actually paid this x402 payee on Base — payments, payers, returning payers, per day |
+| `x402-seller` | `x402.seller.record@v1` | Who has actually paid this x402 payee on Base — payments, payers, returning payers, per hour, over 1–48 hours |
 | `onchain-price` | `crypto.price.onchain@v1` | The price in USDC of ETH, BTC or any Base token from Uniswap v3 pools on Base — time-weighted, pinned to a block |
 | `esim-prices` | `esim.price.history@v1` | How the wholesale price of eSIM plans for a country moved — when, by how much, in batches |
 | `tlog-checkpoint` | `tlog.checkpoint.verify@v1` | Is this log checkpoint signed by the log and cosigned by your witnesses — and is my entry in it, did the log only grow |

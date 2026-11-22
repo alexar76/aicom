@@ -650,12 +650,14 @@ AGENTS: dict[str, dict[str, Any]] = {
         "description": (
             "Before paying an x402 seller, see whether anyone else does. Give the payee address "
             "(pay_to) or the paid URL (one unpaid request reads payTo and price from its 402). The "
-            "agent reads every USDC Transfer to that address on Base over the last 1 to 7 days and "
-            "reports how many payments, how much, from how many payers, who came back, the share "
-            "of the busiest payer, the common amounts and how many were exactly the price, "
-            "payments per day, and an activity label (none, one_payer, concentrated, few_payers, "
-            "spread) defined in the answer. Every block range it read is listed; to_block pins "
-            "the window so the result can be checked again. A transfer proves money moved, not "
+            "agent reads every USDC Transfer to that address on Base over the last 1 to 48 hours "
+            "(default 24; Base blocks are 0.2 s apart, and the answer gives the hours the window "
+            "actually covered by block time) and reports how many payments, how much, from how "
+            "many payers, who came back, the share of the busiest payer, the common amounts and "
+            "how many were exactly the price, payments per hour, and an activity label (none, "
+            "one_payer, concentrated, few_payers, spread) defined in the answer. Every block range "
+            "it read is listed; to_block pins the window so the result can be checked again. A "
+            "transfer proves money moved, not "
             "that a service was delivered or who controls the payers."
         ),
         "price_per_call_usd": 0.003,
@@ -664,7 +666,7 @@ AGENTS: dict[str, dict[str, Any]] = {
         "egress_hosts": ["base-rpc.hestia.modelmarket.dev", "base-rpc.publicnode.com"],
         "egress_input_fields": ["url"],
         "sandbox_only": True,
-        "probe": {"pay_to": "0x5FBbbCbF2Ade44F5c604E5E55f11945E1ADdD231", "days": 1,
+        "probe": {"pay_to": "0x5FBbbCbF2Ade44F5c604E5E55f11945E1ADdD231", "hours": 1,
                   "to_block": 60800000},
         "input_schema": {
             "type": "object",
@@ -675,7 +677,10 @@ AGENTS: dict[str, dict[str, Any]] = {
                 "method": {"enum": ["GET", "POST"], "default": "GET",
                            "description": "how to call url"},
                 "body": {"type": "object", "description": "JSON body for a POST to url"},
-                "days": {"type": "integer", "minimum": 1, "maximum": 7, "default": 7},
+                "hours": {"type": "integer", "minimum": 1, "maximum": 48, "default": 24,
+                          "description": "window in hours (Base: 18,000 blocks an hour)"},
+                "days": {"type": "integer", "minimum": 1, "maximum": 2,
+                         "description": "or 1 or 2 days (= hours 24 or 48)"},
                 "to_block": {"type": ["integer", "string"],
                              "description": "last Base block of the window (default: latest "
                                             "minus 12 confirmations)"},
@@ -696,8 +701,10 @@ AGENTS: dict[str, dict[str, Any]] = {
             "Base (each confirmed by the Uniswap v3 factory at the same block), takes the deepest "
             "pool whose price moved in the window, and gives its time-weighted average over "
             "window_s (the pool's own oracle, observe) beside the spot price, with every tier as a "
-            "cross-check. Or give any token on Base: its pools with USDC or WETH, found through "
-            "the factory, price it in USDC. Or give any Uniswap v3 pool on Base. Every read is "
+            "cross-check. Or give any token on Base: what its contract says it is (name, symbol, "
+            "decimals, supply on Base) and its pools with USDC or WETH, found through the "
+            "factory; the deepest pool that traded prices it in USDC, with how many dollars one "
+            "swap needs to move each pool 1 %. Or give any Uniswap v3 pool on Base. Every read is "
             "pinned to one block, "
             "so a result can be checked again later. Not a market-wide price: USDC is taken as "
             "one dollar, and there is no volume or market capitalisation."
@@ -713,8 +720,8 @@ AGENTS: dict[str, dict[str, Any]] = {
                 "asset": {"enum": ["ETH", "BTC"],
                           "description": "priced in USDC from the WETH or cbBTC pools"},
                 "token": {"type": "string",
-                          "description": "or any ERC-20 address on Base, priced in USDC through "
-                                         "its Uniswap v3 pools with USDC or WETH"},
+                          "description": "or any ERC-20 address on Base: what it is, and its "
+                                         "USD price from its Uniswap v3 pools with USDC or WETH"},
                 "pool": {"type": "string",
                          "description": "or any Uniswap v3 pool address on Base"},
                 "window_s": {"type": "integer", "minimum": 60, "maximum": 86400, "default": 1800,

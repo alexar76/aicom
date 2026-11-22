@@ -50,7 +50,8 @@ NETWORKS = {  # CAIP-2 -> (name, RPC, USDC, EIP-712 name, version)
 NAMES = {"base": "eip155:8453", "base-sepolia": "eip155:84532"}
 HUB = "https://modelmarket.dev/ai-market/v2/federation/observed-sellers"
 TRANSFER = "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
-BLOCK_SECONDS = 2  # Base and Base Sepolia
+BLOCKS_PER_HOUR = 18000  # Base and Base Sepolia blocks are 0.2 s apart (checked 2026-11-22)
+LOG_RANGE = 50000  # the most blocks base-rpc.publicnode.com serves in one eth_getLogs
 MAX_BODY = 8 * 1024
 HEX = "0123456789abcdef"
 
@@ -325,26 +326,38 @@ def handle(payload):
             if "eip155:" + str(chain) != chosen["network"]:
                 raise RuntimeError("the RPC serves chain " + str(chain))
             block = int(head[1]["result"], 16)
-            span = hours * 3600 // BLOCK_SECONDS
+            span = hours * BLOCKS_PER_HOUR
             topic = "0x" + "0" * 24 + pay_to[2:]
+            first = max(0, block - span + 1)
+            ranges = [
+                (a, min(block, a + LOG_RANGE - 1)) for a in range(first, block + 1, LOG_RANGE)
+            ]
             facts = _rpc(
                 rpc,
                 [
                     ("eth_getCode", [pay_to, hex(block)]),
+                    ("eth_getBlockByNumber", [hex(first), False]),
+                ]
+                + [
                     (
                         "eth_getLogs",
                         [
                             {
                                 "address": usdc,
                                 "topics": [TRANSFER, None, topic],
-                                "fromBlock": hex(max(0, block - span)),
-                                "toBlock": hex(block),
+                                "fromBlock": hex(a),
+                                "toBlock": hex(b),
                             }
                         ],
-                    ),
+                    )
+                    for a, b in ranges
                 ],
             )
             code = str(facts[0].get("result") or "0x")
+            started = facts[1].get("result") if isinstance(facts[1].get("result"), dict) else {}
+            parts = facts[2:]
+            failed = [f for f in parts if not isinstance(f.get("result"), list)]
+            logs = None if failed else [log for f in parts for log in f["result"]]
             payee["block"] = block
             payee["kind"] = (
                 "eip7702_delegated"
@@ -353,7 +366,6 @@ def handle(payload):
                 if code not in ("0x", "0x0")
                 else "key"
             )
-            logs = facts[1].get("result")
             if isinstance(logs, list):
                 payers = {
                     str(log["topics"][1])[-40:] for log in logs if len(log.get("topics") or []) == 3
@@ -361,6 +373,10 @@ def handle(payload):
                 total = sum(int(log.get("data") or "0x0", 16) for log in logs)
                 payee.update(
                     window_hours=hours,
+                    window_blocks=[first, block],
+                    window_from_time=int(started["timestamp"], 16)
+                    if started.get("timestamp")
+                    else None,
                     usdc_transfers_in=len(logs),
                     distinct_payers=len(payers),
                     usdc_received=_usd(total),
@@ -380,7 +396,7 @@ def handle(payload):
                 )
             else:
                 notes.append(
-                    "the RPC did not return the payee's logs: " + str(facts[1].get("error"))[:120]
+                    "the RPC did not return the payee's logs: " + str(failed[0].get("error"))[:120]
                 )
         except Exception as exc:  # never the fetch signal: that is a BaseException
             notes.append("chain facts not read: " + str(exc)[:160])

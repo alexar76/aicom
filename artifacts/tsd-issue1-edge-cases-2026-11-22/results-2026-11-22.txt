@@ -1,0 +1,39 @@
+contract-509           py RecursionError: maximum recursion depth exceeded while calling a Python object
+                       js {"contract":"sha256-U2SmamxwXvZ4K/aIwTKEH/uhwN0VOxAwt0IhxlX+UmQ=","extras":null}
+                       go {"contract":"sha256-U2SmamxwXvZ4K/aIwTKEH/uhwN0VOxAwt0IhxlX+UmQ=","extras":null}
+contract-510           py RecursionError: maximum recursion depth exceeded while calling a Python object
+                       js {"contract":"sha256-+SsWtz3lCiwvuzR9LbENbclHwdkBj45GRBJvA0dBckA=","extras":null}
+                       go {"detail":"not JSON at byte 542: nested too deep","error":"TSD-JSON"}
+contract-2000          py RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+                       js {"contract":"sha256-cOG6jiAr7pQs/nKkEiFmredKE01Dge1ShruseIcpv7U=","extras":null}
+                       go {"detail":"not JSON at byte 542: nested too deep","error":"TSD-JSON"}
+contract-100000        py RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+                       js RangeError: Maximum call stack size exceeded
+                       go {"detail":"not JSON at byte 542: nested too deep","error":"TSD-JSON"}
+extras-510             py RecursionError: maximum recursion depth exceeded
+                       js {"contract":"sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=","extras":"sha256-u9+5RoEzzedMMN38Hb1j9DSpbEqiP9z7EorWM
+                       go {"contract":"sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=","extras":"sha256-u9+5RoEzzedMMN38Hb1j9DSpbEqiP9z7EorWM
+extras-511             py RecursionError: maximum recursion depth exceeded
+                       js {"contract":"sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=","extras":"sha256-awDWd+C1p6uiNvufd2oxxDviBfVCGmfzz+9p7
+                       go {"detail":"not JSON at byte 528: nested too deep","error":"TSD-JSON"}
+extras-100000          py RecursionError: maximum recursion depth exceeded while decoding a JSON array from a unicode string
+                       js RangeError: Maximum call stack size exceeded
+                       go {"detail":"not JSON at byte 528: nested too deep","error":"TSD-JSON"}
+wrapped-contract-509   py RecursionError: maximum recursion depth exceeded while calling a Python object
+                       js {"contract":"sha256-U2SmamxwXvZ4K/aIwTKEH/uhwN0VOxAwt0IhxlX+UmQ=","extras":null}
+                       go {"detail":"not JSON at byte 550: nested too deep","error":"TSD-JSON"}
+description-1e400      py {"contract": "sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=", "extras": null}
+                       js {"contract":"sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=","extras":null}
+                       go {"contract":"sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=","extras":null}
+extra-1e400            py {"contract": "sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=", "extras": {"error": "TSD-NUMBER"}}
+                       js {"contract":"sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=","extras":{"error":"TSD-NUMBER"}}
+                       go {"contract":"sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=","extras":{"error":"TSD-NUMBER"}}
+repeated-description   py {"contract": "sha256-Kh/3EX1WrnJ9OkSycObEl3sViwcBVQqdeJxY/BiMIRE=", "extras": null}
+                       js {"contract":"sha256-Kh/3EX1WrnJ9OkSycObEl3sViwcBVQqdeJxY/BiMIRE=","extras":null}
+                       go {"contract":"sha256-Kh/3EX1WrnJ9OkSycObEl3sViwcBVQqdeJxY/BiMIRE=","extras":null}
+tools-twice            py {"contract": "sha256-WRVzqQp0+PerQbetdDLHjLrY5NeDq2edqbUpUrLrxek=", "extras": null}
+                       js {"contract":"sha256-WRVzqQp0+PerQbetdDLHjLrY5NeDq2edqbUpUrLrxek=","extras":null}
+                       go {"contract":"sha256-WRVzqQp0+PerQbetdDLHjLrY5NeDq2edqbUpUrLrxek=","extras":null}
+tools-next-to-result   py {"contract": "sha256-mJLo0lgIeJfnpcEC1nxqVm59cRh0urbq1nAY+yhtLLQ=", "extras": null}
+                       js {"contract":"sha256-mJLo0lgIeJfnpcEC1nxqVm59cRh0urbq1nAY+yhtLLQ=","extras":null}
+                       go {"contract":"sha256-mJLo0lgIeJfnpcEC1nxqVm59cRh0urbq1nAY+yhtLLQ=","extras":null}

@@ -1,6 +1,7 @@
 """x402.preflight@v1: one unpaid request, then what an agent should know before it signs.
 
-`x402_preflight_vectors.json` holds what four calls received on 2026-11-21 (scripts/record_fetches.py):
+`x402_preflight_vectors.json` holds what four calls received on 2026-11-22 (scripts/record_fetches.py;
+re-recorded when the payee window became 24 hours of 0.2-second Base blocks, 432,000 blocks in nine ranges):
 two sellers the modelmarket.dev hub observes with their consent, one answering x402 V1 in its body
 (tienda.textokit.store) and one V2 in the PAYMENT-REQUIRED header (aemb.pro), each with the Base
 RPC's view of its payTo and the hub's seller list (cut to these two sellers); a free page; a 404.
@@ -41,17 +42,22 @@ def failed(out):
     return [c["check"] for c in out["checks"] if not c["ok"]]
 
 
-def test_a_v1_seller_with_no_recent_payments_is_review_first() -> None:
+def test_a_v1_seller_with_a_payment_in_the_last_day_looks_payable() -> None:
     out, asked, _ = run("textokit_v1")
-    assert out["x402_version"] == 1 and out["verdict"] == "review_first"
-    assert failed(out) == ["payee_has_payments"]
+    assert out["x402_version"] == 1 and out["verdict"] == "looks_payable"
+    assert failed(out) == []
     offer = out["offers"][0]
     assert (
         offer["amount_usd"] == "0.003"
         and offer["asset_name"] == "USDC"
         and offer["eip712"] == {"name": "USD Coin", "version": "2"}
     )
-    assert out["payee"]["kind"] == "key" and out["payee"]["usdc_transfers_in"] == 0
+    payee = out["payee"]
+    assert payee["kind"] == "key" and payee["usdc_transfers_in"] == 1 and payee["window_hours"] == 24
+    first, last = payee["window_blocks"]
+    assert last - first + 1 == 24 * 18000  # Base: 0.2 s a block
+    # the block that opens the window is a day older than the head (to the second, give or take a block)
+    assert payee["window_from_time"] is not None
     assert (
         out["hub_listing"]["listed"] is True and out["hub_listing"]["pinned_pay_to_matches"] is True
     )
@@ -72,23 +78,37 @@ def test_free_and_missing_pages() -> None:
     assert out["verdict"] == "not_x402" and "404" in out["detail"]
 
 
-def test_a_payee_with_payments_looks_payable() -> None:
+def _logs(fill):
+    """A tamper: the payee's log queries are the RPC answers that are lists; `fill` gives each one."""
+
     def tamper(url, raw):
-        # The payee's log query is the only RPC answer that is a list: give it two payments.
         if "base-rpc.hestia" in url:
             doc = json.loads(raw["text"])
+            n = 0
             for item in doc:
                 if isinstance(item.get("result"), list):
-                    item["result"] = [
-                        {"topics": ["0x0", "0x" + "0" * 24 + "11" * 20, "0x0"], "data": hex(3000)},
-                        {"topics": ["0x0", "0x" + "0" * 24 + "22" * 20, "0x0"], "data": hex(3000)},
-                    ]
+                    item["result"] = fill(n)
+                    n += 1
             raw = dict(raw, text=json.dumps(doc))
         return raw
 
-    out, _, _ = run("textokit_v1", tamper=tamper)
+    return tamper
+
+
+def test_a_payee_with_payments_looks_payable() -> None:
+    two = [
+        {"topics": ["0x0", "0x" + "0" * 24 + "11" * 20, "0x0"], "data": hex(3000)},
+        {"topics": ["0x0", "0x" + "0" * 24 + "22" * 20, "0x0"], "data": hex(3000)},
+    ]
+    out, _, _ = run("textokit_v1", tamper=_logs(lambda n: two if n == 0 else []))
     assert out["verdict"] == "looks_payable" and failed(out) == []
     assert out["payee"]["distinct_payers"] == 2 and out["payee"]["usdc_received"] == "0.006"
+
+
+def test_a_payee_nobody_paid_in_a_day_is_review_first() -> None:
+    out, _, _ = run("textokit_v1", tamper=_logs(lambda n: []))
+    assert out["verdict"] == "review_first" and failed(out) == ["payee_has_payments"]
+    assert out["payee"]["usdc_transfers_in"] == 0
 
 
 @pytest.mark.parametrize(

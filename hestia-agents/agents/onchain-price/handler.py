@@ -8,10 +8,17 @@ arithmetic itself:
     0.05 %, 0.3 %, 1 %), each confirmed by the Uniswap v3 factory's getPool at the same block. The
     price comes from the pool with the most in-range liquidity among those whose price moved in the
     window (a deep pool nobody traded only repeats its last trade); the others are a cross-check.
-  - or `token`: any ERC-20 on Base. The factory's getPool finds its Uniswap v3 pools with USDC and
-    with WETH (four fee tiers each); the price comes from the deepest USDC pool whose price moved in
-    the window, else from the deepest WETH pool times the ETH price above. When both routes price
-    it, how far apart they are is a check. A thin pool's price is cheap to move: read `liquidity`.
+  - or `token`: any ERC-20 on Base. Whether the address holds a contract, the token's own name,
+    symbol, decimals and supply on Base, and its Uniswap v3 pools with USDC and with WETH (four fee
+    tiers each, found through the factory's getPool). Depth is the token side of a pool's in-range
+    liquidity at the current price, counted in the token itself, so USDC and WETH pools compare;
+    the price comes from the deepest pool whose price moved in the window (a WETH pool times the
+    ETH price above). Each pool says how many dollars of the token one swap would sell into it to
+    lower its price by 1 %; pools under 1 % of the chosen one's depth are marked as no market
+    price. When no pool's price moved, the price is the deepest pool's last trade; when no pool's
+    oracle reaches back that far, it is the spot price, and the answer says so. The token's reads
+    go through Multicall3 (one eth_call per step), each giving what a direct eth_call at that
+    block would.
   - or `pool`: any Uniswap v3 pool on Base; the agent checks the factory deployed it and prices
     token0 in token1 and back.
 
@@ -62,6 +69,10 @@ FEE = "0xddca3f43"  # fee()
 FACTORY_OF = "0xc45a0155"  # factory()
 DECIMALS = "0x313ce567"  # decimals()
 SYMBOL = "0x95d89b41"  # symbol()
+NAME = "0x06fdde03"  # name()
+TOTAL_SUPPLY = "0x18160ddd"  # totalSupply()
+AGGREGATE3 = "0x82ad56cb"  # aggregate3((address,bool,bytes)[])
+MULTICALL = "0xca11bde05977b3631167028862be2a173976ca11"  # Multicall3, same address on every chain
 HEX = "0123456789abcdef"
 Q96 = Decimal(2) ** 96
 BASE = Decimal("1.0001")
@@ -374,14 +385,86 @@ def _in_quote(raw, token, decimals, quote, quote_decimals):
     return 1 / (raw * Decimal(10) ** (quote_decimals - decimals))
 
 
-def _route(rows):
-    usable = [r for r in rows if r["twap"] is not None and r["liquidity"] > 0]
-    traded = [r for r in usable if r["traded"]]
-    return max(traded or usable, key=lambda r: r["liquidity"]) if usable else None
+# Selling x of a token into a pool lowers its price by 1 % when x = virtual reserve *
+# (1/sqrt(0.99) - 1), as long as the in-range liquidity stays what it is (it can change at a nearby
+# tick).
+ONE_PERCENT = Decimal(1) / Decimal("0.99").sqrt() - 1
+MAX_TEXT = 64
+
+
+def _amount(value, places):
+    return None if value is None else ("0" if value == 0 else _fmt(value, places))
+
+
+def _aggregate(reads, at):
+    """eth_call of Multicall3.aggregate3, allowFailure on every read: one call instead of many."""
+    heads, tails, offset = [], [], 32 * len(reads)
+    for target, data in reads:
+        raw = data[2:]
+        body = (_word(target) + _u(1) + _u(96) + _u(len(raw) // 2)
+                + raw + "0" * ((64 - len(raw) % 64) % 64))
+        heads.append(_u(offset))
+        tails.append(body)
+        offset += len(body) // 2
+    return _call(MULTICALL, AGGREGATE3 + _u(32) + _u(len(reads)) + "".join(heads) + "".join(tails),
+                 at)
+
+
+def _unpack(result, count):
+    """aggregate3's (bool success, bytes returnData)[]: each read's data, None if it reverted."""
+    text = str(result or "")[2:]
+
+    def word(i):
+        return _int(text[64 * i:64 * i + 64] or "0")
+
+    start = word(0) // 32
+    if word(start) != count:
+        raise RuntimeError("Multicall3 answered " + str(word(start)) + " reads of " + str(count))
+    out = []
+    for k in range(count):
+        item = start + 1 + word(start + 1 + k) // 32
+        data = item + word(item + 1) // 32
+        length = word(data)
+        value = text[64 * (data + 1):64 * (data + 1) + 2 * length]
+        out.append("0x" + value if word(item) == 1 else None)
+    return out
+
+
+def _text(data):
+    """A token's own name or symbol: printable characters only, at most 64 of them."""
+    try:
+        value = _string(data) if data and len(data) > 2 else None
+    except ValueError:
+        return None
+    value = "".join(c for c in (value or "") if c.isprintable())
+    return value[:MAX_TEXT] or None
+
+
+def _pick(rows):
+    """The deepest pool whose price moved, among pools at least 1 % as deep as the deepest one;
+    else the deepest pool with an average (its last trade); else the deepest pool's spot price.
+    A pool far thinner than the deepest one can trade at a price nobody else pays."""
+    live = [r for r in rows if r["liquidity"] > 0 and r["depth"] > 0]
+    floor = max((r["depth"] for r in live), default=Decimal(0)) * CROSS_CHECK_SHARE
+    traded = [r for r in live if r["traded"] and r["twap"] is not None and r["depth"] >= floor]
+    averaged = [r for r in live if r["twap"] is not None]
+    for group, basis in ((traded, "twap"), (averaged, "last_trade"), (live, "spot")):
+        if group:
+            return max(group, key=lambda r: r["depth"]), basis, traded
+    return None, None, traded
+
+
+BASIS = {
+    "twap": "the deepest pool whose price moved in the window",
+    "last_trade": "no pool at least 1 % as deep as the deepest one moved in the window: the "
+                  "deepest pool's average is its last trade before it",
+    "spot": "no pool's oracle reaches back that far: this is the deepest pool's spot price, which "
+            "one swap can move",
+}
 
 
 def _token(token, window, head, checks):
-    """Any ERC-20 on Base: its Uniswap v3 pools with USDC and WETH, found through the factory."""
+    """Any ERC-20 on Base: what the contract says it is, and its Uniswap v3 pools (USDC, WETH)."""
     for asset, (address, _d, _s, _p) in ASSETS.items():
         if token == address:
             return _asset(asset, window, head, checks, TOKEN_RPC)
@@ -389,77 +472,107 @@ def _token(token, window, head, checks):
         raise ValueError("USDC is the quote here; it is taken as one dollar")
     at = hex(head["number"])
     pairs = [(quote, fee) for quote in (USDC, WETH) for fee in FEES]
-    found = _strict(_batch(
-        [_call(FACTORY, GET_POOL + _word(min(token, q)) + _word(max(token, q)) + _u(fee), at)
-         for q, fee in pairs] + [_call(token, DECIMALS, at), _call(token, SYMBOL, at)], TOKEN_RPC),
-        may_revert={len(pairs), len(pairs) + 1})
-    dec = _result(found[len(pairs)])
-    if not dec or len(dec) < 3:
+    reads = [(FACTORY, GET_POOL + _word(min(token, q)) + _word(max(token, q)) + _u(fee))
+             for q, fee in pairs]
+    reads += [(token, DECIMALS), (token, SYMBOL), (token, NAME), (token, TOTAL_SUPPLY)]
+    code, multi = (_result(a) for a in _strict(_batch(
+        [("eth_getCode", [token, at]), _aggregate(reads, at)], TOKEN_RPC)))
+    if not code or code == "0x":
+        raise ValueError("there is no contract at " + token + " on Base at block "
+                         + str(head["number"]))
+    got = _unpack(multi, len(reads))
+    n = len(pairs)
+    dec = got[n]
+    if not dec or len(_words(dec)) != 1 or _int(_words(dec)[0]) > 77:
         raise ValueError(token + " does not answer decimals() as an ERC-20 at block "
                          + str(head["number"]))
-    decimals, symbol = _int(dec[2:]), _string(_result(found[len(pairs) + 1])) or token
-    pools = [(q, fee, "0x" + got[-40:]) for (q, fee), got in
-             zip(pairs, (_result(a) for a in found[:len(pairs)]), strict=True)
-             if got and int(got, 16) != 0]
+    decimals = _int(_words(dec)[0])
+    symbol = _text(got[n + 1]) or token
+    name = _text(got[n + 2])
+    supply = got[n + 3]
+    pools = [(q, fee, "0x" + g[-40:]) for (q, fee), g in zip(pairs, got[:n], strict=True)
+             if g and len(g) >= 42 and int(g, 16) != 0]
     checks.append({"check": "factory_pools", "ok": bool(pools),
                    "detail": str(len(pools)) + " Uniswap v3 pools of " + symbol
                              + " with USDC or WETH, from the factory's getPool"})
     if not pools:
         raise ValueError("no Uniswap v3 pool of " + symbol + " with USDC or WETH on Base at block "
                          + str(head["number"]))
-    calls = []
+    reads = []
     for _q, _fee, pool in pools:
-        calls += [_call(pool, LIQUIDITY, at), _call(pool, SLOT0, at),
-                  _call(pool, _observe_data(window), at)]
-    answers = _strict(_batch(calls, TOKEN_RPC), may_revert=set(range(2, len(calls), 3)))
+        reads += [(pool, LIQUIDITY), (pool, SLOT0), (pool, _observe_data(window))]
+    answers = _unpack(_result(_strict(_batch([_aggregate(reads, at)], TOKEN_RPC))[0]), len(reads))
     rows = []
     for i, (quote, fee, pool) in enumerate(pools):
-        liq, slot0, observed = (_result(a) for a in answers[3 * i:3 * i + 3])
+        liq, slot0, observed = answers[3 * i:3 * i + 3]
         qdec = 6 if quote == USDC else 18
         spot_raw, spot_tick = _spot(slot0)
         mean = _mean_tick(observed, window)
+        liquidity = _int(liq[2:]) if liq and len(liq) > 2 else 0
+        depth = Decimal(0)
+        if spot_raw:  # the token side of the in-range liquidity at the current price
+            root = spot_raw.sqrt()
+            virtual = Decimal(liquidity) / root if token < quote else Decimal(liquidity) * root
+            depth = virtual / Decimal(10) ** decimals
         rows.append({
             "quote": "USDC" if quote == USDC else "WETH", "fee_pct": str(Decimal(fee) / 10000),
-            "pool": pool, "liquidity": _int(liq[2:]) if liq else 0,
+            "pool": pool, "liquidity": liquidity,
             "twap": _in_quote(_raw_price(mean) if mean is not None else None, token, decimals,
                               quote, qdec),
             "spot": _in_quote(spot_raw, token, decimals, quote, qdec),
-            "traded": mean is not None and mean != spot_tick,
+            "traded": mean is not None and spot_tick is not None and mean != spot_tick,
+            "depth": depth,
+            **({} if mean is not None or spot_raw is None else
+               {"note": "observe refused this window (the pool's oracle does not reach back "
+                        "that far)"}),
         })
-    by_usdc = _route([r for r in rows if r["quote"] == "USDC"])
-    by_weth = _route([r for r in rows if r["quote"] == "WETH"])
     eth = None
-    if by_weth is not None:
+    if any(r["quote"] == "WETH" and r["liquidity"] > 0 for r in rows):
         eth_checks = []
         eth = _asset("ETH", window, head, eth_checks, TOKEN_RPC)
         checks.extend({**c, "check": "eth_" + c["check"]} for c in eth_checks)
-        eth_usd = Decimal(eth["price_usd"])
-        by_weth = {**by_weth, "usd": by_weth["twap"] * eth_usd,
-                   "spot_usd": by_weth["spot"] * eth_usd if by_weth["spot"] else None}
-    if by_usdc is not None:
-        by_usdc = {**by_usdc, "usd": by_usdc["twap"], "spot_usd": by_usdc["spot"]}
-    routes = [r for r in (by_usdc, by_weth) if r is not None]
-    if not routes:
-        raise RuntimeError("no pool of " + symbol + " could price this window; try a shorter "
-                           "window_s")
-    best = next((r for r in routes if r["traded"]), routes[0])
-    checks.append({"check": "traded_pool", "ok": best["traded"],
-                   "detail": ("the price moved in the chosen pool during the window" if
-                              best["traded"] else "no chosen pool traded in the window: the "
-                              "average is its last trade before it")})
-    if len(routes) == 2:
-        gap = abs(routes[0]["usd"] - routes[1]["usd"]) / best["usd"] * 100
+    for r in rows:
+        rate = Decimal(1) if r["quote"] == "USDC" else (Decimal(eth["price_usd"]) if eth else None)
+        r["usd"] = r["twap"] * rate if r["twap"] is not None and rate else None
+        r["spot_usd"] = r["spot"] * rate if r["spot"] is not None and rate else None
+        r["depth_1pct"] = r["depth"] * ONE_PERCENT
+        r["depth_1pct_usd"] = r["depth_1pct"] * r["spot_usd"] if r["spot_usd"] else None
+    best, basis, traded = _pick([r for r in rows if r["spot_usd"] is not None])
+    if best is None:
+        raise RuntimeError("no pool of " + symbol + " holds liquidity at its current price")
+    checks.append({"check": "traded_pool", "ok": basis == "twap", "detail": BASIS[basis]})
+    floor = best["depth"] * CROSS_CHECK_SHARE
+    for r in rows:
+        if r is not best and r["depth"] < floor and not r.get("note"):
+            r["note"] = ("under 1 % of the chosen pool's depth: its price is whatever the last "
+                         "swap left, not a market price")
+    other = [r for r in traded if r["quote"] != best["quote"] and r["depth"] >= floor]
+    if basis == "twap" and other:
+        peer = max(other, key=lambda r: r["depth"])
+        gap = abs(peer["usd"] - best["usd"]) / best["usd"] * 100
         checks.append({"check": "routes_agree", "ok": gap <= ROUTES_AGREE_PCT,
-                       "detail": "the USDC and WETH routes are "
-                                 + str(gap.quantize(Decimal("0.0001"))) + " % apart"})
+                       "detail": "the deepest " + peer["quote"] + " pool is "
+                                 + str(gap.quantize(Decimal("0.0001"))) + " % from it"})
+    price = best["usd"] if basis != "spot" else best["spot_usd"]
     out = {
-        "token": token, "symbol": symbol, "decimals": decimals, "quote": "USDC",
-        "price_usd": _fmt(best["usd"], 12), "spot_usd": _fmt(best["spot_usd"], 12),
-        "spot_vs_twap_pct": _pct(best["spot_usd"], best["usd"]) if best["spot_usd"] else None,
+        "token": token, "name": name, "symbol": symbol, "decimals": decimals,
+        "supply_on_base": (str((Decimal(_int(supply[2:])) / Decimal(10) ** decimals).normalize())
+                           if supply and len(supply) > 2 else None),
+        "quote": "USDC",
+        "price_usd": _fmt(price, 12), "price_basis": basis,
+        "spot_usd": _fmt(best["spot_usd"], 12),
+        "spot_vs_twap_pct": (_pct(best["spot_usd"], best["usd"])
+                             if best["spot_usd"] and best["usd"] else None),
         "route": "direct USDC pool" if best["quote"] == "USDC" else "WETH pool x ETH/USDC",
         "pool": best["pool"], "fee_pct": best["fee_pct"],
-        "pools": [{**r, "twap": _fmt(r["twap"], 12), "spot": _fmt(r["spot"], 12),
-                   "price_unit": r["quote"] + " per " + symbol} for r in rows],
+        "depth_1pct_usd": _amount(best["depth_1pct_usd"], 2),
+        "pools": [{"pool": r["pool"], "quote": r["quote"], "fee_pct": r["fee_pct"],
+                   "liquidity": r["liquidity"], "traded": r["traded"],
+                   "twap": _fmt(r["twap"], 12), "spot": _fmt(r["spot"], 12),
+                   "price_unit": r["quote"] + " per " + symbol,
+                   "depth_1pct_tokens": _amount(r["depth_1pct"], 6),
+                   "depth_1pct_usd": _amount(r["depth_1pct_usd"], 2),
+                   **({"note": r["note"]} if r.get("note") else {})} for r in rows],
     }
     if eth is not None:
         out["eth_usd"] = eth["price_usd"]
@@ -499,8 +612,11 @@ def handle(payload):
         "source": "Uniswap v3 pools on Base, read from " + (RPC if _no_pool else POOL)
                   + " at this block",
         "method": "time-weighted average of the pool's oracle ticks over window_s; spot from slot0",
-        "limits": "what these pools priced, not a market-wide price; USDC is taken as one dollar; "
-                  "no volume or market capitalisation",
+        "limits": "what these pools priced, not a market-wide price; Uniswap v3 on Base only (not "
+                  "Aerodrome or other venues); USDC is taken as one dollar; no volume or market "
+                  "capitalisation" + ("; supply_on_base is what the contract reports here (for "
+                  "a bridged token, only the bridged part); name and symbol are the contract's "
+                  "own words: anyone can deploy a token called USDC" if token else ""),
         "checks": checks,
     })
     return out

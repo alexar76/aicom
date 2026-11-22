@@ -1,0 +1,35 @@
+== Build Python: Python 3.12.13 (/Users/alex/.cache/aicom-publish/venv-3.12) ==
+== Freshness gate (histor) ==
+distribution                     version    state
+[2maimarket-histor                  0.11.0     tree ahead of PyPI (latest 0.10.0) — unpublished, fine[0m
+
+[32mEvery published distribution matches its tree.[0m
+== Build histor ==
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - hatchling
+* Getting build dependencies for sdist...
+* Installed build dependency versions:
+  - hatchling==1.33.0
+* Building sdist...
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - hatchling
+* Getting build dependencies for wheel...
+* Installed build dependency versions:
+  - hatchling==1.33.0
+* Building wheel...
+Successfully built aimarket_histor-0.11.0.tar.gz and aimarket_histor-0.11.0-py3-none-any.whl
+Checking dist/aimarket_histor-0.11.0-py3-none-any.whl: [32mPASSED[0m
+Checking dist/aimarket_histor-0.11.0.tar.gz: [32mPASSED[0m
+== Secret gate ==
+OK distribution contents inspected
+OK distribution contents inspected
+OK no key material, .env, database or .gitignore in aimarket_histor-0.11.0-py3-none-any.whl aimarket_histor-0.11.0.tar.gz 
+OK dry-run — dist/ ready:
+total 14712
+drwxr-xr-x@  4 alex  wheel      128 Nov 22 21:59 .
+drwxr-xr-x@ 34 alex  wheel     1088 Nov 22 21:58 ..
+-rw-r--r--@  1 alex  staff  1100430 Nov 22 21:59 aimarket_histor-0.11.0-py3-none-any.whl
+-rw-r--r--@  1 alex  staff  6427940 Nov 22 21:59 aimarket_histor-0.11.0.tar.gz

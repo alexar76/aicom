@@ -83,6 +83,48 @@ def test_run_discovery_cycle_skips_when_factory_on_hold(monkeypatch):
     assert result.get("reason") == "factory_on_hold"
 
 
+def test_scheduled_discovery_checks_live_autonomous_development_setting(monkeypatch, tmp_path):
+    import asyncio
+    from unittest.mock import AsyncMock, Mock
+
+    from director.worker import DirectorWorker
+
+    config = {"general": {"auto_pipeline": False, "autonomy_mode": "supervised"}}
+    monkeypatch.setenv("AIFACTORY_DATA_ROOT", str(tmp_path))
+    monkeypatch.delenv("AIFACTORY_AUTONOMY_MODE", raising=False)
+    monkeypatch.setattr("core.autonomy_mode.load_merged_config", lambda _: config)
+    monkeypatch.setattr("core.factory_hold.is_factory_on_hold", lambda: False)
+    monkeypatch.setattr("core.playbook.llm_refine_enabled", lambda: False)
+    monkeypatch.setattr("director.worker.pipeline_json_path", lambda: tmp_path / "pipeline.json")
+
+    worker = DirectorWorker()
+    router = Mock()
+    worker._get_llm_router = router
+    worker._auto_create_product = AsyncMock()
+
+    async def finish_discovery(**_kwargs):
+        config["general"]["auto_pipeline"] = False
+        return {"ranked_ideas": [{"score_total": 42}]}
+
+    discovery = AsyncMock(side_effect=finish_discovery)
+    monkeypatch.setattr("director.discovery_pipeline.DiscoveryPipeline.run", discovery)
+
+    result = asyncio.run(worker.run_discovery_cycle())
+    assert result["reason"] == "autonomous_development_disabled"
+    router.assert_not_called()
+    discovery.assert_not_awaited()
+
+    config["general"]["auto_pipeline"] = True
+    result = asyncio.run(worker.run_discovery_cycle())
+    assert result["success"] is True
+    discovery.assert_awaited_once_with(existing_ideas=[], existing_categories=[])
+    worker._auto_create_product.assert_not_awaited()
+
+    result = asyncio.run(worker.run_discovery_cycle())
+    assert result["reason"] == "autonomous_development_disabled"
+    router.assert_called_once()
+
+
 def test_run_full_analysis_skips_when_factory_on_hold(monkeypatch):
     import asyncio
 
