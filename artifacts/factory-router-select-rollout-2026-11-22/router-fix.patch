@@ -1,0 +1,89 @@
+diff --git a/llm/router.py b/llm/router.py
+index ede7d7c59..cb1af9386 100644
+--- a/llm/router.py
++++ b/llm/router.py
+@@ -2,9 +2,11 @@
+ LLM Router
+ ===========
+ Routes generation requests to the appropriate provider based on:
+-- ``default_provider`` when available (per-task heavy/light still from routing rules)
++- the routing rule's ``preferred_provider`` when it names a loaded, available provider; otherwise
++  ``default_provider`` (``"auto"`` and task types without a rule); heavy/light from the rule
+ - Provider availability (health checks + circuit breaker)
+-- Failover to ``fallback_provider`` / other backends when the default is down or circuit OPEN
++- Failover after a failure: the rule's ``fallback_provider``, then ``default_provider``, then
++  critical escalation when enabled
+ """
+ 
+ from __future__ import annotations
+@@ -53,7 +55,7 @@ class LLMRouter:
+     Routes LLM requests to the best available provider.
+     
+     Features:
+-    - Task-type routing (timeouts, model roles); primary backend is ``default_provider``
++    - Task-type routing (provider, timeouts, model roles); ``default_provider`` serves "auto" rules
+     - Automatic health checks every 60 seconds
+     - Per-provider circuit breaker (CLOSED → OPEN → HALF_OPEN → CLOSED)
+     - Failover when the default provider is unavailable or circuit is OPEN
+@@ -468,12 +470,16 @@ class LLMRouter:
+         """Pick the next provider after ``current`` failed.
+ 
+         1. An explicit routing ``fallback_provider`` (if configured & loaded).
+-        2. Otherwise, for CRITICAL tasks with cross-provider escalation enabled,
++        2. ``default_provider``, when the task started on a rule's preferred provider.
++        3. Otherwise, for CRITICAL tasks with cross-provider escalation enabled,
+            the strongest other provider that has credentials (opt-in).
+         """
+         fb = self._get_fallback(task_type, current)
+         if fb and fb not in tried and fb != current and fb in self.providers:
+             return fb
++        default = self.default_provider
++        if default and default not in tried and default != current and default in self.providers:
++            return default
+         return self._critical_escalation_target(task_type, tried)
+ 
+     def _provider_has_credentials(self, name: str) -> bool:
+@@ -687,22 +693,30 @@ class LLMRouter:
+         return self._circuit_allows(name)
+ 
+     def _select_provider(self, task_type: str) -> str | None:
+-        """Select provider for a task. Default provider is always tried first when configured."""
+-        if self.default_provider and self.default_provider in self.providers:
+-            return self.default_provider
+-
++        """Select the first provider for a task.
++
++        1. The rule's ``preferred_provider`` when it names a provider that is loaded and available,
++           so the provider an operator picks per task type in the admin routing editor is used.
++        2. ``default_provider`` (rules set to ``"auto"``, a preferred provider that is disabled or
++           down, task types without a rule).
++        3. The fastest available provider.
++
++        The rule's ``fallback_provider`` is never a first choice: it is tried after a failure
++        (:meth:`_next_failover`). Until 2026-11-22 the default provider was returned before the
++        rule was read, so a per-task provider never took effect while a default was configured,
++        and without a default the fallback was picked ahead of the preferred provider.
++        """
+         rule = self._get_rule(task_type)
+-        if not rule:
+-            return self._select_fastest_available()
+-
+-        fallback: str | None = rule.get("fallback_provider")
+-        if fallback and fallback in self.providers:
+-            return fallback
+-
+-        preferred: str | None = rule.get("preferred_provider", "auto")
+-        if preferred not in (None, "auto") and preferred in self.providers:
++        preferred: str | None = rule.get("preferred_provider") if rule else None
++        provider = self.providers.get(preferred) if preferred not in (None, "", "auto") else None
++        # Loaded and not marked UNAVAILABLE. The circuit is left to the request loop: asking it here
++        # would consume a HALF_OPEN probe and keep a recovering provider shut.
++        if provider is not None and provider.health.status != ProviderStatus.UNAVAILABLE:
+             return preferred
+ 
++        if self.default_provider and self.default_provider in self.providers:
++            return self.default_provider
++
+         return self._select_fastest_available()
+ 
+     def _select_fastest_available(self) -> str | None:

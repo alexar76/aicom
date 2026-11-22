@@ -551,7 +551,8 @@ class ApiClient {
     username: string,
     password: string,
     totpCode?: string,
-    webauthnCredential?: Record<string, unknown>
+    webauthnCredential?: Record<string, unknown>,
+    ownerLogin?: boolean,
   ): Promise<LoginResponse> {
     const body: Record<string, unknown> = {
       username: (username || 'admin').trim(),
@@ -559,6 +560,7 @@ class ApiClient {
     };
     if (totpCode) body.totp_code = totpCode;
     if (webauthnCredential) body.webauthn_credential = webauthnCredential;
+    if (ownerLogin) body.owner_login = true;
     return this.request('/admin/auth/login', {
       method: 'POST',
       body: JSON.stringify(body),

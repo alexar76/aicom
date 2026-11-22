@@ -27,20 +27,21 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [oidcEnabled, setOidcEnabled] = useState(false);
-  const [passwordlessDemo, setPasswordlessDemo] = useState(false);
+  const [passwordlessDemo, setPasswordlessDemo] = useState<boolean | null>(null);
+  const [ownerLogin, setOwnerLogin] = useState(false);
+  const guestLogin = passwordlessDemo === true && !ownerLogin;
 
   useEffect(() => {
     setLocale(detectAdminLocale());
+    const ownerRequested = new URLSearchParams(window.location.search).get('owner') === '1';
+    setOwnerLogin(ownerRequested);
     api.oidcStatus().then((s) => setOidcEnabled(Boolean(s.enabled))).catch(() => {});
     api.publicDemoConfig()
       .then((c) => {
         const on = Boolean(c.passwordless_admin);
         setPasswordlessDemo(on);
-        // Autofill can leave a stale password in React state after the field
-        // unmounts; passwordless login requires an empty password.
-        if (on) setPassword('');
       })
-      .catch(() => {});
+      .catch(() => setPasswordlessDemo(false));
   }, []);
 
   const onLocaleChange = (next: AdminLocale) => {
@@ -48,8 +49,21 @@ export default function AdminLoginPage() {
     saveAdminLocale(next);
   };
 
+  const toggleOwnerLogin = () => {
+    setOwnerLogin(!ownerLogin);
+    setPassword('');
+    setShowPassword(false);
+    setTotpCode('');
+    setRequires2FA(false);
+    setRequiresWebAuthn(false);
+    setError(null);
+  };
+
+  const canSubmit = passwordlessDemo !== null && Boolean(username.trim())
+    && (guestLogin || Boolean(password));
+
   const handleLogin = async () => {
-    if (!passwordlessDemo && !password) return;
+    if (!canSubmit || loading) return;
 
     setLoading(true);
     setError(null);
@@ -65,9 +79,10 @@ export default function AdminLoginPage() {
       // of JS/XSS) that rides along on every request via credentials:'include'.
       await api.login(
         username.trim() || 'admin',
-        passwordlessDemo ? '' : password,
+        guestLogin ? '' : password,
         totpCode || undefined,
         webauthnCredential,
+        ownerLogin,
       );
 
       // Drop any legacy raw admin token plus customer state from a prior session.
@@ -120,7 +135,7 @@ export default function AdminLoginPage() {
             </div>
             <h1 className="text-2xl font-bold text-white">{t(locale, 'login.title')}</h1>
             <p className="text-sm text-gray-400 mt-1">
-              {passwordlessDemo ? t(locale, 'login.publicDemoSubtitle') : t(locale, 'login.subtitle')}
+              {guestLogin ? t(locale, 'login.publicDemoSubtitle') : t(locale, 'login.subtitle')}
             </p>
           </div>
 
@@ -162,7 +177,7 @@ export default function AdminLoginPage() {
               onKeyDown={handleKeyDown}
               icon={<User className="w-4 h-4" />}
             />
-            {!passwordlessDemo && (
+            {passwordlessDemo !== null && !guestLogin && (
             <div className="relative">
               <Input
                 label={t(locale, 'login.password')}
@@ -206,18 +221,24 @@ export default function AdminLoginPage() {
               size="lg"
               onClick={handleLogin}
               loading={loading}
-              disabled={(!passwordlessDemo && !password) || !username.trim()}
+              disabled={!canSubmit}
             >
               {requiresWebAuthn
                 ? t(locale, 'login.webauthn')
                 : requires2FA
                   ? t(locale, 'login.verify2fa')
-                  : passwordlessDemo
+                  : guestLogin
                     ? t(locale, 'login.publicDemoSubmit')
-                    : t(locale, 'login.submit')}
+                    : t(locale, ownerLogin ? 'login.ownerSubmit' : 'login.submit')}
             </Button>
 
-            {oidcEnabled && !requires2FA && !requiresWebAuthn && (
+            {passwordlessDemo && (
+              <Button className="w-full" variant="ghost" onClick={toggleOwnerLogin} disabled={loading}>
+                {t(locale, ownerLogin ? 'login.returnToDemo' : 'login.ownerSubmit')}
+              </Button>
+            )}
+
+            {oidcEnabled && !ownerLogin && !requires2FA && !requiresWebAuthn && (
               <>
                 <motion.div className="relative flex items-center py-1">
                   <div className="grow border-t border-white/10" />
@@ -242,7 +263,7 @@ export default function AdminLoginPage() {
           </div>
 
           <p className="text-center text-xs text-gray-600 mt-6">
-            {passwordlessDemo ? t(locale, 'login.publicDemoFooter') : t(locale, 'login.footer')}
+            {guestLogin ? t(locale, 'login.publicDemoFooter') : t(locale, 'login.footer')}
           </p>
         </GlassCard>
       </motion.div>

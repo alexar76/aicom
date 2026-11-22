@@ -165,6 +165,8 @@ class SecurityManager:
         is_admin: bool = True,
         role: Optional[str] = None,
         account: Optional[dict] = None,
+        *,
+        demo_routing_owner: bool = False,
     ) -> str:
         """Create a JWT access token. `role` is one of viewer|operator|admin|super_admin."""
         now = datetime.now(timezone.utc)
@@ -191,6 +193,10 @@ class SecurityManager:
         if row:
             payload["uid"] = str(row["id"])
             payload["auth_version"] = str(row.get("session_version") or "0")
+            if demo_routing_owner and is_admin:
+                from web.backend.services.public_demo_guard import DEMO_ROUTING_OWNER_CLAIM
+
+                payload[DEMO_ROUTING_OWNER_CLAIM] = True
         return encode_hs256(payload, self.secret_key, algorithm=self.jwt_algorithm)
 
     def decode_token(self, token: str) -> Optional[dict]:
@@ -241,32 +247,34 @@ class SecurityManager:
             raise RuntimeError("Admin session revocation unavailable")
         self._rl_store.revoke_admin_token(str(payload["jti"]), float(payload["exp"]))
 
-    def check_login_attempts(self, ip_address: str) -> bool:
+    def check_login_attempts(self, ip_address: str, *, scope: str = "") -> bool:
         """Check if login attempts are within limits."""
+        key = f"{scope}:{ip_address}" if scope else ip_address
         window = self.ban_minutes * 60
         if self._rl_store is not None:
-            attempts = self._rl_store.recent_attempt_count(ip_address, window)
+            attempts = self._rl_store.recent_attempt_count(key, window)
             return attempts < self.max_login_attempts
 
         now = time.time()
-        if ip_address in self._login_attempts:
-            self._login_attempts[ip_address] = [
-                t for t in self._login_attempts[ip_address]
+        if key in self._login_attempts:
+            self._login_attempts[key] = [
+                t for t in self._login_attempts[key]
                 if now - t < window
             ]
-        attempts = self._login_attempts.get(ip_address, [])
+        attempts = self._login_attempts.get(key, [])
         return len(attempts) < self.max_login_attempts
 
-    def record_login_attempt(self, ip_address: str, success: bool, username: str = ""):
+    def record_login_attempt(
+        self, ip_address: str, success: bool, username: str = "", *, scope: str = "",
+    ):
         """Record a login attempt for rate limiting and audit."""
+        key = f"{scope}:{ip_address}" if scope else ip_address
         if success:
-            self.reset_login_attempts(ip_address)
+            self.reset_login_attempts(key)
         elif self._rl_store is not None:
-            self._rl_store.record_attempt(ip_address)
+            self._rl_store.record_attempt(key)
         else:
-            if ip_address not in self._login_attempts:
-                self._login_attempts[ip_address] = []
-            self._login_attempts[ip_address].append(time.time())
+            self._login_attempts.setdefault(key, []).append(time.time())
 
         # Audit log
         self._audit_log({

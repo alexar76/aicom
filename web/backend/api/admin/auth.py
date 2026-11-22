@@ -131,6 +131,7 @@ class LoginRequest(BaseModel):
     password: str = Field(default="", max_length=256)
     totp_code: Optional[str] = None
     webauthn_credential: Optional[dict] = None
+    owner_login: bool = False
 
 
 class Setup2FARequest(BaseModel):
@@ -253,31 +254,47 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
             detail="Admin not configured. Run 'ai-company init' first.",
         )
 
-    if not security.check_login_attempts(peer_ip):
+    owner_login = is_public_demo() and login_data.owner_login
+    # Normal sign-ins and successful guest logins cannot reset owner failures.
+    login_scope = "demo-owner" if owner_login else ""
+    if not security.check_login_attempts(peer_ip, scope=login_scope):
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
             detail="Too many login attempts. Please try again later.",
         )
 
     account = aus.get_user_by_username(login_data.username)
-    passwordless = _public_demo_passwordless_login(login_data.username, login_data.password)
+    cfg = _load_legacy_admin()
+    norm_user = aus.normalize_username(login_data.username)
+    role = normalize_role((account or {}).get("role") or "viewer")
+    passwordless = not owner_login and _public_demo_passwordless_login(
+        login_data.username, login_data.password,
+    )
+    if owner_login:
+        from security.prod_startup_guard import KNOWN_INSECURE_PASSWORDS
+
+        owner = aus.normalize_username(cfg.get("username") or "admin")
+        if (not cfg or norm_user != owner or role not in {"admin", "super_admin"}
+                or len(login_data.password) < 8
+                or login_data.password.strip().lower() in KNOWN_INSECURE_PASSWORDS):
+            security.record_login_attempt(peer_ip, False, login_data.username, scope=login_scope)
+            raise HTTPException(status_code=401, detail="Invalid username or password")
     if (not account or not account.get("enabled", True)
             or (not passwordless and not _verify_password_for_login(
                 security, login_data.username, login_data.password, account=account,
             ))):
-        security.record_login_attempt(peer_ip, False, login_data.username)
+        security.record_login_attempt(peer_ip, False, login_data.username, scope=login_scope)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password",
         )
 
-    cfg = _load_legacy_admin()
     mfa = "" if passwordless else _active_mfa_method(login_data.username)
     if mfa == "webauthn":
         from security import webauthn_admin as wa
 
         if not login_data.webauthn_credential:
-            security.record_login_attempt(peer_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username, scope=login_scope)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="WebAuthn required",
@@ -288,7 +305,7 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
                 login_data.webauthn_credential,
             )
         except ValueError as e:
-            security.record_login_attempt(peer_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username, scope=login_scope)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail=client_error_detail(e) or "Invalid passkey",
@@ -296,28 +313,27 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
     elif mfa == "totp":
         secret = cfg.get("totp_secret")
         if not login_data.totp_code:
-            security.record_login_attempt(peer_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username, scope=login_scope)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="2FA code required",
             )
         if not secret or not security.verify_totp(secret, login_data.totp_code):
-            security.record_login_attempt(peer_ip, False, login_data.username)
+            security.record_login_attempt(peer_ip, False, login_data.username, scope=login_scope)
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid 2FA code",
             )
 
-    role_str = str(account.get("role") or "viewer")
-    norm_user = aus.normalize_username(login_data.username)
     token = security.create_access_token(
         norm_user,
-        role=normalize_role(role_str).value,
+        role=role.value,
         account=account,
+        demo_routing_owner=owner_login,
     )
     if not security.authenticate_admin_token(token):
         raise HTTPException(status_code=401, detail="Account changed during sign-in; retry.")
-    security.record_login_attempt(peer_ip, True, login_data.username)
+    security.record_login_attempt(peer_ip, True, login_data.username, scope=login_scope)
 
     try:
         from web.backend.services.admin_action_log import log_admin_action
@@ -328,7 +344,7 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
             actor_user_id=str(su.get("id")) if su else None,
             action="login",
             resource="admin/auth",
-            details={"role": normalize_role(role_str).value},
+            details={"role": role.value, "owner_login": owner_login},
             ip_address=peer_ip,
         )
     except Exception:
@@ -363,7 +379,7 @@ async def admin_login(request: Request, response: Response, login_data: LoginReq
         "access_token": token,
         "token_type": "bearer",
         "expires_in": max_age,
-        "role": normalize_role(role_str).value,
+        "role": role.value,
         "csrf_token": csrf,
     }
 

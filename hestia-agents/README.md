@@ -3,15 +3,17 @@
 Deterministic AIMarket capability providers, built to run as HESTIA template
 tenants and sold under the operator's name (payouts to the treasury).
 
-**Catalogue of all twenty-one agents, in five languages:** [English](docs/AGENTS.md) ·
+**Catalogue of all twenty-nine agents, in five languages:** [English](docs/AGENTS.md) ·
 [Русский](docs/AGENTS.ru.md) · [Español](docs/AGENTS.es.md) · [Français](docs/AGENTS.fr.md) ·
 [中文](docs/AGENTS.zh.md) — what each answers, how to call it, an example request.
 
-Each one is a pure function of its payload — no clock, no randomness, no
-network, no filesystem. That is the product, not a limitation. HESTIA signs
-every response with Ed25519 over the result, the capability id and the SHA-256
-of the input; a signature over a value nobody else can reproduce proves
-nothing. Determinism is what makes the receipt worth paying for.
+Most are pure functions of their payload — no clock, no randomness, no network, no filesystem. That is the
+product, not a limitation. HESTIA signs every response with Ed25519 over the result, the capability id and the
+SHA-256 of the input; a signature over a value nobody else can reproduce proves nothing. Determinism is what
+makes the receipt worth paying for. The agents that must read a public source (a chain, a registry, DNS, a
+site) name their hosts at deploy time, reach only those and the hosts a caller names, and pin a block or say
+what they read; their tests replay replies recorded from those hosts (`scripts/record_fetches.py`), and
+`scripts/run_in_sandbox.py` runs the same cases in HESTIA's own WebAssembly sandbox.
 
 | Agent | Capability | What it answers |
 |---|---|---|
@@ -21,6 +23,7 @@ nothing. Determinism is what makes the receipt worth paying for.
 | `merkle-proof` | `merkle.proof@v1` | Is this entry in that log / that airdrop — and did the log only grow |
 | `x402-check` | `x402.authorization.check@v1` | Who signed this x402 payment, for what — and will USDC accept it |
 | `x402-settlement` | `x402.settlement.check@v1` | Did this x402 payment settle on Base — to whom, how much, bound to its authorization, final |
+| `onchain-price` | `crypto.price.onchain@v1` | The ETH or BTC price in USDC from Uniswap v3 pools on Base — time-weighted, pinned to a block |
 | `esim-prices` | `esim.price.history@v1` | How the wholesale price of eSIM plans for a country moved — when, by how much, in batches |
 | `tlog-checkpoint` | `tlog.checkpoint.verify@v1` | Is this log checkpoint signed by the log and cosigned by your witnesses — and is my entry in it, did the log only grow |
 | `http-signature` | `http.signature.verify@v1` | Does this HTTP message's RFC 9421 signature verify — over exactly which components |
@@ -36,6 +39,13 @@ nothing. Determinism is what makes the receipt worth paying for.
 | `histor-witnessed` | `histor.witnessed@v1` | Is this tool set in HISTOR's log, under a head seven independent witnesses co-signed |
 | `histor-changed` | `histor.changed_since@v1` | What changed in a server's tools since the set you approved — and the token cost now |
 | `warden-scan` | `warden.scan@v1` | Is this MCP tool list safe to show a model — WARDEN's static rules, callable |
+| `registry-entry` | `registry.entry.verify@v1` | Do an MCP registry entry's packages and domain still name it — by the registry's own rules |
+| `package-provenance` | `package.provenance.verify@v1` | Was this npm or PyPI release built where it says, and is that on Sigstore's log |
+| `agent-card` | `agent.card.verify@v1` | Is this A2A agent card well-formed, and do its JWS signatures verify — over which form, with whose key |
+| `evm-signature` | `evm.signature.verify@v1` | Did this address sign this — a key, or a smart wallet (ERC-1271, ERC-6492) |
+| `timestamp` | `timestamp.verify@v1` | Does this RFC 3161 timestamp prove these bytes existed then — chained to a trusted TSA |
+| `site-policy` | `site.agent_policy@v1` | What a site's robots.txt lets each AI agent do, and its content signals |
+| `x402-preflight` | `x402.preflight@v1` | Should an agent pay this 402 — what, to whom, and what is known about the payee |
 
 ## Quick start
 

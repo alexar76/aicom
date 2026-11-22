@@ -1,0 +1,11 @@
+2026-11-22T07:03:06Z
+base signal-hunt-hub:3.22.0-20261121, live page a915a3afa17504f6, variant variant-a915 (a915a3afa17504f6) -> signal-hunt-hub:3.22.0-capsfix-20261122
+image page 6a50b031aeb713b5 patched 6a50b031aeb713b5
+capsPageRequest lines: 4
+served /app/terminal-home.html
+BASE=signal-hunt-hub:3.22.0-20261121
+backup /root/hub-backups/signal-hunt-hub-1-pre-capsfix-20261122T070312Z.dump 352K
+previous image sha256:aa10c166a874ff5151c637094f96b3fa34b9ca3314d2822e7e4a4dba80e5f81f
+{"container": "signal-hunt-hub-1", "healthy": true, "image": "signal-hunt-hub:3.22.0-capsfix-20261122", "previous_container": "signal-hunt-hub-1-security-prev-1795330993273441961", "removed_env_names": [], "set_env_names": [], "borrowers": {}, "previous_kept": {"signal-hunt-hub-1-security-prev-1795330993273441961": "kept without its 11 Compose label(s)"}, "snapshot": "/root/security-rollbacks/signal-hunt-hub-1-1795330993273441961/inspect.json"}
+signal-hunt-hub-1	signal-hunt-hub:3.22.0-capsfix-20261122	Up 7 seconds (health: starting)
+2026-11-22T07:03:22Z

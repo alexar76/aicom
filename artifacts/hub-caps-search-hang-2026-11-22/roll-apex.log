@@ -1,0 +1,11 @@
+2026-11-22T07:02:36Z
+base modelmarket-hub:3.22.0-hestiastrip-20261122, live page c8a005ac78726f72, variant variant-c8a0 (c8a005ac78726f72) -> modelmarket-hub:3.22.0-capsfix-20261122
+image page a4168f8669dfdbd7 patched a4168f8669dfdbd7
+capsPageRequest lines: 4
+served /app/terminal-home.html
+BASE=modelmarket-hub:3.22.0-hestiastrip-20261122
+{"container": "modelmarket-hub", "healthy": true, "image": "modelmarket-hub:3.22.0-capsfix-20261122", "previous_container": "modelmarket-hub-security-prev-1795330962833642645", "removed_env_names": [], "set_env_names": [], "borrowers": {"themis": "themis-security-prev-1795330962833642645"}, "snapshot": "/root/security-rollbacks/modelmarket-hub-1795330962833642645/inspect.json"}
+themis	1bf0cd6c987e	Up 7 seconds (healthy)
+modelmarket-hub	modelmarket-hub:3.22.0-capsfix-20261122	Up 7 seconds (health: starting)
+modelmarket-hub-uni	modelmarket-hub-uni:3.22.0-20261121	Up 22 hours (healthy)
+2026-11-22T07:02:52Z

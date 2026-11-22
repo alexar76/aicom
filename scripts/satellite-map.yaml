@@ -1877,13 +1877,14 @@ satellites:
       - .env
       - node_modules
       - data
-    registries: []
+    registries:
+      - npm:@aimarket/domain-operator-kit
     ci:
       - node-test
     notes: >
       GitHub satellite alexar76/domain-operator-kit. Seller node, stdio MCP client,
       Openprovider and Porkbun Sandbox adapters, plus the HTTP supplier contract. Excluded from the trimmed
-      factory alexar76/aicom. Pre-live: the demo registers nothing.
+      factory alexar76/aicom. Pre-live: the demo registers nothing. npm: @aimarket/domain-operator-kit.
 
   - id: use-cases-portal
     repo: use-cases-portal

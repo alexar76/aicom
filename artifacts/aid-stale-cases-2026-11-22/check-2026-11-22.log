@@ -1,0 +1,5 @@
+2026-11-22T06:16:53Z
+AID u = https://modelmarket.dev/mcp
+OK   healthy: trustManifest valid, digest match, remotes url ['https://modelmarket.dev/mcp'] == AID u  [manifest application/ard+json, card application/mcp-server-card+json]
+OK   endpoint-mismatch: trustManifest valid, digest match, remotes url ['https://modelmarket.dev/interop/aid/endpoint-mismatch/mcp'] != AID u  [manifest application/ard+json, card application/mcp-server-card+json]
+OK   card-digest-mismatch: trustManifest valid, digest mismatch, remotes url ['https://modelmarket.dev/mcp'] == AID u  [manifest application/ard+json, card application/mcp-server-card+json]

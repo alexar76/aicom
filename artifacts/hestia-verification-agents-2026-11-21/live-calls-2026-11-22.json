@@ -1,0 +1,115 @@
+[
+ {
+  "slug": "registry-entry",
+  "status": 200,
+  "seconds": 1.95,
+  "verdict": "verified",
+  "provider_pubkey": "NsUtZr0vbqtCE4mIZFe0CQ2MQYvu1IlHEkIrXmUnTdo=",
+  "payload": {
+   "name": "io.github.alexar76/warden",
+   "version": "0.35.0"
+  }
+ },
+ {
+  "slug": "registry-entry",
+  "status": 200,
+  "seconds": 2.02,
+  "verdict": "verified",
+  "provider_pubkey": "NsUtZr0vbqtCE4mIZFe0CQ2MQYvu1IlHEkIrXmUnTdo=",
+  "payload": {
+   "name": "com.notion/mcp",
+   "domain": "notion.com"
+  }
+ },
+ {
+  "slug": "package-provenance",
+  "status": 200,
+  "seconds": 2.12,
+  "verdict": "verified",
+  "provider_pubkey": "r/+Gc53FlPr36f07QLfEj41dqoTCKD4Mu5a7ZCmlLNQ=",
+  "payload": {
+   "ecosystem": "npm",
+   "package": "@modelcontextprotocol/sdk",
+   "version": "1.32.2",
+   "repository": "github.com/modelcontextprotocol/typescript-sdk"
+  }
+ },
+ {
+  "slug": "package-provenance",
+  "status": 200,
+  "seconds": 2.11,
+  "verdict": "verified",
+  "provider_pubkey": "r/+Gc53FlPr36f07QLfEj41dqoTCKD4Mu5a7ZCmlLNQ=",
+  "payload": {
+   "ecosystem": "pypi",
+   "package": "sigstore",
+   "version": "4.5.1"
+  }
+ },
+ {
+  "slug": "agent-card",
+  "status": 200,
+  "seconds": 2.44,
+  "verdict": "signed_verified",
+  "provider_pubkey": "BCPUMyPBPl05s7TmttOYMxD8FnxdBmbDo2Z+G8vVWuM=",
+  "payload": {
+   "url": "agoreum.xyz"
+  }
+ },
+ {
+  "slug": "agent-card",
+  "status": 200,
+  "seconds": 1.94,
+  "verdict": "signed_verified",
+  "provider_pubkey": "BCPUMyPBPl05s7TmttOYMxD8FnxdBmbDo2Z+G8vVWuM=",
+  "payload": {
+   "url": "agent-guild-5d5r.onrender.com"
+  }
+ },
+ {
+  "slug": "evm-signature",
+  "status": 200,
+  "seconds": 1.12,
+  "verdict": "valid",
+  "provider_pubkey": "mkrK8/QidI2lEB4FVZBLsq/AEUvZK6s704MTBp3hmY0=",
+  "payload": "(the test fixture of the same name)"
+ },
+ {
+  "slug": "timestamp",
+  "status": 200,
+  "seconds": 0.63,
+  "verdict": "verified",
+  "provider_pubkey": "3xQeX1gBT2uVAErQemqD5KjfmfNOoWYNxjLNDE7IMNc=",
+  "payload": "(the test fixture of the same name)"
+ },
+ {
+  "slug": "site-policy",
+  "status": 200,
+  "seconds": 1.75,
+  "verdict": "ok",
+  "provider_pubkey": "ejyJ4KngNEsEnxK0al45g+kLo4i7NZDs5XIDK/ZDJBE=",
+  "payload": {
+   "url": "www.nytimes.com",
+   "agents": [
+    "GPTBot",
+    "ClaudeBot",
+    "*"
+   ]
+  }
+ },
+ {
+  "slug": "x402-preflight",
+  "status": 200,
+  "seconds": 3.67,
+  "verdict": "review_first",
+  "provider_pubkey": "Is3PeJvDVoao2T7rK7poY4r4WZsPxlj1omBh8w05iUI=",
+  "payload": {
+   "url": "https://tienda.textokit.store/api/translate-es",
+   "method": "POST",
+   "body": {
+    "text": "hola"
+   },
+   "max_usd": "0.01"
+  }
+ }
+]

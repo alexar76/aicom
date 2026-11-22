@@ -1,0 +1,20 @@
+2026-11-22T07:00:47Z
+base modelmarket-hub:3.22.0-20261121, live page a915a3afa17504f6, variant variant-a915 (a915a3afa17504f6) -> modelmarket-hub:3.22.0-capsfix-20261122
+image page 6a50b031aeb713b5 patched 6a50b031aeb713b5
+capsPageRequest lines: 4
+served /app/terminal-home.html
+BASE=modelmarket-hub:3.22.0-20261121
+backup /root/hub-backups/modelmarket-hub-pre-capsfix-20261122T070050Z.db 1.9M
+previous image sha256:078f560948d73f1df0002a6d3952018a25c079b61b2575d635964fe4b6ffe888
+Traceback (most recent call last):
+  File "/root/hub-capsfix-20261122/kit/rollout_container.py", line 33, in <module>
+    from service_env import filtered
+ModuleNotFoundError: No module named 'service_env'
+2026-11-22T07:00:51Z
+modelmarket-hub:3.22.0-20261121 running
+2026-11-22T07:01:19Z
+backup /root/hub-backups/modelmarket-hub-pre-capsfix-20261122T070119Z.db 1.9M
+previous image sha256:078f560948d73f1df0002a6d3952018a25c079b61b2575d635964fe4b6ffe888
+{"container": "modelmarket-hub", "healthy": true, "image": "modelmarket-hub:3.22.0-capsfix-20261122", "previous_container": "modelmarket-hub-security-prev-1795330880107265315", "removed_env_names": [], "image_env_names": ["AIMARKET_DB_PATH", "AIMARKET_PEER_REJECTIONS_FILE", "AIMARKET_SIGNING_KEY_PATH", "AIMARKET_ZK_BACKEND", "AIMARKET_ZK_NULLIFIER_DB", "AIMARKET_ZK_VERIFIER_SOL", "AIMARKET_ZK_VKEY_JSON", "AIMARKET_ZK_WASM", "AIMARKET_ZK_ZKEY", "GPG_KEY", "LANG", "PATH", "PYTHON_SHA256", "PYTHON_VERSION"], "set_env_names": [], "borrowers": {}, "snapshot": "/root/security-rollbacks/modelmarket-hub-1795330880107265315/inspect.json"}
+modelmarket-hub	modelmarket-hub:3.22.0-capsfix-20261122	Up 6 seconds (health: starting)
+2026-11-22T07:01:28Z

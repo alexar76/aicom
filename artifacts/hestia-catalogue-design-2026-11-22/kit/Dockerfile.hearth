@@ -1,0 +1,9 @@
+# The running hearth (0de5b8893bc2, the catalogue rollout of 2026-11-22 07:29Z) with the redesigned catalogue
+# pages (aicom 59e7be0c0, then 7697bf983 for narrow screens): only /app/docs/agents changes; no code. Tag the running image first: BuildKit refuses
+# FROM sha256:.  BASE = the running image (0de5b8893bc2 for the first switch, 811abdd7bf9e for the narrow-screen one)
+ARG BASE=catalogdesignbase-hestia-hearth:20261122
+FROM ${BASE}
+COPY --chown=65532:65532 overlay/hestia/docs/agents/ /app/docs/agents/
+COPY --chown=65532:65532 agents-overlay.sha256 /app/agents-overlay.sha256
+RUN cd /app/docs && sha256sum -c --quiet /app/agents-overlay.sha256 \
+ && test "$(find agents -type f | wc -l)" = "$(wc -l < /app/agents-overlay.sha256)"

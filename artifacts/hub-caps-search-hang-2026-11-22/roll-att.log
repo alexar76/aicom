@@ -1,0 +1,23 @@
+2026-11-22T07:03:33Z
+base sha256:9403488d14be4cc8297c734e3780af92747da3124689f6da5a54344aa67d5d07, live page 32962117e792a9e2, variant variant-3296 (32962117e792a9e2) -> attested-memory-hub:3.22.0-capsfix-20261122
+Dockerfile:2
+--------------------
+   1 |     ARG BASE
+   2 | >>> FROM ${BASE}
+   3 |     # Capability search hang 2026-11-22: terminal-home.html only, patched per production variant (patch.py); nothing else.
+   4 |     COPY terminal-home.html /app/terminal-home.html
+--------------------
+ERROR: failed to build: failed to solve: sha256:9403488d14be4cc8297c734e3780af92747da3124689f6da5a54344aa67d5d07: failed to resolve source metadata for docker.io/library/sha256:9403488d14be4cc8297c734e3780af92747da3124689f6da5a54344aa67d5d07: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+2026-11-22T07:03:34Z
+2026-11-22T07:03:53Z
+tagged 9403488d14be as attested-memory-hub:capsfix-base-20261122
+base attested-memory-hub:capsfix-base-20261122, live page 32962117e792a9e2, variant variant-3296 (32962117e792a9e2) -> attested-memory-hub:3.22.0-capsfix-20261122
+image page 9236ad14282536fa patched 9236ad14282536fa
+capsPageRequest lines: 4
+served /app/terminal-home.html
+BASE=attested-memory-hub:capsfix-base-20261122
+backup /root/hub-backups/attested-memory-hub-hub-1-pre-capsfix-20261122T070357Z.dump 364K
+previous image sha256:9403488d14be4cc8297c734e3780af92747da3124689f6da5a54344aa67d5d07
+{"container": "attested-memory-hub-hub-1", "healthy": true, "image": "attested-memory-hub:3.22.0-capsfix-20261122", "previous_container": "attested-memory-hub-hub-1-security-prev-1795331038683754892", "removed_env_names": [], "set_env_names": [], "borrowers": {}, "previous_kept": {"attested-memory-hub-hub-1-security-prev-1795331038683754892": "kept without its 11 Compose label(s)"}, "snapshot": "/root/security-rollbacks/attested-memory-hub-hub-1-1795331038683754892/inspect.json"}
+attested-memory-hub-hub-1	attested-memory-hub:3.22.0-capsfix-20261122	Up 8 seconds (healthy)
+2026-11-22T07:04:09Z

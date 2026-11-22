@@ -1,0 +1,17 @@
+41a42,57
+>         # ARD + AID stale cases for outside clients (artifacts/aid-stale-cases-2026-11-22 in the monorepo),
+>         # with the media types of the live manifest and card. A nested add_header replaces the parent's.
+>         location ~ ^/interop/aid/([a-z-]+)/ard\.json$ {
+>             alias /var/www/interop/aid/$1/ard.json;
+>             types { }
+>             default_type application/ard+json;
+>             add_header Access-Control-Allow-Origin "*" always;
+>             add_header Cache-Control "public, max-age=300" always;
+>         }
+>         location ~ ^/interop/aid/([a-z-]+)/server-card\.json$ {
+>             alias /var/www/interop/aid/$1/server-card.json;
+>             types { }
+>             default_type application/mcp-server-card+json;
+>             add_header Access-Control-Allow-Origin "*" always;
+>             add_header Cache-Control "public, max-age=300" always;
+>         }

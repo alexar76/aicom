@@ -50,6 +50,20 @@ export const LOGIN_DICT: I18nDict = {
     fr: 'Ouvrir la démo admin',
     zh: '进入管理演示',
   },
+  'login.ownerSubmit': {
+    en: 'Sign in as owner',
+    ru: 'Войти как владелец',
+    es: 'Iniciar sesión como propietario',
+    fr: 'Se connecter en tant que propriétaire',
+    zh: '以所有者身份登录',
+  },
+  'login.returnToDemo': {
+    en: 'Back to public demo',
+    ru: 'Вернуться в публичное демо',
+    es: 'Volver a la demo pública',
+    fr: 'Retour à la démo publique',
+    zh: '返回公开演示',
+  },
   'login.publicDemoFooter': {
     en: 'No password on the shared demo host. Self-host for full owner controls.',
     ru: 'На общем демо-хосте пароль не нужен. Для полного контроля — свой инстанс.',

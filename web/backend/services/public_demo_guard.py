@@ -13,6 +13,9 @@ import os
 from fastapi import HTTPException
 
 
+DEMO_ROUTING_OWNER_CLAIM = "demo_routing_rules_owner"
+
+
 def is_public_demo() -> bool:
     return os.environ.get("AIFACTORY_DEMO_READONLY", "").strip() == "1"
 

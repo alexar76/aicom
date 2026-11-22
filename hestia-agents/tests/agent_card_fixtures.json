@@ -1,0 +1,180 @@
+{
+ "card": {
+  "name": "Example Agent",
+  "description": "An example agent that echoes messages.",
+  "supportedInterfaces": [
+   {
+    "url": "https://example.com/a2a/v1",
+    "protocolBinding": "JSONRPC",
+    "protocolVersion": "1.0"
+   }
+  ],
+  "version": "1.0.0",
+  "capabilities": {
+   "streaming": false,
+   "pushNotifications": false,
+   "extensions": []
+  },
+  "defaultInputModes": [
+   "text/plain"
+  ],
+  "defaultOutputModes": [
+   "text/plain"
+  ],
+  "skills": [
+   {
+    "id": "echo",
+    "name": "Echo",
+    "description": "Echoes the input.",
+    "tags": [
+     "echo"
+    ]
+   }
+  ],
+  "securitySchemes": {
+   "bearer": {
+    "httpAuthSecurityScheme": {
+     "scheme": "Bearer"
+    }
+   }
+  },
+  "signatures": [
+   {
+    "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpPU0UiLCJraWQiOiJlcy0xIiwiamt1IjoiaHR0cHM6Ly9leGFtcGxlLmNvbS8ud2VsbC1rbm93bi9qd2tzLmpzb24ifQ",
+    "signature": "mHYv3Km-BgR1Desy4VgftOlC6UJOF_SBY8dbw6UkLcCr4HcgyWCDBSeXFDDLwRBzM5pbXK5AUHiRjhugLW7HfA"
+   },
+   {
+    "protected": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpPU0UiLCJraWQiOiJlZC0xIiwiamt1IjoiaHR0cHM6Ly9leGFtcGxlLmNvbS8ud2VsbC1rbm93bi9qd2tzLmpzb24ifQ",
+    "signature": "fS-qH_t8Uuxo8lp9BH-U5KIRyNPhcfcHfa7jlrn3zdYjcCVEQsfFlXtxnN9iehIRgUckbiMulV7Up4n1zA7UBQ"
+   },
+   {
+    "protected": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpPU0UiLCJraWQiOiJycy0xIiwiamt1IjoiaHR0cHM6Ly9leGFtcGxlLmNvbS8ud2VsbC1rbm93bi9qd2tzLmpzb24ifQ",
+    "signature": "ORl_8wFyMLy6tPid0olEjC7HB5hfXCBaSiwvjVjQj0Auc39JxkJoDY6KMV76M99zbMBa19OpBT10wp2sg1oCfYLGDaAN10xsGUJupwDHy02k63eVIxZrtIxhaS3wg1OdQf0WQTnaonHkCKqElq_lCT-hqnLxKMIkbZ7XvZ0Y7tE-rGseSnqqd4-YyaAGMOLave_iIcR6noC2bPZnrqapZOogexdE9LGArddphyeoI-y4P4zYFtxaO0GuXWaLFeslvtj3zJq5en5k6tqgJouAsCt67F1f2fKqnkSljTjJJ3tZHcveF3hlSpeV542CVYcYKSr3rpRmgIUJN1hV1_5F3Q"
+   },
+   {
+    "protected": "eyJhbGciOiJQUzI1NiIsInR5cCI6IkpPU0UiLCJraWQiOiJwcy0xIiwiamt1IjoiaHR0cHM6Ly9leGFtcGxlLmNvbS8ud2VsbC1rbm93bi9qd2tzLmpzb24ifQ",
+    "signature": "ijdKg78VeHuNmN_7SQXEiZrP9o1WVvAwN7TdtE9dkSqLhpQujmYK7kJtMCmr2vdpaagcYaOclI91rEbtdqfMBU1ubYxSsQbQi3Cqh3IznGbEwJ-v1fHfqwz8O90YcLh8Slg548WgqJJK0a-ttT7SOpTPM8UaIRaQ8_BZ5gZ03bbPWIGDsHLBVC0XiUPewcy8c7dTq4fZLZhBadMAqPzlHBZLQAijBcvTK1xkQayRxFZ-GxSvkmlyCFguDePMCWnt9UUvZh84SLKot_KVnaRPJhBfIu8Tx4ZZnHpq8W3pPjC4imEzCkImPInMlAXD0RY08MMl8FPaEJ6Tgeaz9MUtqw"
+   }
+  ]
+ },
+ "jwks": {
+  "keys": [
+   {
+    "kty": "EC",
+    "crv": "P-256",
+    "kid": "es-1",
+    "use": "sig",
+    "alg": "ES256",
+    "x": "a01x8VTFZDKpFEckbx2fAXi00_NibycaBeOtlW5Opsw",
+    "y": "HbOaJi2OnDFjU9VlrYI5lRvi0R8UsGzVcZ1T_IVJSDE"
+   },
+   {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "ed-1",
+    "x": "QJPQgpHEr_mgU16YhIw5L5bTnGHL3RoSxpYuKkvJe_g"
+   },
+   {
+    "kty": "RSA",
+    "kid": "rs-1",
+    "alg": "RS256",
+    "n": "op6fA9DWmDgfiSn9AM0FeGRXESfb3XzeuPsuRKql2k36HNL1tHRz4ZzwtcKErbypdtspK1RpSkPfIgwXrCTFSvj1CtFIvZ76aZ-FbQYiMM1QKq4Ggq8UECScAFidLqv3UmwH1xM9TPtXjgyL0Gip8WLo0aeBcUlQjNgqwFZTvjx6lSwP6vqctJfnsNrcWqZFGqfvCGF6z4789oombY1caX8xQjzgw_qVXJ8EpFlytKteZvYo43Wj8i00psL__W64tXBlLPXQs0R0qDjyeaBBnxNCuQ5ByJ0Z3plxNAlm5ohZXpBQetAMAXonLrMPGjtQhCC1UUPKSKFZipn1GvTIbw",
+    "e": "AQAB"
+   },
+   {
+    "kty": "RSA",
+    "kid": "ps-1",
+    "alg": "PS256",
+    "n": "wnf3RzcxZkmLLMP1ezsJ4EE2io5GQNpo9O1OupQZlAOrLd51egizDDhJrfGbuBgRwkgepuyh9AyL-rjcZdwjjAupwfIUAg7C32u1sYi0LlpLYnQeNX-xrr4HaS5LUPZkXy-G26cPQXgRn_GNEcNDEMB8TW9Wgl2y_0MTSnnbQXSQcp3TH7DFGSvtx62n48eLHVllk3uv1VWKGqdOOHPymHuZSxjYUpmInRS-MXyb9lN8uq0Uat6PYPgws9Hhb64Yaeqtddr1-hO3sFiMdX9PIkRVZf7DWNpb8TXUhbYbbyGUGoifNtSr2ucdv6rsp-JDqlnoqxltb9f9cdiwqmozoQ",
+    "e": "AQAB"
+   },
+   {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "kid": "b64-1",
+    "x": "cDwoh80x_4S5jatO6SxiboxoeQvGCXVv0XXf1A_DJA8"
+   }
+  ]
+ },
+ "jku": "https://example.com/.well-known/jwks.json",
+ "card_dids": {
+  "name": "Example Agent",
+  "description": "An example agent that echoes messages.",
+  "supportedInterfaces": [
+   {
+    "url": "https://example.com/a2a/v1",
+    "protocolBinding": "JSONRPC",
+    "protocolVersion": "1.0"
+   }
+  ],
+  "version": "1.0.0",
+  "capabilities": {
+   "streaming": false,
+   "pushNotifications": false,
+   "extensions": []
+  },
+  "defaultInputModes": [
+   "text/plain"
+  ],
+  "defaultOutputModes": [
+   "text/plain"
+  ],
+  "skills": [
+   {
+    "id": "echo",
+    "name": "Echo",
+    "description": "Echoes the input.",
+    "tags": [
+     "echo"
+    ]
+   }
+  ],
+  "securitySchemes": {
+   "bearer": {
+    "httpAuthSecurityScheme": {
+     "scheme": "Bearer"
+    }
+   }
+  },
+  "signatures": [
+   {
+    "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpPU0UiLCJraWQiOiJkaWQ6d2ViOmV4YW1wbGUuY29tI2tleS0xIn0",
+    "signature": "uHspubnco39J6KNRo6Tg6urv61eI1ChsVLazE4tqVyW83K5BbKosoXVZquIcjii82LtwUa9ylxvsc-wX6i1ksg"
+   },
+   {
+    "protected": "eyJhbGciOiJFZERTQSIsInR5cCI6IkpPU0UiLCJraWQiOiJkaWQ6a2V5Ono2TWt1UGt1ZzFQRmpLZUNaTmFpeGE2VkNQelRkbXhiRWoxUXFiQW9jdDNibmVFYiN6Nk1rdVBrdWcxUEZqS2VDWk5haXhhNlZDUHpUZG14YkVqMVFxYkFvY3QzYm5lRWIifQ",
+    "signature": "ICrRl4vgb1keb6T8ekBrWcGjMIGFfTbxQPQKH0uHxbg_H6-Zsq0bxn0vaeMO8c8F7SWdBTiNbqExWeCl73kyBg"
+   },
+   {
+    "protected": "eyJhbGciOiJFUzI1NksiLCJraWQiOiJlczI1NmstMSIsImp3ayI6eyJrdHkiOiJFQyIsImNydiI6InNlY3AyNTZrMSIsIngiOiJmR1luOEVPanBHSjNGZHNPZzAtbndFYVJDS1pINHZ3dGlXYVRiM1N4QTkwIiwieSI6IjRmbGs4ZkJsb3FoZ2hINzJ1ZG5hc1hOc21lR1otYXBPYjBNV3NtMUFmT2cifX0",
+    "signature": "_wGXvpMukuQxCB4KpARpGQZwwzpowB0RYOAsDSUAPDJAETXajWdqnuNuvkoIERHy5GYt_rqHBMRQukAvBHMafQ"
+   },
+   {
+    "protected": "eyJhbGciOiJFZERTQSIsImtpZCI6ImI2NC0xIiwiYjY0IjpmYWxzZSwiY3JpdCI6WyJiNjQiXX0",
+    "signature": "Hq5oNewWH7XpEZw43zy2t_lzwdIurfnuWngWv3YPHnbviPkjCQ03br0U78Y9ZY-9W1mo3iF0U1844FQCoVlGBQ"
+   }
+  ]
+ },
+ "did_document": {
+  "@context": [
+   "https://www.w3.org/ns/did/v1"
+  ],
+  "id": "did:web:example.com",
+  "verificationMethod": [
+   {
+    "id": "did:web:example.com#key-1",
+    "type": "JsonWebKey2020",
+    "controller": "did:web:example.com",
+    "publicKeyJwk": {
+     "kty": "EC",
+     "crv": "P-256",
+     "x": "toLjtlAG4Un9ZbdexK4_ixDOHGJxj-IhUY8nfMv1h4k",
+     "y": "90ehjVm1p4cZ2abOankOAK0I9n71BlvfMrT95-sLqew"
+    }
+   }
+  ]
+ },
+ "did_key": "z6MkuPkug1PFjKeCZNaixa6VCPzTdmxbEj1QqbAoct3bneEb",
+ "payload_served": "{\"capabilities\":{\"extensions\":[],\"pushNotifications\":false,\"streaming\":false},\"defaultInputModes\":[\"text/plain\"],\"defaultOutputModes\":[\"text/plain\"],\"description\":\"An example agent that echoes messages.\",\"name\":\"Example Agent\",\"securitySchemes\":{\"bearer\":{\"httpAuthSecurityScheme\":{\"scheme\":\"Bearer\"}}},\"skills\":[{\"description\":\"Echoes the input.\",\"id\":\"echo\",\"name\":\"Echo\",\"tags\":[\"echo\"]}],\"supportedInterfaces\":[{\"protocolBinding\":\"JSONRPC\",\"protocolVersion\":\"1.0\",\"url\":\"https://example.com/a2a/v1\"}],\"version\":\"1.0.0\"}",
+ "payload_cleaned": "{\"capabilities\":{\"pushNotifications\":false,\"streaming\":false},\"defaultInputModes\":[\"text/plain\"],\"defaultOutputModes\":[\"text/plain\"],\"description\":\"An example agent that echoes messages.\",\"name\":\"Example Agent\",\"securitySchemes\":{\"bearer\":{\"httpAuthSecurityScheme\":{\"scheme\":\"Bearer\"}}},\"skills\":[{\"description\":\"Echoes the input.\",\"id\":\"echo\",\"name\":\"Echo\",\"tags\":[\"echo\"]}],\"supportedInterfaces\":[{\"protocolBinding\":\"JSONRPC\",\"protocolVersion\":\"1.0\",\"url\":\"https://example.com/a2a/v1\"}],\"version\":\"1.0.0\"}"
+}

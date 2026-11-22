@@ -1,0 +1,10 @@
+# The hearth: the running image (unpaid-warning rollout, 2026-11-20) plus handler_sha256 on the roster and the
+# agent catalogue at /agents/ (aicom main a0b44813a). Tag the running image first: BuildKit refuses FROM sha256:.
+# catalogbase-hestia-hearth:20261122 = sha256:49d5114aad9c284daf6d58abb2b2d58427cede6bd1ebe0e7f82c3ff83656edce
+FROM catalogbase-hestia-hearth:20261122
+COPY --chown=65532:65532 overlay/hestia/ /app/hestia/
+COPY --chown=65532:65532 overlay/docs/ /app/docs/
+COPY --chown=65532:65532 hestia-overlay.sha256 /app/hestia-overlay.sha256
+RUN cd /app && sha256sum -c --quiet hestia-overlay.sha256 \
+ && python -c "import hestia.app; from hestia.app_routes.discovery import CatalogueFiles; print('import ok')" \
+ && test -f /app/docs/agents/index.html && test -f /app/docs/agents/live.js && test -f /app/docs/landing/fonts/$(ls /app/docs/landing/fonts | head -1)

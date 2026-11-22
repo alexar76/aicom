@@ -18,15 +18,17 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import Request
+from fastapi import HTTPException, Request
 from fastapi.responses import JSONResponse
 
 from web.backend.middleware.api_version import canonical_api_path
-from web.backend.services.public_demo_guard import is_public_demo
+from web.backend.core.security import get_current_admin, security_scheme
+from web.backend.services.public_demo_guard import DEMO_ROUTING_OWNER_CLAIM, is_public_demo
 
 logger = logging.getLogger(__name__)
 
 _SAFE_METHODS = frozenset({"GET", "HEAD", "OPTIONS"})
+_ROUTING_RULES_PATH = "/api/admin/providers/routing-rules"
 
 #: What a guest may change on the shared demo (docs/security.md, "Public demo mode"):
 #: sign in and out, toggle the soft hold (the route itself refuses every other settings
@@ -68,10 +70,20 @@ def demo_refusal(method: str, path: str) -> str | None:
     return "changes to the shared factory are limited to the soft hold and product creation"
 
 
+async def _is_owner_routing_save(request: Request) -> bool:
+    if request.method != "PUT" or canonical_api_path(request.url.path).rstrip("/") != _ROUTING_RULES_PATH:
+        return False
+    try:
+        admin = await get_current_admin(request, await security_scheme(request))
+    except HTTPException:
+        return False
+    return admin.get(DEMO_ROUTING_OWNER_CLAIM) is True and admin.get("role") in {"admin", "super_admin"}
+
+
 async def public_demo_readonly_middleware(request: Request, call_next):
     if is_public_demo():
         reason = demo_refusal(request.method, request.url.path)
-        if reason:
+        if reason and not await _is_owner_routing_save(request):
             logger.warning("public demo refused %s %s", request.method, request.url.path)
             return JSONResponse(
                 status_code=403,

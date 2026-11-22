@@ -784,6 +784,283 @@ AGENTS: dict[str, dict[str, Any]] = {
             },
         },
     },
+    "registry-entry": {
+        "capability_id": "registry.entry.verify@v1",
+        "name": "MCP registry entry check: do its packages and its domain still name it",
+        "description": (
+            "Reads a server's entry from the official MCP registry and repeats, as things stand "
+            "now, the ownership checks the registry ran at publish time: npm package.json "
+            "mcpName, the PyPI and NuGet README's mcp-name token (the registry's own boundary "
+            "rule). For a domain namespace it looks for a well-formed MCPv1 key in DNS at the "
+            "domain or its parent (dns.google) and, when you give domain, at "
+            "/.well-known/mcp-registry-auth. Verdict verified, verified_partly or mismatch by the"
+            " registry's rules, with every check and what was not checked (OCI, Cargo, MCPB) and "
+            "why; warnings for what the registry does not check (deprecated, yanked, a package "
+            "repository under another GitHub owner). It does not say the code is safe or who "
+            "published a version."
+        ),
+        "price_per_call_usd": 0,
+        "note": "before you approve a registry server: do its packages and domain still name it",
+        "egress_hosts": ["registry.modelcontextprotocol.io", "registry.npmjs.org", "pypi.org",
+                         "api.nuget.org", "dns.google"],
+        "egress_input_fields": ["domain"],
+        "sandbox_only": True,
+        "probe": {"name": "io.github.alexar76/warden", "version": "0.35.0"},
+        "input_schema": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+                "name": {"type": "string",
+                         "description": "registry server name, e.g. io.github.owner/server"},
+                "version": {"type": "string", "default": "latest",
+                            "description": "a published version, or latest"},
+                "domain": {"type": "string",
+                           "description": "the namespace's domain, to also read its "
+                                          "/.well-known/mcp-registry-auth"},
+            },
+        },
+    },
+    "package-provenance": {
+        "capability_id": "package.provenance.verify@v1",
+        "name": "npm and PyPI provenance check: built where it says, logged on Sigstore",
+        "description": (
+            "Verifies the Sigstore attestations of an npm or PyPI release itself, from pinned "
+            "keys: the Fulcio certificate chain (code signing, valid when logged), the DSSE "
+            "signature over the in-toto statement, the statement's subject against the npm "
+            "tarball's sha512 or the PyPI file's sha256, the Rekor entry's signed timestamp, its "
+            "RFC 9162 inclusion proof under a checkpoint signed by Rekor, and that the logged "
+            "entry holds this signature and certificate. Returns where it was built (repository, "
+            "commit, ref, workflow, trigger, run URL) from the certificate, npm's registry "
+            "signatures and publish attestation, PyPI's trusted publisher against the "
+            "certificate, and your expected repository, workflow or ref. Verdict verified, "
+            "expectation_mismatch, no_provenance or invalid. Not checked: embedded SCTs, "
+            "revocation."
+        ),
+        "price_per_call_usd": 0,
+        "note": "was this release built from the repository it claims, and is it on Sigstore's log",
+        "egress_hosts": ["registry.npmjs.org", "pypi.org"],
+        "sandbox_only": True,
+        "probe": {"ecosystem": "npm", "package": "@modelcontextprotocol/sdk", "version": "1.32.2"},
+        "input_schema": {
+            "type": "object",
+            "required": ["ecosystem", "package"],
+            "properties": {
+                "ecosystem": {"enum": ["npm", "pypi"]},
+                "package": {"type": "string", "description": "e.g. @scope/name or a PyPI project"},
+                "version": {"type": "string", "description": "default: the latest"},
+                "file": {"type": "string", "description": "PyPI only: one file of the release"},
+                "repository": {"type": "string",
+                               "description": "expected source, e.g. github.com/owner/repo"},
+                "workflow": {"type": "string",
+                             "description": "expected workflow path or file name"},
+                "ref": {"type": "string", "description": "expected ref or tag"},
+            },
+        },
+    },
+    "agent-card": {
+        "capability_id": "agent.card.verify@v1",
+        "name": "A2A Agent Card check: well-formed, and do its JWS signatures verify",
+        "description": (
+            "Reads an A2A Agent Card (https://<domain>/.well-known/agent-card.json, the pre-1.0 "
+            "agent.json, any https URL, or the card itself) and checks it against the A2A 1.0 "
+            "specification: required fields, interfaces (https, known binding, preferred first, "
+            "on the card's host or not), skills and declared security. Then verifies each JWS "
+            "signature (RFC 7515, detached) over the card without signatures in RFC 8785 form: "
+            "header (alg allowed, kid, no crit), key by kid from the keys you give or the JWKS at"
+            " jku on the card's host (or a jwks URL you name), and ES256, ES384, EdDSA, RS256-512"
+            " or PS256-512. Signers prepare the card as served, with empty values removed "
+            "(a2a-python) or with defaults removed; the answer says which form the signature "
+            "covers. Verdict signed_verified, signature_failed, unsigned, malformed or not_found."
+        ),
+        "price_per_call_usd": 0,
+        "note": "before you call an A2A agent: is its card what its key holder signed",
+        "egress_input_fields": ["url", "jwks"],
+        "sandbox_only": True,
+        "probe": {"card": {"name": "Probe", "description": "A card with no signature.",
+                           "supportedInterfaces": [{"url": "https://example.com/a2a",
+                                                    "protocolBinding": "JSONRPC",
+                                                    "protocolVersion": "1.0"}],
+                           "version": "1.0.0", "capabilities": {},
+                           "defaultInputModes": ["text/plain"],
+                           "defaultOutputModes": ["text/plain"],
+                           "skills": [{"id": "p", "name": "P", "description": "Probe."}]}},
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "url": {"type": "string",
+                        "description": "a domain, or the card's https URL"},
+                "card": {"type": "object", "description": "or the card itself, checked offline"},
+                "keys": {"type": "object", "description": "a JWKS you trust: {keys: [JWK]}"},
+                "jwks": {"type": "string",
+                         "description": "a JWKS https URL to read when jku is on another host"},
+                "algorithms": {"type": "array", "items": {"type": "string"},
+                               "description": "accepted JWS algorithms (default: all asymmetric "
+                                              "ones listed)"},
+            },
+        },
+    },
+    "evm-signature": {
+        "capability_id": "evm.signature.verify@v1",
+        "name": "EVM signature check for keys and smart wallets (EIP-191/712, ERC-1271/6492)",
+        "description": (
+            "Did this address sign this? Give signer, signature and the message (EIP-191), the "
+            "typed data (EIP-712, any types) or the digest. A key's 65-byte or EIP-2098 signature"
+            " is recovered here with no network. A smart wallet's is asked of the chain in one "
+            "eth_call of the ERC-6492 universal validator (viem's bytecode), which calls the "
+            "wallet's isValidSignature (ERC-1271) and, for an ERC-6492 wrapped signature, first "
+            "runs its factory call so a wallet not deployed yet verifies too. Pinned to one block"
+            " on Base, Base Sepolia or Ethereum; returns valid, the method, the digest, the "
+            "EIP-712 domain separator and whether the signer had code (or an EIP-7702 delegate). "
+            "Changes no state."
+        ),
+        "price_per_call_usd": 0,
+        "note": "a smart-wallet signature an x402 seller or an agent can check before trusting it",
+        "egress_hosts": ["mainnet.base.org", "sepolia.base.org", "ethereum-rpc.publicnode.com"],
+        "sandbox_only": True,
+        "probe": {"signer": "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826",
+                  "hash": "0xbe609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2",
+                  "signature": "0x4355c47d63924e8a72e509b65029052eb6c299d53a04e167c5775fd466751c9d"
+                               "07299936d304c153f6443dfa05f40ff007d72911b6f72307f996231605b915621c"},
+        "input_schema": {
+            "type": "object",
+            "required": ["signer", "signature"],
+            "properties": {
+                "signer": {"type": "string", "description": "the address that should have signed"},
+                "signature": {"type": "string", "description": "hex"},
+                "message": {"type": "string",
+                            "description": "EIP-191 personal message: text, or 0x hex bytes"},
+                "typed_data": {"type": "object",
+                               "description": "EIP-712: types, primaryType, domain, message"},
+                "hash": {"type": "string", "description": "or the 32-byte digest"},
+                "network": {"enum": ["base", "base-sepolia", "ethereum"], "default": "base"},
+                "block": {"type": ["integer", "string"],
+                          "description": "block to check at (default: the latest)"},
+            },
+        },
+    },
+    "timestamp": {
+        "capability_id": "timestamp.verify@v1",
+        "name": "RFC 3161 timestamp check: these bytes existed at that time, by that TSA",
+        "description": (
+            "Verifies an RFC 3161 timestamp token or response, offline: the TSTInfo (policy, "
+            "imprint, serial, genTime, accuracy, nonce), the CMS signed attributes (content type,"
+            " message digest over the TSTInfo, signingCertificate or V2 naming the signer), the "
+            "TSA's RSA (PKCS #1 v1.5, PSS) or ECDSA (P-256, P-384) signature, the signer's "
+            "critical time-stamping key usage, and the chain to a trusted root valid at genTime. "
+            "Pinned roots: Sigstore's TSA, DigiCert Trusted Root G4 and FreeTSA, matched by "
+            "public key; add your own as SPKI SHA-256. Give the data, its base64 or its hash to "
+            "check the imprint. Verdict verified, verified_untrusted, imprint_mismatch or "
+            "invalid. Not checked: revocation, and whether the TSA's clock was right."
+        ),
+        "price_per_call_usd": 0,
+        "note": "proof that a document, log head or receipt existed by a given time",
+        "sandbox_only": True,
+        "probe": {"data": "hestia-agents timestamp.verify test vector 2026-11-21",
+                  "token": (
+                      "MIIE6zADAgEAMIIE4gYJKoZIhvcNAQcCoIIE0zCCBM8CAQMxDTALBglghkgBZQMEAgEwgcIGCyqGSIb3"
+                      "DQEJEAEEoIGyBIGvMIGsAgEBBgkrBgEEAYO/MAIwMTANBglghkgBZQMEAgEFAAQgEr+xJ+pVIstjk8iO"
+                      "urKr8CFDMrnay6H62yH0VuZXwD8CFEV+9Y5FJdFfvpkGiYb6MnWW/1W2GA8yMDI2MTEyMTIxMzMxNFow"
+                      "AwIBAQIJAOOplJQrJFgNoDKkMDAuMRUwEwYDVQQKEwxzaWdzdG9yZS5kZXYxFTATBgNVBAMTDHNpZ3N0"
+                      "b3JlLXRzYaCCAhQwggIQMIIBlqADAgECAhQ6E1QvDJBh7rzBQy/Lio6LKiOLDDAKBggqhkjOPQQDAzA5"
+                      "MRUwEwYDVQQKEwxzaWdzdG9yZS5kZXYxIDAeBgNVBAMTF3NpZ3N0b3JlLXRzYS1zZWxmc2lnbmVkMB4X"
+                      "DTI1MDQwODA2NTk0M1oXDTM1MDQwNjA2NTk0M1owLjEVMBMGA1UEChMMc2lnc3RvcmUuZGV2MRUwEwYD"
+                      "VQQDEwxzaWdzdG9yZS10c2EwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAATitrZnyEo2KDZP2QWMIBOgYbfS"
+                      "OTL5ZC/cHMv6Yq+HVIo1H9TC7Cx80KDiyvKhgB3wTqKyi9UDczhqg12b1AOLnRnydMTK+qB8M+1MjBci"
+                      "1+Jb8AV/VXu7CRuQCiPTHFyjajBoMA4GA1UdDwEB/wQEAwIHgDAdBgNVHQ4EFgQUif15Q4fP0GVGwwJG"
+                      "xyxzW3206wMwHwYDVR0jBBgwFoAUmOwB73+7Uf/UlR5vioiYUweJzr8wFgYDVR0lAQH/BAwwCgYIKwYB"
+                      "BQUHAwgwCgYIKoZIzj0EAwMDaAAwZQIwO2mxX/opo7SrIX9QyxfZpJRcpAV2gZOm1AZzR+2rVyy6Uc8Y"
+                      "bp2ybIw13ckH4bcRAjEA5qO8FyOkmYpvg2/7ZNqiPxRzn5vqKHoVcIIqtpKq6l7TvOqzAxxclN7VwTG8"
+                      "e++XMYIB3DCCAdgCAQEwUTA5MRUwEwYDVQQKEwxzaWdzdG9yZS5kZXYxIDAeBgNVBAMTF3NpZ3N0b3Jl"
+                      "LXRzYS1zZWxmc2lnbmVkAhQ6E1QvDJBh7rzBQy/Lio6LKiOLDDALBglghkgBZQMEAgGggfwwGgYJKoZI"
+                      "hvcNAQkDMQ0GCyqGSIb3DQEJEAEEMBwGCSqGSIb3DQEJBTEPFw0yNjExMjEyMTMzMTRaMC8GCSqGSIb3"
+                      "DQEJBDEiBCBSQoVlsnxB+arB/mFhOLNhtXUjDKOeuAyR2kpF/iMuQjCBjgYLKoZIhvcNAQkQAi8xfzB9"
+                      "MHsweQQghfknvAerYsrDtENWwQ78gbLGiD/aernm2HDZ0TrNBbcwVTA9pDswOTEVMBMGA1UEChMMc2ln"
+                      "c3RvcmUuZGV2MSAwHgYDVQQDExdzaWdzdG9yZS10c2Etc2VsZnNpZ25lZAIUOhNULwyQYe68wUMvy4qO"
+                      "iyojiwwwCgYIKoZIzj0EAwIEaDBmAjEArsBxddkfZy5ucqDtUHje5dlHOcCRrpgmBKZj/NOhd2/ux6DB"
+                      "C9HJ3wzpObZdw8ChAjEAr4/inHIIFhEHI2nwsUGnwDU5lfXxw884aGEsOSYZ+XxzyO6EwsLBr66fBXhI"
+                      "iN5L"
+)},
+        "input_schema": {
+            "type": "object",
+            "required": ["token"],
+            "properties": {
+                "token": {"type": "string",
+                          "description": "TimeStampResp or TimeStampToken, DER in base64"},
+                "data": {"type": "string", "description": "the text it should cover"},
+                "data_base64": {"type": "string", "description": "or the bytes, base64"},
+                "hash": {"type": "string", "description": "or their digest, hex"},
+                "trusted_spki": {"type": "array", "items": {"type": "string"},
+                                 "description": "extra trusted roots: SHA-256 of their "
+                                                "SubjectPublicKeyInfo"},
+            },
+        },
+    },
+    "site-policy": {
+        "capability_id": "site.agent_policy@v1",
+        "name": "What a site's robots.txt lets each AI agent do, and what it signals",
+        "description": (
+            "Reads https://<host>/robots.txt and applies RFC 9309 as HISTOR's crawler does: the "
+            "group naming each product token (else *), the longest matching rule with Allow "
+            "winning a tie, percent-encoding normalised, * and $; 4xx means everything allowed, "
+            "5xx or no answer everything disallowed, same-host redirects followed. Answers, for a"
+            " path and a list of agents (default: GPTBot, ChatGPT-User, OAI-SearchBot, ClaudeBot,"
+            " Claude-User, Google-Extended, PerplexityBot, CCBot, Bytespider, Applebot-Extended, "
+            "meta-externalagent, Amazonbot, histor and *), allowed or not, the deciding rule and "
+            "group, and the group's Content-Signal (search, ai-input, ai-train). Also the groups,"
+            " sitemaps and whether /llms.txt exists. A robots.txt is the site's request, not "
+            "access control."
+        ),
+        "price_per_call_usd": 0,
+        "note": "before an agent fetches a page: what did the site ask agents to do",
+        "egress_input_fields": ["url"],
+        "sandbox_only": True,
+        "probe": {"url": "modelmarket.dev", "agents": ["*", "GPTBot", "histor"]},
+        "input_schema": {
+            "type": "object",
+            "required": ["url"],
+            "properties": {
+                "url": {"type": "string", "description": "a domain or an https URL"},
+                "path": {"type": "string", "description": "the path to judge (default: the URL's)"},
+                "agents": {"type": "array", "items": {"type": "string"},
+                           "description": "product tokens, e.g. GPTBot, ClaudeBot, *"},
+            },
+        },
+    },
+    "x402-preflight": {
+        "capability_id": "x402.preflight@v1",
+        "name": "x402 preflight: should an agent pay this 402",
+        "description": (
+            "One unpaid request to a paid resource, then everything an agent should know before "
+            "it signs: the x402 offers (V1 body or V2 PAYMENT-REQUIRED header) with amount in "
+            "USD, network, asset, payTo, resource and timeout; for the first exact USDC offer on "
+            "Base or Base Sepolia, whether the asset is that chain's USDC and the EIP-712 domain "
+            "the token's own (else the signature fails), the amount within your max_usd, payTo "
+            "valid, the resource on the host called; payTo on chain (key, contract or EIP-7702 "
+            "delegate) and the USDC it received in the last 24 h, from how many payers; and "
+            "whether modelmarket.dev lists the seller as an observed x402 seller with its payTo "
+            "pinned. Verdict looks_payable, review_first, do_not_pay, no_payment_required or "
+            "not_x402. It pays and signs nothing."
+        ),
+        "price_per_call_usd": 0,
+        "note": "before an agent pays an x402 402: is it what it looks like",
+        "probe": {"url": "https://modelmarket.dev/llms.txt"},
+        "egress_hosts": ["base-rpc.publicnode.com", "base-sepolia-rpc.publicnode.com",
+                         "modelmarket.dev"],
+        "egress_input_fields": ["url"],
+        "sandbox_only": True,
+        "input_schema": {
+            "type": "object",
+            "required": ["url"],
+            "properties": {
+                "url": {"type": "string", "description": "the paid resource, https"},
+                "method": {"enum": ["GET", "POST", "HEAD"], "default": "GET"},
+                "body": {"description": "JSON body for POST, at most 8 KiB"},
+                "max_usd": {"type": ["string", "number"], "default": "1.00",
+                            "description": "the most the agent will pay for one call"},
+                "window_hours": {"type": "integer", "minimum": 1, "maximum": 24, "default": 24},
+            },
+        },
+    },
 }
 
 HANDLER_FILES = {"python": "handler.py", "javascript": "handler.js"}

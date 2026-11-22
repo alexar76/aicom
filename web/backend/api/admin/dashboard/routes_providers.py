@@ -551,6 +551,43 @@ async def create_provider(request: Request):
     return {"message": f"Provider '{name}' created", "name": name}
 
 
+@router.get("/providers/routing-rules")
+async def get_routing_rules():
+    """Get routing rules configuration."""
+    config = _load_providers_config()
+    return {"routing_rules": config.get("routing_rules", [])}
+
+
+# Register the literal PUT before the provider-name route so it matches first.
+@router.put("/providers/routing-rules")
+async def update_routing_rules(request: Request):
+    """Update all routing rules."""
+    body = await request.json()
+    config = _load_providers_config()
+
+    rules = body.get("routing_rules", [])
+    valid_task_types = [
+        "architecture_design", "code_generation", "pm_analysis",
+        "qa_testing", "security_scan", "devops_setup",
+        "marketing_copy", "sales_response", "evolution_analysis",
+        "market_research", "design_critic", "methodology_review",
+    ]
+    for rule in rules:
+        if rule.get("task_type") not in valid_task_types:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid task_type '{rule.get('task_type')}'. Must be one of: {valid_task_types}"
+            )
+        if "timeout_sec" in rule:
+            rule["timeout_sec"] = max(10, int(rule["timeout_sec"]))
+
+    config["routing_rules"] = rules
+    _save_providers_config(config)
+    await _reload_llm_router(request)
+
+    return {"message": "Routing rules updated", "routing_rules": rules}
+
+
 @router.put("/providers/{provider_name}")
 async def update_provider(provider_name: str, request: Request):
     """Update full provider configuration."""
@@ -672,42 +709,6 @@ async def toggle_provider(provider_name: str, request: Request):
         "message": f"Provider '{provider_name}' {'enabled' if enabled else 'disabled'}",
         "enabled": enabled,
     }
-
-
-@router.get("/providers/routing-rules")
-async def get_routing_rules():
-    """Get routing rules configuration."""
-    config = _load_providers_config()
-    return {"routing_rules": config.get("routing_rules", [])}
-
-
-@router.put("/providers/routing-rules")
-async def update_routing_rules(request: Request):
-    """Update all routing rules."""
-    body = await request.json()
-    config = _load_providers_config()
-    
-    rules = body.get("routing_rules", [])
-    # Validate rules
-    valid_task_types = [
-        "architecture_design", "code_generation", "pm_analysis",
-        "qa_testing", "security_scan", "devops_setup",
-        "marketing_copy", "sales_response", "evolution_analysis",
-    ]
-    for rule in rules:
-        if rule.get("task_type") not in valid_task_types:
-            raise HTTPException(
-                status_code=400,
-                detail=f"Invalid task_type '{rule.get('task_type')}'. Must be one of: {valid_task_types}"
-            )
-        if "timeout_sec" in rule:
-            rule["timeout_sec"] = max(10, int(rule["timeout_sec"]))
-    
-    config["routing_rules"] = rules
-    _save_providers_config(config)
-    await _reload_llm_router(request)
-    
-    return {"message": "Routing rules updated", "routing_rules": rules}
 
 
 class PutProviderLlmPricingBody(BaseModel):
