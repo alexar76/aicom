@@ -149,7 +149,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.weather.read@v1 | weather (天气) | om-wx-01, nws-01, cwop-01, metno-01 +267 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.air.read@v1 | air (空气质量) | om-aq-01, osm-01, sta-01, sc-01 +122 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.tide.read@v1 | tide (潮汐) | noaa-tide-01, uhslc-01, noaa-tide-sf, noaa-tide-honolulu +29 | 固定沿岸站含 GeoNet 相对当地压力传感器的水位和挪威 Kartverket 的 NN2000 水位 |
-| gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01, rte-grid-01 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
+| gaia.grid.read@v1 | grid (电网碳强度) | uk-grid-01, eia-01, rte-grid-01, dk-grid-dk1-01 +1 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.quake.read@v1 | quake (地震) | usgs-quake-01, geonet-01, emsc-01, ingv-01 +2 | 运营方锚定 device_id；仅在有 provenance source 时为 LIVE |
 | gaia.river.read@v1 | river (河流) | usgs-river-01, eccc-hydro-01, smhi-hydro-01, pegel-bonn-01 +170 | 固定河流测站含捷克 ČHMÚ 和斯洛文尼亚 ARSO 的同期初步水位和流量观测 |
 | gaia.marine.read@v1 | marine (海洋) | ndbc-01, om-marine-01, cdip-pointreyes-01, cdip-santamonica-01 +33 | 包括 FMI 波罗的海、爱尔兰 Marine Institute 和澳大利亚 AODN/IMOS 浮标的海浪实测 |
@@ -194,7 +194,7 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.radnet.read@v1 | radnet (EPA RadNet) | radnet-*（全部 140 个官方监测点） | 全部 140 个 EPA 官方监测点坐标；注明 EPA RadNet |
 | gaia.soil_moisture.read@v1 | soil (土壤湿度) | soil-* + 买方 lat/lon | 任意买方坐标；返回 CLMS 源/查询网格 |
 | gaia.solar.read@v1 | solar (太阳辐照度) | solar-* + 买方 lat/lon | 任意买方坐标；返回 NASA POWER 源坐标 |
-| gaia.snow.read@v1 | snow (积雪) | snow-* + CONUS 内买方 lat/lon；按 ID 选择 snotel-335、snotel-415 | 美国本土任意坐标的精确 SNODAS 网格，或按 device_id 选择 SNOTEL 固定站的成对实测雪深与雪水当量 |
+| gaia.snow.read@v1 | snow (积雪) | snow-* + CONUS 内买方 lat/lon；按 ID 选择 snotel-335、snotel-415 和 slf-snow-* | 美国本土任意坐标的精确 SNODAS 网格，或按 device_id 选择固定站：SNOTEL 成对雪深与雪水当量，或瑞士 SLF IMIS 实测雪深 |
 | gaia.land_temperature.read@v1 | land_temperature (地表温度) | lst-* + 买方 lat/lon | 任意买方坐标；返回 Sentinel-3 SLSTR 源网格 |
 | gaia.power.price.read@v1 | power_price (电价) | smard-price-de-lu, smard-price-at, smard-price-be, smard-price-no2 +11 | 按竞价区的日前批发电价（SMARD，CC BY 4.0；15 个区）；不是零售电价 |
 | gaia.imagery.read@v1 | imagery (卫星影像) | s2-l2a-01 + 买方 lat/lon（5 个示例点） | 任意陆地坐标；最新无云 Sentinel-2 L2A 影像的一个 10–20 米像元；指数须结合场景分类解读；含经修改的 Copernicus Sentinel 数据 |
@@ -207,6 +207,10 @@ GAIA（iot.modelmarket.dev）— 锚定 device_id，未注明时约 $0.002。
 | gaia.ocean.drifters.read@v1 | ocean_drifters (海洋漂流浮标) | aoml-drifters-01 | NOAA AOML OSMC 漂流浮标最近六小时的实测位置和海表温度 |
 | gaia.power.outages.read@v1 | power_outages (停电) | ukpn-live-faults-01 | 英国 UK Power Networks 当前停电事件，提供近似区域坐标、状态和预计恢复时间 |
 | gaia.bikeshare.read@v1 | bikeshare (共享单车) | toronto-bikeshare-01 | Bike Share Toronto GBFS 最近五分钟的车辆、空泊位和租还状态 |
+| gaia.fuel.price.read@v1 | fuel_price (燃油价格) | fr-fuel-paris, fr-fuel-lyon, fr-fuel-marseille, fr-fuel-toulouse +8 | 法国十二个城市中心 5 公里内加油站的柴油、E10 和 SP98 中位价与最低价，仅统计最近七天更新的价格 |
+| gaia.airport.status.read@v1 | airport_status (机场延误) | faa-status-atl, faa-status-aus, faa-status-bna, faa-status-bos +26 | 美国三十个主要机场当前生效的 FAA 地面停止与延误措施；全部为零表示没有措施；不是具体航班的延误 |
+| gaia.border.wait.read@v1 | border_wait (口岸等候) | cbp-wait-250401, cbp-wait-250601, cbp-wait-250302, cbp-wait-260401 +10 | 十四个美墨、美加陆路口岸入境美国的 CBP 估算等候时间和普通通道开放数；地图位置为近似值 |
+| gaia.avalanche.read@v1 | avalanche (雪崩危险) | varsom-3003, varsom-3010, varsom-3011, varsom-3014 +21 | 挪威 NVE Varsom 与瑞士 SLF 公报发布的 1 至 5 级区域雪崩危险等级；0 表示未发布评级；区域预报，不是坡面评估 |
 | gaia.ev.charging.read@v1 | ev_charging (电动车充电) | ndw-ev-charging-01 | NDW DOT-NL 充电接口可用数量与额定功率，支持区域查询及分页 |
 | gaia.fire.perimeters.read@v1 | wildfire_perimeters (野火边界) | bc-wildfire-01 | BC Wildfire 活跃火情与独立标注观测日期的官方边界 |
 | gaia.storm.reports.read@v1 | storm_reports (强风暴报告) | noaa-spc-storm-reports-01 | NOAA SPC 最近 24 小时的龙卷风、冰雹和强风初步报告 |
@@ -246,7 +250,7 @@ ATLAS 组合（atlas.modelmarket.dev）— 可计费的决策产物。
 | atlas.field.posterior@v1 | 0.08 | 当前 LIVE 快照的空间 GP 后验；是插值，不是预报 |
 | atlas.field.shape@v1 | 0.06 | LIVE in-situ 针脚的 H0 持续同调；不是 Betti-1；不是 AQI |
 
-地图图层 (66): ev_charging=电动车充电; wildfire_perimeters=野火边界; pollen=花粉实测; storm_reports=强风暴报告; volcanic_ash=火山灰; fire_hotspots=澳大利亚热异常点; power_outages=停电; bridge_clearance=桥下净空; ocean_drifters=海洋漂流浮标; bikeshare=共享单车; ocean_obs=海洋观测; smoke_forecast=烟霾预报; hf_absorption=高频无线电吸收; weather=天气; air=空气质量; tide=潮汐; river=河流; river_forecast=河流水位预报; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; groundwater=地下水; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast; road_events=道路通告; aviation_hazards=航空危险天气预报; power_price=电价; imagery=卫星影像; actuator=执行器
+地图图层 (70): fuel_price=燃油价格; airport_status=机场延误; border_wait=口岸等候; avalanche=雪崩危险; ev_charging=电动车充电; wildfire_perimeters=野火边界; pollen=花粉实测; storm_reports=强风暴报告; volcanic_ash=火山灰; fire_hotspots=澳大利亚热异常点; power_outages=停电; bridge_clearance=桥下净空; ocean_drifters=海洋漂流浮标; bikeshare=共享单车; ocean_obs=海洋观测; smoke_forecast=烟霾预报; hf_absorption=高频无线电吸收; weather=天气; air=空气质量; tide=潮汐; river=河流; river_forecast=河流水位预报; marine=海洋; ghg=温室气体; grid=电网碳强度; quake=地震; energy=能源; fire=野火; radiation=辐射; jamming=GNSS 干扰; gnss=GNSS 完整性; traffic=边缘交通; events=自然灾害; spacewx=空间天气; lightning=闪电; alerts=天气预警; argo=Argo 浮标; geomag=地磁; iot=边缘物联网; flood=洪水; effis=EFFIS 火情; volcano=火山; ais=公开 AIS; tsunami=海啸预警; cyclone=热带气旋; adsb=公开 ADS-B; smoke=烟雾; water_quality=水质; groundwater=地下水; dart=DART 浮标; precipitation=降水; radar=NEXRAD 状态; atmosphere=大气; radnet=EPA RadNet; soil=土壤湿度; solar=太阳辐照度; snow=积雪; sea_ice=海冰; land_temperature=地表温度; aviation=航空 METAR; road=道路气象; rail=铁路交通; drought=干旱; reservoir=Reservoirs; uv=UV forecast; road_events=道路通告; aviation_hazards=航空危险天气预报; power_price=电价; imagery=卫星影像; actuator=执行器
 
 <!-- END GENERATED physical-capabilities -->
 

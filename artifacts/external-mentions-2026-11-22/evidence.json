@@ -1,0 +1,126 @@
+{
+  "observed_date": "2026-11-22",
+  "date_basis": "Europe/Amsterdam",
+  "comparison": [
+    "artifacts/external-mentions-2026-11-21",
+    "../PromoMaterials/outreach/external-reuse-followup-2026-11-19.md"
+  ],
+  "new_signals": [
+    {
+      "project": "AIMarket Hub",
+      "kind": "independent live tool-inventory measurement",
+      "collector": "yunusarda-sudo/mcp-benchmark",
+      "captured_at_utc": "2026-11-22T12:49:37.224Z",
+      "version": "3.22.0",
+      "endpoint": "https://modelmarket.dev/mcp",
+      "tool_count": 13,
+      "score": 90,
+      "score_maximum": 100,
+      "sample_rank": 274,
+      "listed_sample_size": 854,
+      "estimated_tokens_per_tool": 238,
+      "token_method": "Estimate from serialized JSON length divided by four",
+      "sources": {
+        "introducing_commit": "https://github.com/yunusarda-sudo/mcp-benchmark/commit/fcad40547968f1d3acc04a05a1ca8ea2585247de",
+        "raw_inventory": "https://github.com/yunusarda-sudo/mcp-benchmark/blob/fcad40547968f1d3acc04a05a1ca8ea2585247de/registry/servers/io-github-alexar76-aimarket-hub.json",
+        "leaderboard": "https://github.com/yunusarda-sudo/mcp-benchmark/blob/a6187ac1f9d65a78a77c7d0bab59490947c8a636/README.md#L328"
+      },
+      "scope": "Live initialize and tools/list. Published inventory establishes an external technical observation. No evidence of tool invocation or production integration.",
+      "histor_cross_check": {
+        "url": "https://histor.modelmarket.dev/api/v1/servers/a9a47b63e52b8e27",
+        "at_utc": "2026-11-22T08:36:49Z",
+        "http_status": 200,
+        "tool_names_match": true,
+        "tools_compared": 13,
+        "field_mismatch_counts": {
+          "description": 0,
+          "inputSchema": 0,
+          "outputSchema": 0
+        },
+        "scope": "Public snapshots, different times. Compared each named tool on these three fields."
+      }
+    },
+    {
+      "project": "HISTOR",
+      "kind": "external syndication of first-party article",
+      "publisher": "AIWithGhost",
+      "published_at_utc": "2026-11-22T08:00:00Z",
+      "url": "https://aiwithghost.com/news/news-a-copy-of-the-mcp-registry-that-remembers-what-each-servers-toolslist-returned/",
+      "scope": "External links to original DEV article, HISTOR API and ModelMarket materials."
+    },
+    {
+      "project": "HISTOR",
+      "kind": "third-party product question on first-party DEV article",
+      "published_at_utc": "2026-11-22T08:30:59Z",
+      "url": "https://dev.to/lycore/comment/3m1hj",
+      "reply_url": "https://dev.to/alexar76/comment/3m20o",
+      "scope": "Lycore Development asked if HISTOR records schema and description changes. Existing reader, new question. No reuse asserted."
+    },
+    {
+      "project": "ModelMarket",
+      "kind": "known external catalog profile now publicly reachable",
+      "publisher": "API Evangelist / APIs.io",
+      "url": "https://apis.io/providers/modelmarket-dev/",
+      "http_status": 200,
+      "previous_check_2026_11_19": 404,
+      "rubric_version": "0.28.1",
+      "score_date": "2026-11-21",
+      "scope": "Same known catalog operator. Direct fetch now verifies provider page and its published Kin 25.9 and Agent Readiness 34.5 scores."
+    }
+  ],
+  "verified_metrics": {
+    "hugging_face_dataset": {
+      "source": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+      "counter_2026_11_22": 406,
+      "counter_2026_11_19": 368,
+      "scope": "Reported download counter, not unique users or independent reuse."
+    },
+    "hub_operator_outreach": {
+      "tracker": "../PromoMaterials/outreach/hub-operators-2026-10-27/tracker.json",
+      "emailed_contacts": 47,
+      "automatic_acknowledgements_logged": 4,
+      "confirmed_campaign_pilot_activations": 0,
+      "public_roster": "https://modelmarket.dev/ai-market/v2/federation/peers",
+      "public_roster_listed_peers": 22,
+      "public_roster_pending": 1
+    }
+  },
+  "growth_candidates": [
+    {
+      "target": "mcp-benchmark",
+      "proposal": "Compare benchmark inventories to dated HISTOR observations using the same canonicalization. Start with the exact AIMarket Hub record already captured."
+    },
+    {
+      "target": "MCPProxy and Microsoft APM",
+      "proposal": "Check a registry search in a local client, then see whether it exposes the HISTOR observed metadata. Test read-only discovery before any install or external release.",
+      "documentation": [
+        "https://docs.mcpproxy.app/registries/",
+        "https://microsoft.github.io/apm/consumer/install-mcp-servers/"
+      ],
+      "api_check": {
+        "histor": "https://histor.modelmarket.dev/v0.1/servers/io.github.alexar76%2Fwarden/versions/latest",
+        "official": "https://registry.modelcontextprotocol.io/v0.1/servers/io.github.alexar76%2Fwarden/versions/latest",
+        "both_http_status": 200,
+        "server_objects_equal": true,
+        "histor_additional_meta_key": "dev.modelmarket.histor/observed",
+        "performed_via": "direct HTTPS requests",
+        "client_test_completed": false
+      }
+    },
+    {
+      "target": "AIMarket Hub operator outreach",
+      "proposal": "Use a one-route read-only pilot with the next engaged operator. Measure first and repeat calls from an external hub and receipt verification."
+    }
+  ],
+  "limits": [
+    "Public web, GitHub and public discussion indexes. Bluesky native search returned 403 and Codeberg public search was blocked.",
+    "No new independently published research use of the HISTOR snapshot, import of our code in a downstream runtime, or pilot activation verified in checked sources.",
+    "Previous mentions or mirrors, crawler observations and automated mail receipt stamps were not counted as new adoption."
+  ],
+  "scholarly_checks": {
+    "openalex": "https://openalex.org/W7223029314",
+    "openalex_cited_by_count": 0,
+    "datacite_concept_doi": "https://api.datacite.org/dois/10.5281/zenodo.23512759",
+    "datacite_related_id_search": "Four first-party snapshot versions, no outside record matched in this query."
+  }
+}

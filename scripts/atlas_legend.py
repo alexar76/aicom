@@ -99,9 +99,9 @@ _LAYER_SAMPLE_PREFIXES: dict[str, tuple[str, ...]] = {
     "air": ("hk-aqhi-", "sg-psi-", "be-aq-", "aurn-", "openaq-", "om-aq-", "sc-", "osm-"),
     "marine": ("ie-buoy-", "au-wave-", "fmi-marine-", "cdip-", "ndbc-", "om-marine-"),
     "volcano": ("geonet-volcano-", "usgs-volcano-"),
-    "snow": ("snotel-", "snow-"),
+    "snow": ("slf-snow-", "snotel-", "snow-"),
     "flood": ("vic-", "gfm-flood-", "nws-flood-", "ea-flood-"),
-    "grid": ("rte-grid-", "uk-grid-"),
+    "grid": ("dk-grid-", "rte-grid-", "uk-grid-"),
     "quake": ("jma-quake-", "usgs-quake-", "emsc-"),
     "cyclone": ("jma-typhoon-", "nhc-cyclone-"),
 }

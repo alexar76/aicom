@@ -1,0 +1,77 @@
+listings 39988 30d calls 3317981
+unique payers per listing: {'100+': 67, '10-99': 609, '2-9': 9513, '1': 29724, '0': 75}
+hosts 3353 top10 share of calls 0.873
+
+TOP 30 HOSTS by 30d calls: host | calls | max unique payers on one listing | listings | est. USD (calls×listed price)
+console.ax1.vc | 1650277 | 4943 | 1 | 33006
+www.api-xpay.com | 529757 | 128 | 15 | 9595
+ax1-new.vercel.app | 184564 | 1125 | 1 | 3691
+agent.pocket.network | 123651 | 51 | 120 | 618
+x402.clashofcoins.com | 102695 | 744 | 2 | 2046
+blockrun.ai | 86814 | 319 | 168 | 447
+win.oneshotagent.com | 65290 | 71 | 67 | 320
+stableenrich.dev | 63911 | 124 | 14 | 940
+api.zerion.io | 57756 | 9 | 12 | 578
+x402.sniperx.fun | 32802 | 8 | 8 | 0
+api.agents-trust.com | 27328 | 55 | 1 | 273
+keyring-agent.blockchhub.link | 26476 | 5376 | 3 | 1324
+stormstation247.com | 24486 | 5 | 4 | 156
+ladyfortunalx402.vercel.app | 20879 | 4 | 1 | 209
+api.kadec0.xyz | 19049 | 16 | 50 | 421
+glim.sh | 16795 | 25 | 26 | 84
+api.onesource.io | 15254 | 683 | 70 | 125
+api.exa.ai | 13745 | 146 | 2 | 88
+agent402.tools | 12815 | 21 | 636 | 232
+api.strale.io | 9507 | 3 | 100 | 95
+x402.twit.sh | 8742 | 29 | 15 | 53
+x402.apidirect.io | 8165 | 9 | 142 | 57
+x402.orthogonal.com | 5842 | 11 | 309 | 197
+agent-data-tools.revmesh2074.workers.dev | 5416 | 108 | 779 | 48
+x402engine.app | 4920 | 27 | 21 | 93
+api.losbeto.xyz | 4025 | 17 | 109 | 213
+api.sitecheck-api.workers.dev | 3980 | 14 | 200 | 9
+x402.ottoai.services | 3912 | 35 | 70 | 18
+api.nansen.ai | 3855 | 58 | 39 | 95
+wafermap.xyz | 3673 | 13 | 40 | 12
+
+TOP 40 LISTINGS by unique payers:
+5376 payers | 13200 calls | $0.05 | https://keyring-agent.blockchhub.link/api/send-token | Pay the send-token execution fee (ERC-20 transfer)
+5252 payers | 13110 calls | $0.05 | https://keyring-agent.blockchhub.link/api/send-native | Pay the send-native execution fee (native coin transfer)
+4943 payers | 1650277 calls | $0.02 | https://console.ax1.vc/api/dashboard/q-verdict/resource | Any agent can buy a Token Verdict over x402: AI grade, roast and live onchain me
+1125 payers | 184564 calls | $0.02 | https://ax1-new.vercel.app/api/dashboard/q-verdict/resource | Any agent can buy a Token Verdict over x402: AI grade, roast and live onchain me
+744 payers | 102272 calls | $0.02 | https://x402.clashofcoins.com/shop/x402/buy | Agentic checkout for Clash of Coins
+683 payers | 698 calls | $0.003 | https://api.onesource.io/api/chain/erc20-balance | ERC20 token balance for any Ethereum wallet - USDC, USDT, DAI, or any token - vi
+610 payers | 701 calls | $0.001 | https://api.onesource.io/api/chain/block-number | Latest Ethereum block height - current chain tip via eth_blockNumber
+563 payers | 568 calls | $0.003 | https://api.onesource.io/api/chain/live-balance | Live wallet balance - native ETH plus up to 20 caller-supplied ERC20 tokens in o
+496 payers | 497 calls | $0.005 | https://api.onesource.io/api/chain/erc20-transfers | ERC20 Transfer logs via eth_getLogs - raw Transfer events for a token or wallet
+492 payers | 492 calls | $0.005 | https://api.onesource.io/api/chain/contract/:address | Best-effort contract introspection via batched RPC - bytecode presence, token me
+470 payers | 471 calls | $0.003 | https://api.onesource.io/api/chain/total-supply | Total supply of an ERC20 or ERC721 token contract via totalSupply (eth_call)
+458 payers | 459 calls | $0.005 | https://api.onesource.io/api/chain/ens/:input | ENS resolve - turn a .eth name into an address, or an address into its primary .
+445 payers | 445 calls | $0.003 | https://api.onesource.io/api/chain/nonce/:address | Next transaction nonce for any Ethereum wallet via eth_getTransactionCount - how
+420 payers | 420 calls | $0.003 | https://api.onesource.io/api/chain/block/:number | Fetch an Ethereum block header and transaction hashes by number, tag, or hex via
+387 payers | 659 calls | $0.005 | https://api.onesource.io/deepstate/v1/book/:book | Deepstate, the on-chain order-book exchange on Robinhood Chain. Order-book snaps
+379 payers | 379 calls | $0.008 | https://api.onesource.io/api/chain/tx/:hash | Full Ethereum transaction details by hash via eth_getTransactionByHash - from, t
+378 payers | 608 calls | $0.005 | https://api.onesource.io/deepstate/v1/candles/:book | Deepstate, the on-chain order-book exchange on Robinhood Chain. OHLCV candles fo
+378 payers | 400 calls | $0.001 | https://api.onesource.io/api/chain/network-info | EVM network info - chain ID, block height, gas price, chain head age, and chain 
+369 payers | 1188 calls | $0.002 | https://x402.tbs-digital.com/weather/current | Complete weather bundle in one call: current conditions (temperature, feels-like
+362 payers | 602 calls | $0.005 | https://api.onesource.io/deepstate/v1/stats/:book | Deepstate, the on-chain order-book exchange on Robinhood Chain. Rolling 24h / 7d
+350 payers | 350 calls | $0.005 | https://api.onesource.io/api/chain/events | Query Ethereum contract event logs via eth_getLogs - filter by contract, topic, 
+349 payers | 349 calls | $0.005 | https://api.onesource.io/deepstate/v1/trades/:book | Deepstate, the on-chain order-book exchange on Robinhood Chain. Trade tape for a
+349 payers | 349 calls | $0.005 | https://api.onesource.io/deepstate/v1/markets | Deepstate, the on-chain order-book exchange on Robinhood Chain. Lists the market
+319 payers | 75228 calls | $0.002 | https://blockrun.ai/api/v1/chat/completions | AI chat completions API - pay per request with USDC on Base
+291 payers | 292 calls | $0.005 | https://api.onesource.io/api/chain/receipt/:hash | Transaction receipt via eth_getTransactionReceipt - status, gas, and event logs 
+277 payers | 280 calls | $0.008 | https://api.onesource.io/api/chain/erc721-tokens | List every ERC721 NFT token_id a wallet owns in a collection via tokenOfOwnerByI
+276 payers | 276 calls | $0.003 | https://api.onesource.io/api/chain/code/:address | Check if an Ethereum address is a contract via eth_getCode - returns deployed by
+272 payers | 275 calls | $0.005 | https://api.onesource.io/api/chain/call | Simulate a read-only Ethereum contract call via eth_call - no transaction sent
+269 payers | 285 calls | $0.001 | https://api.onesource.io/api/chain/chain-id | Ethereum chain ID (EIP-155) via eth_chainId - confirm which chain a network is o
+269 payers | 269 calls | $0.008 | https://api.onesource.io/api/chain/nft-metadata | NFT metadata for ERC721 or ERC1155 tokens via eth_call, with IPFS, Arweave, data
+265 payers | 265 calls | $0.02 | https://api.onesource.io/deepstate/v1/analytics/makers | Deepstate, the on-chain order-book exchange on Robinhood Chain. Per-maker time-a
+263 payers | 266 calls | $0.003 | https://api.onesource.io/api/chain/allowance | ERC20 allowance via allowance (eth_call) - how much a spender is approved to mov
+257 payers | 257 calls | $0.004 | https://api.onesource.io/api/chain/estimate-gas | Estimate the gas a transaction will consume via eth_estimateGas before signing i
+245 payers | 245 calls | $0.02 | https://api.onesource.io/deepstate/v1/analytics/depth-history | Deepstate, the on-chain order-book exchange on Robinhood Chain. Depth heatmap - 
+239 payers | 239 calls | $0.02 | https://api.onesource.io/deepstate/v1/analytics/cost-to-quote | Deepstate, the on-chain order-book exchange on Robinhood Chain. Gas spent restin
+176 payers | 176 calls | $0.003 | https://api.onesource.io/api/chain/erc1155-balance | ERC1155 token balance via balanceOf (eth_call) - how many copies of a token_id a
+174 payers | 174 calls | $0.003 | https://api.onesource.io/api/chain/nft-owner | Look up the current owner of an ERC721 NFT by token_id via ownerOf (eth_call)
+163 payers | 163 calls | $0.005 | https://api.onesource.io/api/chain/storage | Read a raw storage slot from any Ethereum contract via eth_getStorageAt
+146 payers | 12358 calls | $0.007 | https://api.exa.ai/search | Exa /search endpoint
+141 payers | 141 calls | $0.02 | https://api.onesource.io/standard/v1/pool | The Standard Reserve (TSR), an on-chain reserve protocol on Robinhood Chain. Lat

@@ -1,0 +1,13 @@
+--- router.py.before	2026-11-22 07:01:28.991219288 -0500
++++ files/llm/router.py	2026-11-22 07:01:29.044219449 -0500
+@@ -101,9 +101,8 @@
+                 if pconf.get("enabled", False):
+                     api_key_val = pconf.get("api_key")
+                     has_env = pconf.get("api_key_env")
+-                    key_preview = f"{api_key_val[:8]}..." if api_key_val and len(api_key_val) > 8 else ("<SET>" if api_key_val else "<NOT SET>")
+                     logger.debug(
+-                        f"Provider '{name}': api_key={key_preview}, api_key_env={has_env!r}"
++                        f"Provider '{name}': api_key_configured={bool(api_key_val)}, api_key_env={has_env!r}"
+                     )
+ 
+             for name, pconf in providers_config.items():
