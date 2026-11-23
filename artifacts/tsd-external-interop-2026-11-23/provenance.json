@@ -1,0 +1,29 @@
+{
+  "vectors": {
+    "source": "mcp-tool-set-digest/vectors/vectors.json",
+    "git_commit": "55e2a5f17",
+    "sha256": "1b1e6706681755740faa85966ece46150ffc70ba452113dc9ae05eb2357d63eb"
+  },
+  "readers": [
+    {
+      "name": "crawlcheck-python",
+      "source": "https://pypi.org/project/crawlcheck/1.16.4/",
+      "wheel_sha256": "85ecfc50f6c5035c8c17db9fcda96ec6093fbcab8dec9fbc1aa178acc2527d68",
+      "runtime": "Python 3.9.6"
+    },
+    {
+      "name": "crawlcheck-javascript",
+      "source": "https://registry.npmjs.org/@crawlcheck/sdk/-/sdk-1.15.3.tgz",
+      "tgz_sha512": "03bc100c8eaa3631d4e729e39175e804c0e62769587e4247127ab544d73fb2845a63ff2dfb4b55f998d44cecf291fad366c213e8c4caf1d7ae217da9a33f35f9",
+      "runtime": "Node 22.22.1"
+    },
+    {
+      "name": "addon-declaration",
+      "source": "https://github.com/bcrypto0/addon-declaration/tree/8b665ffb376bfaf3f576925f4d2a610402cb88e4",
+      "codeload_tgz_sha256": "dfcbcec82b7b618945884c88a0872b755cce6237e83ca36d8288821635f4d5ea",
+      "runtime": "Node 22.22.1"
+    }
+  ],
+  "scope": "The maintainer-facing digest API of each pinned implementation ran locally. The 92 stored inputs are bare JSON arrays. CrawlCheck receives parsed arrays; addon-declaration receives the raw JSON in its tools/list page reader. Successful sides are matched on SRI, canonical bytes and SHA-256 hex. Error sides are matched on the spec error code.",
+  "finding": "The two CrawlCheck SDKs pass all 92 vectors and all 43 digest pairs. addon-declaration matches 89 vectors and 42 pairs. Its whole-page parser rejects the three remaining depth cases before producing a per-side result. One equivalence pair is unavailable for the same reason."
+}

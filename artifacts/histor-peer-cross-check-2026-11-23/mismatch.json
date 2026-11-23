@@ -1,0 +1,73 @@
+{
+  "result": {
+    "name": "io.github.pipeworx-io/fema-nfhl",
+    "endpoint": "https://gateway.pipeworx.io/fema-nfhl/mcp",
+    "digest": "sha256-bL3k5dhs64NkrFezWTHwmNozo1UrNzWard/KfIUk/K8=",
+    "read_at": "2026-11-23T03:13:59Z",
+    "id": "735f75a5dea3b04d",
+    "verdict": "disagree",
+    "histor_at_read": "sha256-h8fNgNUqo+5Rz4Ihtv36e+/MDNp0x8wlqC6kNPffNaY= or sha256-pb2C6c1klDBRys25bVq6xApIrjjHZfEgH3SC5jufmIY=",
+    "histor_seen": [
+      {
+        "digest": "sha256-GpzjATvLAMHeXBagBvkeLvyFg3SXszJWrJmBJByImX8=",
+        "from": "2026-11-22T01:04:20Z",
+        "until": "2026-11-22T20:37:33Z"
+      },
+      {
+        "digest": "sha256-h8fNgNUqo+5Rz4Ihtv36e+/MDNp0x8wlqC6kNPffNaY=",
+        "from": "2026-11-23T00:43:37Z",
+        "until": "2026-11-23T00:43:37Z"
+      },
+      {
+        "digest": "sha256-pb2C6c1klDBRys25bVq6xApIrjjHZfEgH3SC5jufmIY=",
+        "from": "2026-11-23T05:44:19Z",
+        "until": "2026-11-23T05:44:19Z"
+      },
+      {
+        "digest": "sha256-7JP/AfPavbNQvCC5QOWc9ii3pqMTLLFNnHsnaeAawYc=",
+        "from": "2026-11-23T10:17:18Z",
+        "until": "2026-11-23T14:11:09Z"
+      }
+    ],
+    "histor_digests_in_window": 4
+  },
+  "source": "https://histor.modelmarket.dev/api/v1/servers/735f75a5dea3b04d",
+  "second_observer_tool_count": 47,
+  "histor_nearby_observations": [
+    {
+      "from": "2026-11-22T01:04:20Z",
+      "until": "2026-11-22T20:37:33Z",
+      "toolCount": 47,
+      "toolSetDigest": "sha256-GpzjATvLAMHeXBagBvkeLvyFg3SXszJWrJmBJByImX8=",
+      "protocolVersion": "2026-07-28",
+      "serverVersion": "0.1.0"
+    },
+    {
+      "from": "2026-11-23T00:43:37Z",
+      "until": "2026-11-23T00:43:37Z",
+      "toolCount": 47,
+      "toolSetDigest": "sha256-h8fNgNUqo+5Rz4Ihtv36e+/MDNp0x8wlqC6kNPffNaY=",
+      "protocolVersion": "2026-07-28",
+      "serverVersion": "0.1.0"
+    },
+    {
+      "from": "2026-11-23T05:44:19Z",
+      "until": "2026-11-23T05:44:19Z",
+      "toolCount": 47,
+      "toolSetDigest": "sha256-pb2C6c1klDBRys25bVq6xApIrjjHZfEgH3SC5jufmIY=",
+      "protocolVersion": "2026-07-28",
+      "serverVersion": "0.1.0"
+    },
+    {
+      "from": "2026-11-23T10:17:18Z",
+      "until": "2026-11-23T14:11:09Z",
+      "toolCount": 47,
+      "toolSetDigest": "sha256-7JP/AfPavbNQvCC5QOWc9ii3pqMTLLFNnHsnaeAawYc=",
+      "protocolVersion": "2026-07-28",
+      "serverVersion": "0.1.0"
+    }
+  ],
+  "histor_public_timeline_entries": 62,
+  "peer_digest_in_histor_public_timeline": false,
+  "assessment": "The immediately preceding and following HISTOR records have different digests. The peer row has a tool count, digest and timestamp. Determining the source of the difference would require the original tools/list page set and read context."
+}

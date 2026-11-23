@@ -43,6 +43,8 @@ MTL_SUBJ_001 = "MTL-SUBJ-001"  # tool entry is not an object, or name missing/em
 MTL_SUBJ_002 = "MTL-SUBJ-002"
 MTL_SUBJ_003 = "MTL-SUBJ-003"
 MTL_NUM_001 = "MTL-NUM-001"    # a number with no IEEE 754 double (1e400): not digestible
+MTL_SUBJ_005 = "MTL-SUBJ-005"  # a contract entry nests deeper than level 512 (PROFILE.md 5.4)
+MAX_LEVEL = 512
 
 MAX_SAFE_INTEGER = 2 ** 53 - 1
 
@@ -178,13 +180,31 @@ def canonical_tool_set(tools: Sequence[Any]) -> List[Dict[str, Any]]:
     return entries
 
 
+def deeper_than(value: Any, level: int, limit: int = MAX_LEVEL) -> bool:
+    """Whether an array or object inside *value* (itself an array or object at *level*) sits deeper
+    than *limit*; only arrays and objects count, and the walk keeps its own stack (section 5.4)."""
+    stack = [(value, level)]
+    while stack:
+        item, at = stack.pop()
+        if at > limit:
+            return True
+        for child in (item.values() if isinstance(item, dict) else item):
+            if isinstance(child, (dict, list)):
+                stack.append((child, at + 1))
+    return False
+
+
 def tool_set_digest(tools: Sequence[Any]) -> Tuple[str, List[Dict[str, Any]]]:
     """``(sri, canonical_entries)`` for *tools*.
 
     Raises :class:`MtlError` with ``MTL-NUM-001`` only for a number that has no IEEE 754
-    double (``1e400``), which RFC 8785 cannot write either.
+    double (``1e400``), which RFC 8785 cannot write either, and with ``MTL-SUBJ-005`` for a
+    contract entry nested deeper than level 512 (section 5.4).
     """
     entries = canonical_tool_set(tools)
+    for entry in entries:
+        if deeper_than(entry, 2):              # a tool is level 2, its schemas level 3
+            raise MtlError(MTL_SUBJ_005, "a schema in tool %r nests deeper than level %d" % (entry["name"], MAX_LEVEL))
     try:
         canonical = canonical_tool_bytes(entries)
     except (ValueError, OverflowError) as exc:

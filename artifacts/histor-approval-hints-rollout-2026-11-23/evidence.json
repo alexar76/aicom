@@ -1,0 +1,110 @@
+{
+  "service": "HISTOR",
+  "releaseTag": "histor-histor:approval-hints-20261123-l57rfz-f2",
+  "previousImage": "sha256:d1bcacad96239aca1d48ee720e49f893459b1c7fb94e48f60ec4b6584f2b5075",
+  "rollbackKit": "/root/histor-approval-hints-20261123-l57rfz-f2",
+  "firstAttempt": {
+    "imageDigest": "sha256:616d571beb314007738c7fef2539477f6df7c04430e1611eb8500f037901163a",
+    "result": "Rolled back after all four translation modules returned HTTP 401.",
+    "cause": "Recursive Docker COPY --chmod=644 applied file permissions to the translation directory.",
+    "fix": "Copy each JavaScript file explicitly and verify HTTP 200 with JavaScript content type before acceptance."
+  },
+  "runtime": {
+    "imageDigest": "sha256:f7af2f501b8746d56ddfe35c1ae8a5444fe4d0ea53813ea2a93e5237fb69534e",
+    "state": "running",
+    "health": "healthy",
+    "restartCount": 0,
+    "startedUtc": "2026-11-23T18:47:19.731893994Z"
+  },
+  "postgresSchema": 26,
+  "verification": {
+    "loopback": {
+      "checkedUtc": "2026-11-23T18:47:42.250139+00:00",
+      "base": "http://127.0.0.1:9490",
+      "store": "postgresql",
+      "treeSize": 3412353,
+      "feature": {
+        "serverId": "5ac01754ec46fef1",
+        "eventId": 230516,
+        "observedAt": "2026-11-14T01:14:40Z",
+        "matchingEntries": 1,
+        "tool": "get_board",
+        "hints": {
+          "readOnlyHint": [
+            false,
+            true
+          ],
+          "destructiveHint": [
+            true,
+            false
+          ]
+        },
+        "eventUrl": "https://histor.modelmarket.dev/s/5ac01754ec46fef1?approval_relaxing=true#approval-change-230516"
+      },
+      "existingRoutes": "stats, subregistry, cosigned checkpoint"
+    },
+    "public": {
+      "checkedUtc": "2026-11-23T19:46:21.435257+00:00",
+      "base": "https://histor.modelmarket.dev",
+      "store": "postgresql",
+      "treeSize": 3412357,
+      "feature": {
+        "serverId": "5ac01754ec46fef1",
+        "eventId": 230516,
+        "observedAt": "2026-11-14T01:14:40Z",
+        "matchingEntries": 1,
+        "tool": "get_board",
+        "hints": {
+          "readOnlyHint": [
+            false,
+            true
+          ],
+          "destructiveHint": [
+            true,
+            false
+          ]
+        },
+        "eventUrl": "https://histor.modelmarket.dev/s/5ac01754ec46fef1?approval_relaxing=true#approval-change-230516"
+      },
+      "existingRoutes": "stats, subregistry, cosigned checkpoint"
+    },
+    "browser": {
+      "engine": "Chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "checks": [
+        "clicked Russian card filter",
+        "filtered JSON request returned HTTP 200",
+        "one interactive event with both annotation transitions",
+        "scoped Atom link",
+        "no horizontal overflow"
+      ],
+      "localesHttp200": [
+        "es",
+        "fr",
+        "ru",
+        "zh"
+      ]
+    },
+    "momus": {
+      "receipt": "20261123T162437",
+      "imageDigest": "sha256:f7af2f501b8746d56ddfe35c1ae8a5444fe4d0ea53813ea2a93e5237fb69534e",
+      "buildDigest": "cbb3a54fa345fca64aff9c2d54349c3fe9dee2b4e1b429fd6df161efd29c110b"
+    }
+  },
+  "overlaySha256": {
+    "histor/docs/landing/assets/desk.js": "f7b39a9f7f093b9b58837a8b035ddd8eff9e1e415ee88d7bd6345c662480f44c",
+    "histor/docs/landing/assets/histor.css": "e10f4e3e9ef3f920be4063797ba89ca62d899f995540740eed33561e10a17a49",
+    "histor/docs/landing/assets/i18n/es.js": "6478e7c334c6176f6a208fe2a97f5f75c852bb6b2b713476e8675ec80410fb78",
+    "histor/docs/landing/assets/i18n/fr.js": "d2372a4dce7732aa7aec236eadc25623d54d12192a02e928feb08f2445ab4227",
+    "histor/docs/landing/assets/i18n/ru.js": "80af38ecd1e434727b04c92995a22ec92137bee9196577bb3ed9a6c004d0f566",
+    "histor/docs/landing/assets/i18n/zh.js": "239395fe412a5b2584cdf86b3b1bbe8a12a53dacc225e1bd31f9f1f31e23d55b",
+    "histor/docs/landing/assets/i18n.js": "4d1e2583d2c9379b5f8a93edd972ac0796c161ceb300823ad83f476c7488d6d5",
+    "histor/histor/app.py": "8b929ef698791365d399d0771c0b5c11c123acc1383dafd183daf5feeb8bd5f8",
+    "histor/histor/extras.py": "279b33f86523564ec707e089558a995aed97ae4256297065a64e2ee2d90ac86a",
+    "histor/histor/server_page_text.py": "353f94b5674799795fe392bc445ca2cc94458e435b7a9dbf656164cf39e0b81c",
+    "histor/histor/store.py": "6f5ee43c55420a312fbfce46626ad990dc49ccd0c2db9cf02d4dd48cbd88fdfe"
+  }
+}

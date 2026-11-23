@@ -1,0 +1,167 @@
+{
+  "service": "HISTOR",
+  "releaseTag": "histor-histor:approval-global-20261123-38rw02gv",
+  "previousImage": "sha256:f7af2f501b8746d56ddfe35c1ae8a5444fe4d0ea53813ea2a93e5237fb69534e",
+  "rollbackKit": "/root/histor-approval-global-20261123-38rw02gv",
+  "postgresSchema": 26,
+  "index": {
+    "name": "extras_changes_approval_candidates",
+    "valid": true,
+    "size": "384 kB",
+    "sample": {
+      "candidateRows": 100,
+      "queryPlan": "backward partial index scan with target primary key lookup",
+      "executionMs": 216.207
+    }
+  },
+  "runtime": {
+    "imageDigest": "sha256:550a5f8c14d72fad7e26d2e923aa755f99b70727a2572fcb8f67901df346697b",
+    "state": "running",
+    "health": "healthy",
+    "restartCount": 0
+  },
+  "crawl": {
+    "previousRun": 447911,
+    "continuedAs": 447977,
+    "cycleStartedAt": "2026-11-23T18:47:46Z",
+    "observationsRetained": 0,
+    "finishedAt": null
+  },
+  "verification": {
+    "loopback": {
+      "checkedUtc": "2026-11-23T19:10:54.989017+00:00",
+      "base": "http://127.0.0.1:9490",
+      "store": "postgresql",
+      "feature": {
+        "entries": 50,
+        "distinctServers": 50,
+        "newest": {
+          "id": 296980,
+          "observedAt": "2026-11-23T15:17:15Z",
+          "fromExtrasDigest": "sha256-VkhsQdAdPVdl4Rp5FoZpB7ryqwzOQRcWgWnBgd/z7tU=",
+          "toExtrasDigest": "sha256-2rNmk09b8E9bckRNIpYyoMhDIjOvjvdRmlirgjfNd18=",
+          "summary": {
+            "tools": {
+              "get_order": {
+                "annotations": {
+                  "readOnlyHint": [
+                    false,
+                    true
+                  ]
+                }
+              }
+            },
+            "changedTools": 1,
+            "approvalRelaxing": [
+              "get_order"
+            ]
+          },
+          "targetId": "7cfe7f4e113a43b0",
+          "targetName": "io.github.stos-technologies/agentkoin",
+          "targetTitle": "AgentKoin"
+        },
+        "oldestEvent": 282104,
+        "pilotEvent": 230516
+      },
+      "timingsMs": {
+        "/changes?approval_relaxing=true&lang=ru": 3886,
+        "/feed.xml?approval_relaxing=true": 654
+      }
+    },
+    "public": {
+      "checkedUtc": "2026-11-23T20:09:55.226176+00:00",
+      "base": "https://histor.modelmarket.dev",
+      "store": "postgresql",
+      "feature": {
+        "entries": 50,
+        "distinctServers": 50,
+        "newest": {
+          "id": 296980,
+          "observedAt": "2026-11-23T15:17:15Z",
+          "fromExtrasDigest": "sha256-VkhsQdAdPVdl4Rp5FoZpB7ryqwzOQRcWgWnBgd/z7tU=",
+          "toExtrasDigest": "sha256-2rNmk09b8E9bckRNIpYyoMhDIjOvjvdRmlirgjfNd18=",
+          "summary": {
+            "tools": {
+              "get_order": {
+                "annotations": {
+                  "readOnlyHint": [
+                    false,
+                    true
+                  ]
+                }
+              }
+            },
+            "changedTools": 1,
+            "approvalRelaxing": [
+              "get_order"
+            ]
+          },
+          "targetId": "7cfe7f4e113a43b0",
+          "targetName": "io.github.stos-technologies/agentkoin",
+          "targetTitle": "AgentKoin"
+        },
+        "oldestEvent": 282104,
+        "pilotEvent": 230516
+      },
+      "timingsMs": {
+        "/changes?approval_relaxing=true&lang=ru": 4568,
+        "/feed.xml?approval_relaxing=true": 975
+      }
+    },
+    "browser": {
+      "checkedAt": "2026-11-23T20:10:48.797Z",
+      "browser": "Chromium",
+      "viewport": [
+        390,
+        844
+      ],
+      "firstPage": 60,
+      "serversOnFirstPage": 60,
+      "olderPage": 60,
+      "feedEntries": 50,
+      "event": 267590,
+      "target": "766caa6c861e1c20",
+      "verifiedGlobalLink": "https://histor.modelmarket.dev/changes?approval_relaxing=true&lang=ru",
+      "verifiedAtomLink": "https://histor.modelmarket.dev/feed.xml?approval_relaxing=true"
+    },
+    "historicalEasyGerber": {
+      "eventId": 230516,
+      "server": "EasyGerber: AI PCB design, layout, and routing",
+      "annotations": {
+        "readOnlyHint": [
+          false,
+          true
+        ],
+        "destructiveHint": [
+          true,
+          false
+        ]
+      }
+    },
+    "momus": {
+      "receipt": "20261123T162437",
+      "imageDigest": "sha256:550a5f8c14d72fad7e26d2e923aa755f99b70727a2572fcb8f67901df346697b",
+      "buildDigest": "cbb3a54fa345fca64aff9c2d54349c3fe9dee2b4e1b429fd6df161efd29c110b"
+    },
+    "tests": {
+      "engines": [
+        "SQLite",
+        "PostgreSQL 18"
+      ],
+      "appAndExtrasPassed": 147,
+      "finalizedApprovalRegressionsPassed": 6
+    }
+  },
+  "overlaySha256": {
+    "histor/docs/landing/assets/desk.js": "af521f978b34d4bba748d06e1c1ad48d2cb8b0280d2bf4ab819fe9f6871f0330",
+    "histor/docs/landing/assets/i18n/es.js": "9413d7aa6e2efeab141c2be72ad16164603b681886546e5c730b8b0e7740480b",
+    "histor/docs/landing/assets/i18n/fr.js": "8c7164439d6a2e5cffcdce0a8c89413c8c379beaf436e1ece377b35cd6b72ff1",
+    "histor/docs/landing/assets/i18n/ru.js": "a76dc33cc48f57cfb06754b7ff91b83c3ac9b3dff173abc203136b88bb9b0969",
+    "histor/docs/landing/assets/i18n/zh.js": "bd07b9ddb6796b8b337859b92f0366638198740563438423292a83eea3bdc0ba",
+    "histor/docs/landing/assets/i18n.js": "b8eb4644c7c998e0fd68e1e9513a10971ee8ab97fc2bc161fe93433a6c4442e3",
+    "histor/docs/landing/index.html": "e53ab343e605e838193eceec01c7014064b04089785c704302d002559383e611",
+    "histor/histor/app.py": "95451d6506f534bcec98ca0337f900eab43a8e2616e7736ae9d68f5b922062cd",
+    "histor/histor/server_page_text.py": "cb77df5068e3c2d0bc16885a7420836b8e5c81c5d8a824de4adfdd177f264ba7",
+    "histor/histor/store.py": "e66b4403c1af8b08ba34b51d535d1064b0adb1d5534dcc6bbce193bc52cf8f28"
+  }
+}

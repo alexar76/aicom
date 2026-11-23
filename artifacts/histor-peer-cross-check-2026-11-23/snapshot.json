@@ -1,0 +1,26 @@
+{
+  "url": "https://yassinht.github.io/mcp-transparency-log/data/peers/tool-digests-latest.jsonl",
+  "run_utc": "2026-11-23T030315Z",
+  "sha256": "387bf1672058a6b1239aab2983e3e6a1ce8a7d300dd8f9acfd94adca79672cc2",
+  "rows": 48961,
+  "with_digest": 29011,
+  "index_with_digest": 28701,
+  "outcomes": {
+    "digest": 29011,
+    "protocol_error": 2587,
+    "auth_required": 15552,
+    "timeout": 233,
+    "rpc_error": 195,
+    "unreachable": 1367,
+    "undigestible": 16
+  },
+  "matched_control_urls": [
+    "https://docs.mcp.cloudflare.com/mcp",
+    "https://mcp.context7.com/mcp",
+    "https://mcp.exa.ai/mcp",
+    "https://tandem.ac/mcp"
+  ],
+  "sample_rows": 48,
+  "sample_digest_rows": 36,
+  "selection": "All exact control URLs, up to two rows per no-digest outcome, then lowest SHA-256 of name, endpoint and read_at in each of four read-time quartiles of digest-bearing rows."
+}

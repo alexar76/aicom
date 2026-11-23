@@ -1,0 +1,108 @@
+{
+ "window": {
+  "days": 1,
+  "from_block": 60489171,
+  "to_block": 60921170,
+  "from_time": 1795288209,
+  "to_time": 1795374609,
+  "chain": "eip155:8453",
+  "token": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913"
+ },
+ "catalog_listings": 40100,
+ "payees": 2137,
+ "payees_with_any_transfer": 671,
+ "transfers_up_to_100usd": 315988,
+ "usd_up_to_100usd": 10873.13,
+ "transfers_over_100usd": 52,
+ "usd_over_100usd": 35916.84,
+ "payers": 2662,
+ "payer_reach_histogram": {
+  "2-4": 490,
+  "1": 2133,
+  "5-9": 19,
+  "20-49": 6,
+  "10-19": 8,
+  "50+": 6
+ },
+ "payer_reach_top": [
+  224,
+  108,
+  66,
+  65,
+  58,
+  50,
+  44,
+  34,
+  34,
+  31
+ ],
+ "transfer_usd_median": 0.02,
+ "transfer_usd_quartiles": [
+  0.005,
+  0.02,
+  0.02
+ ],
+ "views": [
+  {
+   "cutoff_payees_reached": 5,
+   "wide_payers": 39,
+   "wide_payers_share_of_usd_pct": 1.0,
+   "payee_buckets": {
+    "1 other payer": 197,
+    "2-4 other payers": 60,
+    "20+ other payers": 8,
+    "5-19 other payers": 26,
+    "no transfer": 1466,
+    "only wide payers": 380
+   },
+   "usd_from_other_payers": 10767.3,
+   "top10_payees_share_of_that_usd_pct": 94.8
+  },
+  {
+   "cutoff_payees_reached": 10,
+   "wide_payers": 20,
+   "wide_payers_share_of_usd_pct": 0.2,
+   "payee_buckets": {
+    "1 other payer": 206,
+    "2-4 other payers": 83,
+    "20+ other payers": 10,
+    "5-19 other payers": 28,
+    "no transfer": 1466,
+    "only wide payers": 344
+   },
+   "usd_from_other_payers": 10855.57,
+   "top10_payees_share_of_that_usd_pct": 94.2
+  },
+  {
+   "cutoff_payees_reached": 20,
+   "wide_payers": 12,
+   "wide_payers_share_of_usd_pct": 0.1,
+   "payee_buckets": {
+    "1 other payer": 222,
+    "2-4 other payers": 98,
+    "20+ other payers": 10,
+    "5-19 other payers": 32,
+    "no transfer": 1466,
+    "only wide payers": 309
+   },
+   "usd_from_other_payers": 10857.52,
+   "top10_payees_share_of_that_usd_pct": 94.2
+  },
+  {
+   "cutoff_payees_reached": 50,
+   "wide_payers": 6,
+   "wide_payers_share_of_usd_pct": 0.1,
+   "payee_buckets": {
+    "1 other payer": 265,
+    "2-4 other payers": 142,
+    "20+ other payers": 11,
+    "5-19 other payers": 35,
+    "no transfer": 1466,
+    "only wide payers": 218
+   },
+   "usd_from_other_payers": 10862.57,
+   "top10_payees_share_of_that_usd_pct": 94.1
+  }
+ ],
+ "bazaar_says_payers_but_chain_shows_none": 1466
+}

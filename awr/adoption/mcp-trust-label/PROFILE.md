@@ -482,6 +482,15 @@ permits and RFC 8785 cannot write — makes the set not digestible. When one is 
 The subject remains well-formed and identifies the server and its tool *names*. What is
 withheld is the strong claim, not the label.
 
+**Depth.** Count arrays and objects in levels: the tool array is level 1, a tool level 2, an array or
+object a contract entry member holds level 3, and each array or object inside it one more
+(`mcp-tool-set-digest/1` section 12). An issuer **MUST** digest every set whose contract entries
+stay within level 512. A contract entry with an array or object at level 513 or deeper makes the set
+not digestible exactly as above, with `MTL-SUBJ-005` instead of `MTL-NUM-001`. A member the entry
+does not carry (a `description` that is not a string, `_meta`) does not count. An issuer **MUST
+NOT** crash or abandon the observation on deeper input: reading an array or object past level 512
+of the tool array as an empty one of the same kind changes no answer.
+
 An issuer therefore needs one piece of number-serialization code beyond SPEC §4: ECMAScript's
 number-to-string, which JavaScript has built in and which the reference tool
 (`tools/mtl_subject.py`) writes from Python's shortest round-trip `repr`, checked against
@@ -1108,6 +1117,7 @@ be parsed (SPEC §11.1).
 | `MTL-SUBJ-002` | error | MTL/1.0 only: tool set is empty. 1.1 digests the empty set (§5.3) |
 | `MTL-SUBJ-003` | error | MTL/1.0 only: duplicate tool name. 1.1 orders duplicates by canonical bytes (§5.3) |
 | `MTL-SUBJ-004` | error | Registry-recomputed subject digest ≠ `verifiedWork.digestSRI` (§4.6) |
+| `MTL-SUBJ-005` | error | A contract entry nests an array or object deeper than level 512, counting the tool array as 1 (§5.4) |
 | `MTL-NUM-001` | error | A number in a tool schema with no IEEE 754 double (§5.4). Under 1.0: any non-integer number or an integer beyond ±(2^53−1) |
 | `MTL-DOC-001` | error | `type` lacks `MCPTrustLabel`/`MCPTrustOpinion`, or `@context` lacks the MTL namespace |
 | `MTL-DOC-002` | error | `mcpTrustLabel` missing, not an object, or missing a required member |

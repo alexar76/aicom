@@ -1,0 +1,313 @@
+{
+  "captured_at_utc": "2026-11-23T18:26:18+00:00",
+  "source": "https://registry.modelcontextprotocol.io/v0.1/servers/io.github.alexar76%2Fhistor/versions/latest",
+  "before": {
+    "server": {
+      "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+      "name": "io.github.alexar76/histor",
+      "description": "Check, diff and history of MCP tool definitions, from a public signed log of 88k+ servers.",
+      "title": "HISTOR — MCP tool-definition transparency log",
+      "repository": {
+        "url": "https://github.com/alexar76/histor",
+        "source": "github"
+      },
+      "version": "0.10.0",
+      "packages": [
+        {
+          "registryType": "pypi",
+          "registryBaseUrl": "https://pypi.org",
+          "identifier": "aimarket-histor",
+          "version": "0.10.0",
+          "transport": {
+            "type": "stdio"
+          },
+          "environmentVariables": [
+            {
+              "description": "Public HISTOR instance to query (default https://histor.modelmarket.dev). Pass --local to serve your own log from HISTOR_DATA_DIR instead.",
+              "name": "HISTOR_MCP_REMOTE"
+            }
+          ]
+        }
+      ]
+    },
+    "_meta": {
+      "io.modelcontextprotocol.registry/official": {
+        "status": "active",
+        "statusChangedAt": "2026-11-17T16:25:48.276674Z",
+        "publishedAt": "2026-11-17T16:25:48.276674Z",
+        "updatedAt": "2026-11-17T16:25:48.276674Z",
+        "isLatest": true
+      }
+    }
+  },
+  "registry_publish_response": {
+    "server": {
+      "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+      "name": "io.github.alexar76/histor",
+      "description": "Check, diff and history of MCP tool definitions, from a public signed log of 88k+ servers.",
+      "title": "HISTOR — MCP tool-definition transparency log",
+      "repository": {
+        "url": "https://github.com/alexar76/histor",
+        "source": "github"
+      },
+      "version": "0.11.0",
+      "packages": [
+        {
+          "registryType": "pypi",
+          "registryBaseUrl": "https://pypi.org",
+          "identifier": "aimarket-histor",
+          "version": "0.11.0",
+          "transport": {
+            "type": "stdio"
+          },
+          "environmentVariables": [
+            {
+              "description": "Public HISTOR instance to query. Pass --local to serve your own log from HISTOR_DATA_DIR instead.",
+              "default": "https://histor.modelmarket.dev",
+              "name": "HISTOR_MCP_REMOTE"
+            }
+          ]
+        }
+      ]
+    },
+    "_meta": {
+      "io.modelcontextprotocol.registry/official": {
+        "status": "active",
+        "statusChangedAt": "2026-11-23T17:24:36.194238617Z",
+        "publishedAt": "2026-11-23T17:24:36.194238617Z",
+        "updatedAt": "2026-11-23T17:24:36.194238617Z",
+        "isLatest": true
+      }
+    }
+  },
+  "after": {
+    "server": {
+      "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+      "name": "io.github.alexar76/histor",
+      "description": "Check, diff and history of MCP tool definitions, from a public signed log of 88k+ servers.",
+      "title": "HISTOR — MCP tool-definition transparency log",
+      "repository": {
+        "url": "https://github.com/alexar76/histor",
+        "source": "github"
+      },
+      "version": "0.11.0",
+      "packages": [
+        {
+          "registryType": "pypi",
+          "registryBaseUrl": "https://pypi.org",
+          "identifier": "aimarket-histor",
+          "version": "0.11.0",
+          "transport": {
+            "type": "stdio"
+          },
+          "environmentVariables": [
+            {
+              "description": "Public HISTOR instance to query. Pass --local to serve your own log from HISTOR_DATA_DIR instead.",
+              "default": "https://histor.modelmarket.dev",
+              "name": "HISTOR_MCP_REMOTE"
+            }
+          ]
+        }
+      ]
+    },
+    "_meta": {
+      "io.modelcontextprotocol.registry/official": {
+        "status": "active",
+        "statusChangedAt": "2026-11-23T17:24:36.194238Z",
+        "publishedAt": "2026-11-23T17:24:36.194238Z",
+        "updatedAt": "2026-11-23T17:24:36.194238Z",
+        "isLatest": true
+      }
+    }
+  },
+  "exact_version": {
+    "server": {
+      "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+      "name": "io.github.alexar76/histor",
+      "description": "Check, diff and history of MCP tool definitions, from a public signed log of 88k+ servers.",
+      "title": "HISTOR — MCP tool-definition transparency log",
+      "repository": {
+        "url": "https://github.com/alexar76/histor",
+        "source": "github"
+      },
+      "version": "0.11.0",
+      "packages": [
+        {
+          "registryType": "pypi",
+          "registryBaseUrl": "https://pypi.org",
+          "identifier": "aimarket-histor",
+          "version": "0.11.0",
+          "transport": {
+            "type": "stdio"
+          },
+          "environmentVariables": [
+            {
+              "description": "Public HISTOR instance to query. Pass --local to serve your own log from HISTOR_DATA_DIR instead.",
+              "default": "https://histor.modelmarket.dev",
+              "name": "HISTOR_MCP_REMOTE"
+            }
+          ]
+        }
+      ]
+    },
+    "_meta": {
+      "io.modelcontextprotocol.registry/official": {
+        "status": "active",
+        "statusChangedAt": "2026-11-23T17:24:36.194238Z",
+        "publishedAt": "2026-11-23T17:24:36.194238Z",
+        "updatedAt": "2026-11-23T17:24:36.194238Z",
+        "isLatest": true
+      }
+    }
+  },
+  "published_wheel": {
+    "name": "aimarket_histor-0.11.0-py3-none-any.whl",
+    "sha256": "5aa91478795e9df3c8d6d39eb230331b08852f8f4b373a6abd4a3bc00ff3f5c5"
+  },
+  "local_stdio_probe": [
+    {
+      "case": "old registry environment with current wheel",
+      "exit_code": 2,
+      "environment": "mcpcost-placeholder",
+      "usage": true,
+      "serverInfo": null,
+      "tools": []
+    },
+    {
+      "case": "corrected registry environment with current wheel",
+      "exit_code": 0,
+      "environment": "https://histor.modelmarket.dev",
+      "usage": false,
+      "serverInfo": {
+        "name": "histor",
+        "version": "0.11.0"
+      },
+      "tools": [
+        "histor_changes",
+        "histor_check",
+        "histor_server"
+      ]
+    }
+  ],
+  "mcpcost": {
+    "source": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+    "before": {
+      "name": "io.github.alexar76/histor",
+      "title": "HISTOR — MCP tool-definition transparency log",
+      "description": "Check, diff and history of MCP tool definitions, from a public signed log of 88k+ servers.",
+      "url": "pypi:aimarket-histor==0.10.0",
+      "transport": "stdio",
+      "host": "pypi.org",
+      "page": "https://mcpcost.ulehla.dev/s/io.github.alexar76/histor",
+      "status": "needs_args",
+      "statusLabel": "needs args",
+      "failingSince": null,
+      "down": false,
+      "httpStatus": null,
+      "authScheme": null,
+      "authDocumentation": null,
+      "authKind": null,
+      "authMetadata": null,
+      "protocolVersion": null,
+      "serverInfo": null,
+      "capabilities": null,
+      "latencyMs": {
+        "initialize": null,
+        "toolsList": null
+      },
+      "toolCount": null,
+      "claudeTokens": null,
+      "claudeTokensClaudeCode": null,
+      "claudeModel": null,
+      "claudeMeasuredAt": null,
+      "claudeError": null,
+      "toolsTokens": null,
+      "shareOf200k": null,
+      "fields": {
+        "claudeTokens": "exact, Anthropic count_tokens, names as published",
+        "claudeTokensClaudeCode": "exact, with the mcp__<server>__ prefix",
+        "toolsTokens": "estimate, o200k_base over compact JSON"
+      },
+      "instructionsChars": null,
+      "topTools": null,
+      "toolsetSiblings": null,
+      "registry": {
+        "status": "active",
+        "version": "0.10.0",
+        "updatedAt": "2026-11-17T16:25:48.276674Z",
+        "repo": "https://github.com/alexar76/histor",
+        "website": null
+      },
+      "probedAt": "2026-11-18T09:09:11.747Z",
+      "history": [
+        {
+          "probedAt": "2026-11-01T08:10:52.837Z",
+          "status": "needs_args",
+          "initMs": null,
+          "toolCount": null,
+          "toolsTokens": null,
+          "claudeTokens": null
+        }
+      ]
+    },
+    "after": {
+      "name": "io.github.alexar76/histor",
+      "title": "HISTOR — MCP tool-definition transparency log",
+      "description": "Check, diff and history of MCP tool definitions, from a public signed log of 88k+ servers.",
+      "url": "pypi:aimarket-histor==0.10.0",
+      "transport": "stdio",
+      "host": "pypi.org",
+      "page": "https://mcpcost.ulehla.dev/s/io.github.alexar76/histor",
+      "status": "needs_args",
+      "statusLabel": "needs args",
+      "failingSince": null,
+      "down": false,
+      "httpStatus": null,
+      "authScheme": null,
+      "authDocumentation": null,
+      "authKind": null,
+      "authMetadata": null,
+      "protocolVersion": null,
+      "serverInfo": null,
+      "capabilities": null,
+      "latencyMs": {
+        "initialize": null,
+        "toolsList": null
+      },
+      "toolCount": null,
+      "claudeTokens": null,
+      "claudeTokensClaudeCode": null,
+      "claudeModel": null,
+      "claudeMeasuredAt": null,
+      "claudeError": null,
+      "toolsTokens": null,
+      "shareOf200k": null,
+      "fields": {
+        "claudeTokens": "exact, Anthropic count_tokens, names as published",
+        "claudeTokensClaudeCode": "exact, with the mcp__<server>__ prefix",
+        "toolsTokens": "estimate, o200k_base over compact JSON"
+      },
+      "instructionsChars": null,
+      "topTools": null,
+      "toolsetSiblings": null,
+      "registry": {
+        "status": "active",
+        "version": "0.10.0",
+        "updatedAt": "2026-11-17T16:25:48.276674Z",
+        "repo": "https://github.com/alexar76/histor",
+        "website": null
+      },
+      "probedAt": "2026-11-18T09:09:11.747Z",
+      "history": [
+        {
+          "probedAt": "2026-11-01T08:10:52.837Z",
+          "status": "needs_args",
+          "initMs": null,
+          "toolCount": null,
+          "toolsTokens": null,
+          "claudeTokens": null
+        }
+      ]
+    }
+  }
+}

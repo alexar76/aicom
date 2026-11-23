@@ -1,0 +1,69 @@
+{
+  "vectors_sha256": "1b1e6706681755740faa85966ece46150ffc70ba452113dc9ae05eb2357d63eb",
+  "vectors": 92,
+  "equal_pairs": 31,
+  "differ_pairs": 12,
+  "readers": {
+    "crawlcheck-javascript": {
+      "passed": 92,
+      "failed": [],
+      "pairs": {
+        "pass": 43,
+        "fail": [],
+        "unavailable": []
+      }
+    },
+    "addon-declaration": {
+      "passed": 89,
+      "failed": [
+        {
+          "id": "depth-contract-510",
+          "parser_error": "InputError",
+          "expected_errors": {
+            "contract": "TSD-DEPTH",
+            "extras": null
+          }
+        },
+        {
+          "id": "depth-extras-511",
+          "parser_error": "InputError",
+          "expected_errors": {
+            "contract": null,
+            "extras": "TSD-DEPTH"
+          }
+        },
+        {
+          "id": "depth-description-600",
+          "parser_error": "InputError",
+          "expected_errors": {
+            "contract": null,
+            "extras": null
+          }
+        }
+      ],
+      "pairs": {
+        "pass": 42,
+        "fail": [],
+        "unavailable": [
+          {
+            "group": "equal",
+            "ids": [
+              "description-absent",
+              "depth-description-600"
+            ],
+            "digest": "contract"
+          }
+        ]
+      }
+    },
+    "crawlcheck-python": {
+      "passed": 92,
+      "failed": [],
+      "pairs": {
+        "pass": 43,
+        "fail": [],
+        "unavailable": []
+      }
+    }
+  }
+}

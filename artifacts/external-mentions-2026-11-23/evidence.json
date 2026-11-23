@@ -1,0 +1,197 @@
+{
+  "observed_date": "2026-11-23",
+  "timezone": "Europe/Amsterdam",
+  "baseline": [
+    "../external-mentions-2026-11-21",
+    "../external-mentions-2026-11-22",
+    "../../docs/growth/ecosystem-growth-audit-2026-11-11.ru.md"
+  ],
+  "inventory": {
+    "source": "https://api.github.com/users/alexar76/repos?per_page=100&type=owner",
+    "public_repositories": 65,
+    "non_fork_repositories": 58,
+    "forks_in_account": 7,
+    "stars_across_repositories": 19,
+    "forks_across_repositories": 6
+  },
+  "developments_on_2026_11_23": [
+    {
+      "component": "mcp-tool-set-digest",
+      "type": "external contribution merged",
+      "operator": "CrawlCheck / emmanuelorta",
+      "source": "https://github.com/alexar76/mcp-tool-set-digest/pull/2",
+      "opened_at_utc": "2026-11-22T21:21:46Z",
+      "merged_at_utc": "2026-11-23T15:12:03Z",
+      "external_vectors_merged_in_pr": 7,
+      "vector_count_after_pr": 80
+    },
+    {
+      "component": "mcp-tool-set-digest",
+      "type": "independent implementation and test vectors",
+      "operator": "bcrypto0 / addon-declaration",
+      "submitted_vectors": 7,
+      "submitted_at_utc": "2026-11-23T11:11:36Z",
+      "included_with_5_equivalence_fixtures": true,
+      "vector_count_after_both_contributions": 92,
+      "sources": [
+        "https://github.com/alexar76/mcp-tool-set-digest/issues/1",
+        "https://github.com/alexar76/mcp-tool-set-digest/issues/1#issuecomment-7099206269",
+        "https://github.com/alexar76/mcp-tool-set-digest/issues/1#issuecomment-7105304957",
+        "https://github.com/alexar76/mcp-tool-set-digest/commit/fcd4b19e2a1510b582425b951f50d4882a74268d"
+      ],
+      "scope": "The external implementation's report against the expanded 92-vector file was not observed."
+    },
+    {
+      "component": "mcp-tool-set-digest",
+      "type": "third-party deployment and open community-list PR",
+      "operator": "bcrypto0 / addon-declaration",
+      "opened_at_utc": "2026-11-23T11:18:01Z",
+      "published_listing": "com.rtlpdf/arabic-pdf 1.0.1",
+      "registry_pr_state": "open",
+      "sources": [
+        "https://github.com/modelcontextprotocol/registry/pull/1907",
+        "https://github.com/bcrypto0/addon-declaration",
+        "https://declaredlist.com/"
+      ],
+      "scope": "The external implementer publishes the one currently listed server with a signed declaration. The PR requests a documentation listing and does not propose a registry protocol change."
+    }
+  ],
+  "verified_context_and_leads": [
+    {
+      "component": "mcp-tool-set-digest / HISTOR",
+      "type": "signed third-party use and proposed transport interop",
+      "date_utc": "2026-11-22",
+      "sources": [
+        "https://github.com/modelcontextprotocol/registry/issues/82#issuecomment-7082866737",
+        "https://github.com/modelcontextprotocol/registry/issues/82#issuecomment-7085023675",
+        "https://github.com/mcp-hangar/mcp-hangar/issues/1768#issuecomment-7082801361",
+        "https://github.com/mcp-hangar/mcp-hangar/issues/1805"
+      ],
+      "scope": "CrawlCheck published matching contract and extras digests in its signed lockfile and added signed read context after an independent cross-check by HISTOR. CrawlCheck has offered to bring the shared vectors to an MCP Transports WG discussion proposed by Hangar. No Hangar adoption was verified."
+    },
+    {
+      "component": "HISTOR",
+      "type": "independent dataset and live lookup reuse",
+      "operator": "minia2a",
+      "article_date": "2026-11-14",
+      "snapshot_date": "2026-11-09",
+      "sources": [
+        "https://minia2a.uk/blog/what-a-scanner-blocks-in-103271-mcp-servers-november-2026",
+        "https://minia2a.uk/mcp-tool-check.html"
+      ],
+      "scope": "The independent article analyzes the named snapshot. The lookup page makes a browser request directly to HISTOR's API. Publication date of the lookup page and usage counts were not verified."
+    },
+    {
+      "component": "HISTOR",
+      "type": "independent data reuse",
+      "operator": "Credenzo",
+      "source": "https://github.com/adudley78/credenzo/blob/7ecd52758fff2b6272f57e507715ee648c723112/docs/research/histor-changes/README.md#L21-L40",
+      "scope": "Known from the 21 November audit. External derived labels and scanner research from the November 16 snapshot. Results use data that informed the rules and should not be interpreted as held-out validation."
+    },
+    {
+      "component": "HISTOR",
+      "type": "independent observer offers comparison",
+      "operator": "yassinht / MCP Transparency Log",
+      "sources": [
+        "https://github.com/alexar76/histor/issues/13",
+        "https://yassinht.github.io/mcp-transparency-log/data/peers/index.json"
+      ],
+      "feed_run_utc": "2026-11-23T03:03:15Z",
+      "rows": 48961,
+      "rows_with_digest": 28701,
+      "dated_file_url_in_index": false,
+      "scope": "Index points to a rotating feed. Preserve a dated local copy and checksum for a repeatable comparison. Counts come from the peer index, and no comparison of all rows was performed."
+    },
+    {
+      "component": "HISTOR",
+      "type": "discovery friction",
+      "sources": [
+        "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+        "https://registry.modelcontextprotocol.io/v0.1/servers/io.github.alexar76%2Fhistor/versions/latest",
+        "https://pypi.org/project/aimarket-histor/0.11.0/"
+      ],
+      "mcp_registry_version": "0.10.0",
+      "mcpcost_status": "needs_args",
+      "mcpcost_last_probe_utc": "2026-11-18T09:09:11.747Z",
+      "pypi_version": "0.11.0",
+      "scope": "The 22 November local check verified that the 0.10.0 wheel presents three tools with the optional URL unset. No fixed or repeated external probe was observed."
+    },
+    {
+      "component": "HISTOR / signed revisions",
+      "type": "earlier open status superseded",
+      "merged_at_utc": "2026-11-18T15:02:08Z",
+      "sources": [
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/21",
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/blob/main/03.%20MCP%20Threats%20and%20Attack%20Patterns/3.13-supply-chain.md"
+      ],
+      "scope": "SUPP-06 appears in the OWASP guide. The merged item is a generic test case."
+    },
+    {
+      "component": "AIMarket Hub / ModelMarket",
+      "type": "standards reference and technical observations",
+      "sources": [
+        "https://datatracker.ietf.org/meeting/127/materials/slides-127-dawn-10-protocols-agentic-resource-discovery-ard-architecture-initial-contact-and-lookup-02",
+        "https://github.com/yunusarda-sudo/mcp-benchmark/commit/fcad40547968f1d3acc04a05a1ca8ea2585247de",
+        "https://a2aregistry.org/agents/841eea85-51d4-450c-b35a-086534dc08f6/",
+        "https://github.com/alexar76/aimarket-hub/issues/23"
+      ],
+      "scope": "Known findings include external IETF 127 materials, benchmark inventory, a registry's task verification, and engagement from an x402 seller. These are different types of evidence."
+    },
+    {
+      "component": "AIMarket Plugins / ARGUS / Domain Operator Kit",
+      "type": "catalog listing or public protocol checks",
+      "sources": [
+        "https://github.com/alexar76/aimarket-plugins/issues/5",
+        "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/argus3.json",
+        "https://protocolprobe.com/mcp/servers/dev.modelmarket/domains"
+      ]
+    },
+    {
+      "component": "AIMarket Courses / Factory / eSIM Operator Kit",
+      "type": "existing discovery and product feedback",
+      "sources": [
+        "https://github.com/EbookFoundation/free-programming-books/blob/main/courses/free-courses-en.md",
+        "https://github.com/th3artfuldodger/enterprise-factory",
+        "https://dev.to/whiteknightonhorse/comment/3ldcg",
+        "https://dev.to/whiteknightonhorse/comment/3lh4e"
+      ],
+      "scope": "Maintained education list, public fork with its own code changes, and seller-side questions on a first-party publication by an external operator."
+    }
+  ],
+  "local_reference_verification": {
+    "spec_revision": "fbd646756",
+    "vectors_checked": 92,
+    "failures": {
+      "python": 0,
+      "javascript": 0,
+      "go": 0
+    },
+    "scope": "Local reference CLI vector runs. Third-party SDKs and deployed services are outside this check."
+  },
+  "distribution_metrics": {
+    "warden": {
+      "source": "https://api.npmjs.org/downloads/range/2026-11-09:2026-11-22/@aimarket%2Fwarden",
+      "downloads_2026_11_09_through_15": 1217,
+      "downloads_2026_11_16_through_22": 2736,
+      "scope": "npm download events. Repeat and automated downloads may be included."
+    },
+    "histor_dataset": {
+      "source": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+      "download_counter": 409,
+      "prior_counter_2026_11_22": 406
+    }
+  },
+  "coverage": {
+    "searched": [
+      "GitHub public repository inventory and fork lists, indexed issues and PRs, selected issue comments and commit history",
+      "Public web queries by owner, package name, project name, URL and date, including newer operator kits and selected products outside MCP",
+      "Direct reads of public package registries, catalog records, independent technical notes and standards materials",
+      "Hacker News Algolia searches for modelmarket.dev and alexar76"
+    ],
+    "limits": [
+      "Unauthenticated GitHub issue and README search is indexed and does not provide complete global code search. No inference from private deployments or unindexed material.",
+      "The account's public inventory was enumerated; component searches were targeted, not a complete external audit of every repository.",
+      "No new verified paid use, recurring buyer, or broad production rollout in the 23 November checks."
+    ]
+  }
+}

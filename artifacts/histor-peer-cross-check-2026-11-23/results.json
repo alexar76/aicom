@@ -1,0 +1,694 @@
+{
+  "generated_at": "2026-11-23T18:19:16Z",
+  "histor": "https://histor.modelmarket.dev",
+  "window_hours": 24.0,
+  "rows_in": 48,
+  "counts": {
+    "agree": 30,
+    "agree_nearby": 0,
+    "disagree": 1,
+    "histor_no_digest": 4,
+    "not_listed": 1,
+    "theirs_no_digest": 12,
+    "bad_row": 0
+  },
+  "rows": [
+    {
+      "name": "com.cloudflare.mcp/mcp",
+      "endpoint": "https://docs.mcp.cloudflare.com/mcp",
+      "digest": "sha256-GqUyi0vc/Gc1Yb0+T0wNocyaytCWTrjjMWvLOuOPOz4=",
+      "read_at": "2026-11-23T03:16:17Z",
+      "id": "58a411224c6bf352",
+      "verdict": "agree",
+      "histor_at_read": "sha256-GqUyi0vc/Gc1Yb0+T0wNocyaytCWTrjjMWvLOuOPOz4=",
+      "histor_seen": [
+        {
+          "digest": "sha256-GqUyi0vc/Gc1Yb0+T0wNocyaytCWTrjjMWvLOuOPOz4=",
+          "from": "2026-11-16T12:48:56Z",
+          "until": "2026-11-23T11:23:15Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.github.upstash/context7",
+      "endpoint": "https://mcp.context7.com/mcp",
+      "digest": "sha256-XpeSi1ir5PNF5yunuB1mfnHR+1IpBb5+X+N+JhSTt8E=",
+      "read_at": "2026-11-23T03:33:33Z",
+      "id": "c08126bb60c5d275",
+      "verdict": "agree",
+      "histor_at_read": "sha256-XpeSi1ir5PNF5yunuB1mfnHR+1IpBb5+X+N+JhSTt8E=",
+      "histor_seen": [
+        {
+          "digest": "sha256-XpeSi1ir5PNF5yunuB1mfnHR+1IpBb5+X+N+JhSTt8E=",
+          "from": "2026-11-17T22:17:50Z",
+          "until": "2026-11-23T15:32:13Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "ai.exa/exa",
+      "endpoint": "https://mcp.exa.ai/mcp",
+      "digest": "sha256-hSLFkS6M+tt1bHtSu7UGTO9WhnNyASoOGkFJgn3VZuc=",
+      "read_at": "2026-11-23T03:27:23Z",
+      "id": "6af91c91e9df17fb",
+      "verdict": "agree",
+      "histor_at_read": "sha256-hSLFkS6M+tt1bHtSu7UGTO9WhnNyASoOGkFJgn3VZuc=",
+      "histor_seen": [
+        {
+          "digest": "sha256-hSLFkS6M+tt1bHtSu7UGTO9WhnNyASoOGkFJgn3VZuc=",
+          "from": "2026-11-21T05:24:40Z",
+          "until": "2026-11-23T09:17:41Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "ac.tandem/docs-mcp",
+      "endpoint": "https://tandem.ac/mcp",
+      "digest": "sha256-xHrgbIGaYj7PYZTHT9CY+Za/+1ABIFwjMi1qxdEDt7g=",
+      "read_at": "2026-11-23T03:31:19Z",
+      "id": "7147631e181b7227",
+      "verdict": "agree",
+      "histor_at_read": "sha256-xHrgbIGaYj7PYZTHT9CY+Za/+1ABIFwjMi1qxdEDt7g=",
+      "histor_seen": [
+        {
+          "digest": "sha256-xHrgbIGaYj7PYZTHT9CY+Za/+1ABIFwjMi1qxdEDt7g=",
+          "from": "2026-11-16T12:06:57Z",
+          "until": "2026-11-23T08:59:14Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.github.ikshan-ai/doableclaw-mcp",
+      "endpoint": "https://ikshan-be-prod-6gbup6suoq-el.a.run.app/mcp/research-v4",
+      "digest": null,
+      "read_at": "2026-11-23T03:26:08Z",
+      "verdict": "theirs_no_digest",
+      "note": "auth_required"
+    },
+    {
+      "name": "org.agenthideout/agent-hideout",
+      "endpoint": "https://agenthideout.org/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:31:45Z",
+      "verdict": "theirs_no_digest",
+      "note": "auth_required"
+    },
+    {
+      "name": "ai.meminal/meminal",
+      "endpoint": "https://meminal.ai/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:41:34Z",
+      "verdict": "theirs_no_digest",
+      "note": "protocol_error"
+    },
+    {
+      "name": "io.github.Jack-mi/aicia-ai-signal",
+      "endpoint": "https://aicia-mcp.lxsgocode123.workers.dev/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:21:34Z",
+      "verdict": "theirs_no_digest",
+      "note": "protocol_error"
+    },
+    {
+      "name": "io.github.pipeworx-io/send-that-email",
+      "endpoint": "https://gateway.pipeworx.io/send-that-email/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:23:04Z",
+      "verdict": "theirs_no_digest",
+      "note": "rpc_error"
+    },
+    {
+      "name": "io.github.pipeworx-io/giantbomb",
+      "endpoint": "https://gateway.pipeworx.io/giantbomb/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:14:54Z",
+      "verdict": "theirs_no_digest",
+      "note": "rpc_error"
+    },
+    {
+      "name": "com.whatevertrips/flights",
+      "endpoint": "https://api.whatevertrips.com/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:46:27Z",
+      "verdict": "theirs_no_digest",
+      "note": "timeout"
+    },
+    {
+      "name": "app.rezee/rezee",
+      "endpoint": "https://api.rezee.app/api/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:34:10Z",
+      "verdict": "theirs_no_digest",
+      "note": "timeout"
+    },
+    {
+      "name": "io.github.wminno/slowscan",
+      "endpoint": "https://slowscan.bigfloppy.net/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:21:04Z",
+      "verdict": "theirs_no_digest",
+      "note": "undigestible"
+    },
+    {
+      "name": "io.github.MixxyAI/noderooms-discovery",
+      "endpoint": "https://noderooms.com/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:44:25Z",
+      "verdict": "theirs_no_digest",
+      "note": "undigestible"
+    },
+    {
+      "name": "io.github.Br0ski777/domain-intelligence",
+      "endpoint": "https://domain-intelligence.api.klymax402.com/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:31:20Z",
+      "verdict": "theirs_no_digest",
+      "note": "unreachable"
+    },
+    {
+      "name": "st.demo/demost",
+      "endpoint": "https://demo.st/mcp",
+      "digest": null,
+      "read_at": "2026-11-23T03:20:22Z",
+      "verdict": "theirs_no_digest",
+      "note": "unreachable"
+    },
+    {
+      "name": "com.it.scorptech/x402",
+      "endpoint": "https://scorptech.it.com/api/x402/mcp/web",
+      "digest": "sha256-SJWe2G/LCBDh6ce1yY9XymOXcWkDDY5GMdJt/sAhuwg=",
+      "read_at": "2026-11-23T03:09:58Z",
+      "id": "82a328839f807242",
+      "verdict": "not_listed"
+    },
+    {
+      "name": "io.github.yiyabo/phagescope",
+      "endpoint": "https://phageagent.deepomics.org/mcp",
+      "digest": "sha256-d8ViNsKBu+hs8SjphaowuxxWyZGYhu+17whg83/WOkI=",
+      "read_at": "2026-11-23T03:16:24Z",
+      "id": "a78255d04c2133ae",
+      "verdict": "histor_no_digest",
+      "histor_at_read": null,
+      "histor_seen": [],
+      "histor_digests_in_window": 0
+    },
+    {
+      "name": "io.github.theluckystrike/time-tracking",
+      "endpoint": "https://mcp.zovo.one/mcp/time-tracking",
+      "digest": "sha256-u3PYXnBp1og7bJdPWzD6kvXg8MJ3FQ8I8xfXjoSQwqA=",
+      "read_at": "2026-11-23T03:06:45Z",
+      "id": "3203a45181f2ddc6",
+      "verdict": "agree",
+      "histor_at_read": "sha256-u3PYXnBp1og7bJdPWzD6kvXg8MJ3FQ8I8xfXjoSQwqA=",
+      "histor_seen": [
+        {
+          "digest": "sha256-u3PYXnBp1og7bJdPWzD6kvXg8MJ3FQ8I8xfXjoSQwqA=",
+          "from": "2026-11-16T06:30:55Z",
+          "until": "2026-11-23T13:53:02Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "ai.kwekuanansi/ghana-gov-guide",
+      "endpoint": "https://kwekuanansi.ai/mcp/ghana-gov-guide",
+      "digest": "sha256-q/GP1c+SttvchNVm49tGrztQfk1Uw8/DaN2NBslBvjU=",
+      "read_at": "2026-11-23T03:09:00Z",
+      "id": "b0ccf08ea499aa9d",
+      "verdict": "agree",
+      "histor_at_read": "sha256-q/GP1c+SttvchNVm49tGrztQfk1Uw8/DaN2NBslBvjU=",
+      "histor_seen": [
+        {
+          "digest": "sha256-q/GP1c+SttvchNVm49tGrztQfk1Uw8/DaN2NBslBvjU=",
+          "from": "2026-11-16T07:47:04Z",
+          "until": "2026-11-23T14:46:25Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.github.Ukraine-Territorial-MCP/poland-statistics",
+      "endpoint": "https://mcp.edeputat.com/poland-statistics/mcp",
+      "digest": "sha256-UrmQ1Q60EK+9r5fe5BMc8SW9fEv6fIPBzAPSipEQ6H4=",
+      "read_at": "2026-11-23T03:10:41Z",
+      "id": "36a9c6fd446da985",
+      "verdict": "agree",
+      "histor_at_read": "sha256-UrmQ1Q60EK+9r5fe5BMc8SW9fEv6fIPBzAPSipEQ6H4=",
+      "histor_seen": [
+        {
+          "digest": "sha256-UrmQ1Q60EK+9r5fe5BMc8SW9fEv6fIPBzAPSipEQ6H4=",
+          "from": "2026-11-16T06:35:16Z",
+          "until": "2026-11-23T13:53:25Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.github.sadri-dridi/ang-m",
+      "endpoint": "https://agent-observatory-sensor.nolimit-observatory.workers.dev/s/ang-m/mcp",
+      "digest": "sha256-8PL+tfAVrmO/22xyK8lq4CXdYIh3ygeoxMCBV4WfKFU=",
+      "read_at": "2026-11-23T03:06:24Z",
+      "id": "0f6d3696ced6b186",
+      "verdict": "agree",
+      "histor_at_read": "sha256-8PL+tfAVrmO/22xyK8lq4CXdYIh3ygeoxMCBV4WfKFU=",
+      "histor_seen": [
+        {
+          "digest": "sha256-8PL+tfAVrmO/22xyK8lq4CXdYIh3ygeoxMCBV4WfKFU=",
+          "from": "2026-11-19T03:53:34Z",
+          "until": "2026-11-23T13:57:16Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "studio.dfs/dfs-studio-free",
+      "endpoint": "https://dfs.studio/mcp/free",
+      "digest": "sha256-X1E+4aZ3mHxbUGg4/H4kSnp+hqU6/BjzAnhmT7pNbek=",
+      "read_at": "2026-11-23T03:15:55Z",
+      "id": "2f5496df97aa37ac",
+      "verdict": "histor_no_digest",
+      "histor_at_read": null,
+      "histor_seen": [],
+      "histor_digests_in_window": 0
+    },
+    {
+      "name": "io.github.pipeworx-io/fema-nfhl",
+      "endpoint": "https://gateway.pipeworx.io/fema-nfhl/mcp",
+      "digest": "sha256-bL3k5dhs64NkrFezWTHwmNozo1UrNzWard/KfIUk/K8=",
+      "read_at": "2026-11-23T03:13:59Z",
+      "id": "735f75a5dea3b04d",
+      "verdict": "disagree",
+      "histor_at_read": "sha256-h8fNgNUqo+5Rz4Ihtv36e+/MDNp0x8wlqC6kNPffNaY= or sha256-pb2C6c1klDBRys25bVq6xApIrjjHZfEgH3SC5jufmIY=",
+      "histor_seen": [
+        {
+          "digest": "sha256-GpzjATvLAMHeXBagBvkeLvyFg3SXszJWrJmBJByImX8=",
+          "from": "2026-11-22T01:04:20Z",
+          "until": "2026-11-22T20:37:33Z"
+        },
+        {
+          "digest": "sha256-h8fNgNUqo+5Rz4Ihtv36e+/MDNp0x8wlqC6kNPffNaY=",
+          "from": "2026-11-23T00:43:37Z",
+          "until": "2026-11-23T00:43:37Z"
+        },
+        {
+          "digest": "sha256-pb2C6c1klDBRys25bVq6xApIrjjHZfEgH3SC5jufmIY=",
+          "from": "2026-11-23T05:44:19Z",
+          "until": "2026-11-23T05:44:19Z"
+        },
+        {
+          "digest": "sha256-7JP/AfPavbNQvCC5QOWc9ii3pqMTLLFNnHsnaeAawYc=",
+          "from": "2026-11-23T10:17:18Z",
+          "until": "2026-11-23T14:11:09Z"
+        }
+      ],
+      "histor_digests_in_window": 4
+    },
+    {
+      "name": "io.github.sadri-dridi/tz-asia-bangkok",
+      "endpoint": "https://agent-observatory-sensor.nolimit-observatory.workers.dev/s/tz-asia-bangkok/mcp",
+      "digest": "sha256-Eqqq5vsPEvrq3qNaPLym14lP1LRuV3Wk2jXUfjZLyeI=",
+      "read_at": "2026-11-23T03:24:27Z",
+      "id": "a4530fb6fd6be32c",
+      "verdict": "agree",
+      "histor_at_read": "sha256-Eqqq5vsPEvrq3qNaPLym14lP1LRuV3Wk2jXUfjZLyeI=",
+      "histor_seen": [
+        {
+          "digest": "sha256-Eqqq5vsPEvrq3qNaPLym14lP1LRuV3Wk2jXUfjZLyeI=",
+          "from": "2026-11-18T23:38:24Z",
+          "until": "2026-11-23T06:33:04Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.fet112/fet112",
+      "endpoint": "https://www.fet112.com/mcp",
+      "digest": "sha256-DBgLPHuPZUsgLQqSI7g6edt4u0MLZWZFf2kcnuDJ8nQ=",
+      "read_at": "2026-11-23T03:19:59Z",
+      "id": "b589f2fc4f9211f2",
+      "verdict": "agree",
+      "histor_at_read": "sha256-DBgLPHuPZUsgLQqSI7g6edt4u0MLZWZFf2kcnuDJ8nQ=",
+      "histor_seen": [],
+      "histor_digests_in_window": 0
+    },
+    {
+      "name": "io.github.mcp-dir/tcu_consolidada_pj-mcp",
+      "endpoint": "https://api.mcp.ai/p_tcu_consolidada_pj",
+      "digest": "sha256-axRY6NC973tBzQIeTZ58c2VKGDnohG4IABPqwctjVKw=",
+      "read_at": "2026-11-23T03:21:11Z",
+      "id": "f5c11eb260415701",
+      "verdict": "agree",
+      "histor_at_read": "sha256-axRY6NC973tBzQIeTZ58c2VKGDnohG4IABPqwctjVKw=",
+      "histor_seen": [
+        {
+          "digest": "sha256-axRY6NC973tBzQIeTZ58c2VKGDnohG4IABPqwctjVKw=",
+          "from": "2026-11-22T10:49:06Z",
+          "until": "2026-11-22T10:49:06Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.smbcompare/smb-compare",
+      "endpoint": "https://smbcompare.com/api/mcp",
+      "digest": "sha256-Qlel/I2JxoSCMP9C+Bm4OXargtnpP00DU7FVEVQaNtw=",
+      "read_at": "2026-11-23T03:19:44Z",
+      "id": "3e9e280ae41cf004",
+      "verdict": "histor_no_digest",
+      "histor_at_read": "sha256-o2oem+K2qgiYH4lQkRTYKtLZP9de9zDaVXzJSgtoWiU=",
+      "histor_seen": [],
+      "histor_digests_in_window": 0
+    },
+    {
+      "name": "com.hydrafetch/web",
+      "endpoint": "https://api.hydrafetch.com/mcp",
+      "digest": "sha256-uSjEg5W4nOHDJNiJhT9OTc3gtpl9dJLF6apkwrQ9BbI=",
+      "read_at": "2026-11-23T03:17:56Z",
+      "id": "92dde628d32bd499",
+      "verdict": "agree",
+      "histor_at_read": "sha256-uSjEg5W4nOHDJNiJhT9OTc3gtpl9dJLF6apkwrQ9BbI=",
+      "histor_seen": [
+        {
+          "digest": "sha256-uSjEg5W4nOHDJNiJhT9OTc3gtpl9dJLF6apkwrQ9BbI=",
+          "from": "2026-11-20T23:29:01Z",
+          "until": "2026-11-23T01:52:49Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "loan.fhamultifamily/fhamultifamily-loan",
+      "endpoint": "https://fhamultifamily.loan/mcp",
+      "digest": "sha256-AjoWLjVcV01yB3yH6t2TNzHkY4J1Q/59zn5j1/ENOA0=",
+      "read_at": "2026-11-23T03:25:24Z",
+      "id": "1d28698bf8f369a8",
+      "verdict": "agree",
+      "histor_at_read": "sha256-AjoWLjVcV01yB3yH6t2TNzHkY4J1Q/59zn5j1/ENOA0=",
+      "histor_seen": [
+        {
+          "digest": "sha256-AjoWLjVcV01yB3yH6t2TNzHkY4J1Q/59zn5j1/ENOA0=",
+          "from": "2026-11-16T10:39:27Z",
+          "until": "2026-11-23T02:01:00Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.github.jin-1119/plato-mcp",
+      "endpoint": "https://plato-mcp.onrender.com/mcp",
+      "digest": "sha256-zUFScVWkUVO1lUlGCjvDiE3PHDn9YZN05+9o4Ok08so=",
+      "read_at": "2026-11-23T03:19:49Z",
+      "id": "32b0327e78b87150",
+      "verdict": "agree",
+      "histor_at_read": "sha256-zUFScVWkUVO1lUlGCjvDiE3PHDn9YZN05+9o4Ok08so=",
+      "histor_seen": [
+        {
+          "digest": "sha256-zUFScVWkUVO1lUlGCjvDiE3PHDn9YZN05+9o4Ok08so=",
+          "from": "2026-11-16T08:51:33Z",
+          "until": "2026-11-23T15:44:44Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.tovrek/current-state-resolver",
+      "endpoint": "https://tovrek.com/mcp",
+      "digest": "sha256-+YI3dMYr1FQOenDY7+MlWo9FPZYH/u8lUvuIp8PhMEE=",
+      "read_at": "2026-11-23T03:17:21Z",
+      "id": "02c73f13a39f082e",
+      "verdict": "agree",
+      "histor_at_read": "sha256-+YI3dMYr1FQOenDY7+MlWo9FPZYH/u8lUvuIp8PhMEE=",
+      "histor_seen": [
+        {
+          "digest": "sha256-+YI3dMYr1FQOenDY7+MlWo9FPZYH/u8lUvuIp8PhMEE=",
+          "from": "2026-11-16T11:19:25Z",
+          "until": "2026-11-23T06:01:08Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "us.lotlytics/lotlytics-mcp",
+      "endpoint": "https://lotlytics-mcp-production.up.railway.app/mcp",
+      "digest": "sha256-VofgUCg5G2IqLJRp2rsRuKQDNBzckF2sw9FNcfdLmvI=",
+      "read_at": "2026-11-23T03:32:04Z",
+      "id": "7cfe9242da7bd430",
+      "verdict": "agree",
+      "histor_at_read": "sha256-VofgUCg5G2IqLJRp2rsRuKQDNBzckF2sw9FNcfdLmvI=",
+      "histor_seen": [
+        {
+          "digest": "sha256-VofgUCg5G2IqLJRp2rsRuKQDNBzckF2sw9FNcfdLmvI=",
+          "from": "2026-11-16T10:21:38Z",
+          "until": "2026-11-23T00:46:57Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "ai.velarion/company-intelligence",
+      "endpoint": "https://api.velarion.ai/mcp",
+      "digest": "sha256-rPBTg6mRc/njrJqMOQzMCQXK57y9PU8rI3O6MtVb6XM=",
+      "read_at": "2026-11-23T03:27:42Z",
+      "id": "df5500dadf51071d",
+      "verdict": "agree",
+      "histor_at_read": "sha256-rPBTg6mRc/njrJqMOQzMCQXK57y9PU8rI3O6MtVb6XM=",
+      "histor_seen": [
+        {
+          "digest": "sha256-rPBTg6mRc/njrJqMOQzMCQXK57y9PU8rI3O6MtVb6XM=",
+          "from": "2026-11-16T12:21:26Z",
+          "until": "2026-11-23T09:50:05Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.github.Nero-Engine/uk-tourist-tax",
+      "endpoint": "https://tourist-tax.nerolabs.workers.dev/mcp",
+      "digest": "sha256-3FEjtL+RppAgqZtgGArjxxs5+JALhTFYCfwQ5o+RBJ0=",
+      "read_at": "2026-11-23T03:35:17Z",
+      "id": "0c7f5546642f5843",
+      "verdict": "agree",
+      "histor_at_read": "sha256-3FEjtL+RppAgqZtgGArjxxs5+JALhTFYCfwQ5o+RBJ0=",
+      "histor_seen": [
+        {
+          "digest": "sha256-3FEjtL+RppAgqZtgGArjxxs5+JALhTFYCfwQ5o+RBJ0=",
+          "from": "2026-11-16T11:24:04Z",
+          "until": "2026-11-23T06:16:51Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.uselufi/lufi",
+      "endpoint": "https://uselufi.com/mcp",
+      "digest": "sha256-Q6hNKv+LigxJM4YXgpNwFqhTwAEFDPzltjr/GMi45w8=",
+      "read_at": "2026-11-23T03:29:36Z",
+      "id": "15390f11ee2ba8a4",
+      "verdict": "agree",
+      "histor_at_read": "sha256-Q6hNKv+LigxJM4YXgpNwFqhTwAEFDPzltjr/GMi45w8=",
+      "histor_seen": [
+        {
+          "digest": "sha256-Q6hNKv+LigxJM4YXgpNwFqhTwAEFDPzltjr/GMi45w8=",
+          "from": "2026-11-16T09:19:27Z",
+          "until": "2026-11-23T16:08:57Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.kompare/search",
+      "endpoint": "https://mcp.kompare.io/mcp",
+      "digest": "sha256-OY9QrpY5XrzDhChmVqhLsMpo68LEaHB8t3CxeN9fj5M=",
+      "read_at": "2026-11-23T03:29:40Z",
+      "id": "c86b2c66132d56e2",
+      "verdict": "agree",
+      "histor_at_read": "sha256-OY9QrpY5XrzDhChmVqhLsMpo68LEaHB8t3CxeN9fj5M= or sha256-Hjzpk8Uqs2BD3qJYN5izlHw/1Dx6BAUhVYGUFr6dJyQ=",
+      "histor_seen": [
+        {
+          "digest": "sha256-OY9QrpY5XrzDhChmVqhLsMpo68LEaHB8t3CxeN9fj5M=",
+          "from": "2026-11-21T00:27:16Z",
+          "until": "2026-11-22T19:45:45Z"
+        },
+        {
+          "digest": "sha256-Hjzpk8Uqs2BD3qJYN5izlHw/1Dx6BAUhVYGUFr6dJyQ=",
+          "from": "2026-11-23T14:33:07Z",
+          "until": "2026-11-23T17:06:53Z"
+        }
+      ],
+      "histor_digests_in_window": 2
+    },
+    {
+      "name": "io.github.wywy-llc/gas-library-hub",
+      "endpoint": "https://appscripthub.com/api/mcp",
+      "digest": "sha256-K6EUYRy5ASnagzt0GUDNUiut6HgTXs6VvpgVanOJrVQ=",
+      "read_at": "2026-11-23T03:33:32Z",
+      "id": "ad466331132e602a",
+      "verdict": "agree",
+      "histor_at_read": "sha256-K6EUYRy5ASnagzt0GUDNUiut6HgTXs6VvpgVanOJrVQ=",
+      "histor_seen": [],
+      "histor_digests_in_window": 0
+    },
+    {
+      "name": "com.retryhub/retryhub",
+      "endpoint": "https://chatgpt.retryhub.com/mcp",
+      "digest": "sha256-FOv7KBW5sQbtP7UCmONAxfw/55FiQEdo8KBha8EirBY=",
+      "read_at": "2026-11-23T03:34:49Z",
+      "id": "8523d09a92e6cc44",
+      "verdict": "agree",
+      "histor_at_read": "sha256-FOv7KBW5sQbtP7UCmONAxfw/55FiQEdo8KBha8EirBY=",
+      "histor_seen": [
+        {
+          "digest": "sha256-FOv7KBW5sQbtP7UCmONAxfw/55FiQEdo8KBha8EirBY=",
+          "from": "2026-11-16T11:08:16Z",
+          "until": "2026-11-23T05:07:11Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.answeringservicequotes/site",
+      "endpoint": "https://answeringservicequotes.com/mcp",
+      "digest": "sha256-DT0/8r7mYpqrjmBfnAIvsiIrobuqJP+HOcQNtPNILaM=",
+      "read_at": "2026-11-23T03:36:31Z",
+      "id": "3baf251e8a38481d",
+      "verdict": "agree",
+      "histor_at_read": "sha256-DT0/8r7mYpqrjmBfnAIvsiIrobuqJP+HOcQNtPNILaM=",
+      "histor_seen": [
+        {
+          "digest": "sha256-DT0/8r7mYpqrjmBfnAIvsiIrobuqJP+HOcQNtPNILaM=",
+          "from": "2026-11-16T06:27:50Z",
+          "until": "2026-11-23T15:05:00Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "io.scrapingbot/scrapingbot",
+      "endpoint": "https://scrapingbot.io/api/mcp",
+      "digest": "sha256-McrXXzUFp8AJA6NUc7uSiisN2Y+3/2a3bwySZ8wBQD4=",
+      "read_at": "2026-11-23T03:37:34Z",
+      "id": "ff52f1504c7d1ca8",
+      "verdict": "agree",
+      "histor_at_read": "sha256-McrXXzUFp8AJA6NUc7uSiisN2Y+3/2a3bwySZ8wBQD4=",
+      "histor_seen": [],
+      "histor_digests_in_window": 0
+    },
+    {
+      "name": "com.hardcopylabs/hardcopy",
+      "endpoint": "https://mcp.hardcopylabs.com/mcp",
+      "digest": "sha256-G48LC3er8/RrmZ5M8PxH2MM+zIuNDrEIKRq33+lPXrQ=",
+      "read_at": "2026-11-23T03:42:00Z",
+      "id": "506095d600e9794c",
+      "verdict": "agree",
+      "histor_at_read": "sha256-G48LC3er8/RrmZ5M8PxH2MM+zIuNDrEIKRq33+lPXrQ=",
+      "histor_seen": [
+        {
+          "digest": "sha256-G48LC3er8/RrmZ5M8PxH2MM+zIuNDrEIKRq33+lPXrQ=",
+          "from": "2026-11-16T12:57:39Z",
+          "until": "2026-11-23T11:58:59Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "ai.specproof/specproof-mcp",
+      "endpoint": "https://mcp.specproof.ai/",
+      "digest": "sha256-YPiaGs981CzlIlC8o3OWnqhQiSaSS8R2iyxUrCGQWo4=",
+      "read_at": "2026-11-23T03:45:09Z",
+      "id": "51f2810005676a86",
+      "verdict": "agree",
+      "histor_at_read": "sha256-YPiaGs981CzlIlC8o3OWnqhQiSaSS8R2iyxUrCGQWo4=",
+      "histor_seen": [
+        {
+          "digest": "sha256-YPiaGs981CzlIlC8o3OWnqhQiSaSS8R2iyxUrCGQWo4=",
+          "from": "2026-11-16T12:19:39Z",
+          "until": "2026-11-23T09:36:25Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.solemiokitchen.go/sole-mio",
+      "endpoint": "https://go.solemiokitchen.com/mcp",
+      "digest": "sha256-Mb+jhW2Nbud32q/q87sdwP3xxSk78/WxOLlh2XR1XLg=",
+      "read_at": "2026-11-23T03:45:13Z",
+      "id": "baccecad8c8f6df8",
+      "verdict": "agree",
+      "histor_at_read": "sha256-Mb+jhW2Nbud32q/q87sdwP3xxSk78/WxOLlh2XR1XLg=",
+      "histor_seen": [
+        {
+          "digest": "sha256-Mb+jhW2Nbud32q/q87sdwP3xxSk78/WxOLlh2XR1XLg=",
+          "from": "2026-11-16T10:23:33Z",
+          "until": "2026-11-23T01:22:57Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.threewayly/site",
+      "endpoint": "https://threewayly.com/mcp",
+      "digest": "sha256-TY4KaMIYwdclgqLx0GQShNe3SdOJvXBpEkF7DBEwHX8=",
+      "read_at": "2026-11-23T03:40:17Z",
+      "id": "af1ffc739f756205",
+      "verdict": "agree",
+      "histor_at_read": "sha256-TY4KaMIYwdclgqLx0GQShNe3SdOJvXBpEkF7DBEwHX8=",
+      "histor_seen": [
+        {
+          "digest": "sha256-TY4KaMIYwdclgqLx0GQShNe3SdOJvXBpEkF7DBEwHX8=",
+          "from": "2026-11-16T08:17:29Z",
+          "until": "2026-11-23T15:13:52Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.penguindriver/stock",
+      "endpoint": "https://stock.penguindriver.com/mcp",
+      "digest": "sha256-dNgSiyQnUbbzmtOwcspqf8eLk7YHWYoWS08DBfMuabE=",
+      "read_at": "2026-11-23T03:37:24Z",
+      "id": "d2e495d9f59605e5",
+      "verdict": "agree",
+      "histor_at_read": "sha256-dNgSiyQnUbbzmtOwcspqf8eLk7YHWYoWS08DBfMuabE=",
+      "histor_seen": [
+        {
+          "digest": "sha256-dNgSiyQnUbbzmtOwcspqf8eLk7YHWYoWS08DBfMuabE=",
+          "from": "2026-11-19T19:38:39Z",
+          "until": "2026-11-23T15:48:40Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    },
+    {
+      "name": "com.fekrestan/public",
+      "endpoint": "https://fekrestan.com/mcp",
+      "digest": "sha256-YJQXXxNU57Jez22fxPbpLvYFmb20v3rAdbghDu0v6+I=",
+      "read_at": "2026-11-23T03:44:08Z",
+      "id": "960453ab484ce699",
+      "verdict": "histor_no_digest",
+      "histor_at_read": null,
+      "histor_seen": [],
+      "histor_digests_in_window": 0
+    },
+    {
+      "name": "io.github.bguillow-rgb/itin-finance",
+      "endpoint": "https://mcp.itinlending.net/?src=registry",
+      "digest": "sha256-0m7X5yxmsuxDIMcG24G3adBJhjyGz62078a6RgsBiPM=",
+      "read_at": "2026-11-23T03:39:54Z",
+      "id": "1cf64958e0e20340",
+      "verdict": "agree",
+      "histor_at_read": "sha256-0m7X5yxmsuxDIMcG24G3adBJhjyGz62078a6RgsBiPM=",
+      "histor_seen": [
+        {
+          "digest": "sha256-0m7X5yxmsuxDIMcG24G3adBJhjyGz62078a6RgsBiPM=",
+          "from": "2026-11-16T11:41:33Z",
+          "until": "2026-11-23T07:44:48Z"
+        }
+      ],
+      "histor_digests_in_window": 1
+    }
+  ]
+}
