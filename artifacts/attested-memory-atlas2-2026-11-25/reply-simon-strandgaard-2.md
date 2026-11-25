@@ -1,7 +1,7 @@
 # Reply to Simon Strandgaard (re-read of attested-memory @ 25d6b1a, his atlas commit a9b7c179f) — DRAFT 2026-11-25
 
 Owner sends in the same thread AFTER §171 (mirror sync); replace <SHA> with the mirror commit.
-2026-11-25 ~16:10Z: §171 reported done, but GitHub main is still 25d6b1a (ls-remote), new test files 404 → not sendable yet.
+2026-11-25: mirror synced 16:20:56Z at 84e7057bd2ed88344d99066f1827933a5cb6cda5 (CI + Pages green; code files = main, README differs only by the mirror notice). READY TO SEND.
 All four points checked against the code; fixes in aicom main 445100fe7, LIVE on attestedmemory.net 2026-11-25 14:49Z.
 Plus five gaps from our own reading in the same style: main 6ba17aacf, LIVE 15:20Z. Mirror must be at 6ba17aacf or newer.
 
@@ -10,7 +10,7 @@ Plus five gaps from our own reading in the same style: main 6ba17aacf, LIVE 15:2
 Hi Simon,
 
 Thanks for the quick re-read. The four points held, and they are fixed at
-https://github.com/alexar76/attested-memory/commit/<SHA> :
+https://github.com/alexar76/attested-memory/commit/84e7057bd2ed88344d99066f1827933a5cb6cda5 :
 
 1. A deleted head row no longer comes back. The backfill from receipts runs once, for databases from before
    receipt_heads existed, and is then marked done. After that a memory with receipts but no head fails chain_head,

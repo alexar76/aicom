@@ -1,0 +1,284 @@
+{
+  "checked_on": "2026-11-25",
+  "binary_url": "https://github.com/anomalyco/opencode/releases/download/v2.4.1/opencode-darwin-arm64.zip",
+  "binary_archive_sha256": "95a101eda95108478f1db43cff8fcbd4811f6c0e79af1e167301843c6a48d731",
+  "client": "OpenCode 2.4.1",
+  "tokenizer": "o200k_base",
+  "synthetic_catalogue": [
+    {
+      "name": "lookup_book",
+      "description": "Look up a book in a synthetic public catalogue by its unique reference. Returns a title, a year and any catalogue tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Catalogue reference, for example K-123."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "ru",
+              "zh"
+            ]
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "lookup_map",
+      "description": "Look up a map in a synthetic public catalogue by its unique reference. Returns a title, a year and any catalogue tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Catalogue reference, for example K-123."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "ru",
+              "zh"
+            ]
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "lookup_record",
+      "description": "Look up a record in a synthetic public catalogue by its unique reference. Returns a title, a year and any catalogue tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Catalogue reference, for example K-123."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "ru",
+              "zh"
+            ]
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "lookup_poster",
+      "description": "Look up a poster in a synthetic public catalogue by its unique reference. Returns a title, a year and any catalogue tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Catalogue reference, for example K-123."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "ru",
+              "zh"
+            ]
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "lookup_photo",
+      "description": "Look up a photo in a synthetic public catalogue by its unique reference. Returns a title, a year and any catalogue tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Catalogue reference, for example K-123."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "ru",
+              "zh"
+            ]
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "lookup_catalogue",
+      "description": "Look up a catalogue in a synthetic public catalogue by its unique reference. Returns a title, a year and any catalogue tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Catalogue reference, for example K-123."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "ru",
+              "zh"
+            ]
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "lookup_periodical",
+      "description": "Look up a periodical in a synthetic public catalogue by its unique reference. Returns a title, a year and any catalogue tags.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "reference": {
+            "type": "string",
+            "description": "Catalogue reference, for example K-123."
+          },
+          "locale": {
+            "type": "string",
+            "enum": [
+              "en",
+              "es",
+              "fr",
+              "ru",
+              "zh"
+            ]
+          }
+        },
+        "required": [
+          "reference"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "full_catalogue_tokens": 634,
+  "provider": "Local mock. The usage field is a fixed fixture, not a token measurement.",
+  "provider_usage_fixture_per_request": {
+    "prompt_tokens": 1234,
+    "completion_tokens": 7,
+    "total_tokens": 1241
+  },
+  "direct": {
+    "catalogue_functions_sent": [
+      "catalog_fixture_lookup_book",
+      "catalog_fixture_lookup_catalogue",
+      "catalog_fixture_lookup_map",
+      "catalog_fixture_lookup_periodical",
+      "catalog_fixture_lookup_photo",
+      "catalog_fixture_lookup_poster",
+      "catalog_fixture_lookup_record"
+    ],
+    "model_facing_function_names": [
+      "catalog_fixture_lookup_book",
+      "catalog_fixture_lookup_catalogue",
+      "catalog_fixture_lookup_map",
+      "catalog_fixture_lookup_periodical",
+      "catalog_fixture_lookup_photo",
+      "catalog_fixture_lookup_poster",
+      "catalog_fixture_lookup_record",
+      "edit",
+      "execute",
+      "generate_image",
+      "generate_video",
+      "glob",
+      "grep",
+      "question",
+      "read",
+      "shell",
+      "skill",
+      "subagent",
+      "webfetch",
+      "websearch",
+      "write"
+    ],
+    "model_requests_with_tools": 1,
+    "other_model_requests": 0,
+    "opencode_step_tokens": {
+      "input": 1234,
+      "output": 7,
+      "reasoning": 0,
+      "cache": {
+        "read": 0,
+        "write": 0
+      }
+    },
+    "all_model_facing_function_tokens": 4305,
+    "catalogue_function_tokens": 648
+  },
+  "code_mode": {
+    "catalogue_functions_sent": [],
+    "model_facing_function_names": [
+      "edit",
+      "execute",
+      "generate_image",
+      "generate_video",
+      "glob",
+      "grep",
+      "question",
+      "read",
+      "shell",
+      "skill",
+      "subagent",
+      "webfetch",
+      "websearch",
+      "write"
+    ],
+    "model_requests_with_tools": 1,
+    "other_model_requests": 0,
+    "opencode_step_tokens": {
+      "input": 1234,
+      "output": 7,
+      "reasoning": 0,
+      "cache": {
+        "read": 0,
+        "write": 0
+      }
+    },
+    "all_model_facing_function_tokens": 3657,
+    "catalogue_function_tokens": 0
+  }
+}

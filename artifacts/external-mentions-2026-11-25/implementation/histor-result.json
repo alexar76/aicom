@@ -1,0 +1,21 @@
+{
+  "upstream_commit": "a4dd460b7e57e72adfafd346ba766c42120ce03e",
+  "native_only_attempt_exit": 2,
+  "native_only_attempt_message": "unknown option --only",
+  "event_id": 157,
+  "cli_version": "0.5.0",
+  "mode": "expected partial pin",
+  "changes_before": [
+    "cheapest_window",
+    "get_forecast",
+    "get_prices",
+    "get_renewables"
+  ],
+  "changes_after": [
+    "get_forecast",
+    "get_prices",
+    "get_renewables"
+  ],
+  "updated_pin": "cheapest_window",
+  "unchanged_control": "list_zones"
+}

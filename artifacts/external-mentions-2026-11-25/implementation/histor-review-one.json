@@ -1,0 +1,320 @@
+{
+  "source": "https://doi.org/10.5281/zenodo.23512760",
+  "license": "CC BY 4.0",
+  "event_id": 157,
+  "server_id": "6eda3074b0770251",
+  "observed_at": "2026-09-24T11:11:20Z",
+  "source_before_digest": "sha256-pBKKmRq6Ed9c4INGFSC0AmfmloW9GusHSsfZtQbw++E=",
+  "source_after_digest": "sha256-11DRpaRwI56VNFAccBOuY69A7u8Q3pe5nXJ83G4twog=",
+  "scope": "Four changed and one unchanged tool projected from a seven-tool observation. The source digests identify the original seven-tool lists.",
+  "omitted_unchanged": [
+    "get_carbon",
+    "get_realtime_prices"
+  ],
+  "changed": [
+    "cheapest_window",
+    "get_forecast",
+    "get_prices",
+    "get_renewables"
+  ],
+  "unchanged_control": "list_zones",
+  "accept_only": "cheapest_window",
+  "before": [
+    {
+      "name": "cheapest_window",
+      "description": "Rank Home+ action windows by household cost. Experimental carbon/balanced modes use a disclosed trailing historical production-mix profile—not a forward carbon forecast—and support no emissions-reduction claim.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "description": "Window length in minutes"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "description": "How many windows (default 3)"
+          },
+          "objective": {
+            "type": "string",
+            "enum": [
+              "cost",
+              "carbon",
+              "balanced"
+            ],
+            "description": "Ranking objective (default cost). Carbon/balanced are experimental historical-profile heuristics, not forward carbon forecasts."
+          },
+          "tariff": {
+            "type": "object",
+            "description": "Optional variable household bill inputs; fixed monthly charges are excluded.",
+            "properties": {
+              "grid_fee_eur_kwh": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "supplier_markup_eur_kwh": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "vat_percent": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 50
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "zone",
+          "duration_minutes"
+        ]
+      }
+    },
+    {
+      "name": "get_forecast",
+      "description": "Probabilistic price forecast (P50 curve; P10/P90 on Pro+) up to 7 days ahead. Home and grandfathered Free keys are scoped to their selected zone. Accuracy published daily at voltcast.com/accuracy.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string"
+          },
+          "horizon": {
+            "type": "string",
+            "enum": [
+              "48h",
+              "7d"
+            ]
+          }
+        },
+        "required": [
+          "zone"
+        ]
+      }
+    },
+    {
+      "name": "get_prices",
+      "description": "Day-ahead electricity prices in each zone's native currency and native market resolution. Requires an API key; Home starts at voltcast.com/register?plan=home.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string",
+            "description": "Bidding zone code, e.g. 'DE-LU'"
+          },
+          "from": {
+            "type": "string",
+            "description": "ISO 8601 start (default: yesterday)"
+          },
+          "to": {
+            "type": "string",
+            "description": "ISO 8601 end (default: tomorrow)"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "native",
+              "hourly"
+            ]
+          }
+        },
+        "required": [
+          "zone"
+        ]
+      }
+    },
+    {
+      "name": "get_renewables",
+      "description": "Day-ahead wind + solar generation forecasts: the TSO's official forecast AND Voltcast's own model (volt-res-1) with q10-q90 bands, beside realized generation, with head-to-head verification (who beats whom, disclosed). Pro/Scale.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string",
+            "description": "Bidding zone code, e.g. 'DE-LU'"
+          },
+          "from": {
+            "type": "string",
+            "description": "ISO 8601 start"
+          },
+          "to": {
+            "type": "string",
+            "description": "ISO 8601 end"
+          }
+        },
+        "required": [
+          "zone"
+        ]
+      }
+    },
+    {
+      "name": "list_zones",
+      "description": "List all supported European bidding zones with codes, names, and capabilities. No auth required.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ],
+  "current": [
+    {
+      "name": "cheapest_window",
+      "description": "Rank household action windows by cost using current Voltcast curves and optional user-supplied variable tariff inputs. Experimental carbon/balanced modes use a disclosed trailing historical production-mix profile—not a forward carbon forecast—and support no emissions-reduction claim.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string"
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "description": "Window length in minutes"
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "description": "How many windows (default 3)"
+          },
+          "objective": {
+            "type": "string",
+            "enum": [
+              "cost",
+              "carbon",
+              "balanced"
+            ],
+            "description": "Ranking objective (default cost). Carbon/balanced are experimental historical-profile heuristics, not forward carbon forecasts."
+          },
+          "tariff": {
+            "type": "object",
+            "description": "Optional variable household bill inputs; fixed monthly charges are excluded.",
+            "properties": {
+              "grid_fee_eur_kwh": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "supplier_markup_eur_kwh": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 2
+              },
+              "vat_percent": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 50
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "zone",
+          "duration_minutes"
+        ]
+      }
+    },
+    {
+      "name": "get_forecast",
+      "description": "Probabilistic price forecast up to 7 days ahead. Returns the P50 curve and any uncertainty bands included in the connected account. Accuracy is published daily at voltcast.com/accuracy.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string"
+          },
+          "horizon": {
+            "type": "string",
+            "enum": [
+              "48h",
+              "7d"
+            ]
+          }
+        },
+        "required": [
+          "zone"
+        ]
+      }
+    },
+    {
+      "name": "get_prices",
+      "description": "Day-ahead electricity prices in each zone's native currency and native market resolution. Connect an existing Voltcast account to access account-scoped data.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string",
+            "description": "Bidding zone code, e.g. 'DE-LU'"
+          },
+          "from": {
+            "type": "string",
+            "description": "ISO 8601 start (default: yesterday)"
+          },
+          "to": {
+            "type": "string",
+            "description": "ISO 8601 end (default: tomorrow)"
+          },
+          "resolution": {
+            "type": "string",
+            "enum": [
+              "native",
+              "hourly"
+            ]
+          }
+        },
+        "required": [
+          "zone"
+        ]
+      }
+    },
+    {
+      "name": "get_renewables",
+      "description": "Day-ahead wind and solar generation forecasts: the TSO official forecast and Voltcast model with uncertainty bands, realized generation, and disclosed head-to-head verification. Requires the corresponding existing account entitlement.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "zone": {
+            "type": "string",
+            "description": "Bidding zone code, e.g. 'DE-LU'"
+          },
+          "from": {
+            "type": "string",
+            "description": "ISO 8601 start"
+          },
+          "to": {
+            "type": "string",
+            "description": "ISO 8601 end"
+          }
+        },
+        "required": [
+          "zone"
+        ]
+      }
+    },
+    {
+      "name": "list_zones",
+      "description": "List all supported European bidding zones with codes, names, and capabilities. No auth required.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "required": []
+      }
+    }
+  ]
+}

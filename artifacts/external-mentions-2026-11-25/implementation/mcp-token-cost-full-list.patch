@@ -1,0 +1,207 @@
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 4c3e5a912..6deb418ee 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -26,7 +26,7 @@ Node 18.17 or newer. Keep runtime dependencies at one (`gpt-tokenizer`); `@anthr
+   HISTOR's Python implementation. A change that moves them changes every comparison with the population curve and
+   with HISTOR records, so it needs an issue and a matching change on HISTOR's side.
+ - **A finding has a code, a severity, a message that says what to do, and a test that fails without it.** Size it in
+-  tokens (`tokens`) only when fixing it would remove those tokens from every request; a prompt-cache cost goes in
++  tokens (`tokens`) only when fixing it would remove those tokens from the measured list. A prompt-cache cost goes in
+   `cacheTokens`.
+ - **A new client config** goes in `src/config.js` with its documented location and a parser test in
+   `test/config.test.js`. Cite the client's documentation in the pull request.
+diff --git a/README.md b/README.md
+index 42a18f840..dd08c522c 100644
+--- a/README.md
++++ b/README.md
+@@ -6,9 +6,10 @@
+ [![license](https://img.shields.io/badge/license-Apache--2.0%20OR%20MIT-blue)](#license)
+ [![data](https://img.shields.io/badge/data-HISTOR%20CC%20BY%204.0-6b6b66)](https://histor.modelmarket.dev/datasets/)
+ 
+-Every MCP server you connect sends its tool definitions to the model on every request, before you type a word.
+-`mcp-token-cost` tells you how many tokens that is: per server, per tool, per part of a tool, against
+-45,922 MCP servers measured in public, with the things that quietly break your prompt cache.
++`mcp-token-cost` counts a complete MCP tool list, with a breakdown by server, tool and schema field. Compare
++the count against 45,922 MCP servers measured in public and find changes that can disrupt prompt caching.
++The client decides which schemas reach the model. Some send the complete list, while clients with features
++such as Code Mode can expose discovery and execution tools and load individual schemas on demand.
+ 
+ ```bash
+ npx mcp-token-cost
+@@ -18,7 +19,7 @@ It reads the MCP config of Claude Desktop, Claude Code, Cursor, VS Code, Windsur
+ server's tools the way your client does, and prints:
+ 
+ ```text
+-MCP tool definitions: 28,632 tokens on every request  (o200k_base)
++MCP tool definitions: 28,632 tokens for the full list  (o200k_base)
+ ███····················· 14.3 % of a 200,000-token window · 5 servers, 93 tools
+ A typical MCP server costs 1,311 tokens (median of 45,922 packages and remote hosts in HISTOR, one list each, 2026-11-16); 90th percentile 8,200.
+ 
+@@ -37,14 +38,14 @@ Heaviest tools
+       806  notion › API-post-page  (description 17, schema 779) · heaviest property children 62
+       756  notion › API-query-data-source  (description 18, schema 727) · heaviest property filter_properties 47
+ 
+-Per 1,000 requests that send this list  (list prices; clients that load tools on demand send less)
++Per 1,000 requests that send this list  (list prices)
+   Claude Opus 5.5        $114.53 uncached ·    $5.86 cache kept warm ·  $143.16 cache rewritten every time
+   Claude Sonnet 5.5       $57.26 uncached ·    $2.93 cache kept warm ·   $71.58 cache rewritten every time
+   Claude Haiku 5.5         $2.86 uncached ·        – cache kept warm ·    $3.58 cache rewritten every time
+ 
+ Findings (1)
+   MED  CONTEXT_SHARE  (all)
+-       Tool definitions and instructions take 28,632 tokens, 14.3 % of a 200,000-token window, before the first message.
++       The full tool list and server instructions total 28,632 tokens, 14.3 % of a 200,000-token window.
+ ```
+ 
+ The demo above is `--offline` on a five-server config: nothing was started, every definition came from
+@@ -127,22 +128,21 @@ GitHub Actions (the table lands in the job summary):
+ | `LIST_ORDER_UNSTABLE` | Two `tools/list` reads in one session returned the same tools in another order. Tools come first in the prompt, so each new order is a full prompt-cache write. |
+ | `LIST_CONTENT_UNSTABLE` | Two reads returned different definitions: every refetch rewrites the cache from the tools onward. |
+ | `VOLATILE_TEXT` | A date, timestamp, UUID or session id inside a definition: it changes, and the cache with it. |
+-| `CONTEXT_SHARE` | The whole setup takes more than 10 % of the context window before the first message. |
++| `CONTEXT_SHARE` | The full tool list and server instructions would use more than 10 % of the context window. |
+ | `DUPLICATE_TOOL_NAME` | Two servers offer a tool with the same name. |
+ | `REPEATED_TEXT` | The same sentence in three or more descriptions of one server: once in the server's instructions is enough. |
+ | `LARGE_ENUM` | An enum with more than 40 values. |
+ | `LONG_DESCRIPTION`, `LARGE_SCHEMA` | Over 500 / 1,500 tokens. |
+ | `DEEP_SCHEMA` | More than 5 levels of properties and items. |
+ 
+-Each sized finding says how many tokens per request fixing it would save.
++Each sized finding estimates how many tokens fixing it would remove from the full list.
+ 
+ ## How it counts
+ 
+ Exactly the way [HISTOR](https://histor.modelmarket.dev) counts, so a local number, a HISTOR record and the
+-population curve agree to the token (checked in the test suite against HISTOR's Python reference): each tool is
+-sent as `{"name", "description", "input_schema"}` in compact JSON, a list costs the sum of its tools, and each part
+-is the JSON value as written. Server `instructions`, which clients put in the system prompt, are counted on their
+-own line.
++population curve agree to the token (checked in the test suite against HISTOR's Python reference). The counter
++serializes each tool as `{"name", "description", "input_schema"}` in compact JSON and adds the per-tool counts.
++Each part is counted as its JSON value. Server `instructions` are counted separately.
+ 
+ The population curve (`data/distribution.json`) comes from HISTOR's weekly snapshot of 2026-11-16 (CC BY 4.0),
+ rebuilt with `tools/build_distribution.py`: every listed server with a current tool list, 53,399 of them (27,440 npm
+@@ -154,6 +154,8 @@ largest 699,910.
+ ## What it does not tell you
+ 
+ - **What your client actually sends.** Some clients load tools on demand or drop fields; this counts the full list.
++- **Actual provider usage.** For a client with Code Mode, measure its model-facing tool payload and compare it
++  with the full catalogue. Read usage for the entire request from the provider's response.
+ - **The provider's own wrapping**, except with `--claude`.
+ - **Prices change.** The money table uses list prices in `data/prices.json` (dated); pass `--price` for yours.
+ - **Which servers are good.** The rank is a token count, not a quality score.
+diff --git a/src/cli.js b/src/cli.js
+index b2f62976a..f075ac2a7 100644
+--- a/src/cli.js
++++ b/src/cli.js
+@@ -234,7 +234,7 @@ export async function main(argv) {
+     const L = [`${rec.server.endpoint}  (${rec.server.page})`];
+     L.push(c ? `${fmt(c.total)} tokens, ${c.tools} tools: names ${fmt(c.parts.name)}, descriptions ${fmt(c.parts.description)}, input schemas ${fmt(c.parts.inputSchema)} · observed ${String(rec.server.lastObserved).slice(0, 10)}` : "no tool list recorded");
+     if (rec.changes.length) {
+-      L.push("", "Recent changes (before → after, tokens per request):");
++      L.push("", "Recent changes (before → after, full-list tokens):");
+       for (const ch of rec.changes) {
+         const t = ch.totals?.sent ?? {};
+         const v = ch.toPackageVersion ? ` (${ch.fromPackageVersion ?? "?"} → ${ch.toPackageVersion})` : "";
+diff --git a/src/findings.js b/src/findings.js
+index 4ce8ec42a..9cbe4c3c8 100644
+--- a/src/findings.js
++++ b/src/findings.js
+@@ -1,6 +1,6 @@
+ // What in a tool list costs more than it needs to, or breaks the prompt cache.
+ // Each finding: {code, severity: "high"|"medium"|"low"|"info", server, tool?, message, tokens?}.
+-// "tokens" is what fixing it would save per request, when that can be stated.
++// "tokens" is the estimated reduction in the measured list when a finding can be sized.
+ import { countText } from "./count.js";
+ 
+ const VOLATILE = [
+@@ -104,11 +104,11 @@ export function setupFindings(results, { window = 200000 } = {}) {
+   }
+   for (const [tool, servers] of owners) if (new Set(servers).size > 1)
+     f.push({ code: "DUPLICATE_TOOL_NAME", severity: "medium", server: [...new Set(servers)].join(", "), tool,
+-      message: `"${tool}" is offered by ${new Set(servers).size} servers. Clients rename or drop one of them, and the model sees near-identical definitions twice.` });
++      message: `"${tool}" is offered by ${new Set(servers).size} servers. A client that loads both may expose them under different names.` });
+   const total = results.reduce((s, r) => s + (r.count?.total ?? 0) + (r.instructionsTokens ?? 0), 0);
+   const share = total / window;
+   if (share > 0.1)
+     f.push({ code: "CONTEXT_SHARE", severity: share > 0.25 ? "high" : "medium", server: "(all)",
+-      message: `Tool definitions and instructions take ${total.toLocaleString("en-US")} tokens, ${(share * 100).toFixed(1)} % of a ${window.toLocaleString("en-US")}-token window, before the first message.` });
++      message: `The full tool list and server instructions total ${total.toLocaleString("en-US")} tokens, ${(share * 100).toFixed(1)} % of a ${window.toLocaleString("en-US")}-token window.` });
+   return f;
+ }
+diff --git a/src/report/html.js b/src/report/html.js
+index bb0c16cb5..fed282b3f 100644
+--- a/src/report/html.js
++++ b/src/report/html.js
+@@ -45,7 +45,7 @@ export function render(m) {
+   return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MCP token cost</title><style>${CSS}</style></head><body><main>
+ <h1>MCP tool token cost</h1><div class="muted">${esc(m.generatedAt)} · tokenizer ${esc(m.tokenizer)}</div>
+ <div class="cards">
+-<div class="card"><span class="muted">Sent on every request</span><b>${fmt(t.sent)}</b><span class="muted">tokens</span></div>
++<div class="card"><span class="muted">Full tool list</span><b>${fmt(t.sent)}</b><span class="muted">tokens</span></div>
+ <div class="card"><span class="muted">Share of a ${fmt(m.window)} window</span><b>${(t.windowShare * 100).toFixed(1)} %</b><div class="meter"><span style="width:${Math.min(100, t.windowShare * 100).toFixed(1)}%"></span></div></div>
+ <div class="card"><span class="muted">Servers · tools</span><b>${t.servers} · ${t.tools}</b>${t.failed ? `<span class="high">${t.failed} could not be read</span>` : ""}</div>
+ ${t.claude != null ? `<div class="card"><span class="muted">Claude's count, with its tool-use prompt</span><b>${fmt(t.claude)}</b></div>` : ""}
+@@ -55,7 +55,7 @@ ${pop ? `<div class="card"><span class="muted">Typical MCP server</span><b>${fmt
+ <div class="wrap"><table><thead><tr><th>Server</th><th>Tools</th><th>Tokens</th><th>Split</th><th>Rank</th><th>Claude</th></tr></thead><tbody>${rows}</tbody></table></div>
+ <p class="muted">Rank: the share of MCP packages and remote hosts HISTOR observes (one list each) whose list costs less.</p>
+ ${tools ? `<h2>Heaviest tools</h2><div class="wrap"><table><thead><tr><th>Tokens</th><th>Tool</th><th>Split</th></tr></thead><tbody>${tools}</tbody></table></div>` : ""}
+-${money ? `<h2>Per 1,000 requests that send this list</h2><div class="wrap"><table><thead><tr><th>Model</th><th>Uncached</th><th>Cache kept warm</th><th>Cache rewritten every time</th></tr></thead><tbody>${money}</tbody></table></div><p class="muted">List prices. A client that loads tools on demand sends less.</p>` : ""}
++${money ? `<h2>Per 1,000 requests that send this list</h2><div class="wrap"><table><thead><tr><th>Model</th><th>Uncached</th><th>Cache kept warm</th><th>Cache rewritten every time</th></tr></thead><tbody>${money}</tbody></table></div><p class="muted">List prices. Clients may expose a different set of tools on each request.</p>` : ""}
+ <h2>Findings (${m.findings.length})</h2>${findings ? `<ul>${findings}</ul>` : `<p class="muted">None.</p>`}
+ <footer>mcp-token-cost · counted as each tool's {name, description, input_schema} in compact JSON${pop ? ` · population: <a href="${esc(pop.dataset)}">HISTOR snapshot ${esc(String(pop.createdAt).slice(0, 10))}</a> (CC BY 4.0)` : ""}</footer>
+ </main></body></html>
+diff --git a/src/report/markdown.js b/src/report/markdown.js
+index 82b49c594..41e554d10 100644
+--- a/src/report/markdown.js
++++ b/src/report/markdown.js
+@@ -5,7 +5,7 @@ const cell = (s) => String(s).replace(/\|/g, "\\|");
+ export function render(m, { title = "MCP tool token cost" } = {}) {
+   const t = m.totals;
+   const L = [`## ${title}`, ""];
+-  L.push(`**${fmt(t.sent)} tokens** of tool definitions on every request, ${(t.windowShare * 100).toFixed(1)} % of a ${fmt(m.window)}-token window (${m.tokenizer}${t.claude != null ? `; Claude: ${fmt(t.claude)}` : ""}).`);
++  L.push(`**${fmt(t.sent)} tokens** for the full tool list, ${(t.windowShare * 100).toFixed(1)} % of a ${fmt(m.window)}-token window (${m.tokenizer}${t.claude != null ? `; Claude: ${fmt(t.claude)}` : ""}).`);
+   if (m.population) L.push("", `A typical MCP server costs ${fmt(m.population.median)} tokens (median of ${fmt(m.population.owners)} packages and remote hosts in HISTOR, one list each, ${String(m.population.createdAt).slice(0, 10)}).`);
+   L.push("", "| Server | Tools | Tokens | Descriptions | Input schemas | Rank among MCP servers |", "|---|---:|---:|---:|---:|---:|");
+   for (const s of m.servers) {
+@@ -17,7 +17,7 @@ export function render(m, { title = "MCP tool token cost" } = {}) {
+     L.push("", "</details>");
+   }
+   if (m.money.length) {
+-    L.push("", "| Per 1,000 requests | Uncached | Cache kept warm | Cache rewritten every time |", "|---|---:|---:|---:|");
++    L.push("", "| Per 1,000 requests that send this list | Uncached | Cache kept warm | Cache rewritten every time |", "|---|---:|---:|---:|");
+     for (const r of m.money) L.push(`| ${r.model} | ${usd(r.uncached)} | ${usd(r.cachedWarm)} | ${usd(r.cacheRewritten)} |`);
+   }
+   if (m.findings.length) {
+diff --git a/src/report/text.js b/src/report/text.js
+index a5c4fb800..2bef43190 100644
+--- a/src/report/text.js
++++ b/src/report/text.js
+@@ -15,7 +15,7 @@ export function render(m) {
+   const out = [];
+   const t = m.totals;
+   const claude = t.claude != null ? `; Claude counts ${fmt(t.claude)} with its tool-use prompt` : "";
+-  out.push(bold(`MCP tool definitions: ${fmt(t.sent)} tokens on every request`) + dim(`  (${m.tokenizer}${claude})`));
++  out.push(bold(`MCP tool definitions: ${fmt(t.sent)} tokens for the full list`) + dim(`  (${m.tokenizer}${claude})`));
+   out.push(
+     `${bar(t.windowShare)} ${(t.windowShare * 100).toFixed(1)} % of a ${fmt(m.window)}-token window · ` +
+       `${t.servers} server${t.servers === 1 ? "" : "s"}, ${t.tools} tools` +
+@@ -45,14 +45,14 @@ export function render(m) {
+     out.push("");
+   }
+   if (m.money.length) {
+-    out.push(bold("Per 1,000 requests that send this list") + dim("  (list prices; clients that load tools on demand send less)"));
++    out.push(bold("Per 1,000 requests that send this list") + dim("  (list prices)"));
+     for (const r of m.money) {
+       out.push(`  ${pad(r.model, 20)} ${pad(usd(r.uncached), 9, true)} uncached · ${pad(usd(r.cachedWarm), 8, true)} cache kept warm · ${pad(usd(r.cacheRewritten), 8, true)} cache rewritten every time`);
+     }
+     out.push("");
+   }
+   if (m.findings.length) {
+-    out.push(bold(`Findings (${m.findings.length})`) + (m.savings ? dim(`  the sized ones add up to ~${fmt(m.savings)} tokens per request`) : ""));
++    out.push(bold(`Findings (${m.findings.length})`) + (m.savings ? dim(`  estimated full-list savings: ~${fmt(m.savings)} tokens`) : ""));
+     for (const f of m.findings.slice(0, 30)) {
+       out.push(`  ${SEV[f.severity]()} ${f.code}  ${f.server}${f.tool ? ` › ${f.tool}` : ""}`);
+       out.push(`       ${f.message}`);

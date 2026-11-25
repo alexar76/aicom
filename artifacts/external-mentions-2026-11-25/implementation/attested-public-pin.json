@@ -1,0 +1,22 @@
+{
+  "checked_on": "2026-11-25",
+  "public_commit": "https://github.com/alexar76/attested-memory/commit/84e7057bd2ed88344d99066f1827933a5cb6cda5",
+  "revision": "84e7057bd2ed88344d99066f1827933a5cb6cda5",
+  "verified_files": [
+    {
+      "path": "tests/test_provenance_crosscheck.py",
+      "public_sha256": "0628978979633feec3e66d1a7244355adb46e4ababa69a8c764ac6a465232fb7",
+      "byte_identical_to_local": true
+    },
+    {
+      "path": "memory-market/src/memory_market/reconcile_provenance.py",
+      "public_sha256": "a77b1124e10e4ccab9f6100659c9117187b64f7a9f67024f326bea0d237fa9fe",
+      "byte_identical_to_local": true
+    },
+    {
+      "path": "scripts/systemd/attested-provenance-reconcile.timer",
+      "public_sha256": "72a295271e5b563590814bf24cd0d361d8fe24c0ae046f466ee433076a6af3aa",
+      "byte_identical_to_local": true
+    }
+  ]
+}

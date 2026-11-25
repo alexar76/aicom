@@ -12,7 +12,7 @@ Checked 2026-11-25:
 - Our kit (esim-kit/rails/src/refund.js): refund keyed by a stable reference, reserved before the first call,
   EIP-3009 nonce saved before settle; a reserved refund with no result refuses a retry ("reconcile its settlement
   before retrying") and waits for the operator. So we have the same open gap as theirs (no automatic refund reconciler).
-- Not checked: the three refund transactions on Base.
+- Verified on Base: three successful transfers of 1.61 USDC each went from the seller's wallet to the original payer's wallet. The documented lookup for the published purchase returned `found: false` on 2026-11-25. The order-level association still needs the operator's status record. [Captured evidence](../external-mentions-2026-11-25/implementation/reloadpi-base-evidence.json)
 
 No live purchase without the owner's decision (their $4 eSIM = moving real funds).
 
@@ -22,18 +22,20 @@ Hi Cross,
 
 Thanks for the detailed answer. Replying here is fine for us.
 
-The walkthrough from the on-chain examples is enough to start. Could you send, for one of the three topup orders in
-x402-signals issue #1, the order id, the purchase tx, the time it entered FULFILLMENT_FAILED and the refund tx? We will
-read the chain side ourselves and line it up with the states in your status endpoint.
+I checked the three published refund receipts on Base. Each shows 1.61 USDC returning to the payer. The lookup by
+the published purchase transaction starting with `0xacffa5` returned `found: false` today. For that order, could you
+share the order ID or a stable redacted reference, the UTC time it entered `FULFILLMENT_FAILED` and the refund
+transaction hash? A redacted status record would let us tie the checkout and refund to the same order.
 
 On the retry gaps you listed, we are in the same place. Our kit keys each refund by a stable reference, reserves it
 before the first external call, and refuses a second attempt while an earlier one has no result. An uncertain refund
 goes to the operator, and we have no automatic reconciler either. One thing that may help with "a send that throws
 after broadcast": we pay refunds as an EIP-3009 transferWithAuthorization and save the authorization nonce before
-submitting. A reconciler can then ask the USDC contract authorizationState(payer, nonce). If it returns true, the
-transfer went through. If it is still unused, resubmitting the same signed authorization can move the money at most
-once. If you send refunds as plain transfers, the equivalent is to persist the signed raw transaction and its nonce
-before broadcasting it.
+submitting. A reconciler can then ask the USDC contract for `authorizationState(authorizer, nonce)`. A true result means
+the authorization was used or cancelled. For a used authorization, the reconciler would check the receipt for
+`AuthorizationUsed` and the expected USDC `Transfer`. If the authorization is still unused, the same signed
+authorization can settle at most once. For plain transfers, saving the signed transaction and nonce before broadcasting
+gives the operator a transaction to reconcile.
 
 Agreed that delivered eSIMs are not refundable. The case we care about is the order that fails at the carrier after
 payment, which your topups already show.
