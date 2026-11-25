@@ -1,0 +1,95 @@
+{
+  "atlas": {
+    "commit": "7f203a21fd5c00d3c9fd2218defce1acc39359f8",
+    "published_local": "2026-11-25T19:06:39+01:00",
+    "source_pin": "84e7057bd2ed88344d99066f1827933a5cb6cda5",
+    "public_page": "https://neoneye.github.io/agent-memory-atlas/systems/attested-memory/",
+    "public_page_contains_pin": true,
+    "marks": [
+      "trust_state",
+      "scope_enforced",
+      "audit_log",
+      "negative_eval"
+    ],
+    "marks_total": 7,
+    "reviewer_reported_claims_verified_in_source": 11,
+    "checks": [
+      {
+        "name": "report-build-status",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/neoneye/agent-memory-atlas/actions/runs/45671753558/job/139408779192"
+      },
+      {
+        "name": "deploy",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/neoneye/agent-memory-atlas/actions/runs/45671753558/job/139408779021"
+      },
+      {
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/neoneye/agent-memory-atlas/actions/runs/45671753558/job/139408597828"
+      },
+      {
+        "name": "build-and-validate",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/neoneye/agent-memory-atlas/actions/runs/45671753773/job/139408590150"
+      }
+    ]
+  },
+  "production_timer": {
+    "host_alias": "attested",
+    "unit": "attested-provenance-reconcile.timer",
+    "load_state": "loaded",
+    "unit_file_state": "enabled",
+    "active_state": "active",
+    "sub_state": "waiting",
+    "last_trigger_local": "2026-11-25T19:23:21+01:00",
+    "next_trigger_local": "2026-11-25T20:23:39+01:00",
+    "service_result": "success",
+    "exit_code": 0,
+    "manual_install_covered_by_rollout": "ROLLOUT.md"
+  },
+  "remaining_questions": [
+    "Actor-level authorization on evidence-pack reads",
+    "Privacy of deterministic references in receipts",
+    "Preserved grant/revoke history",
+    "Independent anchoring outside the shared database",
+    "Installer for the existing systemd files"
+  ],
+  "public_sources": {
+    "commit": {
+      "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits/7f203a21fd5c00d3c9fd2218defce1acc39359f8",
+      "http": 200,
+      "checked_at": "2026-11-25T19:16:58+00:00",
+      "sha256": "2fd361a3e79e7ab0113b182c79d67c4be634e2e66acfae3a7f9c8612333dbdf5"
+    },
+    "report": {
+      "url": "https://raw.githubusercontent.com/neoneye/agent-memory-atlas/7f203a21fd5c00d3c9fd2218defce1acc39359f8/content/systems/attested-memory.md",
+      "http": 200,
+      "checked_at": "2026-11-25T19:16:56+00:00",
+      "sha256": "c2bd10148a8d68c74bfff039f12c2c8a4d7db2088ae401351fe49b0718e82576"
+    },
+    "page": {
+      "url": "https://neoneye.github.io/agent-memory-atlas/systems/attested-memory/?rev=7f203a21fd5c00d3c9fd2218defce1acc39359f8",
+      "http": 200,
+      "checked_at": "2026-11-25T19:16:57+00:00",
+      "sha256": "ec7c8e04fb4898f35710bb5c3500f7b2efe2fb321eafcef8ab3448f8e80ad230"
+    },
+    "checks": {
+      "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits/7f203a21fd5c00d3c9fd2218defce1acc39359f8/check-runs",
+      "http": 200,
+      "checked_at": "2026-11-25T19:16:56+00:00",
+      "sha256": "794f1f393d5527d2f1637e5d421433a921f226e076cf22643d1882dfc4959161"
+    },
+    "attested-main": {
+      "url": "https://api.github.com/repos/alexar76/attested-memory/commits/main",
+      "http": 200,
+      "checked_at": "2026-11-25T19:16:57+00:00",
+      "sha256": "959c2f493d947b68fa8035b3879482decfb5346d960c8e667609eb4cade11eee"
+    }
+  }
+}
