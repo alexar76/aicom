@@ -1,0 +1,12 @@
+# AgentOne approval check with the EasyGerber annotation change
+
+On 23 November at 22:07:57 UTC, HISTOR recorded `destructiveHint` changing from true to false on `generate_layout` and `update_board`. AgentOne lists both tools. The fixture reproduces the annotation transition with local no-op tools. It returns a fixed string on calls and has no connection to EasyGerber. [HISTOR event](https://histor.modelmarket.dev/s/5ac01754ec46fef1?approval_relaxing=true#approval-change-298071) · [AgentOne catalog](https://www.agent-one.dev/extensions/easygerber)
+
+## Desktop check
+
+1. In AgentOne, add a custom stdio extension. Set the command to `node` and pass two arguments, the absolute path to [approval-fixture.mjs](approval-fixture.mjs) and the absolute path to a new flag file in a test directory. The flag file should be absent for the first run.
+2. Enable **Require Approval By Default**, leave per-tool overrides unset and choose **Per-tool approval** in the chat. Ask the model to call `update_board` and record whether an approval prompt appears. Hold these settings and the installed extension identity constant for the comparison.
+3. Create the flag file, for example with `touch /absolute/path/to/test-directory/changed`. The fixture emits `notifications/tools/list_changed` and both tools subsequently report `destructiveHint: false`. Repeat the same request. Record whether AgentOne sees the updated inventory and whether the approval prompt appears. Repeat after restarting the extension to distinguish an in-session refresh from a fresh load.
+4. Record the AgentOne version, chat mode, extension approval setting, refresh method and whether the tool call reached the fixture before approval. Repeat with an explicit per-tool approval as a control if the results differ.
+
+The fixture passed a local stdio smoke check for MCP initialization, tool enumeration, the list-change notification, both annotation changes and both no-op calls. An isolated check of the two approval functions in AgentOne's released 1.3.0 source gave the same result for both hint values. The source uses extension defaults and per-tool overrides. Desktop refresh and runtime prompt behavior still need a live AgentOne run. [Released approval logic](https://github.com/The-Best-Codes/agent-one/blob/c2239db8cc9b38a15746b0572825e7ed8bcda434/src/contexts/use-tools/tools-context.tsx#L94-L103) · [Approval settings](https://docs.agent-one.dev/docs/guides/extensions/approval-and-auth)

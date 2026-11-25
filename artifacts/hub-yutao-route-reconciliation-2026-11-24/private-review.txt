@@ -1,0 +1,16 @@
+Hi YuTao,
+
+Here is the route-level follow-up we promised in Hub issue #23. We compared exact HTTP methods and URLs. On 13 November the Hub served 11 of 20 fixed Insight routes and all 4 PriorSeal routes in the observed catalog.
+
+At 08:25 UTC on 21 November the Hub did not obtain a usable Insight discovery document. The final discovery attempt, GET /.well-known/x402.json, returned HTTP 402. The 14:31 UTC observation found 21 Insight routes. Between 14:31:30 and 14:32:02 UTC, 10 returned HTTP 503. Three Base routes still produced usable quotes and stayed in the catalog.
+
+Nine routes with 503 returned usable Base quotes in the next saved observation at 02:45 UTC on 22 November. They were GET /api/v1/safety/pre-trade, preflight, hyperliquid-perp-guard, prediction-guard and swap-intent, and POST /api/v1/markets/settlement-evidence/grade, /api/v1/oracle-config/snapshot, /api/v1/safety/oracle-watch-window and /api/v1/safety/position-lifecycle. The tenth, GET /api/v1/safety/hyperevm-lending-guard, returned 402 again and remained outside the catalog because the Hub could not price its quote.
+
+On 24 November at 03:52 UTC, the Hub again showed 12 of 21 fixed Insight routes and all 4 PriorSeal routes. The only addition since 13 November is GET /api/v1/safety/tokenized-stock-guard, with a Base USDC quote. It was one of the three Base routes that stayed listed in the afternoon observation on 21 November. The 20 earlier Insight routes have the same listing outcomes as on 13 November. Eight of the 21 routes quote assets the Hub cannot price on Solana, Monad, HyperEVM or BNB Chain. POST /api/mcp still returned 401 to the Hub's generic unpaid probe and remains outside the observed catalog.
+
+These are unpaid observations. The existing payTo pin and the separate observed-catalog treatment remain in place. The current snapshot is at https://modelmarket.dev/ai-market/v2/federation/observed-sellers.
+
+Could you check whether the discovery response and the 503 window on 21 November match anything in your logs? We can confirm what reached the Hub. The observations alone do not identify which upstream component returned those responses.
+
+Thanks,
+Alex

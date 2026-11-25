@@ -1,0 +1,17 @@
+Hi Sergei,
+
+Thanks for offering to align the test vectors. Let's start with three inputs that reuse the same synthetic tool and distinguish changes to its contract from changes to its annotations.
+
+- extras-present — baseline.
+- extras-annotation-flipped — changes destructiveHint. Expect the same contract digest and a different extras digest.
+- extras-contract-changed — changes the description. Expect a different contract digest and the same extras digest.
+
+The inputs, canonical JSON and expected hashes in both SRI and hex are in this pinned file. All 92 vectors passed our Python, JavaScript and Go references.
+https://github.com/alexar76/mcp-tool-set-digest/blob/13046f6e1b73e306927e18029b1d0fba59fbc4c5/vectors/vectors.json
+
+Could you run those three and share the two digests for each? If you have a reference OCX receipt fixture, could you point me to it so we can run the same receipt on both sides?
+
+For the first joint test I'd keep the §9.2 receipt as it is and use a separate test record identifying the digest profile and both digests. Once we agree on the values, would you prefer a versioned receipt field covered by the orchestrator's signature, or separate signed evidence that references the receipt?
+
+Thanks,
+Alex

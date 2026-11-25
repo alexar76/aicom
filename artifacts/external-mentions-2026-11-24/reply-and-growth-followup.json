@@ -1,0 +1,69 @@
+{
+  "observed_date": "2026-11-24",
+  "baseline": [
+    "artifacts/external-mentions-2026-11-24/evidence.json",
+    "artifacts/external-mentions-2026-11-24/deep-followup.json",
+    "artifacts/external-mentions-2026-11-21/evidence.json"
+  ],
+  "public_followups": [
+    {
+      "component": "AIMarket Plugins",
+      "author": "wondermuse",
+      "posted_at_utc": "2026-11-17T03:27:43Z",
+      "source": "https://github.com/alexar76/aimarket-plugins/issues/4",
+      "observed": "Open with zero comments. The author invites a reviewed HOL Guard profile and names list_oracle_capabilities. The native GitHub query author:wondermuse \"HOL Guard profile\" is:issue returned 71 results, and an analogous issue has the same builder handoff.",
+      "related_source": "https://github.com/hypnosis/ssh-mcp-server/issues/27"
+    },
+    {
+      "component": "AgentDojo",
+      "author": "Gautam R. Patil, TRUSCOR",
+      "posted_at_utc": "2026-11-16T21:27:58Z",
+      "source": "https://github.com/ethz-spylab/agentdojo/issues/235#issuecomment-6929914568",
+      "observed": "The independently published remeasurement was previously recorded as a citation. Rereading the thread found that its author offered a separate issue or PR and that this offer is still the last public comment."
+    },
+    {
+      "component": "ModelMarket, Insight and PriorSeal",
+      "public_promise": "https://github.com/alexar76/aimarket-hub/issues/23#issuecomment-7065515986",
+      "source": "https://modelmarket.dev/ai-market/v2/federation/observed-sellers",
+      "data_timestamp_utc": "2026-11-24T03:52:25Z",
+      "observed": "The most recent public reply promised an endpoint-level follow-up through the review page. The public observed feed shows Insight 12 of 21 routes served, all on Base, and PriorSeal 4 of 4. The 13 November public reply reported 11 for Insight. No later public comment. The private review page was outside this check."
+    }
+  ],
+  "reuse_and_growth": [
+    {
+      "component": "HISTOR",
+      "source": "https://github.com/OWASP/secure-agent-playbook/pull/34",
+      "source_commit": "https://github.com/OWASP/secure-agent-playbook/blob/611fe9c8e54d679bb79aa68c9825bba53da8e52b/plugins/ai-security-skills/plays/mcp-server-review.md",
+      "observed": "Open proposal from Dee-Tee11. It cites 272 annotation-only changes and 17,401 of 21,401 changes with the same serverInfo.version in HISTOR. The proposed audit has an unchanged-version test that flips readOnlyHint. The link appeared in a previous raw archive, but this pass verified the actual proposal and diff."
+    },
+    {
+      "component": "HISTOR and QAmcp",
+      "sources": [
+        "https://www.reddit.com/r/cybersecurity/comments/1y1tvxi/anyone_governing_which_mcp_tools_employees_ai/",
+        "https://www.reddit.com/r/ClaudeAI/comments/1y1turs/do_you_check_what_tools_an_mcp_server_gives_your/",
+        "https://registry.npmjs.org/qamcp-cli/latest"
+      ],
+      "observed": "QAmcp's maintainer asks how teams handle possibly wrong safety hints and changes to external MCP tool sets. The publisher handle matches the npm maintainer. A FastMCP operator describes the overhead of maintaining tool allowlists.",
+      "proposed_next_step": "Compare the independent observations on a few of the same servers against the HISTOR confirmation-hint Atom feed."
+    },
+    {
+      "component": "HISTOR, AgentOne and EasyGerber",
+      "sources": [
+        "https://www.agent-one.dev/extensions/easygerber",
+        "https://histor.modelmarket.dev/feed.xml?watch=5ac01754ec46fef1&approval_relaxing=true"
+      ],
+      "event_at_utc": "2026-11-23T22:07:57Z",
+      "observed": "AgentOne lists both affected tools. The historical event records destructiveHint true to false on generate_layout and update_board. AgentOne's catalog warns that it cannot verify that the tools will not change. The client's confirmation behavior has not been observed.",
+      "proposed_next_step": "Use the recorded EasyGerber change as a candidate for a joint client-side review test."
+    }
+  ],
+  "verified_existing_replies": [
+    "https://github.com/alexar76/warden/pull/15#issuecomment-7123843806",
+    "https://mailarchive.ietf.org/arch/msg/agentproto/OZuF6vxu0IBUQnE39hbWJdxvXLE/",
+    "https://github.com/alexar76/histor/issues/13#issuecomment-7065498379",
+    "https://github.com/alexar76/mcp-tool-set-digest/issues/1#issuecomment-7105304957",
+    "https://github.com/punkpeye/awesome-mcp-servers/pull/18166#issuecomment-7121635357",
+    "https://news.ycombinator.com/item?id=50223414"
+  ],
+  "coverage_and_limits": "Read public threads via native GitHub HTML, IETF archive, Reddit search snapshots, DEV API, HN, package and product records. Reddit native search and Bluesky native search returned HTTP 403. The conclusions cover the public material retrieved in this pass."
+}

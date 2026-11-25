@@ -1,0 +1,189 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index b297fee1dcb14fb353324830b5584b8fbd3a22f0..cf26da3e86f8b1e240de5040415dee92035e8b6b 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -22,6 +22,8 @@ jobs:
+         with:
+           node-version: ${{ matrix.node }}
+           cache: npm
++      - name: Test Canari attestation adapter
++        run: bash integrations/canari/run-tests.sh
+       - run: npm ci
+       - run: npm run typecheck
+       - run: npm run build
+diff --git a/integrations/canari/test/verify-attestation.test.mjs b/integrations/canari/test/verify-attestation.test.mjs
+index c09669e27cb15dea9f9f2b4a549ef838fb9831a4..9232aee0aebe32f0671c4602c5a9a72ccf098ad8 100644
+--- a/integrations/canari/test/verify-attestation.test.mjs
++++ b/integrations/canari/test/verify-attestation.test.mjs
+@@ -1,6 +1,7 @@
+ // Run: node --test integrations/canari/test/
+ import { test } from 'node:test';
+ import assert from 'node:assert/strict';
++import { generateKeyPairSync, sign } from 'node:crypto';
+ import { readFileSync } from 'node:fs';
+ import { dirname, join } from 'node:path';
+ import { fileURLToPath } from 'node:url';
+@@ -14,17 +15,47 @@ const bundle = read('bundle-current.json');
+ const expired = read('bundle-expired.json');
+ 
+ const NOW = Date.parse('2026-11-24T12:00:00Z');
++const artifactSha256 = '1172cacf35752f7485cb06b020efce4ad8c300d32d5ded08c3f454b5247882d6';
++const otherSha256 = 'ab'.repeat(32);
++const options = { now: NOW, expectedArtifactSha256: artifactSha256 };
++
++const { privateKey, publicKey } = generateKeyPairSync('ed25519');
++// The last 32 bytes of this Ed25519 SPKI are Canari's raw public key.
++const rawPublicKey = publicKey.export({ type: 'spki', format: 'der' }).subarray(-32);
++const testKey = {
++  keytype: 'ed25519',
++  scheme: 'ed25519',
++  keyval: { public: rawPublicKey.toString('hex') },
++};
++
++function signedBundle(edit = () => {}, payloadType = bundle.envelope.payloadType) {
++  const statement = JSON.parse(Buffer.from(bundle.envelope.payload, 'base64'));
++  edit(statement);
++  const body = Buffer.from(JSON.stringify(statement));
++  const header = Buffer.from(`DSSEv1 ${Buffer.byteLength(payloadType)} ${payloadType} ${body.length} `);
++  return {
++    envelope: {
++      payloadType,
++      payload: body.toString('base64'),
++      signatures: [{ sig: sign(null, Buffer.concat([header, body]), privateKey).toString('base64') }],
++    },
++    payload: structuredClone(statement.predicate),
++  };
++}
+ 
+ test('a current attestation with verdict pass is allowed', () => {
+-  const r = verifyCanariAttestation(bundle, key, { now: NOW });
++  const r = verifyCanariAttestation(bundle, key, options);
+   assert.equal(r.decision, 'allow', r.reasons.join('; '));
+   assert.equal(r.verdict, 'pass');
+-  assert.match(r.artifactSha256, /^[0-9a-f]{64}$/);
++  assert.equal(r.artifactSha256, artifactSha256);
+   assert.equal(r.subject.registry, 'pypi');
+ });
+ 
+ test('an expired attestation is blocked even though the signature is valid', () => {
+-  const r = verifyCanariAttestation(expired, key, { now: NOW });
++  const r = verifyCanariAttestation(expired, key, {
++    now: NOW,
++    expectedArtifactSha256: '3a673f3b3c7d94dbb0a67d5ba52a309b94394d687f2a231f8a20a6dc4f9bf266',
++  });
+   assert.equal(r.decision, 'block');
+   assert.match(r.reasons.join(' '), /expired/);
+ });
+@@ -32,7 +63,7 @@ test('an expired attestation is blocked even though the signature is valid', ()
+ test('editing the unsigned mirror is caught', () => {
+   const tampered = structuredClone(bundle);
+   tampered.payload.verdict = 'fail';
+-  const r = verifyCanariAttestation(tampered, key, { now: NOW });
++  const r = verifyCanariAttestation(tampered, key, options);
+   assert.equal(r.decision, 'block');
+   assert.match(r.reasons.join(' '), /does not match the signed predicate/);
+ });
+@@ -40,9 +71,9 @@ test('editing the unsigned mirror is caught', () => {
+ test('editing the signed body breaks the signature', () => {
+   const tampered = structuredClone(bundle);
+   const body = JSON.parse(Buffer.from(tampered.envelope.payload, 'base64').toString('utf8'));
+-  body.predicate.verdict = 'pass';
++  body.predicate.verdict = 'fail';
+   tampered.envelope.payload = Buffer.from(JSON.stringify(body)).toString('base64');
+-  const r = verifyCanariAttestation(tampered, key, { now: NOW });
++  const r = verifyCanariAttestation(tampered, key, options);
+   assert.equal(r.decision, 'block');
+   assert.match(r.reasons.join(' '), /signature/);
+ });
+@@ -50,18 +81,88 @@ test('editing the signed body breaks the signature', () => {
+ test('a different key cannot verify the bundle', () => {
+   const other = { keytype: 'ed25519', scheme: 'ed25519',
+                   keyval: { public: '11'.repeat(32) } };
+-  const r = verifyCanariAttestation(bundle, other, { now: NOW });
++  const r = verifyCanariAttestation(bundle, other, options);
+   assert.equal(r.decision, 'block');
+ });
+ 
+ test('a malformed key is refused with a reason, not a throw', () => {
+-  const r = verifyCanariAttestation(bundle, { keyval: {} }, { now: NOW });
++  const r = verifyCanariAttestation(bundle, { keyval: {} }, options);
+   assert.equal(r.decision, 'block');
+   assert.match(r.reasons.join(' '), /public key/);
+ });
+ 
+ test('a non-envelope is refused', () => {
+-  const r = verifyCanariAttestation({ payload: {} }, key, { now: NOW });
++  const r = verifyCanariAttestation({ payload: {} }, key, options);
+   assert.equal(r.decision, 'block');
+   assert.match(r.reasons.join(' '), /DSSE envelope/);
+ });
++
++test('a correctly signed envelope can be verified without an unsigned mirror', () => {
++  const signed = signedBundle();
++  delete signed.payload;
++  const r = verifyCanariAttestation(signed, testKey, options);
++  assert.equal(r.decision, 'allow', r.reasons.join(' '));
++});
++
++test('a bound attestation with verdict pass-with-findings is sent to review', () => {
++  const signed = signedBundle((s) => { s.predicate.verdict = 'pass-with-findings'; });
++  const r = verifyCanariAttestation(signed, testKey, options);
++  assert.equal(r.decision, 'review', r.reasons.join(' '));
++});
++
++for (const [label, opts] of [
++  ['missing', { now: NOW }],
++  ['malformed', { ...options, expectedArtifactSha256: 'not-a-sha256' }],
++  ['mismatched', { ...options, expectedArtifactSha256: otherSha256 }],
++]) {
++  test(`a signed pass is blocked with a ${label} expected digest`, () => {
++    const r = verifyCanariAttestation(bundle, key, opts);
++    assert.equal(r.decision, 'block');
++  });
++}
++
++for (const [label, edit] of [
++  ['a missing in-toto subject', (s) => { delete s.subject; }],
++  ['a missing in-toto digest', (s) => { delete s.subject[0].digest.sha256; }],
++  ['a missing Canari digest', (s) => { delete s.predicate.subject.artifact_sha256; }],
++  ['a malformed in-toto digest', (s) => { s.subject[0].digest.sha256 = 'not-a-sha256'; }],
++  ['a malformed Canari digest', (s) => { s.predicate.subject.artifact_sha256 = 'not-a-sha256'; }],
++  ['an in-toto digest that disagrees with Canari', (s) => { s.subject[0].digest.sha256 = otherSha256; }],
++  ['a Canari digest that disagrees with in-toto', (s) => { s.predicate.subject.artifact_sha256 = otherSha256; }],
++]) {
++  test(`a signed pass is blocked with ${label}`, () => {
++    const r = verifyCanariAttestation(signedBundle(edit), testKey, options);
++    assert.equal(r.decision, 'block');
++  });
++}
++
++for (const [label, edit] of [
++  ['a missing expiry', (s) => { delete s.predicate.expires_at; }],
++  ['an invalid expiry', (s) => { s.predicate.expires_at = 'not-a-timestamp'; }],
++  ['an expiry exactly at the current time', (s) => { s.predicate.expires_at = new Date(NOW).toISOString(); }],
++  ['a missing in-toto statement type', (s) => { delete s._type; }],
++  ['an unsupported in-toto statement type', (s) => { s._type = 'https://example.test/Statement/v1'; }],
++  ['a missing Canari predicate type', (s) => { delete s.predicateType; }],
++  ['an unsupported Canari predicate type', (s) => { s.predicateType = 'https://example.test/attestation/v1'; }],
++  ['an unknown verdict', (s) => { s.predicate.verdict = 'unrecognized'; }],
++  ['an inherited property name as the verdict', (s) => { s.predicate.verdict = 'constructor'; }],
++  ['a non-string verdict', (s) => { s.predicate.verdict = ['pass']; }],
++]) {
++  test(`a signed attestation is blocked with ${label}`, () => {
++    const r = verifyCanariAttestation(signedBundle(edit), testKey, options);
++    assert.equal(r.decision, 'block');
++  });
++}
++
++test('a missing DSSE payload type is blocked without throwing', () => {
++  const malformed = structuredClone(bundle);
++  delete malformed.envelope.payloadType;
++  const r = verifyCanariAttestation(malformed, key, options);
++  assert.equal(r.decision, 'block');
++});
++
++test('an unsupported DSSE payload type is blocked even with a valid signature', () => {
++  const signed = signedBundle(() => {}, 'application/json');
++  const r = verifyCanariAttestation(signed, testKey, options);
++  assert.equal(r.decision, 'block');
++});

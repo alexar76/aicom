@@ -216,8 +216,11 @@ FACTORY_LOCAL_EXCLUDES = [
     "artifacts/external-social-regional-deeper-2026-11-09/root",
     # Operator migration / fleet audits embed private host literals. Gitea keeps
     # the full trees; the trimmed factory must not.
-    "artifacts/admin-vps-backup-move-2026-11-10",
-    "artifacts/admin-vps-migration-audit-2026-11-10",
+    "artifacts/admin-vps-backup-move-*",
+    "artifacts/admin-vps-migration-audit-*",
+    # HISTOR relaxations rollout kits name private hosts / rebind paths; blocked
+    # factory publish 2026-11-24. Pattern covers dated packs; Gitea keeps them.
+    "artifacts/histor-relaxations-*",
     # Dated ecosystem audit / P1 remediation kits (host literals, SSH inventory).
     # Wildcard covers 2026-11-10 onward; growth packs (ecosystem-next/chains/…) stay.
     "artifacts/ecosystem-audit-*",

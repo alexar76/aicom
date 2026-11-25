@@ -70,7 +70,10 @@ git clone --quiet --branch "$BRANCH" "$URL" "$WORK/sat" || {
 
 # ── Find the last monorepo-sync commit → everything after it is external work ─
 cd "$WORK/sat"
-BASE="$(git log --format='%H%x09%s' | awk -F'\t' -v p="$SYNC_SUBJECT_PREFIX" 'index($2,p)==1{print $1; exit}')"
+# awk reads to the end instead of `exit`ing at the first match: an early exit closes the pipe, git log
+# dies of SIGPIPE on any history longer than its buffer, and pipefail + set -e then end the script here
+# without a message (seen 2026-11-24 on warden).
+BASE="$(git log --format='%H%x09%s' | awk -F'\t' -v p="$SYNC_SUBJECT_PREFIX" '!found && index($2,p)==1{print $1; found=1}')"
 
 if [[ -z "$BASE" ]]; then
   echo "⚠ No '${SYNC_SUBJECT_PREFIX} …' commit found in history — cannot locate a sync baseline."

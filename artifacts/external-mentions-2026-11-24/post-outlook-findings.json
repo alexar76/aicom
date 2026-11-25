@@ -1,0 +1,37 @@
+{
+  "observed_date": "2026-11-24",
+  "outlook_drafts_opened": [
+    "Tutu eSIM",
+    "eSIM Tabby",
+    "Canopii",
+    "MCPBeat"
+  ],
+  "findings": [
+    {
+      "source": "https://dev.to/lycore/comment/3m93h",
+      "date_utc": "2026-11-24T08:45:57Z",
+      "observation": "Public DEV reply by Lycore asks for alerting when an existing tool mentions a new host outside the server’s domain and known registries. No reply in the public API thread at check time.",
+      "related_evidence": "histor/docs/evidence/histor-shortlinks-2026-11-24/README.md",
+      "next": "Reply that shorteners now have a separate live signal. Earlier retrospective sample: broad exclusion leaves 34 of 58 address changes; exact shortener list matches 1."
+    },
+    {
+      "source": "https://minia2a.uk/mcp-tool-check.html",
+      "observation": "Previously found independent HISTOR API reuse. New code/API mismatch: checker reads target.toolCount, live API exposes observed.toolCount. Verified 1944 for the minia2a MCP endpoint.",
+      "api": "https://histor.modelmarket.dev/api/v1/check?endpoint=https%3A%2F%2Fminia2a.uk%2Fmcp",
+      "contact_source": "https://minia2a.uk/contact.html"
+    },
+    {
+      "source": "https://github.com/modelcontextprotocol/transports-wg/pull/75",
+      "observation": "Draft leaves fields covered by definition tags open. Related problem statement #74 includes annotation/metadata-only changes. Next planned meeting 4 December 17:00 Amsterdam, no digest agenda item confirmed.",
+      "next_meeting": "https://meet.modelcontextprotocol.io/2026/12/mcp-transports-working-group-weekly-TPj8CBbMstfD"
+    },
+    {
+      "source": "https://browse.games/game/pingblip",
+      "observation": "Known listing currently absent from both relevant existing tag pages. Links directly to the game.",
+      "tags": [
+        "https://browse.games/tag/creature-collector",
+        "https://browse.games/tag/virtual-pet"
+      ]
+    }
+  ]
+}

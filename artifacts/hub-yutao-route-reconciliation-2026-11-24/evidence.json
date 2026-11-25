@@ -1,0 +1,91 @@
+{
+  "baseline": {
+    "archive": "artifacts/hub-observed-priorseal-2026-11-11/sellers-after.json",
+    "archive_sha256": "4af071eb377f86405a9bb3fe028bd5a52858052101b518369b6c2f238b90ad9e",
+    "public_13_note": "https://github.com/alexar76/aimarket-hub/issues/23#issuecomment-6851051097",
+    "method": "Reconstructed Nov 13 listing flags from the Nov 11 exact inventory and the three Base routes named as newly listed in the Nov 13 sweep comment."
+  },
+  "nov21_08_25": {
+    "observed_at_utc": "2026-11-21T08:25:16Z",
+    "routes": 0,
+    "listed": 0,
+    "http_counts": {},
+    "last_error": "https://www.oracleinsight.xyz/.well-known/x402.json answered 402"
+  },
+  "nov21_14_31": {
+    "observed_at_utc": "2026-11-21T14:31:26Z",
+    "routes": 21,
+    "listed": 3,
+    "http_counts": {
+      "503": 10,
+      "402": 10,
+      "401": 1
+    },
+    "last_error": ""
+  },
+  "nov22_02_45": {
+    "observed_at_utc": "2026-11-22T02:45:30Z",
+    "routes": 21,
+    "listed": 12,
+    "http_counts": {
+      "402": 20,
+      "401": 1
+    },
+    "last_error": ""
+  },
+  "backup_copies_checked": 12,
+  "backup_sources": [
+    "modelmarket-hub-pre-3220-20261121T091611Z.db",
+    "modelmarket-hub-pre-ardcard-20261121T090623Z.db",
+    "modelmarket-hub-pre-capsfix-20261122T070241Z.db",
+    "modelmarket-hub-pre-cataloguelink-20261122T073919Z.db",
+    "modelmarket-hub-pre-cmcback-20261121T191835Z.db",
+    "modelmarket-hub-pre-extblock-20261121T194541Z.db",
+    "modelmarket-hub-pre-hestiastrip-20261122T060613Z.db",
+    "modelmarket-hub-pre-nocmc-20261121T191116Z.db",
+    "modelmarket-hub-pre-nocmc2-20261121T194019Z.db"
+  ],
+  "live_sources": {
+    "hub-observed": {
+      "status": 200,
+      "url": "https://modelmarket.dev/ai-market/v2/federation/observed-sellers",
+      "http_date": "Tue, 24 Nov 2026 06:34:33 GMT",
+      "content_type": "application/json",
+      "sha256": "e409449d742af1d5b6fb0ce544dfe669872c0f4ffe3387d2c5b466f4a3dafdc9"
+    },
+    "insight-discovery": {
+      "status": 200,
+      "url": "https://www.oracleinsight.xyz/.well-known/x402",
+      "http_date": "Tue, 24 Nov 2026 06:34:32 GMT",
+      "content_type": "application/json",
+      "sha256": "c937ab7a47158b1a5d4843c3f10d08d93fbc395593712f7947bd95790383736e"
+    },
+    "priorseal-discovery": {
+      "status": 200,
+      "url": "https://priorseal.xyz/.well-known/x402",
+      "http_date": "Tue, 24 Nov 2026 06:34:32 GMT",
+      "content_type": "application/json; charset=utf-8",
+      "sha256": "282f6b55c146e21a73ac50d3011a7b7a2aba0a213b652726595bcdb0e12c397a"
+    }
+  },
+  "nov24_insight": {
+    "observed_at_utc": "2026-11-24T03:52:25Z",
+    "routes": 21,
+    "listed": 12,
+    "http_counts": {
+      "402": 20,
+      "401": 1
+    },
+    "last_error": ""
+  },
+  "nov24_priorseal": {
+    "observed_at_utc": "2026-11-24T03:52:22Z",
+    "routes": 4,
+    "listed": 4,
+    "http_counts": {
+      "402": 4
+    },
+    "last_error": ""
+  },
+  "limit": "The observations establish HTTP outcomes at the Hub, not the component on the seller side that produced the responses. Observed quotes do not establish paid delivery."
+}

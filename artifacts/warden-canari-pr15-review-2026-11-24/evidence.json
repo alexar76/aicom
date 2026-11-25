@@ -1,0 +1,135 @@
+{
+  "observedDate": "2026-11-24",
+  "pullRequest": "https://github.com/alexar76/warden/pull/15",
+  "reviewedHead": "3b41da80a503b9f4724aa1a94e9aaee69c06a0b2",
+  "reviewedGitHubBase": "7245e31fd3ee6c1761485f219563ceba288b1e03",
+  "localAndGiteaBase": "5f4ac64fb6eb916c2f1aaa5e8cd61b4ffa0b11e6",
+  "publicPatchSha256": "fdc148ae0fbfc32611edb2c4605c400d8cc74cfa769680b7e3f31e8a1ef4dbd9",
+  "decision": "changes_required",
+  "publication": "No PR changes staged, committed, imported, pushed or merged.",
+  "review": [
+    {
+      "severity": "P1",
+      "finding": "The verifier can allow a signed pass without an artifact digest. Its API cannot match that decision to the artifact the caller is about to use.",
+      "source": "https://github.com/alexar76/warden/blob/3b41da80a503b9f4724aa1a94e9aaee69c06a0b2/integrations/canari/verify-attestation.mjs#L135-L155",
+      "acceptance": "Check a valid signed subject digest against the expected artifact and require consistent signed subject representations before allow."
+    },
+    {
+      "severity": "P1",
+      "finding": "Missing or unparseable expiration is treated as current.",
+      "source": "https://github.com/alexar76/warden/blob/3b41da80a503b9f4724aa1a94e9aaee69c06a0b2/integrations/canari/verify-attestation.mjs#L135-L144",
+      "acceptance": "Require a valid expiration and block expired metadata."
+    },
+    {
+      "severity": "P2",
+      "finding": "Media and predicate types are unchecked and a missing DSSE payload type throws. Some malformed verdicts escape the decision enum.",
+      "sources": [
+        "https://github.com/alexar76/warden/blob/3b41da80a503b9f4724aa1a94e9aaee69c06a0b2/integrations/canari/verify-attestation.mjs#L82-L114",
+        "https://github.com/alexar76/warden/blob/3b41da80a503b9f4724aa1a94e9aaee69c06a0b2/integrations/canari/verify-attestation.mjs#L131-L133"
+      ],
+      "acceptance": "Validate the expected DSSE media type, in-toto statement and Canari predicate. Return block on malformed envelopes and unknown verdicts."
+    },
+    {
+      "severity": "P2",
+      "finding": "The integrations/canari test file is outside the current Vitest test glob.",
+      "acceptance": "Run the isolated adapter test suite in CI and add the missing guard tests."
+    }
+  ],
+  "tests": {
+    "node": "22.22.1",
+    "providedAdapter": {
+      "passed": 7,
+      "total": 7,
+      "scope": "Reviewed PR patch in a scratch directory with Node file-read permissions restricted to that directory."
+    },
+    "negativeChecks": {
+      "observations": [
+        {
+          "name": "missing-expires-at",
+          "expected": "block",
+          "actual": "allow",
+          "ok": true
+        },
+        {
+          "name": "invalid-expires-at",
+          "expected": "block",
+          "actual": "allow",
+          "ok": true
+        },
+        {
+          "name": "absent-artifact-in-both-subjects",
+          "expected": "block",
+          "actual": "allow",
+          "ok": true
+        },
+        {
+          "name": "unrecognized-predicate-type",
+          "expected": "block",
+          "actual": "allow",
+          "ok": true
+        },
+        {
+          "name": "unrecognized-dsse-type",
+          "expected": "block",
+          "actual": "allow",
+          "ok": true
+        },
+        {
+          "name": "missing-dsse-type",
+          "expected": "block",
+          "actual": "exception",
+          "exception": "TypeError"
+        },
+        {
+          "name": "unknown-verdict",
+          "expected": "block",
+          "actual": "function",
+          "ok": false
+        }
+      ],
+      "summary": {
+        "positiveControl": "allow",
+        "cases": 7,
+        "failures": 7
+      },
+      "scope": "Local synthetic test statements with an ephemeral signing key."
+    },
+    "canonicalTypecheck": "passed",
+    "canonicalVitest": {
+      "totalCasesPassingAcrossRuns": 2226,
+      "initial": "2096 passed; 129 failures in loopback suites and 1 failure on the 5-second timeout",
+      "loopbackRetry": "215 tests in 7 files passed after permitting loopback",
+      "timeoutRetry": "The one failed wrap test passed with a 60-second timeout"
+    },
+    "publicSatelliteVitest": {
+      "initial": "2094 passed and 132 failed in the default sandbox",
+      "targetedRepeat": "The two process/time-related cases passed; one shell-classification case remained.",
+      "baseWithoutOverlay": "The same shell-classification case fails on the exact public base with the PR directory removed."
+    }
+  },
+  "contributorAttribution": {
+    "pullRequestAuthor": "lanbass869-cell",
+    "gitAuthorName": "canari-dev",
+    "gitAuthorEmail": "dev@canari.local",
+    "linkedGitHubCommitAuthor": false,
+    "source": "https://docs.github.com/en/repositories/viewing-activity-and-data-for-your-repository/viewing-a-projects-contributors"
+  },
+  "pullRequestPolicy": {
+    "source": "scripts/satellite-map.yaml",
+    "mappedForGitHub": 59,
+    "historyModeLive": 59,
+    "publicReadmeWelcomesPROrAppendOnly": 56,
+    "githubPublishDisabled": [
+      "attested",
+      "community-landing",
+      "pingblip",
+      "emberline"
+    ],
+    "specialEntries": [
+      "aicom.wiki",
+      "argus.wiki",
+      "alexar76 profile"
+    ],
+    "runbookNote": "The runbook still describes mirror as the default. The operative map and script default to live."
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "format": "mcp-tool-set-digest/1 test vectors",
+  "specification": "https://github.com/alexar76/mcp-tool-set-digest/blob/13046f6e1b73e306927e18029b1d0fba59fbc4c5/SPEC.md",
+  "licence": "Apache-2.0 OR MIT",
+  "how": "tools is JSON text. Parse it and compute the contract digest (SPEC.md sections 4 to 7) and the extras digest (section 8). Each of contract and extras is {digest, hex, canonical}, where digest is the SRI form, hex the same hash as sha256:<hex> and canonical the text that is hashed; or {error} with the code of section 10 (where several codes apply, the one section 10 says to report); extras is {digest: null} when no tool carries a member outside the contract. equal and differ name pairs of vectors whose digests of the named kind must match or must not.",
+  "vectors": [
+    {
+      "id": "extras-present",
+      "note": "The same tool with title, annotations, icons, _meta and a vendor member: the same contract digest, and now an extras digest.",
+      "tools": "[{\"name\":\"delete_file\",\"title\":\"Delete file\",\"description\":\"Delete a file.\",\"inputSchema\":{\"type\":\"object\",\"properties\":{\"path\":{\"type\":\"string\"}}},\"annotations\":{\"readOnlyHint\":false,\"destructiveHint\":true},\"icons\":[{\"src\":\"https://example.com/i.png\"}],\"_meta\":{\"com.example/price\":\"0.01\"},\"x-vendor\":{\"tier\":2}}]",
+      "contract": {
+        "digest": "sha256-STggL/HUXqt3jDrkW0VjuXTQSAUlNhFLFXV4U7rCNW4=",
+        "hex": "sha256:4938202ff1d45eab778c3ae45b4563b974d048052536114b15757853bac2356e",
+        "canonical": "[{\"description\":\"Delete a file.\",\"inputSchema\":{\"properties\":{\"path\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"delete_file\"}]"
+      },
+      "extras": {
+        "digest": "sha256-wX92gKaH+OnpCBJ4vZtpJlpvPpH07+gELUsjSrJu+L0=",
+        "hex": "sha256:c17f7680a687f8e9e9081278bd9b69265a6f3e91f4efe8042d4b234ab26ef8bd",
+        "canonical": "{\"tools\":{\"delete_file\":{\"_meta\":{\"com.example/price\":\"0.01\"},\"annotations\":{\"destructiveHint\":true,\"readOnlyHint\":false},\"icons\":[{\"src\":\"https://example.com/i.png\"}],\"title\":\"Delete file\",\"x-vendor\":{\"tier\":2}}}}"
+      }
+    },
+    {
+      "id": "extras-annotation-flipped",
+      "note": "destructiveHint true becomes false: the contract digest does not move, the extras digest does.",
+      "tools": "[{\"name\":\"delete_file\",\"title\":\"Delete file\",\"description\":\"Delete a file.\",\"inputSchema\":{\"type\":\"object\",\"properties\":{\"path\":{\"type\":\"string\"}}},\"annotations\":{\"readOnlyHint\":false,\"destructiveHint\":false},\"icons\":[{\"src\":\"https://example.com/i.png\"}],\"_meta\":{\"com.example/price\":\"0.01\"},\"x-vendor\":{\"tier\":2}}]",
+      "contract": {
+        "digest": "sha256-STggL/HUXqt3jDrkW0VjuXTQSAUlNhFLFXV4U7rCNW4=",
+        "hex": "sha256:4938202ff1d45eab778c3ae45b4563b974d048052536114b15757853bac2356e",
+        "canonical": "[{\"description\":\"Delete a file.\",\"inputSchema\":{\"properties\":{\"path\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"delete_file\"}]"
+      },
+      "extras": {
+        "digest": "sha256-SXZm+FJzpls6lPks/a7tKZ8BzXCgvMNv1BUoY8I1ArE=",
+        "hex": "sha256:497666f85273a65b3a94f92cfdaeed299f01cd70a0bcc36fd4152863c23502b1",
+        "canonical": "{\"tools\":{\"delete_file\":{\"_meta\":{\"com.example/price\":\"0.01\"},\"annotations\":{\"destructiveHint\":false,\"readOnlyHint\":false},\"icons\":[{\"src\":\"https://example.com/i.png\"}],\"title\":\"Delete file\",\"x-vendor\":{\"tier\":2}}}}"
+      }
+    },
+    {
+      "id": "extras-contract-changed",
+      "note": "The extras of extras-present under another description: another contract digest, the same extras digest.",
+      "tools": "[{\"name\":\"delete_file\",\"title\":\"Delete file\",\"description\":\"Delete a file or a folder.\",\"inputSchema\":{\"type\":\"object\",\"properties\":{\"path\":{\"type\":\"string\"}}},\"annotations\":{\"readOnlyHint\":false,\"destructiveHint\":true},\"icons\":[{\"src\":\"https://example.com/i.png\"}],\"_meta\":{\"com.example/price\":\"0.01\"},\"x-vendor\":{\"tier\":2}}]",
+      "contract": {
+        "digest": "sha256-VMe8mUMWdZEmdseQBl60uev9KuQ9hVUOy40KKPTkKlg=",
+        "hex": "sha256:54c7bc99431675912676c790065eb4b9ebfd2ae43d85550ecb8d0a28f4e42a58",
+        "canonical": "[{\"description\":\"Delete a file or a folder.\",\"inputSchema\":{\"properties\":{\"path\":{\"type\":\"string\"}},\"type\":\"object\"},\"name\":\"delete_file\"}]"
+      },
+      "extras": {
+        "digest": "sha256-wX92gKaH+OnpCBJ4vZtpJlpvPpH07+gELUsjSrJu+L0=",
+        "hex": "sha256:c17f7680a687f8e9e9081278bd9b69265a6f3e91f4efe8042d4b234ab26ef8bd",
+        "canonical": "{\"tools\":{\"delete_file\":{\"_meta\":{\"com.example/price\":\"0.01\"},\"annotations\":{\"destructiveHint\":true,\"readOnlyHint\":false},\"icons\":[{\"src\":\"https://example.com/i.png\"}],\"title\":\"Delete file\",\"x-vendor\":{\"tier\":2}}}}"
+      }
+    }
+  ],
+  "equal": [
+    {
+      "ids": [
+        "extras-present",
+        "extras-annotation-flipped"
+      ],
+      "digest": "contract"
+    },
+    {
+      "ids": [
+        "extras-present",
+        "extras-contract-changed"
+      ],
+      "digest": "extras"
+    }
+  ],
+  "differ": [
+    {
+      "ids": [
+        "extras-present",
+        "extras-annotation-flipped"
+      ],
+      "digest": "extras"
+    },
+    {
+      "ids": [
+        "extras-present",
+        "extras-contract-changed"
+      ],
+      "digest": "contract"
+    }
+  ]
+}

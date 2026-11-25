@@ -1,0 +1,160 @@
+{
+  "observed_date": "2026-11-24",
+  "timezone": "Europe/Amsterdam",
+  "baseline": [
+    "artifacts/external-mentions-2026-11-23/evidence.json",
+    "artifacts/external-mentions-2026-11-23/wide-followup.json",
+    "artifacts/external-mentions-2026-11-23/social-signals.json",
+    "artifacts/external-mentions-2026-11-21/deeper-followup.json",
+    "artifacts/external-reuse-2026-11-19/source-checks.json"
+  ],
+  "findings": [
+    {
+      "component": "mcp-tool-set-digest/1",
+      "operator": "Canari",
+      "type": "third-party implementation and tool-list scanner integration",
+      "published_at_utc": "2026-11-24T02:55:39Z",
+      "sources": [
+        "https://github.com/lanbass869-cell/canari/commit/99fb1458150b0eb4f068e0d653513adeae4f9003",
+        "https://github.com/lanbass869-cell/canari/commit/ae5dd974b2ca2c5a76607c32b6d69182f5d442e4",
+        "https://github.com/lanbass869-cell/canari/commit/93f592ed8cc904bb62e5f6181aa50fb9c4c2e97b",
+        "https://raw.githubusercontent.com/lanbass869-cell/canari/93f592ed8cc904bb62e5f6181aa50fb9c4c2e97b/tests/fixtures/mcp_tool_set_digest_vectors.json",
+        "https://raw.githubusercontent.com/alexar76/mcp-tool-set-digest/main/vectors/vectors.json",
+        "https://pypi.org/pypi/canari-mcp/json"
+      ],
+      "observation": "The first commit adds source, CLI, and 92 vendored fixtures. The following commit computes the digest after reading a complete paginated list and carries it in the observation record. Canari reports 92 matching fixtures and no mismatches versus reference Python on 300 generated tool lists.",
+      "verified_scope": "Read GitHub's public commit metadata and changed files. The repository version was bumped to 0.1.7; PyPI still returned 0.1.6. Counts are the maintainer's results. The downloaded fixture is byte-identical to the upstream file at check time.",
+      "fixture_sha256": "1b1e6706681755740faa85966ece46150ffc70ba452113dc9ae05eb2357d63eb"
+    },
+    {
+      "component": "HISTOR",
+      "operator": "astrogilda, contributor in the OWASP discussion",
+      "type": "human citation of dataset",
+      "published_at_utc": "2026-11-23T18:16:02Z",
+      "sources": [
+        "https://github.com/OWASP/Agentic-Evidence/issues/4#issuecomment-7109908336",
+        "https://doi.org/10.5281/zenodo.23512760"
+      ],
+      "observation": "Cites a HISTOR dataset example where four descriptions changed and the fifth stayed equal, to illustrate how to compare descriptors when both producers used the same digest profile.",
+      "verified_scope": "New comment in the previously observed issue. The issue remains open."
+    },
+    {
+      "component": "mcp-tool-set-digest/1",
+      "operator": "Sergei Luzhnov, OCX draft author",
+      "type": "human offer to coordinate test vectors",
+      "published_at_utc": "2026-11-16T14:49:00Z",
+      "sources": [
+        "https://mailarchive.ietf.org/arch/msg/agentproto/NbB_uVOo7uciU_PxqgoL-Puxp0Q/",
+        "https://datatracker.ietf.org/doc/draft-luzhnov-ocx/"
+      ],
+      "observation": "In a reply about TRAIL on Agentproto, the OCX author says a tool-set digest independently verifiable against a public log could identify the tool definition behind a receipt, and offers to align test vectors.",
+      "verified_scope": "Older message newly found in this review. Current published OCX draft is an individual -00 and has no exact link to the digest."
+    },
+    {
+      "component": "mcp-tool-set-digest/1",
+      "operator": "CrawlCheck",
+      "type": "first-hand technical article from another implementation",
+      "published_date": "2026-11-22",
+      "sources": ["https://crawlcheck.io/blog/our-sdks-crashed-on-tool-lists-nested-too-deeply"],
+      "observation": "Both released SDKs compute contract and extras digests, and the lockfile carries both. Author reports 0 differences over 3,000 generated in-range tool lists in a Python/JavaScript comparison.",
+      "verified_scope": "The article URL was in the 23 November raw query index. This pass verified the article and its exact claims. The prior implementation and contribution were already known."
+    },
+    {
+      "component": "ModelMarket",
+      "operator": "Open Agent Registry, Inc.",
+      "type": "external interop demo",
+      "sources": ["https://edge.aid.agentcommunity.org/interop/modelmarket"],
+      "observation": "A public, ModelMarket-specific demo compares three surfaces: the MCP server card, ARD catalog digest, and AID endpoint proof.",
+      "verified_scope": "Direct public page returned HTTP 200 and named the operator in its page metadata. Demo publication date and independent use counts are unverified. IETF correspondence was already known."
+    },
+    {
+      "component": "HISTOR",
+      "operator": "The Agent Forge",
+      "type": "third-party automated startup report",
+      "published_at_utc": "2026-11-23T16:48:04.886Z",
+      "sources": [
+        "https://theagentforge.io/t/github.com%2Falexar76%2Fhistor#reports",
+        "https://theagentforge.io/api/v1/check?id=github.com%2Falexar76%2Fhistor",
+        "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+        "https://registry.modelcontextprotocol.io/v0.1/servers/io.github.alexar76%2Fhistor/versions/latest"
+      ],
+      "observation": "The platform's house tester reports 3 listed tools in 2 seconds via uvx without credentials on 0.10.0. mcpcost still shows needs_args for its 18 November run of 0.10.0, while MCP Registry shows 0.11.0 with optional URL default.",
+      "verified_scope": "One house report, no secondary confirmation. Measurements refer to the recorded versions and probe conditions."
+    },
+    {
+      "component": "ARGUS and WARDEN",
+      "operator": "The Agent Forge",
+      "type": "third-party automated startup measurements",
+      "test_date_utc": "2026-11-22",
+      "sources": ["https://theagentforge.io/reports/house"],
+      "observation": "ARGUS 0.6.2 reported 3 tools at 26.5 s and was labeled slow. WARDEN 0.36.0 reported 9 tools at 1.6 s in the same report.",
+      "verified_scope": "The platform started packages via npx in an empty folder without credentials, then called initialize and tools/list. These are full startup-path times for one run."
+    },
+    {
+      "component": "Attested Memory",
+      "operator": "MCP Checkup / Clear Data Decisions LLC",
+      "type": "updated third-party automated observation",
+      "test_at_utc": "2026-11-23T23:35:37.336Z",
+      "sources": [
+        "https://mcpcheckup.com/check/alexar76/attested-memory",
+        "https://mcpcheckup.com/terms"
+      ],
+      "observation": "13 tools observed, 12 verified protocol checks, 3 not checked, and 85 observations in platform history at this pass.",
+      "verified_scope": "The report was already in the 21 November evidence. The run shown here is newer and is 24 November in Amsterdam."
+    }
+  ],
+  "deduplication": [
+    {
+      "sources": [
+        "https://lists.witness-network.org/mailman3/hyperkitty/list/participate%40lists.witness-network.org/thread/MFPZAGEHEDORD4YLATNI7REWYV5RC6Q3/",
+        "https://witness.gdbsecurity.com/log?origin=histor.modelmarket.dev%2Flog"
+      ],
+      "observation": "Canari's earlier use of HISTOR witness-format vectors and GDB Security witnessing of HISTOR are already in the archive. The Canari digest-format implementation above is a separate new commit."
+    },
+    {
+      "sources": [
+        "https://github.com/Nikolife2016/pulsefeed-x402/issues/3#issuecomment-6367002208",
+        "https://lupariel.com/fichas/aimarket-hub/",
+        "https://apis.io/providers/modelmarket-dev/"
+      ],
+      "observation": "Previously recorded monitoring and catalogs. The Github radar search hit is a 23 October bot comment within a thread updated since then."
+    }
+  ],
+  "coverage": {
+    "surfaces": [
+      "Exact names, package IDs, URLs and DOI on public web search",
+      "GitHub public issue, comment and commit APIs",
+      "IETF Datatracker and mail archive, Witness Network, vendor and benchmark sites",
+      "DEV.to article and comment APIs, Hacker News search API, public results in Reddit, Bluesky, X, YouTube and itch.io"
+    ],
+    "product_scope": [
+      "HISTOR, WARDEN, mcp-tool-set-digest, MTL, AWR, ARGUS, MOMUS, SKOPOS, HESTIA",
+      "ModelMarket, AIMarket Hub, MCP Gateway, MCP Packager, x402 and A2A",
+      "Attested Memory, Multika, ACE-X, auditlink, RustyClock, Roughtime",
+      "PingBlip, HabitCast, Calliope, DIOSCURI, Oracles, Lottery, Platon and Coach"
+    ],
+    "social": {
+      "since_utc": "2026-11-23T19:01:18.274836Z",
+      "public_dev_article_count": 86,
+      "public_dev_reactions": 99,
+      "public_dev_comments_including_author": 212,
+      "dev_threads_read": 19,
+      "dev_threads_rate_limited": 1,
+      "new_external_comments_in_read_threads": 0,
+      "hn_search_hits_after_cutoff": {
+        "modelmarket.dev": 0,
+        "histor.modelmarket.dev": 0,
+        "attestedmemory.net": 0,
+        "pingblip.com": 0
+      },
+      "bsky_public_followers": 12,
+      "bsky_global_search_http": 403,
+      "reddit_native_search_http": 403,
+      "itch_pingblip_launch_thread": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game"
+    },
+    "limits": [
+      "Scope is the checked public pages and indexes. Native scans of Reddit and Bluesky did not return search results due to HTTP 403.",
+      "External automated startup or health checks measure observed behavior within the named test. They do not certify production integrations or count customers."
+    ]
+  }
+}

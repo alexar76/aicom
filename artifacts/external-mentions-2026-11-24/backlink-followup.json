@@ -1,0 +1,122 @@
+{
+  "checked_on": "2026-11-24",
+  "scope": "Verified external HTML links, including earlier pages newly confirmed in this pass. Catalog metadata and syndicated text are not evidence of adoption.",
+  "sources": [
+    {
+      "publisher": "MCP Check",
+      "type": "registry catalogue",
+      "registry_snapshot_at": "2026-11-10T02:14:42.605Z",
+      "remote_probe_date": "2026-10-29",
+      "probe_method": "Opened public sessions and read live tool descriptions on the six remote endpoints. No tools were called.",
+      "probe_method_url": "https://mcpcheck.net/how-we-check/",
+      "source_prefix": "https://mcpcheck.net/servers/",
+      "repository_prefix": "https://github.com/alexar76/",
+      "cards": [
+        {"path": "io-github-alexar76-aimarket-hub/", "repo": "aimarket-hub", "endpoint": "https://modelmarket.dev/mcp"},
+        {"path": "io-github-alexar76-aimarket-mcp/", "repo": "aimarket-mcp"},
+        {"path": "io-github-alexar76-aimarket-oracle-gateway/", "repo": "aimarket-oracle-gateway"},
+        {"path": "io-github-alexar76-aimarket-plugins/", "repo": "aimarket-plugins"},
+        {"path": "io-github-alexar76-argus3/", "repo": "argus"},
+        {"path": "io-github-alexar76-attested-memory/", "repo": "attested-memory", "endpoint": "https://hub.attestedmemory.net/mcp"},
+        {"path": "io-github-alexar76-warden/", "repo": "warden"},
+        {"path": "dev-modelmarket-domains/", "repo": "domain-operator-kit", "endpoint": "https://modelmarket.dev/tools/mcp/domains"},
+        {"path": "dev-modelmarket-emporion/", "repo": "emporion", "endpoint": "https://modelmarket.dev/tools/mcp/emporion"},
+        {"path": "dev-modelmarket-mcp-security/", "repo": "warden", "endpoint": "https://modelmarket.dev/tools/mcp/security"},
+        {"path": "dev-modelmarket-weather/", "repo": "gaia", "endpoint": "https://modelmarket.dev/tools/mcp/weather"}
+      ]
+    },
+    {
+      "publisher": "NicheDB",
+      "type": "registry catalogue",
+      "source_url": "https://nichedb.dev/c/mcp?tag=alexar76",
+      "repository_prefix": "https://github.com/alexar76/",
+      "repositories": ["warden", "aimarket-hub", "aimarket-agent", "metis", "histor", "attested-memory"]
+    },
+    {
+      "publisher": "Sadana Agent Tools Directory",
+      "type": "catalogue",
+      "source_url": "https://tools.sadana.app/",
+      "directory_updated": "2026-10",
+      "targets": ["https://github.com/alexar76/aimarket-mcp", "https://github.com/alexar76/argus"],
+      "note": "Earlier search results included the directory. Its two direct repository links were checked on the live page in this pass. The date of each entry is unknown."
+    },
+    {
+      "publisher": "jsDelivr",
+      "type": "npm metadata",
+      "source_url": "https://www.jsdelivr.com/package/npm/@aimarket/esim-rails",
+      "targets": ["https://github.com/alexar76/esim-operator-kit/", "https://alexar76.github.io/esim-operator-kit/"],
+      "note": "The project homepage has rel=nofollow."
+    },
+    {
+      "publisher": "jsDelivr",
+      "type": "npm metadata",
+      "source_url": "https://www.jsdelivr.com/package/npm/@alexar76/argus3",
+      "targets": ["https://github.com/alexar76/argus", "https://magic-ai-factory.com/argus/"],
+      "note": "The project homepage has rel=nofollow."
+    },
+    {
+      "publisher": "WPNews",
+      "type": "syndication",
+      "published_at_in_page_metadata": "2026-10-19T17:35:04Z",
+      "source_url": "https://wpnews.pro/news/what-an-mcp-server-s-tool-list-costs-we-counted-the-tokens-of-34374-of-them",
+      "targets": [
+        "https://modelmarket.dev/tools/tool-list-cost?utm_source=devto&utm_medium=article&utm_campaign=tool-list-cost",
+        "https://github.com/alexar76/histor/blob/main/docs/tool-list-cost.md",
+        "https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011"
+      ],
+      "note": "The calculator and methodology anchors have no rel attribute in the observed HTML."
+    },
+    {
+      "publisher": "MCP Markets",
+      "type": "syndicated list",
+      "source_url": "https://mcpmarkets.com/en/mcp-servers/diegobruegger-prog-free-remote-mcp-servers",
+      "target": "https://github.com/alexar76/attested-memory",
+      "note": "The anchor is rel=nofollow ugc. The underlying list was already known."
+    },
+    {
+      "publisher": "Top AI Repos",
+      "type": "syndicated list",
+      "source_url": "https://topairepos.com/repos/punkpeye/awesome-mcp-servers",
+      "target": "https://github.com/alexar76/aimarket-plugins",
+      "note": "The underlying awesome-mcp-servers listing was already known."
+    },
+    {
+      "publisher": "MCPIndex",
+      "type": "registry catalogue",
+      "links": [
+        {"source_url": "https://mcpindex.ai/server/dev-modelmarket-emporion", "targets": ["https://github.com/alexar76/emporion", "https://modelmarket.dev/tools/"], "description_screen_date": "2026-10-21"},
+        {"source_url": "https://mcpindex.ai/server/io-github-alexar76-argus3", "targets": ["https://github.com/alexar76/argus"], "description_screen_date": "2026-10-20"},
+        {"source_url": "https://mcpindex.ai/server/io-github-alexar76-attested-memory", "targets": ["https://github.com/alexar76/attested-memory"], "description_screen_date": "2026-10-11"}
+      ],
+      "note": "Direct HTML anchors use rel=nofollow noreferrer. The screen dates are not publication dates. ARGUS shows its October screen as stale after the registry listing changed."
+    },
+    {
+      "publisher": "MCP Morning",
+      "type": "registry catalogue",
+      "links": [
+        {"source_url": "https://mcpmorning.com/mcp/alexar76-histor/", "target": "https://github.com/alexar76/histor"},
+        {"source_url": "https://mcpmorning.com/mcp/alexar76-aimarket-oracle-gateway/", "target": "https://github.com/alexar76/aimarket-oracle-gateway"},
+        {"source_url": "https://mcpmorning.com/mcp/alexar76-aimarket-mcp/", "target": "https://github.com/alexar76/aimarket-mcp"},
+        {"source_url": "https://mcpmorning.com/mcp/alexar76-argus/", "target": "https://github.com/alexar76/argus"}
+      ],
+      "note": "Verified direct nofollow anchors. The WARDEN card appeared in earlier evidence."
+    }
+  ],
+  "other_external_evidence": [
+    {
+      "publisher": "Quietforge Studio",
+      "published_at": "2026-11-03T00:01:11.473Z",
+      "source_url": "https://speedbot.dev/topics/post_2b6a7bbbfc424f5cb6a949acc1bdda40",
+      "observed_output": "https://qf-api.quietforge-studio.workers.dev/.well-known/mcp",
+      "finding": "The publisher names histor-card-survey/1 and mcpregistry-bot/0.1 as the two clients that prompted it to add this route on 2 November. The write-up has no outgoing HTML link to HISTOR."
+    },
+    {
+      "publisher": "Lycore Development",
+      "published_at": "2026-11-24T08:45:57Z",
+      "source_url": "https://dev.to/lycore/comment/3m93h",
+      "response_url": "https://dev.to/alexar76/comment/3m9aj",
+      "response_published_at": "2026-11-24T10:05:48Z",
+      "finding": "The public DEV API confirms that the previously noted filtering request was answered. On the same 2,000-change sample, the filtering left 34 of 58 address changes overall and 10 of 23 involving existing tools. The only shortener in that sample arrived with a newly added tool."
+    }
+  ]
+}

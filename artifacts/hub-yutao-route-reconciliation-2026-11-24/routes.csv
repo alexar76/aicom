@@ -1,0 +1,26 @@
+seller,method,url,nov13_listed,nov21_http,nov21_result,nov22_http,nov22_result,nov24_http,nov24_result,nov24_network,nov24_served
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/base-lending-guard,yes,402,quoted,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/base-perp-guard,yes,402,quoted,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/bnb-perp-guard,no,402,unknown_asset,402,unknown_asset,402,unknown_asset,eip155:56,no
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/hyperevm-lending-guard,no,503,unreachable,402,unknown_asset,402,unknown_asset,eip155:999,no
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/hyperliquid-perp-guard,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/monad-lending-guard,no,402,unknown_asset,402,unknown_asset,402,unknown_asset,eip155:143,no
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/monad-perp-guard,no,402,unknown_asset,402,unknown_asset,402,unknown_asset,eip155:143,no
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/pre-trade,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/prediction-guard,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/preflight,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/solana-perp-guard,no,402,unknown_asset,402,unknown_asset,402,unknown_asset,solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp,no
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/swap-intent,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,GET,https://www.oracleinsight.xyz/api/v1/safety/tokenized-stock-guard,not advertised,402,quoted,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/mcp,no,401,unreachable,401,unreachable,401,unreachable,,no
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/v1/markets/settlement-evidence/grade,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/v1/oracle-config/snapshot,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/v1/safety/loopscale-vault-deposit,no,402,unknown_asset,402,unknown_asset,402,unknown_asset,solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp,no
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/v1/safety/oracle-watch-window,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/v1/safety/position-lifecycle,yes,503,unreachable,402,quoted,402,quoted,eip155:8453,yes
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/v1/safety/solana-lending-guard,no,402,unknown_asset,402,unknown_asset,402,unknown_asset,solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp,no
+https://www.oracleinsight.xyz,POST,https://www.oracleinsight.xyz/api/v1/safety/solana-swap-guard,no,402,unknown_asset,402,unknown_asset,402,unknown_asset,solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp,no
+https://priorseal.xyz,GET,https://priorseal.xyz/v1/agent-credit-packs/standard-100/checkout,yes,,,,,402,quoted,eip155:8453,yes
+https://priorseal.xyz,GET,https://priorseal.xyz/v1/integration-readiness,yes,,,,,402,quoted,eip155:8453,yes
+https://priorseal.xyz,GET,https://priorseal.xyz/v1/integration-readiness/smoke,yes,,,,,402,quoted,eip155:8453,yes
+https://priorseal.xyz,GET,https://priorseal.xyz/v1/receipts/example/bundle,yes,,,,,402,quoted,eip155:8453,yes

@@ -1,0 +1,126 @@
+{
+  "observed_date": "2026-11-24",
+  "timezone": "Europe/Amsterdam",
+  "baseline": [
+    "artifacts/external-mentions-2026-11-24/evidence.json",
+    "artifacts/external-mentions-2026-11-23/evidence.json",
+    "artifacts/external-backlinks-deep-2026-11-18/recent-discoveries.json"
+  ],
+  "discoveries_and_changes": [
+    {
+      "component": "ModelMarket / AID / ARD",
+      "source_operator": "Balázs Némethi / Open Agent Registry",
+      "type": "independent run against hosted fixtures",
+      "reported_at_utc": "2026-11-23T05:41:08Z",
+      "sources": [
+        "https://mailarchive.ietf.org/arch/msg/dawn/XrYAWPkoWnX-6445zEk_1LPF3JU/",
+        "https://github.com/agentcommunity/agent-identity-discovery/pull/155",
+        "https://edge.aid.agentcommunity.org/interop/modelmarket"
+      ],
+      "evidence": "The AID author reports running three hosted ModelMarket fixtures, validating all three trustManifest signatures and the live domain-bound AID proof, and distinguishing stale endpoint from stale digest. The independent repository merged its browser and CLI interop harness on 21 November at 00:49:17 UTC as 0f9d48c0a0adc6bb4b5ea2ad7a6906555bc78b82.",
+      "scope": "The earlier pass found the demo URL. This pass recovered the author's primary test report and the merged implementation."
+    },
+    {
+      "component": "ModelMarket / ARD index federation",
+      "source_operator": "Roberto Pioli, author of ARDP",
+      "type": "external author technical reply",
+      "reported_at_utc": "2026-11-23T12:23:10Z",
+      "sources": [
+        "https://mailarchive.ietf.org/arch/msg/dawn/UFfReinpCGlSz2hN0BB5NdZ4Bys/",
+        "https://mailarchive.ietf.org/arch/msg/dawn/TLTz4Bx_tL95KK41Oq96H3rLQ_0/"
+      ],
+      "evidence": "Pioli confirmed the reading of ARDP -01 §13.1 as closed admission, found the proposal to keep newly discovered peers pending for operator approval compatible, and identified records that agree but refer to a dead agent as a further requirements case. Aleksandr replied on the same thread at 15:19:31 UTC that retention after a failed fetch still lacks a TTL.",
+      "scope": "Retrieved original messages from the public IETF archive. This records a technical exchange on individual drafts."
+    },
+    {
+      "component": "mcp-tool-set-digest/1",
+      "source_operator": "Canari",
+      "type": "published downstream implementation",
+      "published_at_utc": "2026-11-24T05:04:22.902449Z",
+      "sources": [
+        "https://pypi.org/project/canari-mcp/0.1.7/",
+        "https://pypi.org/pypi/canari-mcp/0.1.7/json",
+        "https://github.com/lanbass869-cell/canari/commit/99fb1458150b0eb4f068e0d653513adeae4f9003"
+      ],
+      "evidence": "Canari 0.1.7 is on PyPI. The published wheel contains the digest implementation, tool-list probe and capsule integration, and the canari-toolset-digest entry point.",
+      "wheel_sha256": "76302a2e7214076d9dc91dbf959f75f4030c583ef49d693cc50c7f7b1fc4a251",
+      "scope": "Verified official PyPI metadata, wheel hash and wheel contents. The earlier pass established the repository change and saw the prior package version 0.1.6."
+    },
+    {
+      "component": "WARDEN",
+      "source_operator": "lanbass869-cell / Canari",
+      "type": "external contribution",
+      "opened_at_utc": "2026-11-24T04:17:04Z",
+      "sources": ["https://github.com/alexar76/warden/pull/15"],
+      "evidence": "The author adds a standalone adapter for verification of signed Canari attestations, test fixtures and documentation in seven new files. He reports seven adapter tests passing and discloses that the full WARDEN suite did not run in his environment.",
+      "scope": "Public PR API returned open, with zero review comments at check time. Source changes and author's test report were read without executing the contributor's code."
+    },
+    {
+      "component": "ModelMarket x402",
+      "source_operator": "Agent402 Smart Order Router",
+      "type": "changed eligibility in an external router",
+      "data_timestamp_utc": "2026-11-24T00:44:25.638Z",
+      "sources": [
+        "https://agent402.tools/api/index?seller=modelmarket.dev",
+        "https://agent402.tools/api/route?q=WARDEN&include=external&top=10"
+      ],
+      "baseline": "artifacts/agent402-routing-diagnosis-2026-11-09/index-modelmarket.raw",
+      "evidence": "The 9 November Base snapshot had router eligibility false and zero of eight callable seller routes. The 24 November snapshot has routerDispatchEligible true and all eight executeViaCallableNow true, with eligibility corroborated by the WARDEN resolver.",
+      "scope": "This measures the published router decision. The exact switch time, cause and buyer calls are outside the two snapshots."
+    },
+    {
+      "component": "HISTOR",
+      "source_operator": "Saad Shafiq",
+      "type": "independent article using the published measurement as a reference",
+      "published_month": "2026-11",
+      "sources": [
+        "https://medium.com/@saad.shafiq1997/does-claudes-tokenizer-double-your-bill-for-german-text-1b7d62465154",
+        "https://dev.to/alexar76/what-an-mcp-servers-tool-list-costs-we-counted-the-tokens-of-34374-of-them-3011"
+      ],
+      "evidence": "Section 8 uses the HISTOR measurement of 34,374 servers and an o200k median of about 1,300 tokens as an external reference point for model tokenizer comparisons. The article identifies the original Alex publication in reference 5.",
+      "scope": "The verified reference is the published measurement. The article's 1.75 ratio comes from a different source, mcpcost."
+    },
+    {
+      "component": "HISTOR",
+      "source_operator": "punkpeye / Awesome MCP Servers",
+      "type": "external maintainer reply on inclusion PR",
+      "reported_at_utc": "2026-11-24T02:20:00Z",
+      "sources": [
+        "https://github.com/punkpeye/awesome-mcp-servers/pull/18166#issuecomment-7120034305",
+        "https://github.com/punkpeye/awesome-mcp-servers/pull/18166#issuecomment-7121635357"
+      ],
+      "evidence": "The maintainer asked for a Glama link. Aleksandr replied and amended the PR description with the Glama card and badge. The PR API still gave an open state."
+    },
+    {
+      "component": "HISTOR",
+      "source_operator": "heyitsjakub / OWASP MCP Security Testing Guide",
+      "type": "external acknowledgement in test proposal",
+      "sources": [
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/19#issuecomment-6526826295",
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/19#issuecomment-6541922896",
+        "https://github.com/OWASP/MCP-Security-Testing-Guide/pull/19#issuecomment-6982398967"
+      ],
+      "evidence": "The TOOL-07 author acknowledged HISTOR's counts and the serialization control on 30–31 October. The 18 November maintainer reply requests a rebase and the PR remains open.",
+      "scope": "The acknowledgements appear in comments and the earlier SUPP-06 test is a separate merged item."
+    }
+  ],
+  "first_party_follow_up": {
+    "date_utc": "2026-11-24T04:18:37Z",
+    "url": "https://mailarchive.ietf.org/arch/msg/agentproto/OZuF6vxu0IBUQnE39hbWJdxvXLE/",
+    "evidence": "The sent reply to Sergei Luzhnov with the three test vectors appears in the public IETF Agentproto archive and the exact-subject search. Its archived copy has no In-Reply-To or References header."
+  },
+  "coverage": {
+    "used": [
+      "Direct public issues and commits APIs",
+      "IETF public archive and raw messages",
+      "Publisher articles and references",
+      "Public package registry plus wheel inspection",
+      "External router and probes"
+    ],
+    "limits": [
+      "grep.app returned HTTP 429 for the selected queries.",
+      "Sourcegraph global returned no matches for the sampled exact terms within its indexed corpus.",
+      "Deduplicated the known ACS #53 conformance-vectors comment, the Skillshare #789 first-party comment and previously recorded republishers."
+    ]
+  }
+}

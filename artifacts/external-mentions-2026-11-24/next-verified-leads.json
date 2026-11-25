@@ -1,0 +1,53 @@
+{
+  "observed_date": "2026-11-24",
+  "findings": [
+    {
+      "component": "Canari paper",
+      "sources": [
+        "https://github.com/lanbass869-cell/canari/blob/81ca2577cc2b91745027761cee88de9c0a70cb5c/paper.md#L83-L92",
+        "https://github.com/lanbass869-cell/canari/blob/81ca2577cc2b91745027761cee88de9c0a70cb5c/paper.bib",
+        "https://github.com/alexar76/warden/pull/15"
+      ],
+      "observation": "A JOSS-format draft in the Canari repository explicitly cites WARDEN and mcp-tool-set-digest/1. It describes the adapter as still under review, while the linked GitHub PR is now merged. Publication by JOSS was not established."
+    },
+    {
+      "component": "WARDEN on MCP Harbor",
+      "sources": [
+        "https://mcpharbor.app/tools/npm-aimarket-warden/",
+        "https://registry.npmjs.org/@aimarket%2Fwarden/latest",
+        "https://mcpharbor.app/contact/?topic=listing"
+      ],
+      "observation": "Direct HTTPS reads at 09:49 UTC show that the directory labels the package Not on GitHub and recommends 0.23.0. The npm latest metadata gives 0.38.1 and the alexar76/warden repository."
+    },
+    {
+      "component": "LocalLM",
+      "source": "https://github.com/ancientcomputing/locallm/blob/3.0.0-GA/docs/security-guide-for-hosts.md#4-servers-trust-approval-and-drift",
+      "observation": "The SDK maintainer reports testing a three-description change in DeepWiki and showing a review card. Its documented policy retains the approved impact when an incoming label becomes safer.",
+      "next": "Request the two dated snapshots or endpoint and observation window, then try to match the reported change in HISTOR and reproduce both digests."
+    },
+    {
+      "component": "Attested Memory",
+      "sources": [
+        "https://neoneye.github.io/agent-memory-atlas/contributing/#proposing-a-memory-system",
+        "https://neoneye.github.io/agent-memory-atlas/discord.html",
+        "https://github.com/alexar76/attested-memory/tree/ca686945c49234a9e3efac70f7e4587634b52a15"
+      ],
+      "observation": "Atlas contribution instructions accept author nominations of inspectable memory systems, including via Discord. No existing Attested Memory report was found.",
+      "next": "Offer the released source pin and an example with a valid and an altered receipt for independent review."
+    },
+    {
+      "component": "ReloadPi eSIM",
+      "sources": [
+        "https://api.reloadpi.com/.well-known/x402",
+        "https://reloadpi.com/connect"
+      ],
+      "observation": "A public, live manifest declares status polling, idempotency, and conditional automatic refunds to the original payer on failed or expired fulfillment. Delivered eSIMs are listed as non-refundable. Official connect docs offer partner API access.",
+      "next": "Propose a no-payment fixture for quote, order status, failure and refund."
+    }
+  ],
+  "existing_followup": {
+    "source": "https://mailarchive.ietf.org/arch/msg/agentproto/FmukPL_5qA9u4wH1QZiejJ0S9iQ/",
+    "sent_at_utc": "2026-11-24T09:44:03Z",
+    "observation": "Our reply to Zhao is now in the public Agentproto archive. It asks to rerun two vectors with isolated contract and extras assertions. No subsequent public reply was found in this check."
+  }
+}

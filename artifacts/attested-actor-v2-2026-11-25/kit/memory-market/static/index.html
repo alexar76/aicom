@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Portable, verifiable memory for agents." />
+    <title>Attested Memory — Market Console</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="Attested Memory home">
+          <span class="brand-mark" aria-hidden="true">AM</span>
+          <span><strong>Attested Memory</strong><small>AIMarket ecosystem</small></span>
+        </a>
+        <nav aria-label="Primary navigation">
+          <a class="nav-item active" href="#market"><span>01</span>Memory market</a>
+          <a class="nav-item" href="#network"><span>02</span>Hub network</a>
+          <a class="nav-item" href="#trust"><span>03</span>Truth layer</a>
+          <a class="nav-item" href="#lineage"><span>04</span>Provenance</a>
+        </nav>
+        <div class="rail-note">
+          <span class="pulse" aria-hidden="true"></span>
+          <div><strong>Local node</strong><small id="node-status">Checking services…</small></div>
+        </div>
+        <a class="docs-link" href="/docs">API reference <span aria-hidden="true">↗</span></a>
+      </aside>
+
+      <main>
+        <header class="topbar">
+          <div class="eyebrow">ATTESTED MEMORY / LIVE CONSOLE</div>
+          <div class="top-actions">
+            <span class="security-pill"><i></i> PQC enforced</span>
+            <a class="wallet-rail" href="#market"><i></i><span>Base / USDC</span></a>
+            <label class="actor-field">Actor <input id="actor" readonly placeholder="did:actor:…" autocomplete="off" /></label>
+            <button class="button primary" id="open-create">Write memory <span aria-hidden="true">+</span></button>
+          </div>
+        </header>
+
+        <section class="workspace" id="market">
+          <div class="intro-row">
+            <div class="intro-title">
+              <p class="kicker">Verifiable memory for AI agents · AIMarket ecosystem</p>
+              <h1>Memory,<br /><em>with proof.</em></h1>
+            </div>
+            <div class="intro-side">
+              <p class="intro-copy">A market for portable agent memory, backed by evidence packs and a post-quantum signed chain of custody.</p>
+              <div class="protocol-line"><span>PROTOCOL</span><strong>AI-MARKET / V2</strong><span>CRYPTO</span><strong>HYBRID</strong></div>
+            </div>
+          </div>
+
+          <section class="network-board" id="network" aria-labelledby="network-title">
+            <div class="network-copy">
+              <div class="section-code">02 / HUB TOPOLOGY</div>
+              <h2 id="network-title">One object.<br />Three proofs of value.</h2>
+              <p>The hub publishes each service as its own provider identity. Both AIMarket and Independent discover the same signed topology.</p>
+              <div class="federation-roots" id="federation-roots">
+                <span><i></i>AIMarket monitor</span><span><i></i>Independent monitor</span>
+              </div>
+            </div>
+            <div class="topology" aria-label="Hub service topology">
+              <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+              <div class="hub-core">
+                <span>AMH</span><strong>12</strong><small>capabilities</small>
+              </div>
+              <article class="topology-node market-node" data-service="memory-market"><i></i><b>Memory Market</b><small>5 capabilities · primary</small></article>
+              <article class="topology-node truth-node" data-service="truth-layer"><i></i><b>Truth Layer</b><small>4 capabilities · evidence</small></article>
+              <article class="topology-node ledger-node" data-service="provenance-ledger"><i></i><b>Provenance</b><small>3 capabilities · lineage</small></article>
+              <div class="crypto-seal"><span>ML</span><b>ML-DSA-65</b><small>+ Ed25519</small></div>
+            </div>
+          </section>
+
+          <section class="stats" aria-label="Hub overview">
+            <article><span>Discoverable</span><strong id="stat-total">—</strong><small>memory units</small></article>
+            <article><span>Attested</span><strong id="stat-attested">—</strong><small>signed lineage</small></article>
+            <article><span>Verified</span><strong id="stat-verified">—</strong><small>evidence checked</small></article>
+            <article class="rail-stat"><span>Payment rail</span><strong id="stat-payment">—</strong><small>fails closed</small></article>
+          </section>
+
+          <section class="capability-panel" aria-labelledby="capability-title">
+            <div class="panel-head capability-head">
+              <div><span class="section-code">LIVE SUPPLY</span><h2 id="capability-title">Hub capabilities</h2></div>
+              <p><strong id="hub-capability-count">12</strong> signed offers across 3 providers</p>
+            </div>
+            <div class="capability-groups">
+              <article><header><span>MARKET / 05</span><i data-service-dot="memory-market"></i></header><div><code>memory.write@v1</code><code>memory.read@v1</code><code>memory.search@v1</code><code>memory.share@v1</code><code>memory.score@v1</code></div></article>
+              <article><header><span>TRUTH / 04</span><i data-service-dot="truth-layer"></i></header><div><code>memory.verify@v1</code><code>claim.check@v1</code><code>contradiction.scan@v1</code><code>evidence.pack@v1</code></div></article>
+              <article><header><span>PROVENANCE / 03</span><i data-service-dot="provenance-ledger"></i></header><div><code>memory.attest@v1</code><code>lineage.get@v1</code><code>receipt.verify@v1</code></div></article>
+            </div>
+          </section>
+
+          <section class="market-panel">
+            <div class="panel-head">
+              <div>
+                <h2>Memory units</h2>
+                <p id="result-count">Loading catalogue…</p>
+              </div>
+              <form class="search" id="search-form" role="search">
+                <span aria-hidden="true">⌕</span>
+                <input id="search" type="search" placeholder="Search title, content or tags" aria-label="Search memories" />
+                <button type="submit">Search</button>
+              </form>
+            </div>
+            <div class="catalog" id="catalog" aria-live="polite"></div>
+          </section>
+
+          <section class="trust-grid" id="trust">
+            <article>
+              <div class="service-index">03 / TRUTH</div>
+              <h2>Evidence stays attached.</h2>
+              <p>Verification records support and refutation weights in a portable evidence pack. “Unverified” is an honest state, not an error.</p>
+              <a href="http://127.0.0.1:8811/docs">Truth API <span>↗</span></a>
+            </article>
+            <article id="lineage">
+              <div class="service-index">04 / PROVENANCE</div>
+              <h2>Every change leaves a line.</h2>
+              <p>Content hashes enter an append-only chain. Every receipt is hybrid-signed with Ed25519 and ML-DSA-65, then linked to its previous root.</p>
+              <a href="http://127.0.0.1:8812/docs">Provenance API <span>↗</span></a>
+            </article>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <div class="scrim" id="scrim" hidden></div>
+    <aside class="create-drawer" id="create-drawer" aria-hidden="true" aria-labelledby="create-title">
+      <div class="drawer-head">
+        <div><p class="kicker">MEMORY.WRITE@V1</p><h2 id="create-title">Write a memory</h2></div>
+        <button class="icon-button" id="close-create" aria-label="Close">×</button>
+      </div>
+      <form id="create-form">
+        <label>API key<input id="api-key" type="password" required placeholder="Operator key" autocomplete="off" /></label>
+        <label>Owner ID<input id="owner-id" readonly required placeholder="did:actor:…" autocomplete="off" /></label>
+        <label>Title<input id="title" required maxlength="200" placeholder="What should agents recognize?" /></label>
+        <label>Content<textarea id="content" required rows="8" placeholder="The durable knowledge, decision or finding…"></textarea></label>
+        <div class="form-row">
+          <label>Visibility<select id="visibility"><option value="private">Private</option><option value="shared">Shared</option><option value="public">Public</option><option value="paid">Paid</option></select></label>
+          <label>Price in USDC<input id="price" inputmode="decimal" placeholder="2.50" disabled /></label>
+        </div>
+        <label>Tags<input id="tags" placeholder="research, deployment, policy" /></label>
+        <label>Source references<textarea id="sources" rows="3" placeholder="One URL or source ID per line"></textarea></label>
+        <p class="form-note">The market stores content. Trust services receive only the data explicitly required for evidence and lineage.</p>
+        <button class="button primary wide" type="submit">Create memory unit</button>
+        <p class="form-message" id="form-message" role="status"></p>
+      </form>
+    </aside>
+
+    <aside class="checkout-drawer" id="checkout-drawer" aria-hidden="true" aria-labelledby="checkout-title">
+      <div class="drawer-head">
+        <div><p class="kicker">DIRECT WALLET SETTLEMENT</p><h2 id="checkout-title">Buy memory access</h2></div>
+        <button class="icon-button" id="close-checkout" aria-label="Close checkout">×</button>
+      </div>
+      <div class="checkout-state" id="checkout-state">
+        <div class="checkout-loader"><i></i><span>Preparing an exact USDC quote…</span></div>
+      </div>
+      <div class="checkout-order" id="checkout-order" hidden>
+        <div class="order-status"><span id="order-number">—</span><strong id="order-state">PENDING</strong></div>
+        <h3 id="order-memory">Memory Unit</h3>
+        <p class="checkout-note">Send the exact amount. The final digits identify this order and must not be rounded.</p>
+        <div class="payment-amount"><span>AMOUNT / BASE</span><strong><b id="order-amount">—</b> USDC</strong><button type="button" data-copy="amount">Copy amount</button></div>
+        <div class="payment-address"><span>PAY DIRECTLY TO</span><code id="order-recipient">—</code><button type="button" data-copy="recipient">Copy address</button></div>
+        <div class="payment-meta"><span>Canonical Circle USDC</span><span id="order-confirmations">5 confirmations</span><span id="order-expiry">Expires —</span><span>No custody</span></div>
+        <a class="button primary wallet-action" id="open-wallet" href="#">Open in wallet <span>↗</span></a>
+        <form id="confirm-payment-form">
+          <label>Already paid? Paste transaction hash<input id="payment-tx" required minlength="66" maxlength="66" placeholder="0x…" autocomplete="off" /></label>
+          <button class="button" type="submit">Verify transaction</button>
+        </form>
+        <p class="form-message" id="payment-message" role="status">Waiting for a finalized transfer…</p>
+      </div>
+    </aside>
+    <script src="/actor.js" defer></script>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

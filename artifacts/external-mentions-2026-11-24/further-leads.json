@@ -1,0 +1,48 @@
+{
+  "observed_date": "2026-11-24",
+  "direct_reply": {
+    "source": "https://mailarchive.ietf.org/arch/msg/agentproto/njf2ts4f6dgaeXOju0nptYgpSY0/",
+    "evidence": "artifacts/ocx-tsd-vectors-2026-11-24/zhao-conformance-recheck.json",
+    "next": "Reply in the same IETF branch with the three matching vectors, ask for contract/extras outcomes to be checked separately on the seven partial errors, and acknowledge the proposed wording clarification."
+  },
+  "external_tooling": [
+    {
+      "component": "AIMarket Oracle Gateway 0.3.3",
+      "sources": [
+        "https://index.canopii.dev/server/io.github.alexar76/aimarket-oracle-gateway/0.3.3",
+        "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/aimarket-oracle-gateway.json",
+        "https://pypi.org/project/aimarket-oracle-gateway/0.3.3/"
+      ],
+      "finding": "Canopii shows 22 declared tools in its static scan. mcpcost observed 36 tools in the same release on 16 November. Inspection of the official release wheel without execution found 10 main registrations, 12 extended and 14 family registrations and confirms that both registration functions are called.",
+      "wheel_sha256": "4258cf037a10b014eb8b2ef33f6e4f75278df8246e90d269fc3f0a5f3601cf55",
+      "next": "Give Canopii the pinned wheel and check whether static handling of register_family_tools accounts for the difference."
+    },
+    {
+      "component": "EasyGerber distribution",
+      "sources": [
+        "https://mcpbeat.com/mcp-servers/easygerber/easygerber/",
+        "https://github.com/EasyGerber/easygerber-agent-plugin#start-without-signing-up"
+      ],
+      "finding": "The MCPBeat search snapshot instructs Claude Code, Claude Desktop and Codex users to connect via /api/mcp/account even while saying no sign-in is needed. EasyGerber's own docs distinguish that account address and the general guest address. On this pass direct unauthenticated initialize was 401 with an authentication challenge at /account and 200 with an initialize result at /api/mcp. The origin MCPBeat HTML was not directly readable in this environment.",
+      "next": "Show the two URLs and responses to the catalogue operator so guest install snippets can use the documented guest URL."
+    }
+  ],
+  "growth": [
+    {
+      "operator": "Tutu eSIM",
+      "sources": [
+        "https://tutuesim.com/en/mcp/",
+        "https://nicolassitter.com/projects/mcp-app-tracker/changes"
+      ],
+      "finding": "Their own guest, read-only MCP offers prices and buy links. An external tracker observed an appearance on 17 November.",
+      "next": "Offer a sandbox pilot that links an MCP price result to an agent checkout."
+    },
+    {
+      "operator": "eSIM Tabby, Josef Rousek",
+      "source": "https://esimtabby.com/guides/x402-in-production",
+      "finding": "The owner documents two x402 quote formats, a real fulfillment example on Base Sepolia and manual USDC refunds as of 21 August.",
+      "next": "Offer common fixture coverage for a duplicate or expired quote and refund after provisioning fails or an unused order is cancelled."
+    }
+  ],
+  "limits": "Seven existing outgoing GitHub PRs and two previous unanswered threads were re-read. A later round of anonymous native GitHub search returned 429. Partnership candidates are based on the operators' own documentation. New publication or outreach was outside the search pass."
+}

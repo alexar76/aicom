@@ -1,0 +1,19 @@
+Hi Xinghua,
+
+Thanks for implementing this from the spec and sharing the outputs. I checked the three requested vectors against the pinned fixture, and both digests match in all three.
+
+I’m following up on your message in the Agentproto archive.
+https://mailarchive.ietf.org/arch/msg/agentproto/njf2ts4f6dgaeXOju0nptYgpSY0/
+
+The related Internet-Draft is draft-nassar-agentproto-trail-00.
+https://datatracker.ietf.org/doc/html/draft-nassar-agentproto-trail-00
+
+In the full run, the runner accepts a top-level error when it matches the expected error for either component. In seven rows, the output reports the extras error and omits the valid contract digest. Could you rerun these two with separate assertions for contract and extras?
+
+- depth-extras-511 should return a contract digest and TSD-DEPTH for extras.
+- number-overflow-in-extras should return a contract digest and TSD-NUMBER for extras.
+
+I agree that a reminder in section 10 would help. Section 12 counts the tools array as level 1, regardless of any enclosing tools/list or JSON-RPC object.
+
+Thanks,
+Alex
