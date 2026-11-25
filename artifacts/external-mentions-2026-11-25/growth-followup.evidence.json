@@ -1,0 +1,823 @@
+{
+  "window_local": {
+    "zone": "Europe/Amsterdam",
+    "from": "2026-11-25T17:01:36.997706+01:00",
+    "through": "2026-11-25T17:04:37.641891+01:00"
+  },
+  "capture_counts_by_http_status": {
+    "200": 69,
+    "404": 2
+  },
+  "atlas": {
+    "revision_reviewed": "25d6b1ab4f0983d2d3c3b35bf03c40535d9c91db",
+    "public_repository_head": "25d6b1ab4f0983d2d3c3b35bf03c40535d9c91db",
+    "atlas_review_commit": "a9b7c179f6bd68312a30d3cc8b19d6955f38f310",
+    "atlas_commit_at": "2026-11-25T14:18:49Z",
+    "marks": [
+      "trust_state",
+      "scope_enforced",
+      "audit_log",
+      "negative_eval"
+    ],
+    "basis": "static source review per the reviewer"
+  },
+  "attested_client_release": {
+    "version": "0.3.0",
+    "files": [
+      {
+        "filename": "attested_memory-0.3.0-py3-none-any.whl",
+        "url": "https://files.pythonhosted.org/packages/e6/25/299bfdc5c905366e6aba5b046206d48d43b0172df39ae82ce30f4a8380de/attested_memory-0.3.0-py3-none-any.whl",
+        "upload_time_iso_8601": "2026-11-25T15:51:36.129278Z",
+        "sha256": "fabb127ec024d3ab978ae5a244a53804f156beacd04d3bba90ded811cd0eb6b1",
+        "matches_local_artifact": true,
+        "client_methods": [
+          "share",
+          "revoke"
+        ]
+      },
+      {
+        "filename": "attested_memory-0.3.0.tar.gz",
+        "url": "https://files.pythonhosted.org/packages/4d/b8/8492b82c22bd4973426f9d5053d0f4d8e6b54b7c427e5b25299c19b2abd3/attested_memory-0.3.0.tar.gz",
+        "upload_time_iso_8601": "2026-11-25T15:51:37.034092Z",
+        "sha256": "e093d28aa3ab59f880e89246798185a7d990af633cafbd1afbf7705fbcabf80f",
+        "matches_local_artifact": true
+      }
+    ],
+    "developer_quickstart_source": "bundled clients/python"
+  },
+  "reloadpi_transfer_witnesses": {
+    "published_examples": {
+      "acffa5": {
+        "tx_hash": "0xacffa5e9b1e208097b57cdb4647a9b4a9295a793530dc9ba14e506d99c3b3ab1",
+        "status": "0x1",
+        "block": 45811832,
+        "transfer": {
+          "from": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+          "to": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+          "atomic_amount": 1610000,
+          "decimals": 6,
+          "token_contract": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "topics": [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x000000000000000000000000c4fad660624fa3b61df809322087ed9c9595fd0a",
+            "0x0000000000000000000000008a598a28a435fe44d31854251b1c88d0781ea822"
+          ],
+          "data": "0x0000000000000000000000000000000000000000000000000000000000189110"
+        }
+      },
+      "7539e7": {
+        "tx_hash": "0x7539e7a871c755101c76502d1c43e172977dcd4ba1a8e0afbee886c71a9c6142",
+        "status": "0x1",
+        "block": 45833528,
+        "transfer": {
+          "from": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+          "to": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+          "atomic_amount": 1610000,
+          "decimals": 6,
+          "token_contract": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "topics": [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000008a598a28a435fe44d31854251b1c88d0781ea822",
+            "0x000000000000000000000000c4fad660624fa3b61df809322087ed9c9595fd0a"
+          ],
+          "data": "0x0000000000000000000000000000000000000000000000000000000000189110"
+        }
+      },
+      "7658ce": {
+        "tx_hash": "0x7658ce9050d48e36d6228778c6f0e36f8776eaec7770a237b236dbb370e886c4",
+        "status": "0x1",
+        "block": 45834728,
+        "transfer": {
+          "from": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+          "to": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+          "atomic_amount": 1610000,
+          "decimals": 6,
+          "token_contract": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "topics": [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000008a598a28a435fe44d31854251b1c88d0781ea822",
+            "0x000000000000000000000000c4fad660624fa3b61df809322087ed9c9595fd0a"
+          ],
+          "data": "0x0000000000000000000000000000000000000000000000000000000000189110"
+        }
+      },
+      "0b0298": {
+        "tx_hash": "0x0b02987edb9172856466d9431cdcc158a081c0f512c27f2721bb6a1f8e963c11",
+        "status": "0x1",
+        "block": 45834878,
+        "transfer": {
+          "from": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+          "to": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+          "atomic_amount": 1610000,
+          "decimals": 6,
+          "token_contract": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+          "topics": [
+            "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "0x0000000000000000000000008a598a28a435fe44d31854251b1c88d0781ea822",
+            "0x000000000000000000000000c4fad660624fa3b61df809322087ed9c9595fd0a"
+          ],
+          "data": "0x0000000000000000000000000000000000000000000000000000000000189110"
+        }
+      }
+    },
+    "refund_sum_atomic": 4830000,
+    "status_and_order_sources": "Vendor report and published v0.2.0 spec. Events on Base alone do not map each order ID.",
+    "refund_policy": {
+      "version": "0.2",
+      "type": "conditional",
+      "type_by_product": {
+        "esim": "automatic",
+        "topup": "automatic",
+        "voucher": "automatic"
+      },
+      "note": "eSIM, topup and voucher failures auto-refund to the original payer within the 24h window; delivered codes/airtime/eSIMs are non-refundable.",
+      "refund_to": "original_payer",
+      "refund_endpoint": "https://api.reloadpi.com/api/catalog/orders/{orderId}/refund",
+      "refund_deadline_seconds": 86400,
+      "refund_claim_deadline_seconds": null,
+      "partial_refunds_supported": false,
+      "idempotency_required": true,
+      "compensating_actions_optional": false,
+      "refund_policy_by_state": {
+        "FULFILLMENT_FAILED": {
+          "type": "automatic",
+          "triggers": [
+            "fulfillment_failed",
+            "upstream_timeout"
+          ]
+        },
+        "EXPIRED": {
+          "type": "automatic",
+          "triggers": [
+            "expired"
+          ]
+        }
+      }
+    }
+  },
+  "issue_statuses": {
+    "rc-single-accept": {
+      "title": "Accept a reviewed change for one tool only",
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-10-16T05:53:46Z",
+      "closed_at": null,
+      "html_url": "https://github.com/basitalisandhu/mcp-rc-check/issues/19"
+    },
+    "opencode-breakdown": {
+      "title": "[FEATURE]: split token usage inside a step (system, schemas, each tool result, reasoning, output)",
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-10-24T14:47:52Z",
+      "closed_at": null,
+      "html_url": "https://github.com/anomalyco/opencode/issues/58716"
+    },
+    "opencode-compaction": {
+      "title": "[FEATURE]: compaction should keep a Code Mode step's return value, not just its code",
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-11-17T18:58:47Z",
+      "closed_at": null,
+      "html_url": "https://github.com/anomalyco/opencode/issues/58717"
+    },
+    "prospect-ibm": {
+      "title": "[FEATURE]: Detect tool-definition drift (rug-pull) via approved-snapshot plugin",
+      "state": "closed",
+      "state_reason": "not_planned",
+      "updated_at": "2026-08-21T09:43:54Z",
+      "closed_at": "2026-08-21T09:43:54Z",
+      "html_url": "https://github.com/IBM/mcp-context-forge/issues/5471"
+    },
+    "prospect-agentmesh": {
+      "title": "mcp: a caller cannot detect that a provider's tool definitions changed",
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-11-07T17:05:00Z",
+      "closed_at": null,
+      "html_url": "https://github.com/google/agentmesh/issues/561"
+    },
+    "prospect-unity": {
+      "title": "[Feature]: Default tool list is about 16.7k prompt tokens; five tools make up over half of it",
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-10-20T20:31:44Z",
+      "closed_at": null,
+      "html_url": "https://github.com/CoplayDev/unity-mcp/issues/1482"
+    },
+    "prospect-nanobot": {
+      "title": "Proposal: budget model-visible MCP schemas for large tool sets",
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-10-20T16:01:30Z",
+      "closed_at": null,
+      "html_url": "https://github.com/HKUDS/nanobot/issues/5298"
+    },
+    "prospect-github-mcp": {
+      "title": "Tool definition drift: 124 of 131 definitions changed in v2.0.0 (data + a pinning fix)",
+      "state": "closed",
+      "state_reason": "completed",
+      "updated_at": "2026-10-13T15:43:23Z",
+      "closed_at": "2026-10-12T20:11:23Z",
+      "html_url": "https://github.com/github/github-mcp-server/issues/3466"
+    },
+    "mcp-transports-74": {
+      "title": "docs: add primitive versioning problem statement",
+      "state": "open",
+      "state_reason": null,
+      "updated_at": "2026-11-20T17:02:29Z",
+      "closed_at": null,
+      "html_url": "https://github.com/modelcontextprotocol/transports-wg/pull/74"
+    },
+    "mcp-transports-75": {
+      "title": "docs: compare primitive versioning scopes",
+      "state": "open",
+      "updated_at": "2026-11-20T14:22:12Z",
+      "closed_at": null,
+      "html_url": "https://github.com/modelcontextprotocol/transports-wg/pull/75"
+    }
+  },
+  "rc-maintainer_comment": {
+    "html_url": "https://github.com/basitalisandhu/mcp-rc-check/issues/19#issuecomment-6209080603",
+    "created_at": "2026-10-16T05:53:46Z"
+  },
+  "public_incoming_issues_from_non_owner": 0,
+  "dev_refund_article_comments": 0,
+  "captures": {
+    "agent-one-easygerber": {
+      "url": "https://www.agent-one.dev/extensions/easygerber",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:40.522493+00:00",
+      "bytes": 277503,
+      "complete": true,
+      "response_sha256": "4b5442fa3fa4bd9916e098138f1c8da5907a6521d916b02db07917c30422fb69"
+    },
+    "agent402-market": {
+      "url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:41.679633+00:00",
+      "bytes": 263215,
+      "complete": true,
+      "response_sha256": "80751f19a62ea034929ade4b4b1eba164657e35058af79d69af6136e77cb2fc4"
+    },
+    "agentone-approval-docs": {
+      "url": "https://docs.agent-one.dev/docs/guides/extensions/approval-and-auth",
+      "http": 404,
+      "datetime_utc": "2026-11-25T16:03:04.422171+00:00",
+      "bytes": 2048,
+      "complete": true,
+      "response_sha256": "a3916efe75409cdf06442ed128a04b90e3b775605ad0fc9c7aea82713ff5b3ee"
+    },
+    "atlas-recheck-current": {
+      "url": "https://neoneye.github.io/agent-memory-atlas/systems/attested-memory/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:36.997706+00:00",
+      "bytes": 55376,
+      "complete": true,
+      "response_sha256": "f28ec76a7d834ec0a047783eb09373b69018838363c396e2a17b56ad9d71d9cc"
+    },
+    "atlas-recheck-history": {
+      "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits?path=content/systems/attested-memory.md&per_page=6",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.331926+00:00",
+      "bytes": 11028,
+      "complete": true,
+      "response_sha256": "1cd6fa25f0462d51162905e800c2caba1e1054dcae4b8f61d72dc5c3fc330bec"
+    },
+    "atlas-recheck-raw": {
+      "url": "https://raw.githubusercontent.com/neoneye/agent-memory-atlas/main/content/systems/attested-memory.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.023183+00:00",
+      "bytes": 39828,
+      "complete": true,
+      "response_sha256": "01ec69d6daac2b7de9fa266edf9b291870dd603b235c9b011fa63e9d22d42cda"
+    },
+    "atlas-recheck": {
+      "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits/a9b7c179f",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.314498+00:00",
+      "bytes": 217766,
+      "complete": true,
+      "response_sha256": "06857ebdda61c34c0273106c5ab24f0aafb6d5d2f44629d7b154804b67c690d7"
+    },
+    "attested-agent-card": {
+      "url": "https://hub.attestedmemory.net/.well-known/agent-card.json",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:04.497845+00:00",
+      "bytes": 3236,
+      "complete": true,
+      "response_sha256": "987691adf363861108d6055a71fb1ff35458f8624973b4630609c021ef8c2ad7"
+    },
+    "attested-dev-site": {
+      "url": "https://attestedmemory.net/developers",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:04.508406+00:00",
+      "bytes": 17039,
+      "complete": true,
+      "response_sha256": "9aace13318d2dfe5b63998fef2b0456e9e20f6443c72d98a0dc5b527955385d6"
+    },
+    "attested-doc-site": {
+      "url": "https://attestedmemory.net/docs",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:04.386078+00:00",
+      "bytes": 3562,
+      "complete": true,
+      "response_sha256": "6ae75841e4563af8223aa46b486b4920a28471f454d4583f44016b2da6ecaee2"
+    },
+    "base-reloadpi-0b0298": {
+      "url": "https://mainnet.base.org",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:27.231595+00:00",
+      "bytes": 1869,
+      "complete": true,
+      "rpc_method": "eth_getTransactionReceipt",
+      "hash": "0x0b02987edb9172856466d9431cdcc158a081c0f512c27f2721bb6a1f8e963c11",
+      "response_sha256": "90b91217aa688cb194fd35a05e3dab9f0665c6df21b1f5de927b4c06b1dd3f36"
+    },
+    "base-reloadpi-7539e7": {
+      "url": "https://mainnet.base.org",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:27.236854+00:00",
+      "bytes": 1867,
+      "complete": true,
+      "rpc_method": "eth_getTransactionReceipt",
+      "hash": "0x7539e7a871c755101c76502d1c43e172977dcd4ba1a8e0afbee886c71a9c6142",
+      "response_sha256": "44e438750b417c92a649fd65cdeee5a6a7a12046dfe43c9ced2ca406c07cfa71"
+    },
+    "base-reloadpi-7658ce": {
+      "url": "https://mainnet.base.org",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:27.236665+00:00",
+      "bytes": 1868,
+      "complete": true,
+      "rpc_method": "eth_getTransactionReceipt",
+      "hash": "0x7658ce9050d48e36d6228778c6f0e36f8776eaec7770a237b236dbb370e886c4",
+      "response_sha256": "288bf2ec23b7944a1bdac0aa76492c1d3ef7b8120cace43032b251f09a59ddc3"
+    },
+    "base-reloadpi-acffa5": {
+      "url": "https://mainnet.base.org",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:27.291098+00:00",
+      "bytes": 2440,
+      "complete": true,
+      "rpc_method": "eth_getTransactionReceipt",
+      "hash": "0xacffa5e9b1e208097b57cdb4647a9b4a9295a793530dc9ba14e506d99c3b3ab1",
+      "response_sha256": "354b193d4867eedc07efbd53eee746888adcf877e3f222e9a223a717b6da4208"
+    },
+    "clear-pact-docs": {
+      "url": "https://clearpact.polsia.app/docs",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:41.043984+00:00",
+      "bytes": 252342,
+      "complete": true,
+      "response_sha256": "0bb459429a9bfecfdccab9aae85f4acd29004b79fa37ca4ab3efe7ced1fa6998"
+    },
+    "coderifts-drift": {
+      "url": "https://coderifts.com/docs/evidence/mcp-drift/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.487236+00:00",
+      "bytes": 384181,
+      "complete": true,
+      "response_sha256": "1a6b8f91b9e10c3b753a47ee4a2e3ab3563bee41c145662e63dc37411b1a8d09"
+    },
+    "commit-layer-log": {
+      "url": "https://commitlayer.ai/changelog",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:40.975877+00:00",
+      "bytes": 790217,
+      "complete": true,
+      "response_sha256": "78c1226c76d07adca290e637d615cb8d5a9a145ffc45729e29441112c43ef250"
+    },
+    "dev-fresh": {
+      "url": "https://dev.to/api/articles?username=alexar76&per_page=12",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:41.455604+00:00",
+      "bytes": 28143,
+      "complete": true,
+      "response_sha256": "307d5fcaf872db142615ffa11c4ded937b82d534f68ee76565ebc145ca8ac630"
+    },
+    "dev-refund-comments": {
+      "url": "https://dev.to/api/comments?a_id=5115100",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:40.696216+00:00",
+      "bytes": 2,
+      "complete": true,
+      "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "histor-watch-easygerber": {
+      "url": "https://histor.modelmarket.dev/feed.xml?watch=5ac01754ec46fef1&approval_relaxing=true",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:40.206446+00:00",
+      "bytes": 1385,
+      "complete": true,
+      "response_sha256": "eddb84818a0b37d308cec5dc57040930ec761f627c6975b238734f7ef5501fe3"
+    },
+    "langchain-client-mcp": {
+      "url": "https://raw.githubusercontent.com/langchain-ai/docs/main/src/oss/deepagents/code/mcp-tools.mdx",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.086709+00:00",
+      "bytes": 26624,
+      "complete": true,
+      "response_sha256": "da48d833a32c8ee234dcf6b4253f47e65bf069e5f1bf68085a510f453d520f6c"
+    },
+    "locallm-hostguide": {
+      "url": "https://raw.githubusercontent.com/ancientcomputing/locallm/3.0.0-GA/docs/security-guide-for-hosts.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.424000+00:00",
+      "bytes": 55188,
+      "complete": true,
+      "response_sha256": "8e9ccdfcf8ad5050749d82c873a746298ede996c6639a2b66d64c0bc4c69e641"
+    },
+    "mcp-cost-tool-gate": {
+      "url": "https://modelmarket.dev/tools/tool-list-cost",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:05.776930+00:00",
+      "bytes": 17060,
+      "complete": true,
+      "response_sha256": "0ef213da5c4e50e618eea2768a2d790fabdbce28e076cf93439ebeef3c9c7980"
+    },
+    "mcp-proxy-latest": {
+      "url": "https://api.github.com/repos/smart-mcp-proxy/mcpproxy-go/releases/latest",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:05.012815+00:00",
+      "bytes": 64994,
+      "complete": true,
+      "response_sha256": "db81d894ea940692a6923772955941a8f1fdd2c38039ced22787ed8134b61959"
+    },
+    "mcp-rc-check-readme": {
+      "url": "https://raw.githubusercontent.com/basitalisandhu/mcp-rc-check/main/README.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.880616+00:00",
+      "bytes": 29107,
+      "complete": true,
+      "response_sha256": "d2d157a5386c1ec9db46b076c7a90cae3ea8442b0e6e323f3a591530dbef3f3f"
+    },
+    "mcp-rc-check-repo": {
+      "url": "https://api.github.com/repos/basitalisandhu/mcp-rc-check",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.819313+00:00",
+      "bytes": 6163,
+      "complete": true,
+      "response_sha256": "f29832c3b6d22c991574fc19c605c7562e66f6da755134440ea7b172f27bbafc"
+    },
+    "mcp-tool-priced": {
+      "url": "https://modelmarket.dev/start",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:06.079981+00:00",
+      "bytes": 63736,
+      "complete": true,
+      "response_sha256": "f1fbabd69e138007252f202dbd34cb6013318a1eb4b56b059062a1e94aa14436"
+    },
+    "mcp-transports-74": {
+      "url": "https://api.github.com/repos/modelcontextprotocol/transports-wg/issues/74",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.214804+00:00",
+      "bytes": 3188,
+      "complete": true,
+      "response_sha256": "e27ea59900fafc86c6ab3891d9ce1c51efe0a7e7e50fc8cc2652fcd228ecf4ef"
+    },
+    "mcp-transports-75": {
+      "url": "https://api.github.com/repos/modelcontextprotocol/transports-wg/pulls/75",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.245241+00:00",
+      "bytes": 18438,
+      "complete": true,
+      "response_sha256": "b2b0acf2d43fb84bb63dd73f33ca9bad178a481d6283e2468d300883ebe49a76"
+    },
+    "mcpproxy-quarantine": {
+      "url": "https://docs.mcpproxy.app/features/security-quarantine/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.864909+00:00",
+      "bytes": 145066,
+      "complete": true,
+      "response_sha256": "ab7f1d33e0c44a903f062857f72c4af6ecec8b3006d155f4cf3367e3c682cc09"
+    },
+    "mcpproxy-repo": {
+      "url": "https://api.github.com/repos/smart-mcp-proxy/mcpproxy-go",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.864536+00:00",
+      "bytes": 6958,
+      "complete": true,
+      "response_sha256": "7f5ee7f55404dfd52e1f4ab9524903d645447b87dafe3b3a054e178078a9f8ec"
+    },
+    "mcptest-drift": {
+      "url": "https://mcptest.io/learn/which-mcp-tool-changes-break-clients",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.622128+00:00",
+      "bytes": 97283,
+      "complete": true,
+      "response_sha256": "be564a506860b199166e0c2e99ac89c0b7682a31690899eaf01238d976708fe1"
+    },
+    "mcptest-readme": {
+      "url": "https://raw.githubusercontent.com/integry/mcptest/main/README.md",
+      "http": 404,
+      "datetime_utc": "2026-11-25T16:04:37.641891+00:00",
+      "bytes": 14,
+      "complete": true,
+      "response_sha256": "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
+    },
+    "mcptest-repo": {
+      "url": "https://api.github.com/repos/integry/mcptest",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:04:37.136600+00:00",
+      "bytes": 5001,
+      "complete": true,
+      "response_sha256": "5e8d71034d4f47ecf5fe5e5266accd344b0fd21ac88ac7195d81b1528ad180ec"
+    },
+    "memory-public-head": {
+      "url": "https://api.github.com/repos/alexar76/attested-memory/commits?per_page=4",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.044935+00:00",
+      "bytes": 13753,
+      "complete": true,
+      "response_sha256": "51bb73187fa22985e6a07acfe625e8c1fa70453f59fd6b267b94e0b32ce90a96"
+    },
+    "memory-pypi-030": {
+      "url": "https://pypi.org/pypi/attested-memory/0.3.0/json",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.294873+00:00",
+      "bytes": 5630,
+      "complete": true,
+      "response_sha256": "250fc74949593355c3ebeb0052a74adb163a5a4df7da111420e89bf761698896"
+    },
+    "memory-pypi-client": {
+      "url": "https://pypi.org/pypi/attested-memory/json",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:37.240030+00:00",
+      "bytes": 10342,
+      "complete": true,
+      "response_sha256": "b3b501dccf43b317ca741b3f6bec9a5aa6f4e7184a7ac2ba8ec06ad04aceadec"
+    },
+    "niche-ping-games": {
+      "url": "https://browse.games/game/pingblip",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:42.281640+00:00",
+      "bytes": 38261,
+      "complete": true,
+      "response_sha256": "aa05f9f76d57be80e7b2051c6268b6c6da01d9ac72340dca64b3b38e8071c681"
+    },
+    "observatory-firstparty": {
+      "url": "https://coderifts.com/docs/evidence/mcp-drift/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:05.011881+00:00",
+      "bytes": 384181,
+      "complete": true,
+      "response_sha256": "1a6b8f91b9e10c3b753a47ee4a2e3ab3563bee41c145662e63dc37411b1a8d09"
+    },
+    "opencode-breakdown": {
+      "url": "https://api.github.com/repos/anomalyco/opencode/issues/58716",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:04:37.173776+00:00",
+      "bytes": 5008,
+      "complete": true,
+      "response_sha256": "8cfd5df453f7262b04f7fa30260a0bf67b91876023b928b67de86f4118bb54da"
+    },
+    "opencode-compaction": {
+      "url": "https://api.github.com/repos/anomalyco/opencode/issues/58717",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:04:37.279560+00:00",
+      "bytes": 4388,
+      "complete": true,
+      "response_sha256": "05a2ee95155d0ab22e7fbabad4aab755b453e0ea5921e041182700d0b1b96951"
+    },
+    "ping-itch": {
+      "url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:42.172301+00:00",
+      "bytes": 15278,
+      "complete": true,
+      "response_sha256": "029dfa5c72cfb608a40d5262a29ad992d8831fe4dc2afec5fb8ec62f3ccd9b3e"
+    },
+    "playable-browse-tags": {
+      "url": "https://browse.games/tag/creature-collector",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:05.704724+00:00",
+      "bytes": 26634,
+      "complete": true,
+      "response_sha256": "9e8fd6fe49dc68878abd48feab8ddf942e06a72b57bdb63886dcd0e257e576d2"
+    },
+    "playable-browse-virtual": {
+      "url": "https://browse.games/tag/virtual-pet",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:05.779977+00:00",
+      "bytes": 33101,
+      "complete": true,
+      "response_sha256": "f73e24226ed8462f806b02fbad0c3d57165a701d5554ae7b342019a3423f77a9"
+    },
+    "prospect-agentmesh-comments": {
+      "url": "https://api.github.com/repos/google/agentmesh/issues/561/comments?per_page=35",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:42.309195+00:00",
+      "bytes": 21066,
+      "complete": true,
+      "response_sha256": "fc56a79df15e9dbe880f854be7918bbcc41e8715dfa249d671814b0bee927fba"
+    },
+    "prospect-agentmesh": {
+      "url": "https://api.github.com/repos/google/agentmesh/issues/561",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.435332+00:00",
+      "bytes": 5904,
+      "complete": true,
+      "response_sha256": "c7543ba7f9469738ae6f50295ec6c67c6793a0bec2ae9562900a01c8e2b67adf"
+    },
+    "prospect-github-mcp-comments": {
+      "url": "https://api.github.com/repos/github/github-mcp-server/issues/3466/comments?per_page=35",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:42.551937+00:00",
+      "bytes": 20488,
+      "complete": true,
+      "response_sha256": "bcad251ea08a412cf7324ceb63a9a6a09641ee2e7ff1864681411242d27f23db"
+    },
+    "prospect-github-mcp": {
+      "url": "https://api.github.com/repos/github/github-mcp-server/issues/3466",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.111768+00:00",
+      "bytes": 4311,
+      "complete": true,
+      "response_sha256": "1b19b505607d9f04f85b65b3f3aee78010fd5b348313542397338ddb5814d80a"
+    },
+    "prospect-ibm-comments": {
+      "url": "https://api.github.com/repos/IBM/mcp-context-forge/issues/5471/comments?per_page=35",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:42.285709+00:00",
+      "bytes": 4183,
+      "complete": true,
+      "response_sha256": "60d10e5eaf62ff85d7ef22bd235638a5a96c534d0741f54bdde0f5e8d4648565"
+    },
+    "prospect-ibm": {
+      "url": "https://api.github.com/repos/IBM/mcp-context-forge/issues/5471",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.475394+00:00",
+      "bytes": 7587,
+      "complete": true,
+      "response_sha256": "771d99dec16d5187ed3849d04253e37f735f6282c2695ee8e42e6d38647f4c7c"
+    },
+    "prospect-nanobot": {
+      "url": "https://api.github.com/repos/HKUDS/nanobot/issues/5298",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.956474+00:00",
+      "bytes": 5273,
+      "complete": true,
+      "response_sha256": "80c06ea1548c9288165c6bcdc2584c9cb00b7ea8d4268a8eb01b5be9e6741ffd"
+    },
+    "prospect-opencode-comments": {
+      "url": "https://api.github.com/repos/anomalyco/opencode/issues/58708/comments?per_page=35",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:42.739745+00:00",
+      "bytes": 10709,
+      "complete": true,
+      "response_sha256": "fe0456947037d0d793be1c6c51839b8a270d0ca4ef042cc24b04708ee2f48239"
+    },
+    "prospect-opencode": {
+      "url": "https://api.github.com/repos/anomalyco/opencode/issues/58708",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.956785+00:00",
+      "bytes": 7613,
+      "complete": true,
+      "response_sha256": "f7b98ba2374e44651b6f2608accb57aaf1d4bd59bdbc293a89f0b2bb107fde2a"
+    },
+    "prospect-unity-comments": {
+      "url": "https://api.github.com/repos/CoplayDev/unity-mcp/issues/1482/comments?per_page=35",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:42.872154+00:00",
+      "bytes": 17826,
+      "complete": true,
+      "response_sha256": "cf691bd8ce71de0f0752e62d7c47d47c825a29d196c39f4c4599ed439a03bdc1"
+    },
+    "prospect-unity": {
+      "url": "https://api.github.com/repos/CoplayDev/unity-mcp/issues/1482",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:38.605893+00:00",
+      "bytes": 9188,
+      "complete": true,
+      "response_sha256": "f38608a23a272881df069b2abe7fe354cd3e9a8828e4935d2d64ac78d071484a"
+    },
+    "rc-contrib": {
+      "url": "https://raw.githubusercontent.com/basitalisandhu/mcp-rc-check/main/CONTRIBUTING.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:05.087952+00:00",
+      "bytes": 2328,
+      "complete": true,
+      "response_sha256": "040e6d795664f719223545fe3799cd33ac94bea79df42cdbe54db0b8fd326f78"
+    },
+    "rc-doc-surface": {
+      "url": "https://raw.githubusercontent.com/basitalisandhu/mcp-rc-check/main/docs/surface.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:04.838711+00:00",
+      "bytes": 26560,
+      "complete": true,
+      "response_sha256": "f665baaef4904d9c7b857342534f2066e553d3af50b2f2febd4da60d5bb9d3ef"
+    },
+    "rc-help-wanted": {
+      "url": "https://api.github.com/repos/basitalisandhu/mcp-rc-check/issues?state=open&per_page=20",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:05.589101+00:00",
+      "bytes": 80665,
+      "complete": true,
+      "response_sha256": "ff0d54c66880fbb0ed91354d329655774081a8eeca9460fcfb2ca0f15f1bbdb5"
+    },
+    "rc-single-accept": {
+      "url": "https://api.github.com/repos/basitalisandhu/mcp-rc-check/issues/19",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:04:37.154744+00:00",
+      "bytes": 4052,
+      "complete": true,
+      "response_sha256": "2d4c6afe466a702f81732d2eca6a554864e3da77c6af8c2c307381228d3586ff"
+    },
+    "rc-single-comments": {
+      "url": "https://api.github.com/repos/basitalisandhu/mcp-rc-check/issues/19/comments?per_page=20",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:04:37.135974+00:00",
+      "bytes": 1878,
+      "complete": true,
+      "response_sha256": "78eb927965d36e36182ead89f001f13733a61a40a373ae037aee4ce30dd4ae74"
+    },
+    "reloadpi-manifest": {
+      "url": "https://api.reloadpi.com/.well-known/x402",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.706639+00:00",
+      "bytes": 9958,
+      "complete": true,
+      "response_sha256": "e2894b8bc834ea28ab5b9de21a633d7179cb5401eb2bf9ce8c01df8881e61126"
+    },
+    "search-deps-digest": {
+      "url": "https://api.github.com/search/repositories?q=%22mcp-tool-set-digest%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-24&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:41.601968+00:00",
+      "bytes": 13129,
+      "complete": true,
+      "response_sha256": "0e0864f7ddd10de4b7c2598c7d9a98ae670a3846bbe1ed7a6f3a0fd82768d33f"
+    },
+    "search-incoming": {
+      "url": "https://api.github.com/search/issues?q=user%3Aalexar76+-author%3Aalexar76+updated%3A%3E%3D2026-11-25&per_page=50",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:41.472194+00:00",
+      "bytes": 79,
+      "complete": true,
+      "response_sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0"
+    },
+    "search-new-links": {
+      "url": "https://api.github.com/search/issues?q=%22github.com%2Falexar76%22+in%3Atitle%2Cbody%2Ccomments+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&per_page=40",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:41.572799+00:00",
+      "bytes": 79,
+      "complete": true,
+      "response_sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0"
+    },
+    "tabby-guide": {
+      "url": "https://esimtabby.com/guides/x402-in-production",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:40.054779+00:00",
+      "bytes": 32157,
+      "complete": true,
+      "response_sha256": "fdbc27a9f6ad03607e6adc0645ab4d21656a9395615400c2ae9cabede061e09c"
+    },
+    "tutu-mcp": {
+      "url": "https://tutuesim.com/en/mcp/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.758990+00:00",
+      "bytes": 53440,
+      "complete": true,
+      "response_sha256": "84586f95c426127f4dd229206414234c196b30d9f2ad2ff9f5b01a65bdabd725"
+    },
+    "x402-signals-1-comments": {
+      "url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1/comments?per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.742001+00:00",
+      "bytes": 17596,
+      "complete": true,
+      "response_sha256": "eb9eb0e641af2b98737b9aee2200768b24a2354f890bb9de8b872945a9ee0fdb"
+    },
+    "x402-signals-1": {
+      "url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.659566+00:00",
+      "bytes": 10067,
+      "complete": true,
+      "response_sha256": "c5b1b9895cc85216f62287e445267304785182424a99f1187af9b6631758c476"
+    },
+    "x402-signals-release": {
+      "url": "https://api.github.com/repos/sF1nX/x402-signals/releases/latest",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:39.561885+00:00",
+      "bytes": 4096,
+      "complete": true,
+      "response_sha256": "00b9969f3699030c0a5136fe30a9fdcd865d65db43c55648f5e503279f52bb9b"
+    },
+    "x402-signals-versioned": {
+      "url": "https://raw.githubusercontent.com/sF1nX/x402-signals/v0.2.0/v0.2.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:03:04.385817+00:00",
+      "bytes": 64346,
+      "complete": true,
+      "response_sha256": "ef94800eed19ff030279bfea6cb0b4363446bfdc788f07f6d8b51b51896c41d6"
+    },
+    "yu-tao-hub-23": {
+      "url": "https://api.github.com/repos/alexar76/aimarket-hub/issues/23/comments?per_page=60",
+      "http": 200,
+      "datetime_utc": "2026-11-25T16:01:40.764351+00:00",
+      "bytes": 29519,
+      "complete": true,
+      "response_sha256": "c2bdaf87d73d66859e9d2a9752c587338087b1476c407f0dd478734b848f3d05"
+    }
+  }
+}

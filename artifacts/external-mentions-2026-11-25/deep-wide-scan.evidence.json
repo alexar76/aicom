@@ -1,0 +1,2509 @@
+{
+  "timezone": "Europe/Amsterdam",
+  "capture_start_local": "2026-11-25T14:49:07.134643+01:00",
+  "capture_end_local": "2026-11-25T14:53:50.546614+01:00",
+  "capture_counts_by_http_status": {
+    "200": 136,
+    "429": 2,
+    "404": 4,
+    "403": 5,
+    "500": 2
+  },
+  "warden_canari": {
+    "pr": {
+      "html_url": "https://github.com/alexar76/warden/pull/15",
+      "merged_at": "2026-11-24T07:52:25Z",
+      "merge_commit_sha": "bb1ad1feaed07b41dd790691682712717ccc7db3"
+    },
+    "tag_tree_sha": "ff431333a80599a604fc2f021d6a38530ddbb21e",
+    "source_paths": [
+      "integrations/canari",
+      "integrations/canari/README.md",
+      "integrations/canari/fixtures",
+      "integrations/canari/fixtures/bundle-current.json",
+      "integrations/canari/fixtures/bundle-expired.json",
+      "integrations/canari/fixtures/canari-public-key.json",
+      "integrations/canari/run-tests.sh",
+      "integrations/canari/test",
+      "integrations/canari/test/verify-attestation.test.mjs",
+      "integrations/canari/verify-attestation.mjs"
+    ],
+    "npm_version": "0.39.0",
+    "npm_integrity": "sha512-qJX2PRldr+XA2hmTsG6VtNldCsD2jTRjN+SRdkUdX3T8atQNlXuc2070BOISeO5sq1+hR8bATN75I0Znvui0kg==",
+    "npm_file_count": 513,
+    "adapter_paths_in_npm": [],
+    "npm_exports": [
+      ".",
+      "./jcs",
+      "./mask",
+      "./agent-guard",
+      "./atomic-screen",
+      "./opencode",
+      "./codex"
+    ]
+  },
+  "zhao_conformance": {
+    "head": "6b14ed70a28709019d323438679b7b100b325022",
+    "ci": {
+      "zhao-ci-pr-jobs": {
+        "conclusion_counts": {
+          "success": 9
+        },
+        "jobs": [
+          {
+            "name": "verify (windows-latest, 3.13)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426101577",
+            "started_at": "2026-11-24T11:55:33Z",
+            "completed_at": "2026-11-24T11:55:48Z"
+          },
+          {
+            "name": "verify (macos-latest, 3.12)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426101874",
+            "started_at": "2026-11-24T11:55:48Z",
+            "completed_at": "2026-11-24T11:55:58Z"
+          },
+          {
+            "name": "verify (macos-latest, 3.13)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426101926",
+            "started_at": "2026-11-24T11:55:50Z",
+            "completed_at": "2026-11-24T11:55:58Z"
+          },
+          {
+            "name": "verify (macos-latest, 3.10)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426101932",
+            "started_at": "2026-11-24T11:55:51Z",
+            "completed_at": "2026-11-24T11:56:27Z"
+          },
+          {
+            "name": "verify (windows-latest, 3.12)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426101989",
+            "started_at": "2026-11-24T11:55:33Z",
+            "completed_at": "2026-11-24T11:55:48Z"
+          },
+          {
+            "name": "verify (ubuntu-latest, 3.12)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426101998",
+            "started_at": "2026-11-24T11:55:45Z",
+            "completed_at": "2026-11-24T11:55:50Z"
+          },
+          {
+            "name": "verify (ubuntu-latest, 3.10)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426102040",
+            "started_at": "2026-11-24T11:55:47Z",
+            "completed_at": "2026-11-24T11:55:59Z"
+          },
+          {
+            "name": "verify (ubuntu-latest, 3.13)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426102046",
+            "started_at": "2026-11-24T11:55:40Z",
+            "completed_at": "2026-11-24T11:55:47Z"
+          },
+          {
+            "name": "verify (windows-latest, 3.10)",
+            "head_sha": "3a3d43f0387387111529202a4310ada33a30b7c4",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/job/138426102171",
+            "started_at": "2026-11-24T11:55:43Z",
+            "completed_at": "2026-11-24T11:56:29Z"
+          }
+        ]
+      },
+      "zhao-ci-head-jobs": {
+        "conclusion_counts": {
+          "success": 8,
+          "cancelled": 1
+        },
+        "jobs": [
+          {
+            "name": "verify (windows-latest, 3.10)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573469389",
+            "started_at": "2026-11-24T15:51:23Z",
+            "completed_at": "2026-11-24T15:52:18Z"
+          },
+          {
+            "name": "verify (ubuntu-latest, 3.13)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470012",
+            "started_at": "2026-11-24T15:51:22Z",
+            "completed_at": "2026-11-24T15:51:34Z"
+          },
+          {
+            "name": "verify (ubuntu-latest, 3.10)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470109",
+            "started_at": "2026-11-24T15:51:22Z",
+            "completed_at": "2026-11-24T15:51:34Z"
+          },
+          {
+            "name": "verify (macos-latest, 3.12)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470213",
+            "started_at": "2026-11-24T15:51:24Z",
+            "completed_at": "2026-11-24T15:51:34Z"
+          },
+          {
+            "name": "verify (macos-latest, 3.10)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "cancelled",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470243",
+            "started_at": "2026-11-24T15:51:20Z",
+            "completed_at": "2026-11-24T16:06:22Z"
+          },
+          {
+            "name": "verify (ubuntu-latest, 3.12)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470252",
+            "started_at": "2026-11-24T15:51:23Z",
+            "completed_at": "2026-11-24T15:51:32Z"
+          },
+          {
+            "name": "verify (windows-latest, 3.12)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470274",
+            "started_at": "2026-11-24T15:51:23Z",
+            "completed_at": "2026-11-24T15:51:39Z"
+          },
+          {
+            "name": "verify (windows-latest, 3.13)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470349",
+            "started_at": "2026-11-24T15:51:23Z",
+            "completed_at": "2026-11-24T15:51:41Z"
+          },
+          {
+            "name": "verify (macos-latest, 3.13)",
+            "head_sha": "6b14ed70a28709019d323438679b7b100b325022",
+            "conclusion": "success",
+            "html_url": "https://github.com/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/job/138573470397",
+            "started_at": "2026-11-24T15:51:23Z",
+            "completed_at": "2026-11-24T15:51:33Z"
+          }
+        ]
+      }
+    },
+    "code_sha256": "72e0010ae06beb090beddf9fca491cdebb3c8d1dab9aa7559d4f210b2d9edd59",
+    "previous_code_sha256": "72e0010ae06beb090beddf9fca491cdebb3c8d1dab9aa7559d4f210b2d9edd59",
+    "upstream_vectors_sha256": "1b1e6706681755740faa85966ece46150ffc70ba452113dc9ae05eb2357d63eb",
+    "published_output_sha256": "e759fb73cdd80c9e02a5a2120dc402d95bbb4275e234ef62fc1b5e0126a3a973",
+    "unchanged_partial_error_cases": [
+      {
+        "id": "number-overflow-in-extras",
+        "external_global_error": "TSD-NUMBER",
+        "expected_contract_digest": "sha256-GPMgmviDifkgSILpi+KVjgjS60yPpTuDhP9OHbVH7Zo=",
+        "expected_extras_error": "TSD-NUMBER"
+      },
+      {
+        "id": "depth-extras-511",
+        "external_global_error": "TSD-DEPTH",
+        "expected_contract_digest": "sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=",
+        "expected_extras_error": "TSD-DEPTH"
+      },
+      {
+        "id": "extras-number-overflow-1e400",
+        "external_global_error": "TSD-NUMBER",
+        "expected_contract_digest": "sha256-88Wu+RBqslXnbKusDxk1TtLT0D2iT/d07h7ia5bzX2U=",
+        "expected_extras_error": "TSD-NUMBER"
+      },
+      {
+        "id": "lone-surrogate-in-extras",
+        "external_global_error": "TSD-TEXT",
+        "expected_contract_digest": "sha256-3uCMHQsblA9/+s/Cmnfbhp/cdlwKi6xtg1CdECAoeBo=",
+        "expected_extras_error": "TSD-TEXT"
+      },
+      {
+        "id": "duplicate-names-both-with-extras",
+        "external_global_error": "TSD-NAME",
+        "expected_contract_digest": "sha256-+KFZbT1NAvgwjx+ZGq/rkpRMzXZRftl4baxdoEbNKEk=",
+        "expected_extras_error": "TSD-NAME"
+      },
+      {
+        "id": "duplicate-names-before-lone-surrogate",
+        "external_global_error": "TSD-NAME",
+        "expected_contract_digest": "sha256-+KFZbT1NAvgwjx+ZGq/rkpRMzXZRftl4baxdoEbNKEk=",
+        "expected_extras_error": "TSD-NAME"
+      },
+      {
+        "id": "duplicate-names-before-number-overflow",
+        "external_global_error": "TSD-NAME",
+        "expected_contract_digest": "sha256-+KFZbT1NAvgwjx+ZGq/rkpRMzXZRftl4baxdoEbNKEk=",
+        "expected_extras_error": "TSD-NAME"
+      }
+    ],
+    "unchanged_target_vectors": [
+      "extras-present",
+      "extras-annotation-flipped",
+      "extras-contract-changed"
+    ]
+  },
+  "github_forks": {
+    "aicom": [
+      {
+        "full_name": "th3artfuldodger/enterprise-factory",
+        "html_url": "https://github.com/th3artfuldodger/enterprise-factory",
+        "pushed_at": "2026-10-14T20:06:17Z",
+        "default_branch": "main",
+        "comparison": {
+          "status": "diverged",
+          "ahead_by": 19,
+          "behind_by": 155,
+          "permalink_url": "https://github.com/alexar76/aicom/compare/alexar76:6ea9e16...th3artfuldodger:ef124a4"
+        },
+        "default_branch_history": [
+          {
+            "sha": "ef124a40d592bf149fab93fb632a4aaf688a04fa",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/ef124a40d592bf149fab93fb632a4aaf688a04fa",
+            "committer_date": "2026-10-14T20:06:07Z",
+            "subject": "Document Factory project memory",
+            "author": null
+          },
+          {
+            "sha": "aa7ed6a8e51a597faf8f6cb8741dd41347ee7e56",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/aa7ed6a8e51a597faf8f6cb8741dd41347ee7e56",
+            "committer_date": "2026-10-14T20:05:36Z",
+            "subject": "Add durable Factory project memory",
+            "author": null
+          },
+          {
+            "sha": "e7692fb0972faf9e2aefa0352b401e2cffca76e7",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/e7692fb0972faf9e2aefa0352b401e2cffca76e7",
+            "committer_date": "2026-10-06T01:20:38Z",
+            "subject": "security: patch newly disclosed dependency advisories",
+            "author": null
+          },
+          {
+            "sha": "a847827e5537c8e896c206f84aa5685769d960da",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/a847827e5537c8e896c206f84aa5685769d960da",
+            "committer_date": "2026-10-06T01:14:30Z",
+            "subject": "feat: complete pre-aesthetics launch hardening",
+            "author": null
+          },
+          {
+            "sha": "5c29996a0889d244c91042187ed11187afd86919",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/5c29996a0889d244c91042187ed11187afd86919",
+            "committer_date": "2026-10-05T18:44:40Z",
+            "subject": "ci: refresh coverage badge [skip ci]",
+            "author": "github-actions[bot]"
+          },
+          {
+            "sha": "1c7960e92243d21ae6d74b8b5a6f5410ba6102f1",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/1c7960e92243d21ae6d74b8b5a6f5410ba6102f1",
+            "committer_date": "2026-10-04T19:36:57Z",
+            "subject": "feat: harden production readiness and observability",
+            "author": null
+          },
+          {
+            "sha": "621e19400ea92a9d1fc5bfa99f1305da12fd4ade",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/621e19400ea92a9d1fc5bfa99f1305da12fd4ade",
+            "committer_date": "2026-10-04T18:23:41Z",
+            "subject": "test: exercise full synthetic Factory canary journey",
+            "author": null
+          },
+          {
+            "sha": "f99a3a74a6883cc21e557fc1365e3d54def7c7e6",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/f99a3a74a6883cc21e557fc1365e3d54def7c7e6",
+            "committer_date": "2026-10-04T18:19:40Z",
+            "subject": "feat: establish governed customer Factory operations",
+            "author": null
+          },
+          {
+            "sha": "f6aefe72181a9296f9d4f8f380f178fc21fbde06",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/f6aefe72181a9296f9d4f8f380f178fc21fbde06",
+            "committer_date": "2026-10-04T17:39:13Z",
+            "subject": "feat: add Factory health recovery and game operations",
+            "author": null
+          },
+          {
+            "sha": "8138784572efe9c335b24aaf245b9945d34768ac",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/8138784572efe9c335b24aaf245b9945d34768ac",
+            "committer_date": "2026-10-04T16:06:29Z",
+            "subject": "fix: patch Next.js critical runtime vulnerability",
+            "author": null
+          },
+          {
+            "sha": "fb224511b137ab3c701f3043a77a7050f3180885",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/fb224511b137ab3c701f3043a77a7050f3180885",
+            "committer_date": "2026-10-03T03:13:32Z",
+            "subject": "feat: add owner command center and mission replay",
+            "author": null
+          },
+          {
+            "sha": "395b4e85f125357bb13603b4911666313bbe0c1a",
+            "html_url": "https://github.com/th3artfuldodger/enterprise-factory/commit/395b4e85f125357bb13603b4911666313bbe0c1a",
+            "committer_date": "2026-10-03T03:11:10Z",
+            "subject": "feat: add owner command center and mission replay",
+            "author": null
+          }
+        ]
+      },
+      {
+        "full_name": "ayeshanazneen1/aicom",
+        "html_url": "https://github.com/ayeshanazneen1/aicom",
+        "pushed_at": "2026-09-15T11:54:33Z",
+        "default_branch": "main",
+        "comparison": {
+          "status": "404",
+          "message": "No common ancestor between main and ayeshanazneen1:main."
+        },
+        "default_branch_history": [
+          {
+            "sha": "ae7f01b2942dd358ec6ec6e9c301a85444b19d7d",
+            "html_url": "https://github.com/ayeshanazneen1/aicom/commit/ae7f01b2942dd358ec6ec6e9c301a85444b19d7d",
+            "committer_date": "2026-09-11T04:40:11Z",
+            "subject": "ci: refresh coverage badge [skip ci]",
+            "author": "github-actions[bot]"
+          },
+          {
+            "sha": "a8758a78b1cb2a3c2d5b3f2d2f0731dd8da93003",
+            "html_url": "https://github.com/ayeshanazneen1/aicom/commit/a8758a78b1cb2a3c2d5b3f2d2f0731dd8da93003",
+            "committer_date": "2026-09-11T04:35:51Z",
+            "subject": "aicom — AI-Factory monorepo (public mirror, single-commit snapshot)",
+            "author": "factory"
+          }
+        ]
+      },
+      {
+        "full_name": "adity982/aicom",
+        "html_url": "https://github.com/adity982/aicom",
+        "pushed_at": "2026-07-31T15:56:43Z",
+        "default_branch": "main",
+        "comparison": {
+          "status": "404",
+          "message": "No common ancestor between main and adity982:main."
+        },
+        "default_branch_history": [
+          {
+            "sha": "26917fd79dd27084e543f793be1c5e62c7d6baed",
+            "html_url": "https://github.com/adity982/aicom/commit/26917fd79dd27084e543f793be1c5e62c7d6baed",
+            "committer_date": "2026-07-24T12:54:50Z",
+            "subject": "ci: refresh coverage badge [skip ci]",
+            "author": "github-actions[bot]"
+          },
+          {
+            "sha": "e5c4056269149c746e16cce1735f076b070ab9ab",
+            "html_url": "https://github.com/adity982/aicom/commit/e5c4056269149c746e16cce1735f076b070ab9ab",
+            "committer_date": "2026-07-24T12:51:44Z",
+            "subject": "aicom — AI-Factory monorepo (public mirror, single-commit snapshot)",
+            "author": "factory"
+          }
+        ]
+      },
+      {
+        "full_name": "BenjaminAyivoh1/aicom",
+        "html_url": "https://github.com/BenjaminAyivoh1/aicom",
+        "pushed_at": "2026-07-19T16:24:21Z",
+        "default_branch": "main",
+        "comparison": {
+          "status": "404",
+          "message": "No common ancestor between main and BenjaminAyivoh1:main."
+        },
+        "default_branch_history": [
+          {
+            "sha": "c6d1ce2355822d21b32ed375f3b480a54ecd0451",
+            "html_url": "https://github.com/BenjaminAyivoh1/aicom/commit/c6d1ce2355822d21b32ed375f3b480a54ecd0451",
+            "committer_date": "2026-07-19T12:00:37Z",
+            "subject": "ci: refresh coverage badge [skip ci]",
+            "author": "github-actions[bot]"
+          },
+          {
+            "sha": "cfd8968e455450d340977361fcf58a274646733c",
+            "html_url": "https://github.com/BenjaminAyivoh1/aicom/commit/cfd8968e455450d340977361fcf58a274646733c",
+            "committer_date": "2026-07-19T11:57:27Z",
+            "subject": "aicom — AI-Factory monorepo (public mirror, single-commit snapshot)",
+            "author": "factory"
+          }
+        ]
+      }
+    ],
+    "aimarket-mcp": [
+      {
+        "full_name": "adity982/aimarket-mcp",
+        "html_url": "https://github.com/adity982/aimarket-mcp",
+        "pushed_at": "2026-07-23T14:47:05Z",
+        "default_branch": "main",
+        "comparison": {
+          "status": "404",
+          "message": "No common ancestor between main and adity982:main."
+        },
+        "default_branch_history": [
+          {
+            "sha": "c226022b14e67321f7db792a8fabdc4c49098e18",
+            "html_url": "https://github.com/adity982/aimarket-mcp/commit/c226022b14e67321f7db792a8fabdc4c49098e18",
+            "committer_date": "2026-07-19T20:53:51Z",
+            "subject": "chore(satellite): sync aimarket-mcp from aicom monorepo",
+            "author": "alexar76"
+          }
+        ]
+      }
+    ]
+  },
+  "deps_dev_by_version": {
+    "deps-argus-0.5.0": {
+      "package": {
+        "system": "NPM",
+        "name": "@alexar76/argus3"
+      },
+      "version": "0.5.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-argus-0.6.2": {
+      "package": {
+        "system": "NPM",
+        "name": "@alexar76/argus3"
+      },
+      "version": "0.6.2",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-attested-0.1.0": {
+      "package": {
+        "system": "PYPI",
+        "name": "attested-memory"
+      },
+      "version": "0.1.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-attested-0.2.0": {
+      "package": {
+        "system": "PYPI",
+        "name": "attested-memory"
+      },
+      "version": "0.2.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-bridge-0.2.1": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-bridges"
+      },
+      "version": "0.2.1",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-esim-0.4.0": {
+      "package": {
+        "system": "NPM",
+        "name": "@aimarket/esim-rails"
+      },
+      "version": "0.4.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-esim-0.5.0": {
+      "package": {
+        "system": "NPM",
+        "name": "@aimarket/esim-rails"
+      },
+      "version": "0.5.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-esim-0.5.1": {
+      "package": {
+        "system": "NPM",
+        "name": "@aimarket/esim-rails"
+      },
+      "version": "0.5.1",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-histor-0.10.0": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-histor"
+      },
+      "version": "0.10.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-histor-0.11.0": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-histor"
+      },
+      "version": "0.11.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-hub-3.19.0": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-hub"
+      },
+      "version": "3.19.0",
+      "totalCount": 15,
+      "directCount": 15,
+      "indirectCount": 0,
+      "directSample": [
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-channels"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-data-cap"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-dataset"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-mcp-packager"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-nft"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-orchestrator"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-personas"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-promo"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-provenance"
+          },
+          "version": "1.1.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-reputation"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-safety"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-streaming"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-tee"
+          },
+          "version": "2.0.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-zk"
+          },
+          "version": "2.1.0"
+        },
+        {
+          "package": {
+            "system": "PYPI",
+            "name": "aimarket-auction"
+          },
+          "version": "2.0.0"
+        }
+      ],
+      "indirectSample": []
+    },
+    "deps-hub-3.22.0": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-hub"
+      },
+      "version": "3.22.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-hub-3.22.1": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-hub"
+      },
+      "version": "3.22.1",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-metis-0.2.0": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-metis"
+      },
+      "version": "0.2.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-oracles-0.3.3": {
+      "package": {
+        "system": "PYPI",
+        "name": "aimarket-oracle-gateway"
+      },
+      "version": "0.3.3",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-sdk-0.0.1": {
+      "package": {
+        "system": "NPM",
+        "name": "@aimarket/sdk"
+      },
+      "version": "0.0.1",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-tokencost-0.1.0": {
+      "package": {
+        "system": "NPM",
+        "name": "mcp-token-cost"
+      },
+      "version": "0.1.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-warden-0.36.0": {
+      "package": {
+        "system": "NPM",
+        "name": "@aimarket/warden"
+      },
+      "version": "0.36.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-warden-0.38.1": {
+      "package": {
+        "system": "NPM",
+        "name": "@aimarket/warden"
+      },
+      "version": "0.38.1",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    },
+    "deps-warden-0.39.0": {
+      "package": {
+        "system": "NPM",
+        "name": "@aimarket/warden"
+      },
+      "version": "0.39.0",
+      "totalCount": 0,
+      "directCount": 0,
+      "indirectCount": 0,
+      "directSample": [],
+      "indirectSample": []
+    }
+  },
+  "scientific_indexes": {
+    "hf-histor-version": {
+      "datacite": {
+        "doi": "10.5281/zenodo.23512760",
+        "titles": [
+          {
+            "title": "HISTOR snapshot 2026-10-20: MCP tool definitions and how they change"
+          }
+        ],
+        "citationCount": 0
+      },
+      "openalex": {
+        "id": "https://openalex.org/W7223029314",
+        "title": "HISTOR snapshot 2026-11-02: MCP tool definitions and how they change",
+        "cited_by_count": 0,
+        "updated_date": "2026-11-19T14:11:59.513116"
+      },
+      "zenodo": {
+        "id": 23512760,
+        "doi": "10.5281/zenodo.23512760",
+        "conceptdoi": "10.5281/zenodo.23512759",
+        "stats": {
+          "downloads": 107,
+          "unique_downloads": 96,
+          "views": 148,
+          "unique_views": 143,
+          "version_downloads": 48,
+          "version_unique_downloads": 40,
+          "version_unique_views": 106,
+          "version_views": 109
+        },
+        "updated": "2026-10-20T20:47:35.843151+00:00"
+      }
+    },
+    "histor-concept": {
+      "datacite": {
+        "doi": "10.5281/zenodo.23512759",
+        "titles": [
+          {
+            "title": "HISTOR snapshot 2026-11-02: MCP tool definitions and how they change"
+          }
+        ],
+        "citationCount": 0
+      },
+      "openalex": {
+        "id": "https://openalex.org/W7223029314",
+        "title": "HISTOR snapshot 2026-11-02: MCP tool definitions and how they change",
+        "cited_by_count": 0,
+        "updated_date": "2026-11-19T14:11:59.513116"
+      },
+      "zenodo": {
+        "id": 23884408,
+        "doi": "10.5281/zenodo.23884408",
+        "conceptdoi": "10.5281/zenodo.23512759",
+        "stats": {
+          "downloads": 107,
+          "unique_downloads": 96,
+          "views": 148,
+          "unique_views": 143,
+          "version_downloads": 19,
+          "version_unique_downloads": 18,
+          "version_unique_views": 28,
+          "version_views": 29
+        },
+        "updated": "2026-11-02T12:29:03.847355+00:00"
+      }
+    },
+    "study-malware": {
+      "datacite": {
+        "doi": "10.5281/zenodo.23914236",
+        "titles": [
+          {
+            "title": "Package-malware feeds on npm and PyPI: study data, 2026-10"
+          }
+        ],
+        "citationCount": 0
+      },
+      "openalex": {
+        "id": "https://openalex.org/W7225174607",
+        "title": "Package-malware feeds on npm and PyPI: study data, 2026-10 and the repeat of 2026-11-13",
+        "cited_by_count": 0,
+        "updated_date": "2026-11-23T12:01:36.302904"
+      },
+      "zenodo": {
+        "id": 23914236,
+        "doi": "10.5281/zenodo.23914236",
+        "conceptdoi": "10.5281/zenodo.23914235",
+        "stats": {
+          "downloads": 5,
+          "unique_downloads": 5,
+          "views": 17,
+          "unique_views": 14,
+          "version_downloads": 2,
+          "version_unique_downloads": 2,
+          "version_unique_views": 6,
+          "version_views": 7
+        },
+        "updated": "2026-11-03T10:20:37.989731+00:00"
+      }
+    }
+  },
+  "sourcegraph": {
+    "sg-attested": {
+      "done": true,
+      "matchCount": 0,
+      "skipped": [
+        {
+          "reason": "backend-missing",
+          "title": "8 backends unavailable",
+          "message": "Some results may be missing because some search backends were down or overloaded. This is likely transient, so retry your search.",
+          "severity": "warn"
+        },
+        {
+          "reason": "repository-fork",
+          "title": "282 forked",
+          "message": "By default we exclude forked repositories. Include them with `fork:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include forked",
+            "queryExpression": "fork:yes"
+          }
+        },
+        {
+          "reason": "excluded-archive",
+          "title": "30k archived",
+          "message": "By default we exclude archived repositories. Include them with `archived:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include archived",
+            "queryExpression": "archived:yes"
+          }
+        }
+      ]
+    },
+    "sg-digest": {
+      "done": true,
+      "matchCount": 0,
+      "skipped": [
+        {
+          "reason": "backend-missing",
+          "title": "8 backends unavailable",
+          "message": "Some results may be missing because some search backends were down or overloaded. This is likely transient, so retry your search.",
+          "severity": "warn"
+        },
+        {
+          "reason": "repository-fork",
+          "title": "282 forked",
+          "message": "By default we exclude forked repositories. Include them with `fork:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include forked",
+            "queryExpression": "fork:yes"
+          }
+        },
+        {
+          "reason": "excluded-archive",
+          "title": "30k archived",
+          "message": "By default we exclude archived repositories. Include them with `archived:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include archived",
+            "queryExpression": "archived:yes"
+          }
+        }
+      ]
+    },
+    "sg-esm": {
+      "done": true,
+      "matchCount": 0,
+      "skipped": [
+        {
+          "reason": "backend-missing",
+          "title": "8 backends unavailable",
+          "message": "Some results may be missing because some search backends were down or overloaded. This is likely transient, so retry your search.",
+          "severity": "warn"
+        },
+        {
+          "reason": "repository-fork",
+          "title": "282 forked",
+          "message": "By default we exclude forked repositories. Include them with `fork:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include forked",
+            "queryExpression": "fork:yes"
+          }
+        },
+        {
+          "reason": "excluded-archive",
+          "title": "30k archived",
+          "message": "By default we exclude archived repositories. Include them with `archived:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include archived",
+            "queryExpression": "archived:yes"
+          }
+        }
+      ]
+    },
+    "sg-factory": {
+      "done": true,
+      "matchCount": 0,
+      "skipped": [
+        {
+          "reason": "backend-missing",
+          "title": "8 backends unavailable",
+          "message": "Some results may be missing because some search backends were down or overloaded. This is likely transient, so retry your search.",
+          "severity": "warn"
+        },
+        {
+          "reason": "repository-fork",
+          "title": "282 forked",
+          "message": "By default we exclude forked repositories. Include them with `fork:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include forked",
+            "queryExpression": "fork:yes"
+          }
+        },
+        {
+          "reason": "excluded-archive",
+          "title": "30k archived",
+          "message": "By default we exclude archived repositories. Include them with `archived:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include archived",
+            "queryExpression": "archived:yes"
+          }
+        }
+      ]
+    },
+    "sg-histor": {
+      "done": true,
+      "matchCount": 0,
+      "skipped": [
+        {
+          "reason": "backend-missing",
+          "title": "8 backends unavailable",
+          "message": "Some results may be missing because some search backends were down or overloaded. This is likely transient, so retry your search.",
+          "severity": "warn"
+        },
+        {
+          "reason": "repository-fork",
+          "title": "282 forked",
+          "message": "By default we exclude forked repositories. Include them with `fork:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include forked",
+            "queryExpression": "fork:yes"
+          }
+        },
+        {
+          "reason": "excluded-archive",
+          "title": "30k archived",
+          "message": "By default we exclude archived repositories. Include them with `archived:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include archived",
+            "queryExpression": "archived:yes"
+          }
+        }
+      ]
+    },
+    "sg-main": {
+      "done": true,
+      "matchCount": 0,
+      "skipped": [
+        {
+          "reason": "backend-missing",
+          "title": "8 backends unavailable",
+          "message": "Some results may be missing because some search backends were down or overloaded. This is likely transient, so retry your search.",
+          "severity": "warn"
+        },
+        {
+          "reason": "repository-fork",
+          "title": "282 forked",
+          "message": "By default we exclude forked repositories. Include them with `fork:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include forked",
+            "queryExpression": "fork:yes"
+          }
+        },
+        {
+          "reason": "excluded-archive",
+          "title": "30k archived",
+          "message": "By default we exclude archived repositories. Include them with `archived:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include archived",
+            "queryExpression": "archived:yes"
+          }
+        }
+      ]
+    },
+    "sg-ping": {
+      "done": true,
+      "matchCount": 0,
+      "skipped": [
+        {
+          "reason": "backend-missing",
+          "title": "8 backends unavailable",
+          "message": "Some results may be missing because some search backends were down or overloaded. This is likely transient, so retry your search.",
+          "severity": "warn"
+        },
+        {
+          "reason": "repository-fork",
+          "title": "282 forked",
+          "message": "By default we exclude forked repositories. Include them with `fork:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include forked",
+            "queryExpression": "fork:yes"
+          }
+        },
+        {
+          "reason": "excluded-archive",
+          "title": "30k archived",
+          "message": "By default we exclude archived repositories. Include them with `archived:yes` in your query.",
+          "severity": "info",
+          "suggested": {
+            "title": "include archived",
+            "queryExpression": "archived:yes"
+          }
+        }
+      ]
+    }
+  },
+  "ragmap": {
+    "generated_at": "2026-11-24T17:45:25.662Z",
+    "row": {
+      "name": "dev.modelmarket/emporion",
+      "title": "EMPORION — business facts from public registers",
+      "description": "EU VAT and EORI checks, sanctions screening, company and LEI lookup, ECB rates. Free, no key.",
+      "url": "https://modelmarket.dev/tools/mcp/emporion",
+      "knowledge": "EU VAT, EORI, LEI, sanctions, company and ECB rate lookups",
+      "topics": [
+        "business-registry",
+        "vat",
+        "sanctions",
+        "fx"
+      ],
+      "tools": [
+        "vat_check",
+        "sanctions_screen",
+        "company_lookup",
+        "lei_lookup",
+        "fx_rate",
+        "business_days",
+        "eori_check",
+        "domain_rdap"
+      ],
+      "repository": "https://github.com/alexar76/emporion",
+      "lastOk": "2026-11-24"
+    }
+  },
+  "sources": {
+    "agentavow-240": {
+      "url": "https://api.github.com/repos/AgentAvow/AgentAvow/issues/240/comments?per_page=60",
+      "final_url": "https://api.github.com/repos/AgentAvow/AgentAvow/issues/240/comments?per_page=60",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:08.148286+00:00",
+      "bytes": 12838,
+      "complete": true,
+      "response_sha256": "76fd6cfe232f7159d3d4e1435399c4833ec6d40bf78b8e0af615168864d0eac3"
+    },
+    "aquix-market-record": {
+      "url": "https://aquix.ai/registered",
+      "final_url": "https://aquix.ai/registered",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:00.617413+00:00",
+      "bytes": 2353487,
+      "complete": true,
+      "response_sha256": "8b08a861f78f2a1c74d33eb2cab243994702aaacc67c7af7f6bfda2dcebbc2b2"
+    },
+    "archive-cdx-factory": {
+      "url": "https://web.archive.org/cdx/search/cdx?url=magic-ai-factory.com%2F&output=json&filter=statuscode%3A200&collapse=timestamp%3A6&limit=20",
+      "final_url": "https://web.archive.org/cdx/search/cdx?url=magic-ai-factory.com%2F&output=json&filter=statuscode%3A200&collapse=timestamp%3A6&limit=20",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.328133+00:00",
+      "bytes": 216,
+      "complete": true,
+      "response_sha256": "93fd43daa6e4a42ae7639345582119b0d4295761a28de790f6c34a32624e9a86"
+    },
+    "attested-api-profile": {
+      "url": "https://artifacts.apis.io/attestedmemory-net/apis.yml",
+      "final_url": "https://artifacts.apis.io/attestedmemory-net/apis.yml",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:00.049048+00:00",
+      "bytes": 27713,
+      "complete": true,
+      "response_sha256": "1af2781087e147562db6418b60755ffdbbefd71acc4862481013cc2167c8281c"
+    },
+    "attested-apis-io": {
+      "url": "https://apis.io/providers/attestedmemory-net/",
+      "final_url": "https://apis.io/providers/attestedmemory-net/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:00.411720+00:00",
+      "bytes": 195650,
+      "complete": true,
+      "response_sha256": "d43f9f8496907445aa3042f1711578d0a6a1e8ff6d6d1853dff0185597424db1"
+    },
+    "attested-atlas-pin": {
+      "url": "https://raw.githubusercontent.com/neoneye/agent-memory-atlas/main/content/systems/attested-memory.md",
+      "final_url": "https://raw.githubusercontent.com/neoneye/agent-memory-atlas/main/content/systems/attested-memory.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.815880+00:00",
+      "bytes": 29843,
+      "complete": true,
+      "response_sha256": "bf38aa6c4f1a9fd625c3acde6bce56c4728886440dcd795e2da709417a3d3ca1"
+    },
+    "canari-pr15": {
+      "url": "https://api.github.com/repos/alexar76/warden/pulls/15",
+      "final_url": "https://api.github.com/repos/alexar76/warden/pulls/15",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:10.701674+00:00",
+      "bytes": 20030,
+      "complete": true,
+      "response_sha256": "1f612af38c5b523b95305af8ca222e2f659ae55dc115908c4fc0bbf8fd91c30d"
+    },
+    "canari-source-docs": {
+      "url": "https://raw.githubusercontent.com/alexar76/warden/v0.39.0/integrations/canari/README.md",
+      "final_url": "https://raw.githubusercontent.com/alexar76/warden/v0.39.0/integrations/canari/README.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.790393+00:00",
+      "bytes": 4026,
+      "complete": true,
+      "response_sha256": "90c85e56b369f86caed36224555f4c829a1befd1a8ad5deedebc08ee8e560141"
+    },
+    "canari-source-verifier": {
+      "url": "https://raw.githubusercontent.com/alexar76/warden/v0.39.0/integrations/canari/verify-attestation.mjs",
+      "final_url": "https://raw.githubusercontent.com/alexar76/warden/v0.39.0/integrations/canari/verify-attestation.mjs",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.790938+00:00",
+      "bytes": 10562,
+      "complete": true,
+      "response_sha256": "fefe284eef04cf54de394c685a769f06515915f11afa87685ce44a0dd68d24da"
+    },
+    "catalog-games-pingblip": {
+      "url": "https://browse.games/game/pingblip",
+      "final_url": "https://browse.games/game/pingblip",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:01.216686+00:00",
+      "bytes": 38279,
+      "complete": true,
+      "response_sha256": "c1c28a20e9ae17d9a7f22214ad2259e6919298e44b4f2713219c7ec059cabe1b"
+    },
+    "codeberg-generic": {
+      "url": "https://codeberg.org/api/v1/repos/search?q=modelmarket&limit=20",
+      "final_url": "https://codeberg.org/api/v1/repos/search?q=modelmarket&limit=20",
+      "http": 429,
+      "datetime_utc": "2026-11-25T13:49:12.268632+00:00",
+      "bytes": 218,
+      "complete": true,
+      "response_sha256": "6e5c9c1519610aa37aeeba87c9c4b12e5fa5da35fc92c5e252af923b21c3889f"
+    },
+    "codeberg-pingblip": {
+      "url": "https://codeberg.org/api/v1/repos/search?q=pingblip&limit=20",
+      "final_url": "https://codeberg.org/api/v1/repos/search?q=pingblip&limit=20",
+      "http": 429,
+      "datetime_utc": "2026-11-25T13:49:12.283104+00:00",
+      "bytes": 218,
+      "complete": true,
+      "response_sha256": "6e5c9c1519610aa37aeeba87c9c4b12e5fa5da35fc92c5e252af923b21c3889f"
+    },
+    "commitlayer-changelog": {
+      "url": "https://commitlayer.ai/changelog",
+      "final_url": "https://commitlayer.ai/changelog",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:58.350346+00:00",
+      "bytes": 790217,
+      "complete": true,
+      "response_sha256": "78c1226c76d07adca290e637d615cb8d5a9a145ffc45729e29441112c43ef250"
+    },
+    "compare-aicom-BenjaminAyivoh1": {
+      "url": "https://api.github.com/repos/alexar76/aicom/compare/main...BenjaminAyivoh1:main?per_page=12",
+      "final_url": "https://api.github.com/repos/alexar76/aicom/compare/main...BenjaminAyivoh1:main?per_page=12",
+      "http": 404,
+      "datetime_utc": "2026-11-25T13:51:04.050954+00:00",
+      "bytes": 173,
+      "complete": true,
+      "response_sha256": "4b6edeb4ba6a59b42ea43d593d3c2fdae93028ba15e147f0006bb9729983de1c"
+    },
+    "compare-aicom-adity982": {
+      "url": "https://api.github.com/repos/alexar76/aicom/compare/main...adity982:main?per_page=12",
+      "final_url": "https://api.github.com/repos/alexar76/aicom/compare/main...adity982:main?per_page=12",
+      "http": 404,
+      "datetime_utc": "2026-11-25T13:51:03.005977+00:00",
+      "bytes": 166,
+      "complete": true,
+      "response_sha256": "eea4334ca8fa2e6595b809d402c692c66a2b155538982521380b965c83e3d8e5"
+    },
+    "compare-aicom-ayeshanazneen1": {
+      "url": "https://api.github.com/repos/alexar76/aicom/compare/main...ayeshanazneen1:main?per_page=12",
+      "final_url": "https://api.github.com/repos/alexar76/aicom/compare/main...ayeshanazneen1:main?per_page=12",
+      "http": 404,
+      "datetime_utc": "2026-11-25T13:51:02.994550+00:00",
+      "bytes": 172,
+      "complete": true,
+      "response_sha256": "dfb0bb088282eba5caf4a05d243db26c83cf9967872432d760e146274f6e2cb4"
+    },
+    "compare-aicom-th3artfuldodger": {
+      "url": "https://api.github.com/repos/alexar76/aicom/compare/main...th3artfuldodger:main?per_page=12",
+      "final_url": "https://api.github.com/repos/alexar76/aicom/compare/main...th3artfuldodger:main?per_page=12",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:03.920434+00:00",
+      "bytes": 895578,
+      "complete": true,
+      "response_sha256": "ed795ecb7ee8eee9d593127259a7b6f0a2e256f792d80fc591056428a8988226"
+    },
+    "compare-aimarket-mcp-adity982": {
+      "url": "https://api.github.com/repos/alexar76/aimarket-mcp/compare/main...adity982:main?per_page=12",
+      "final_url": "https://api.github.com/repos/alexar76/aimarket-mcp/compare/main...adity982:main?per_page=12",
+      "http": 404,
+      "datetime_utc": "2026-11-25T13:51:03.810250+00:00",
+      "bytes": 166,
+      "complete": true,
+      "response_sha256": "eea4334ca8fa2e6595b809d402c692c66a2b155538982521380b965c83e3d8e5"
+    },
+    "datacite-hf-histor-version": {
+      "url": "https://api.datacite.org/dois/10.5281/zenodo.23512760",
+      "final_url": "https://api.datacite.org/dois/10.5281/zenodo.23512760",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:12.647385+00:00",
+      "bytes": 7788,
+      "complete": true,
+      "response_sha256": "3af4ac62b16c94e7e2ca0e29b739e79ffc5700dce9631a9205e594058765e3d0"
+    },
+    "datacite-histor-concept": {
+      "url": "https://api.datacite.org/dois/10.5281/zenodo.23512759",
+      "final_url": "https://api.datacite.org/dois/10.5281/zenodo.23512759",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.593993+00:00",
+      "bytes": 8734,
+      "complete": true,
+      "response_sha256": "e1c44728712e933203b2dbca3e174462321ae85a32f1ce7a21633bf078dde004"
+    },
+    "datacite-study-malware": {
+      "url": "https://api.datacite.org/dois/10.5281/zenodo.23914236",
+      "final_url": "https://api.datacite.org/dois/10.5281/zenodo.23914236",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.294902+00:00",
+      "bytes": 7827,
+      "complete": true,
+      "response_sha256": "0f89b11bf3002d7cbe96eace1c97ddaadb7a47c6b771e1f0c770edb597dc705f"
+    },
+    "deps-argus-0.5.0": {
+      "url": "https://deps.dev/_/s/npm/p/%40alexar76%2Fargus3/v/0.5.0/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40alexar76%2Fargus3/v/0.5.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.250366+00:00",
+      "bytes": 159,
+      "complete": true,
+      "response_sha256": "12e94c1204943b8d8ebe66f7ad5af4419869d516af61ffd8d20c3726802c04f5"
+    },
+    "deps-argus-0.6.2": {
+      "url": "https://deps.dev/_/s/npm/p/%40alexar76%2Fargus3/v/0.6.2/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40alexar76%2Fargus3/v/0.6.2/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.223158+00:00",
+      "bytes": 159,
+      "complete": true,
+      "response_sha256": "df268946dcd47596e63bc15e7b25e640c82f86ac97eb927bcdc0f10374082719"
+    },
+    "deps-attested-0.1.0": {
+      "url": "https://deps.dev/_/s/pypi/p/attested-memory/v/0.1.0/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/attested-memory/v/0.1.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.862332+00:00",
+      "bytes": 159,
+      "complete": true,
+      "response_sha256": "da007ddb165919b15645ca287fedb3dd52fb85f7b1ad3dbacfc68ae6981ec07c"
+    },
+    "deps-attested-0.2.0": {
+      "url": "https://deps.dev/_/s/pypi/p/attested-memory/v/0.2.0/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/attested-memory/v/0.2.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.138662+00:00",
+      "bytes": 159,
+      "complete": true,
+      "response_sha256": "f281ed54dca5c8bfd7ab38b875fa10ffa8acd2030c78bc1d3780308fb948e0ad"
+    },
+    "deps-bridge-0.2.1": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-bridges/v/0.2.1/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-bridges/v/0.2.1/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.702534+00:00",
+      "bytes": 160,
+      "complete": true,
+      "response_sha256": "6a1e288f3d126f8e158950c9dc5f825c2f1a30e0a21d9859e87ef7ec437e5688"
+    },
+    "deps-esim-0.4.0": {
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fesim-rails/v/0.4.0/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fesim-rails/v/0.4.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.500740+00:00",
+      "bytes": 163,
+      "complete": true,
+      "response_sha256": "8203b28a8e6a0838ee622338b24ded3deaf023a9ab659e95376da0e135c5d7ca"
+    },
+    "deps-esim-0.5.0": {
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fesim-rails/v/0.5.0/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fesim-rails/v/0.5.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.522416+00:00",
+      "bytes": 163,
+      "complete": true,
+      "response_sha256": "3041971cfc4b36945caffeca04a7622b6e35e61bf8b39abd918c7dca473af77c"
+    },
+    "deps-esim-0.5.1": {
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fesim-rails/v/0.5.1/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fesim-rails/v/0.5.1/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.780128+00:00",
+      "bytes": 163,
+      "complete": true,
+      "response_sha256": "2d0bc8a79a04ade44fede3669c96662dcde07198ed59e2d9ffd7c03fa3f8102c"
+    },
+    "deps-histor-0.10.0": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-histor/v/0.10.0/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-histor/v/0.10.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.189828+00:00",
+      "bytes": 160,
+      "complete": true,
+      "response_sha256": "c72489681978248809e0ef2ba45abf81995e00a9179b2946ca933b7d0ed4f4a8"
+    },
+    "deps-histor-0.11.0": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-histor/v/0.11.0/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-histor/v/0.11.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.201322+00:00",
+      "bytes": 160,
+      "complete": true,
+      "response_sha256": "4893759f0d3ba50b0a290f1b0f6d6c5c0b0b74c4ffba6b42bd292f740d12847d"
+    },
+    "deps-hub-3.19.0": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-hub/v/3.19.0/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-hub/v/3.19.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.422163+00:00",
+      "bytes": 1273,
+      "complete": true,
+      "response_sha256": "78b380e9b02ed8f01f5ebee56d8a41d9fea2e4b10e85abb71f86ecdb54832265"
+    },
+    "deps-hub-3.22.0": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-hub/v/3.22.0/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-hub/v/3.22.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.467868+00:00",
+      "bytes": 157,
+      "complete": true,
+      "response_sha256": "54c38667522a40283db39651957b253823cda9ad22a1a6105876e608ce9a67f5"
+    },
+    "deps-hub-3.22.1": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-hub/v/3.22.1/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-hub/v/3.22.1/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.468311+00:00",
+      "bytes": 157,
+      "complete": true,
+      "response_sha256": "9cd667b5000966b9015a175b3e93131a3cfef7f0f93eecc92fb0ca7551f6330e"
+    },
+    "deps-metis-0.2.0": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-metis/v/0.2.0/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-metis/v/0.2.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.758543+00:00",
+      "bytes": 158,
+      "complete": true,
+      "response_sha256": "4b1ca7be3454a0031aa3978e0ab15f6fa36219fbdfcd737f32ec688cdb58e38d"
+    },
+    "deps-oracles-0.3.3": {
+      "url": "https://deps.dev/_/s/pypi/p/aimarket-oracle-gateway/v/0.3.3/dependents",
+      "final_url": "https://deps.dev/_/s/pypi/p/aimarket-oracle-gateway/v/0.3.3/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.984438+00:00",
+      "bytes": 167,
+      "complete": true,
+      "response_sha256": "1e4790410fbea48ac3e39d31d9c6cb303dd5435cffac2204d1cac5b253832aca"
+    },
+    "deps-sdk-0.0.1": {
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fsdk/v/0.0.1/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fsdk/v/0.0.1/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:24.755635+00:00",
+      "bytes": 156,
+      "complete": true,
+      "response_sha256": "7dd6d4f2a5586aa6c0a62acfa633c719ea21975fda39603ed3752ce970dd13a7"
+    },
+    "deps-tokencost-0.1.0": {
+      "url": "https://deps.dev/_/s/npm/p/mcp-token-cost/v/0.1.0/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/mcp-token-cost/v/0.1.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.803190+00:00",
+      "bytes": 157,
+      "complete": true,
+      "response_sha256": "8ddce7b39421230ccb724129baf563c40e58ff07ee26ab43bd55620ce8ce6315"
+    },
+    "deps-warden-0.36.0": {
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwarden/v/0.36.0/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwarden/v/0.36.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:22.976121+00:00",
+      "bytes": 160,
+      "complete": true,
+      "response_sha256": "85aeac646e1a6d6f03508813b382eb7e73fcb3751f8fa9c92769b5f155040abb"
+    },
+    "deps-warden-0.38.1": {
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwarden/v/0.38.1/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwarden/v/0.38.1/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:22.705285+00:00",
+      "bytes": 160,
+      "complete": true,
+      "response_sha256": "489d23c831635a7b4ac960c3daae7a25e0b3fa912a37410f78c2a9b469b55064"
+    },
+    "deps-warden-0.39.0": {
+      "url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwarden/v/0.39.0/dependents",
+      "final_url": "https://deps.dev/_/s/npm/p/%40aimarket%2Fwarden/v/0.39.0/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:22.955812+00:00",
+      "bytes": 160,
+      "complete": true,
+      "response_sha256": "8361963740746078911d238a8e0e4798946727e48e48f2440dfa95c9c824c524"
+    },
+    "esim-github-reverse": {
+      "url": "https://github.com/alexar76/esim-operator-kit/network/dependents",
+      "final_url": "https://github.com/alexar76/esim-operator-kit/network/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:12.234673+00:00",
+      "bytes": 133926,
+      "complete": true,
+      "response_sha256": "ad5e94f83dd9ccca0f9fe5a99079de11f21851667eafc9890fe296b95ae3f87f"
+    },
+    "esim-prod-sens": {
+      "url": "https://prodsens.live/2026/11/18/wholesale-esim-prices-dont-drift-they-jump-30-days-of-catalogue-copies/",
+      "final_url": "https://prodsens.live/2026/11/18/wholesale-esim-prices-dont-drift-they-jump-30-days-of-catalogue-copies/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.921316+00:00",
+      "bytes": 412021,
+      "complete": true,
+      "response_sha256": "07619dcbe41a9a1e75666b5f1d30cf1ef6f031b5042ac2eb02601a304324ac31"
+    },
+    "factory-github-reverse-python": {
+      "url": "https://github.com/alexar76/aicom/network/dependents?package_id=UGFja2FnZS03MjEyMDU4MTk3",
+      "final_url": "https://github.com/alexar76/aicom/network/dependents?package_id=UGFja2FnZS03MjEyMDU4MTk3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:53:50.414463+00:00",
+      "bytes": 138678,
+      "complete": true,
+      "response_sha256": "6f610b9ebdb1de51850018e94525c20ac672f636995a34c30e97eb23a90053ba"
+    },
+    "factory-github-reverse-verify": {
+      "url": "https://github.com/alexar76/aicom/network/dependents?package_id=UGFja2FnZS03MDI4OTE1NTM0",
+      "final_url": "https://github.com/alexar76/aicom/network/dependents?package_id=UGFja2FnZS03MDI4OTE1NTM0",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:53:49.657840+00:00",
+      "bytes": 138766,
+      "complete": true,
+      "response_sha256": "38704d13291bf0f6bebba140baaec2ff79f6e26eb3a7816d2711edd69688374e"
+    },
+    "factory-github-reverse": {
+      "url": "https://github.com/alexar76/aicom/network/dependents",
+      "final_url": "https://github.com/alexar76/aicom/network/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.627285+00:00",
+      "bytes": 138369,
+      "complete": true,
+      "response_sha256": "c9eea8683e632573c3b0d7089a214bd4567b5b067b1d6dc3fa4e49ad9cbac278"
+    },
+    "fork-enterprise": {
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory",
+      "final_url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.567137+00:00",
+      "bytes": 16310,
+      "complete": true,
+      "response_sha256": "a7ea0211460c23435caa5067c075e2ad7d916aad5772b35ed40aa8590fc9376f"
+    },
+    "fork-head-BenjaminAyivoh1-aicom": {
+      "url": "https://api.github.com/repos/BenjaminAyivoh1/aicom/commits?per_page=12",
+      "final_url": "https://api.github.com/repos/BenjaminAyivoh1/aicom/commits?per_page=12",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:32.011803+00:00",
+      "bytes": 6798,
+      "complete": true,
+      "response_sha256": "ad434050503bc393113f6ec8c0ae7bc45a014088dc90b1d42b8f580d3290d974"
+    },
+    "fork-head-adity982-aicom": {
+      "url": "https://api.github.com/repos/adity982/aicom/commits?per_page=12",
+      "final_url": "https://api.github.com/repos/adity982/aicom/commits?per_page=12",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:31.960558+00:00",
+      "bytes": 6802,
+      "complete": true,
+      "response_sha256": "59b58638ac73479ac6845f09cef58588d86ad53f5dd2605ae4425af9272d2322"
+    },
+    "fork-head-adity982-aimarket-mcp": {
+      "url": "https://api.github.com/repos/adity982/aimarket-mcp/commits?per_page=12",
+      "final_url": "https://api.github.com/repos/adity982/aimarket-mcp/commits?per_page=12",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:32.002051+00:00",
+      "bytes": 3155,
+      "complete": true,
+      "response_sha256": "8f8ac12a7358d58afb18982afd035417b01f22e908f6f359641b11786faad996"
+    },
+    "fork-head-ayeshanazneen1-aicom": {
+      "url": "https://api.github.com/repos/ayeshanazneen1/aicom/commits?per_page=12",
+      "final_url": "https://api.github.com/repos/ayeshanazneen1/aicom/commits?per_page=12",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:31.808588+00:00",
+      "bytes": 6874,
+      "complete": true,
+      "response_sha256": "7956b28663a5afb49d489a9a05cebd8b908c7325834bdc01afa3b111b9a3cba5"
+    },
+    "fork-head-th3artfuldodger-enterprise-factory": {
+      "url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/commits?per_page=12",
+      "final_url": "https://api.github.com/repos/th3artfuldodger/enterprise-factory/commits?per_page=12",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:31.498597+00:00",
+      "bytes": 20880,
+      "complete": true,
+      "response_sha256": "d26b5e1dfb00aef019bfd74f9776fe8a9a61104d3743dd88fe3111143a91ef9f"
+    },
+    "forks-aicom": {
+      "url": "https://api.github.com/repos/alexar76/aicom/forks?per_page=100",
+      "final_url": "https://api.github.com/repos/alexar76/aicom/forks?per_page=100",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.255969+00:00",
+      "bytes": 21715,
+      "complete": true,
+      "response_sha256": "be17244176dd36a8efe30b75c4bdac628726b0cc3bfb810711aeb47a3960636d"
+    },
+    "forks-aimarket-mcp": {
+      "url": "https://api.github.com/repos/alexar76/aimarket-mcp/forks?per_page=100",
+      "final_url": "https://api.github.com/repos/alexar76/aimarket-mcp/forks?per_page=100",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.168558+00:00",
+      "bytes": 5418,
+      "complete": true,
+      "response_sha256": "85c1589408ff721983282a7065bfe6e73c1e219120bc24d99a7ef91f31d51231"
+    },
+    "forks-digest": {
+      "url": "https://api.github.com/repos/alexar76/mcp-tool-set-digest/forks?per_page=100",
+      "final_url": "https://api.github.com/repos/alexar76/mcp-tool-set-digest/forks?per_page=100",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.134643+00:00",
+      "bytes": 5823,
+      "complete": true,
+      "response_sha256": "a89813328c3f5aee31d3d832dc52912802f1421308c06370e19ed67233346745"
+    },
+    "forks-warden": {
+      "url": "https://api.github.com/repos/alexar76/warden/forks?per_page=100",
+      "final_url": "https://api.github.com/repos/alexar76/warden/forks?per_page=100",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.155220+00:00",
+      "bytes": 5563,
+      "complete": true,
+      "response_sha256": "68960dc7410fb035a7b88fe43eaf6e9480d273350f31840381653ce0d76ba81a"
+    },
+    "gh-card-agents": {
+      "url": "https://api.github.com/search/repositories?q=%22modelmarket.dev%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-15&per_page=30",
+      "final_url": "https://api.github.com/search/repositories?q=%22modelmarket.dev%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-15&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:08.443949+00:00",
+      "bytes": 30949,
+      "complete": true,
+      "response_sha256": "49ee6d1f75d3da5a37f71c74db0ef25c5b12d3fe3ee20776be9828425827a802"
+    },
+    "gh-commits-pub": {
+      "url": "https://api.github.com/search/commits?q=%22alexar76%22+-user%3Aalexar76+committer-date%3A%3E%3D2026-11-21&per_page=30",
+      "final_url": "https://api.github.com/search/commits?q=%22alexar76%22+-user%3Aalexar76+committer-date%3A%3E%3D2026-11-21&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:09.820010+00:00",
+      "bytes": 14744,
+      "complete": true,
+      "response_sha256": "f1263bb311bc6ad7bd07bb0fc452e316f6d7cd0818e8cf730b19d7cf448dd704"
+    },
+    "gh-other-topics": {
+      "url": "https://api.github.com/search/issues?q=%22magic-ai-factory.com%22+OR+%22pingblip.com%22+OR+%22attestedmemory.net%22+in%3Atitle%2Cbody%2Ccomments+-user%3Aalexar76+updated%3A%3E%3D2026-11-15&per_page=50",
+      "final_url": "https://api.github.com/search/issues?q=%22magic-ai-factory.com%22+OR+%22pingblip.com%22+OR+%22attestedmemory.net%22+in%3Atitle%2Cbody%2Ccomments+-user%3Aalexar76+updated%3A%3E%3D2026-11-15&per_page=50",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:09.066498+00:00",
+      "bytes": 79,
+      "complete": true,
+      "response_sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0"
+    },
+    "gh-readme-digest": {
+      "url": "https://api.github.com/search/repositories?q=%22mcp-tool-set-digest%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-15&per_page=30",
+      "final_url": "https://api.github.com/search/repositories?q=%22mcp-tool-set-digest%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-15&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:08.891861+00:00",
+      "bytes": 18676,
+      "complete": true,
+      "response_sha256": "dd38c29fb50b370936c544e838e9c2918f4cfe79cf3cbb4a4a98a24281756d0f"
+    },
+    "gh-readme-esim": {
+      "url": "https://api.github.com/search/repositories?q=%22esim-operator-kit%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-01&per_page=30",
+      "final_url": "https://api.github.com/search/repositories?q=%22esim-operator-kit%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-01&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:08.842102+00:00",
+      "bytes": 55,
+      "complete": true,
+      "response_sha256": "4af480b8ee5b87b369a76c49bd22c9a783908272ebffbe97898f8ab0f0772a5f"
+    },
+    "gh-readme-memory": {
+      "url": "https://api.github.com/search/repositories?q=%22attestedmemory.net%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-01&per_page=30",
+      "final_url": "https://api.github.com/search/repositories?q=%22attestedmemory.net%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-01&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:08.357174+00:00",
+      "bytes": 12798,
+      "complete": true,
+      "response_sha256": "33af70000aa93d8b9da04651a884ffb62dedde6fa30e364a21a33b7b2137f7e6"
+    },
+    "gh-readme-refs": {
+      "url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-15&per_page=30",
+      "final_url": "https://api.github.com/search/repositories?q=%22github.com%2Falexar76%22+in%3Areadme+-user%3Aalexar76+pushed%3A%3E%3D2026-11-15&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:09.465212+00:00",
+      "bytes": 12223,
+      "complete": true,
+      "response_sha256": "1577f297f7222e6e74b6e70c7c964927e5caee62ccef8c32b0ebb6bce65485e5"
+    },
+    "ghcr-wing-version": {
+      "url": "https://github.com/alexar76?tab=packages",
+      "final_url": "https://github.com/alexar76?tab=packages",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.467204+00:00",
+      "bytes": 187663,
+      "complete": true,
+      "response_sha256": "4f121d5d939d4f78992d6c8c854f34b8f52c5ceb0cc9fe7354503b2a46dfcd91"
+    },
+    "gitlab-factory": {
+      "url": "https://gitlab.com/api/v4/projects?search=magic-ai-factory&simple=true&per_page=20",
+      "final_url": "https://gitlab.com/api/v4/projects?search=magic-ai-factory&simple=true&per_page=20",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.054374+00:00",
+      "bytes": 2,
+      "complete": true,
+      "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "gitwal-hermes": {
+      "url": "https://gitwal.com/mentions?before=2026-11-23T08%3A38%3A48.000Z",
+      "final_url": "https://gitwal.com/mentions?before=2026-11-23T08%3A38%3A48.000Z",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:14.775942+00:00",
+      "bytes": 508524,
+      "complete": true,
+      "response_sha256": "15b0ece9423018dc0664de30168075b7dad1f2c4c4765386875e0ac375e3f750"
+    },
+    "hf-collections-exact": {
+      "url": "https://huggingface.co/api/collections?q=histor-mcp-tool-definitions&limit=20",
+      "final_url": "https://huggingface.co/api/collections?q=histor-mcp-tool-definitions&limit=20",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.956012+00:00",
+      "bytes": 2,
+      "complete": true,
+      "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "hf-dataset-exact": {
+      "url": "https://huggingface.co/api/datasets?search=histor-mcp-tool-definitions&limit=50",
+      "final_url": "https://huggingface.co/api/datasets?search=histor-mcp-tool-definitions&limit=50",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.638537+00:00",
+      "bytes": 1499,
+      "complete": true,
+      "response_sha256": "beef2bb63e38f7ff4ee8202bbba5a0b12fa33aef18c2276b81bc00d11f580c05"
+    },
+    "hf-models-exact": {
+      "url": "https://huggingface.co/api/models?search=histor-mcp-tool-definitions&limit=50",
+      "final_url": "https://huggingface.co/api/models?search=histor-mcp-tool-definitions&limit=50",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.944713+00:00",
+      "bytes": 2,
+      "complete": true,
+      "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "hn-attested": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&hitsPerPage=40",
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&hitsPerPage=40",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:14.227460+00:00",
+      "bytes": 413,
+      "complete": true,
+      "response_sha256": "f94b73e17bb7bb65f4824e3eade8318b30fc5fa55d054d32124575bbea48cc53"
+    },
+    "hn-factory": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=magic-ai-factory.com&hitsPerPage=40",
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=magic-ai-factory.com&hitsPerPage=40",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:23.545202+00:00",
+      "bytes": 426,
+      "complete": true,
+      "response_sha256": "9b3275778e1d9374e3687c381d5b6d718cb6d32e57e93161ecff07712d7e5a1c"
+    },
+    "hn-found-0": {
+      "url": "https://hn.algolia.com/api/v1/items/50193565",
+      "final_url": "https://hn.algolia.com/api/v1/items/50193565",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:01.216526+00:00",
+      "bytes": 1362,
+      "complete": true,
+      "response_sha256": "2829b375b4b9ca9e26e150849b1ebea16512b103ff7580b5921e33ddc393dcd0"
+    },
+    "hn-histor": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=histor.modelmarket.dev&hitsPerPage=40",
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=histor.modelmarket.dev&hitsPerPage=40",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:14.714829+00:00",
+      "bytes": 1263,
+      "complete": true,
+      "response_sha256": "d3d5f14b390e2cae979e3cc44f31cc63e2adf2467f4fec65ab00d5f61f96f6b5"
+    },
+    "hn-main": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&hitsPerPage=40",
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&hitsPerPage=40",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:14.165996+00:00",
+      "bytes": 1245,
+      "complete": true,
+      "response_sha256": "fe90ac9c10ddcdada25beeb9cd63d2a0885524fd282e5596bf19cc1e82befb71"
+    },
+    "hn-ping": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip.com&hitsPerPage=40",
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip.com&hitsPerPage=40",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:22.071307+00:00",
+      "bytes": 14483,
+      "complete": true,
+      "response_sha256": "02415e8958ff075df2d79ca41ea3395dbb8670632675c4ba5cddb952d3539cb4"
+    },
+    "hn-title-refund": {
+      "url": "https://hn.algolia.com/api/v1/search?query=%22How+to+verify+an+x402+refund+on+Base%22&hitsPerPage=25",
+      "final_url": "https://hn.algolia.com/api/v1/search?query=%22How+to+verify+an+x402+refund+on+Base%22&hitsPerPage=25",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:01.520688+00:00",
+      "bytes": 416,
+      "complete": true,
+      "response_sha256": "debc05a6fbb3735c48dceb55cf5b2de1d95a1cb333a009bcf076256915c88cf5"
+    },
+    "hn-title-warden": {
+      "url": "https://hn.algolia.com/api/v1/search?query=%22My+Hermes+agent+used+a+GitHub+token+it+never+saw%22&hitsPerPage=25",
+      "final_url": "https://hn.algolia.com/api/v1/search?query=%22My+Hermes+agent+used+a+GitHub+token+it+never+saw%22&hitsPerPage=25",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:02.214341+00:00",
+      "bytes": 460,
+      "complete": true,
+      "response_sha256": "6f1102bdbb25ebfe73f407e5f0e831e7a0a9854ab2bc5e0d44bdb2b5a962a511"
+    },
+    "hub-github-reverse-packages": {
+      "url": "https://github.com/alexar76/aimarket-hub/network/dependents?dependent_type=PACKAGE",
+      "final_url": "https://github.com/alexar76/aimarket-hub/network/dependents?dependent_type=PACKAGE",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:53:49.702633+00:00",
+      "bytes": 143270,
+      "complete": true,
+      "response_sha256": "600038397a69da50bb99005bb9f20f7c6f424e6eeb0012042403a4c370918542"
+    },
+    "hub-github-reverse": {
+      "url": "https://github.com/alexar76/aimarket-hub/network/dependents",
+      "final_url": "https://github.com/alexar76/aimarket-hub/network/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.234042+00:00",
+      "bytes": 138651,
+      "complete": true,
+      "response_sha256": "b81337253595535581defed964311377db99229a10850bc585e5e36e8d241389"
+    },
+    "industrial-current-ci": {
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/workflows/verify-sentinel-distribution.yml/runs?per_page=5",
+      "final_url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools/actions/workflows/verify-sentinel-distribution.yml/runs?per_page=5",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:57.890454+00:00",
+      "bytes": 80561,
+      "complete": true,
+      "response_sha256": "ff0e3181ca47491f045918c3a80241d47d16cc4996691649679745aebe3bd752"
+    },
+    "industrial-current-requirements": {
+      "url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/HEAD/aimarket-sentinel/requirements.txt",
+      "final_url": "https://raw.githubusercontent.com/industrial-platform-ai/industrial-platform-agent-tools/HEAD/aimarket-sentinel/requirements.txt",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:57.491066+00:00",
+      "bytes": 90,
+      "complete": true,
+      "response_sha256": "a32ecd725282ec79f7a44563d9828509fe2a8f1a96564bebd7fb296fc6220fe0"
+    },
+    "libraries-aimarket-histor": {
+      "url": "https://libraries.io/pypi/aimarket-histor/dependents",
+      "final_url": "https://libraries.io/pypi/aimarket-histor/dependents",
+      "http": 403,
+      "datetime_utc": "2026-11-25T13:49:25.718594+00:00",
+      "bytes": 134,
+      "complete": true,
+      "response_sha256": "c996c0469ef05ff6fdd1f7cefbc3f7e109bb21969de42fcf591498a828a7ad5f"
+    },
+    "libraries-attested-memory": {
+      "url": "https://libraries.io/pypi/attested-memory/dependents",
+      "final_url": "https://libraries.io/pypi/attested-memory/dependents",
+      "http": 403,
+      "datetime_utc": "2026-11-25T13:49:25.440931+00:00",
+      "bytes": 134,
+      "complete": true,
+      "response_sha256": "c996c0469ef05ff6fdd1f7cefbc3f7e109bb21969de42fcf591498a828a7ad5f"
+    },
+    "libraries-esim-rails": {
+      "url": "https://libraries.io/npm/%40aimarket%2Fesim-rails/dependents",
+      "final_url": "https://libraries.io/npm/%40aimarket%2Fesim-rails/dependents",
+      "http": 403,
+      "datetime_utc": "2026-11-25T13:49:25.276471+00:00",
+      "bytes": 134,
+      "complete": true,
+      "response_sha256": "c996c0469ef05ff6fdd1f7cefbc3f7e109bb21969de42fcf591498a828a7ad5f"
+    },
+    "libraries-mcp-token-cost": {
+      "url": "https://libraries.io/npm/mcp-token-cost/dependents",
+      "final_url": "https://libraries.io/npm/mcp-token-cost/dependents",
+      "http": 403,
+      "datetime_utc": "2026-11-25T13:49:25.276303+00:00",
+      "bytes": 134,
+      "complete": true,
+      "response_sha256": "c996c0469ef05ff6fdd1f7cefbc3f7e109bb21969de42fcf591498a828a7ad5f"
+    },
+    "lobsters-histor": {
+      "url": "https://lobste.rs/search.json?q=histor.modelmarket.dev",
+      "final_url": "https://lobste.rs/search.json?q=histor.modelmarket.dev",
+      "http": 500,
+      "datetime_utc": "2026-11-25T13:51:02.019465+00:00",
+      "bytes": 182,
+      "complete": true,
+      "response_sha256": "da0321d3386a5423a5dc2e1c1015f3e7a508e0f9bbbfde938fcf6cccf473ce24"
+    },
+    "lobsters-market": {
+      "url": "https://lobste.rs/search.json?q=modelmarket.dev",
+      "final_url": "https://lobste.rs/search.json?q=modelmarket.dev",
+      "http": 500,
+      "datetime_utc": "2026-11-25T13:51:02.145406+00:00",
+      "bytes": 182,
+      "complete": true,
+      "response_sha256": "da0321d3386a5423a5dc2e1c1015f3e7a508e0f9bbbfde938fcf6cccf473ce24"
+    },
+    "memory-github-reverse": {
+      "url": "https://github.com/alexar76/attested-memory/network/dependents",
+      "final_url": "https://github.com/alexar76/attested-memory/network/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.585293+00:00",
+      "bytes": 132237,
+      "complete": true,
+      "response_sha256": "5c25cd383f3129fd292b04b8d47be28d69e5392cc7f80e95a74be8e6e1f03ced"
+    },
+    "news-aiwithghost-hints": {
+      "url": "https://aiwithghost.com/news/news-the-ai-sdks-mcp-drift-check-doesnt-hash-readonlyhint-what-that-would-miss-counte/",
+      "final_url": "https://aiwithghost.com/news/news-the-ai-sdks-mcp-drift-check-doesnt-hash-readonlyhint-what-that-would-miss-counte/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:00.412858+00:00",
+      "bytes": 48110,
+      "complete": true,
+      "response_sha256": "bb0c39c2088e6e73c50f20a8e90ea3c768d2e2ee1c738a1f2ff1b09bbee8768a"
+    },
+    "news-dev-signal": {
+      "url": "https://dev-signal.com/?tag=privacy",
+      "final_url": "https://dev-signal.com/?tag=privacy",
+      "http": 403,
+      "datetime_utc": "2026-11-25T13:50:58.488032+00:00",
+      "bytes": 2048,
+      "complete": true,
+      "response_sha256": "7ab879edab3e23b01198da30a09d50479e581b73f7d45b3a3ba2b59d692512f6"
+    },
+    "nullrun-print": {
+      "url": "https://docs.nullrun.io/print/",
+      "final_url": "https://docs.nullrun.io/print/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:58.673917+00:00",
+      "bytes": 685967,
+      "complete": true,
+      "response_sha256": "00f64d75af38a812b673878928f5f0f73c8d7256f3680fc01c45470ff2153f80"
+    },
+    "openalex-hf-histor-version": {
+      "url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23512760",
+      "final_url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23512760",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:12.976800+00:00",
+      "bytes": 15493,
+      "complete": true,
+      "response_sha256": "d5398f0ecf7e85d2fe1277483855ff8db1989d3dfa90b28558768dab2010a2d3"
+    },
+    "openalex-histor-concept": {
+      "url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23512759",
+      "final_url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23512759",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.748639+00:00",
+      "bytes": 15493,
+      "complete": true,
+      "response_sha256": "31b3790691189ae4032f4d7f066358c48f1ec081849e7cbdacece08b99d4b80f"
+    },
+    "openalex-study-malware": {
+      "url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23914236",
+      "final_url": "https://api.openalex.org/works/https://doi.org/10.5281/zenodo.23914236",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.498929+00:00",
+      "bytes": 13189,
+      "complete": true,
+      "response_sha256": "c86c50052d91de62b83452dcc2eee3312dd5b7d6acb2db5154966d8365a29585"
+    },
+    "openreview-mcp": {
+      "url": "https://openreview.net/notes/edits/attachment?id=wB5I572DOp&name=pdf",
+      "final_url": "https://openreview.net/notes/edits/attachment?id=wB5I572DOp&name=pdf",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:59.590259+00:00",
+      "bytes": 674233,
+      "complete": true,
+      "response_sha256": "351d273f42edbeee7dfcab1d4c3979f4ddf0302502236f6007491778ea321f26"
+    },
+    "pinger-browse": {
+      "url": "https://browse.games/game/pingblip",
+      "final_url": "https://browse.games/game/pingblip",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:09.836120+00:00",
+      "bytes": 38278,
+      "complete": true,
+      "response_sha256": "91179e39c4e8c7f763f6f773094958be3c9f4ea6c8ca535b418577873e553b0b"
+    },
+    "pinger-itch-forum": {
+      "url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+      "final_url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:09.390699+00:00",
+      "bytes": 15279,
+      "complete": true,
+      "response_sha256": "a6c33ad5d92adeb14affb9c23259e8c9ac12de59eac358e16b122a7b057843f6"
+    },
+    "pinger-itch": {
+      "url": "https://pingblip.itch.io/pingblip",
+      "final_url": "https://pingblip.itch.io/pingblip",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:09.373403+00:00",
+      "bytes": 19891,
+      "complete": true,
+      "response_sha256": "e1efb80d9a853a513aa0e44c14c695f24a6f91d7d4dcc6a21eb092cd396b30f0"
+    },
+    "pinger-similar": {
+      "url": "https://browse.games/tag/virtual-pet",
+      "final_url": "https://browse.games/tag/virtual-pet",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:09.787653+00:00",
+      "bytes": 33097,
+      "complete": true,
+      "response_sha256": "ed6d70e0e79e08e1f81bee582fbb7a58e580065cca47c2f7a700b623869c31f7"
+    },
+    "policylayer-toolcost": {
+      "url": "https://policylayer.com/token-cost?add=io-github-alexar76-histor",
+      "final_url": "https://policylayer.com/token-cost?add=io-github-alexar76-histor",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:58.984568+00:00",
+      "bytes": 43031,
+      "complete": true,
+      "response_sha256": "b2f7d2e70461b09e007e28e7f4d90931730978908f494b083f54567a7b94b7b5"
+    },
+    "prior-current": {
+      "url": "https://prior.livevariant.ai/",
+      "final_url": "https://prior.livevariant.ai/",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:58.084765+00:00",
+      "bytes": 23222,
+      "complete": true,
+      "response_sha256": "a03fa79a67baa0352c1f120629272591df1314c21786d670fe4177234b539bc0"
+    },
+    "prior-journal": {
+      "url": "https://prior.livevariant.ai/journal-2026-10.html",
+      "final_url": "https://prior.livevariant.ai/journal-2026-10.html",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:58.359921+00:00",
+      "bytes": 828360,
+      "complete": true,
+      "response_sha256": "054f07abf692965ba8e3d55396ca98efc95a1bc7c79dafbde1dc03ba697e59ea"
+    },
+    "prodsens-refund": {
+      "url": "https://prodsens.live/?s=How+to+verify+an+x402+refund+on+Base",
+      "final_url": "https://prodsens.live/?s=How+to+verify+an+x402+refund+on+Base",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:06.660888+00:00",
+      "bytes": 351052,
+      "complete": true,
+      "response_sha256": "dfe816b68baf7f708e265b30d129dbfe38095a34d70d7228c85eb7b539401b62"
+    },
+    "ragmap-code": {
+      "url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/b0e30a15486eeb810e845008a71529ead0997968/scripts/build-data.ts",
+      "final_url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/b0e30a15486eeb810e845008a71529ead0997968/scripts/build-data.ts",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:31.182696+00:00",
+      "bytes": 14654,
+      "complete": true,
+      "response_sha256": "9ee02616ef2d976a6d5b1bbe9d21e0a9b0943e6171918759f3d3382088633a0d"
+    },
+    "ragmap-data": {
+      "url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/b0e30a15486eeb810e845008a71529ead0997968/data/servers.json",
+      "final_url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/b0e30a15486eeb810e845008a71529ead0997968/data/servers.json",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:31.537774+00:00",
+      "bytes": 2504402,
+      "complete": true,
+      "response_sha256": "84b44ad82a276dcf1dc35b895d7f554639aab2b623dee82194f123390885a70e"
+    },
+    "ragmap-head": {
+      "url": "https://api.github.com/repos/khalidsaidi/ragmap/commits?per_page=1",
+      "final_url": "https://api.github.com/repos/khalidsaidi/ragmap/commits?per_page=1",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:57.076634+00:00",
+      "bytes": 3675,
+      "complete": true,
+      "response_sha256": "1548ccb19b0fc49ba473d66a06b049fc9c4c84c43e996347f0a1567295e7394b"
+    },
+    "ragmap-probes": {
+      "url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/b0e30a15486eeb810e845008a71529ead0997968/.github/workflows/daily.yml",
+      "final_url": "https://raw.githubusercontent.com/khalidsaidi/ragmap/b0e30a15486eeb810e845008a71529ead0997968/.github/workflows/daily.yml",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:31.452859+00:00",
+      "bytes": 896,
+      "complete": true,
+      "response_sha256": "ee4e0cc06500c598c8d37a958e011615b155d631b29b82347aaf3d57e5a0fc02"
+    },
+    "ragmap-tree": {
+      "url": "https://api.github.com/repos/khalidsaidi/ragmap/git/trees/main?recursive=1",
+      "final_url": "https://api.github.com/repos/khalidsaidi/ragmap/git/trees/main?recursive=1",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:57.430654+00:00",
+      "bytes": 5706,
+      "complete": true,
+      "response_sha256": "c1b4d33eb8dc40859c963e63301ba66ec9888d3bf0be994ba9a18bfe65eebe61"
+    },
+    "readme-fpl-current": {
+      "url": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/courses/free-courses-en.md",
+      "final_url": "https://raw.githubusercontent.com/EbookFoundation/free-programming-books/main/courses/free-courses-en.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:31.373595+00:00",
+      "bytes": 174537,
+      "complete": true,
+      "response_sha256": "16833c9573f4a5e53508c4cf1e6c481dbfd4386201095abcf2bfcace98151f36"
+    },
+    "registry-talk-82": {
+      "url": "https://api.github.com/repos/modelcontextprotocol/registry/issues/82/comments?since=2026-11-25T00:00:00Z&per_page=100",
+      "final_url": "https://api.github.com/repos/modelcontextprotocol/registry/issues/82/comments?since=2026-11-25T00:00:00Z&per_page=100",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.773451+00:00",
+      "bytes": 2,
+      "complete": true,
+      "response_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "repo-industrial": {
+      "url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools",
+      "final_url": "https://api.github.com/repos/industrial-platform-ai/industrial-platform-agent-tools",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.670595+00:00",
+      "bytes": 8411,
+      "complete": true,
+      "response_sha256": "adb3130c63510941f805bea0d2a4794df468f8837d0d799a7fa9169940f4db63"
+    },
+    "repo-locallm": {
+      "url": "https://api.github.com/repos/ancientcomputing/locallm",
+      "final_url": "https://api.github.com/repos/ancientcomputing/locallm",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:07.672743+00:00",
+      "bytes": 5972,
+      "complete": true,
+      "response_sha256": "9b6b9b54c70dfd8f54d49e7992cc4ba7fd681a5b1514520b0044e5edf352cf17"
+    },
+    "repo-minia2a": {
+      "url": "https://api.github.com/search/repositories?q=%22minia2a.uk%22+in%3Areadme+-user%3Aalexar76&per_page=30",
+      "final_url": "https://api.github.com/search/repositories?q=%22minia2a.uk%22+in%3Areadme+-user%3Aalexar76&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:08.778374+00:00",
+      "bytes": 127218,
+      "complete": true,
+      "response_sha256": "e5ea9d7cf2b5a79f99e0d943725b048b5b9388e64dee2d03d54ddbe0794d468d"
+    },
+    "sg-attested": {
+      "url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+attestedmemory.net&v=V3",
+      "final_url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+attestedmemory.net&v=V3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:21.854150+00:00",
+      "bytes": 5654,
+      "complete": true,
+      "response_sha256": "8090a0bebe7d124f09452834b8804fba82d815b8834012f31fd2e26ab5b21f82"
+    },
+    "sg-digest": {
+      "url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+mcp-tool-set-digest%2F1&v=V3",
+      "final_url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+mcp-tool-set-digest%2F1&v=V3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:29.866646+00:00",
+      "bytes": 5653,
+      "complete": true,
+      "response_sha256": "9a7f776203c07ec97bdefb65be4cd796995dabffc810af8f76cbbd1a186d02a9"
+    },
+    "sg-esm": {
+      "url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+%40aimarket%2Fesim-rails&v=V3",
+      "final_url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+%40aimarket%2Fesim-rails&v=V3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:22.338256+00:00",
+      "bytes": 5654,
+      "complete": true,
+      "response_sha256": "1b2decc70afbea62cd322a79bd0229da5b3a79dcc14e5d60a98f235ba227611d"
+    },
+    "sg-factory": {
+      "url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+magic-ai-factory.com&v=V3",
+      "final_url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+magic-ai-factory.com&v=V3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:29.008251+00:00",
+      "bytes": 4718,
+      "complete": true,
+      "response_sha256": "907f10c0410f960178321dfcf90abd79b3541fada2eafee8664993a8e8953533"
+    },
+    "sg-histor": {
+      "url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+histor.modelmarket.dev&v=V3",
+      "final_url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+histor.modelmarket.dev&v=V3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:22.169065+00:00",
+      "bytes": 4718,
+      "complete": true,
+      "response_sha256": "a62402e33deb06591242f815ae8b73b8e721ffa9c6e1b7ed0c098b3dedc5b330"
+    },
+    "sg-main": {
+      "url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+modelmarket.dev&v=V3",
+      "final_url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+modelmarket.dev&v=V3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:21.026740+00:00",
+      "bytes": 4718,
+      "complete": true,
+      "response_sha256": "decc958b058d9bdca78067d1f7f579b2ef4f0aaa341bb2f67ae69d85dbe4ccb7"
+    },
+    "sg-ping": {
+      "url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+pingblip.com&v=V3",
+      "final_url": "https://sourcegraph.com/.api/search/stream?q=context%3Aglobal+patternType%3Aliteral+count%3A30+timeout%3A12s+-repo%3A%5Egithub%5C.com%2Falexar76%2F+-repo%3Agithub%5C.com%2Falexar2025%2F+pingblip.com&v=V3",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:22.684928+00:00",
+      "bytes": 5653,
+      "complete": true,
+      "response_sha256": "df6d372f9e87755eb48d4fa49423f74ffcc78e776f5e285a0ec09442ac91b854"
+    },
+    "tapeapi-changelog": {
+      "url": "https://tapeapi.fun/docs/en/changelog",
+      "final_url": "https://tapeapi.fun/docs/en/changelog",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:58.145050+00:00",
+      "bytes": 330814,
+      "complete": true,
+      "response_sha256": "58e03255e2cc3e4e9e1b608ec0c701fb608fa2cac5341fc99db11d5d47772fb3"
+    },
+    "truscor-235": {
+      "url": "https://api.github.com/repos/ethz-spylab/agentdojo/issues/235/comments?per_page=80",
+      "final_url": "https://api.github.com/repos/ethz-spylab/agentdojo/issues/235/comments?per_page=80",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:10.089910+00:00",
+      "bytes": 26984,
+      "complete": true,
+      "response_sha256": "625cd6c6b6bbd555d16c07432b1ccd5bf4838949829333ee63bacd72a9ef8557"
+    },
+    "warden-039-release": {
+      "url": "https://api.github.com/repos/alexar76/warden/releases/tags/v0.39.0",
+      "final_url": "https://api.github.com/repos/alexar76/warden/releases/tags/v0.39.0",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:10.299744+00:00",
+      "bytes": 2992,
+      "complete": true,
+      "response_sha256": "fee2bdb61496324617b9a40cc48b67c7771d64573a41cf33aa05cc5bc7be1f07"
+    },
+    "warden-github-reverse-packages": {
+      "url": "https://github.com/alexar76/warden/network/dependents?dependent_type=PACKAGE",
+      "final_url": "https://github.com/alexar76/warden/network/dependents?dependent_type=PACKAGE",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:53:49.709556+00:00",
+      "bytes": 144039,
+      "complete": true,
+      "response_sha256": "c0189a1cac0ebe83681d88635a9aa98a61632c31c87b5381192331aaa3165a48"
+    },
+    "warden-github-reverse": {
+      "url": "https://github.com/alexar76/warden/network/dependents",
+      "final_url": "https://github.com/alexar76/warden/network/dependents",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:11.247163+00:00",
+      "bytes": 141663,
+      "complete": true,
+      "response_sha256": "f87b5030eb3c2fbe9c5d8877ec62ffd8c11c1abbb3df7178c84f009dc6fcffe1"
+    },
+    "warden-marketplace-mirror": {
+      "url": "https://api.github.com/repos/actions-marketplace-validations/alexar76_warden",
+      "final_url": "https://api.github.com/repos/actions-marketplace-validations/alexar76_warden",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:57.008032+00:00",
+      "bytes": 7923,
+      "complete": true,
+      "response_sha256": "21e6ed4ce4b17fe1b9993a97b4abd92c5a4c846b3aea9c1f52c2417087eba94d"
+    },
+    "warden-npm-0390": {
+      "url": "https://registry.npmjs.org/@aimarket%2Fwarden/0.39.0",
+      "final_url": "https://registry.npmjs.org/@aimarket%2Fwarden/0.39.0",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:10.325566+00:00",
+      "bytes": 4081,
+      "complete": true,
+      "response_sha256": "10c3073997b5bdc06fcf219136aa7e0c4d992a6cc1061980f54ee5b3eafc0daf"
+    },
+    "warden-npm-meta": {
+      "url": "https://registry.npmjs.org/@aimarket%2Fwarden",
+      "final_url": "https://registry.npmjs.org/@aimarket%2Fwarden",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:10.650024+00:00",
+      "bytes": 190991,
+      "complete": true,
+      "response_sha256": "98e4e80c821698f327b93892d2b0c2455c9cba3d50152ac5ba4238a0adcba4cc"
+    },
+    "warden-npm-tgz-0390": {
+      "url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.39.0.tgz",
+      "final_url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.39.0.tgz",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:17.261485+00:00",
+      "bytes": 3905238,
+      "complete": true,
+      "response_sha256": "e87e2adbdbcf9e08654353b3ba8a4301f6d73157dc1806022597b2d294b32d2b"
+    },
+    "warden-tag-tree": {
+      "url": "https://api.github.com/repos/alexar76/warden/git/trees/v0.39.0?recursive=1",
+      "final_url": "https://api.github.com/repos/alexar76/warden/git/trees/v0.39.0?recursive=1",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:51:00.306211+00:00",
+      "bytes": 317537,
+      "complete": true,
+      "response_sha256": "6c6f1b89c09c6609491cd1e6c120d2155b3a450a7800710be21069c71aca786d"
+    },
+    "wardennpm-old-0381": {
+      "url": "https://registry.npmjs.org/@aimarket%2Fwarden/0.38.1",
+      "final_url": "https://registry.npmjs.org/@aimarket%2Fwarden/0.38.1",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:59.150475+00:00",
+      "bytes": 3980,
+      "complete": true,
+      "response_sha256": "4a8e2cb7b285a6fa1cfd279d71059e51119796bde9b9f5cfe91a72442ad0adc2"
+    },
+    "zenodo-hf-histor-version": {
+      "url": "https://zenodo.org/api/records/23512760",
+      "final_url": "https://zenodo.org/api/records/23512760",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.215974+00:00",
+      "bytes": 6885,
+      "complete": true,
+      "response_sha256": "d9c37ecda6863e5751c10e73a8fcf414cbb5eac51ab0d74cdcc80be3397d1b8c"
+    },
+    "zenodo-histor-concept": {
+      "url": "https://zenodo.org/api/records/23512759",
+      "final_url": "https://zenodo.org/api/records/23884408",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:14.214717+00:00",
+      "bytes": 8146,
+      "complete": true,
+      "response_sha256": "234684b208c2c69f7b1e15519225e41f1d0d08925c7c605245e829c741ae6ed3"
+    },
+    "zenodo-study-malware": {
+      "url": "https://zenodo.org/api/records/23914236",
+      "final_url": "https://zenodo.org/api/records/23914236",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:49:13.606025+00:00",
+      "bytes": 5024,
+      "complete": true,
+      "response_sha256": "d956285b929028457d4561d2e4a97f52e0cfe4f0fe1c894236ba1544bbc57f3e"
+    },
+    "zhao-ci-head-jobs": {
+      "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/jobs?per_page=30",
+      "final_url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs/45430312139/jobs?per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:53:50.486798+00:00",
+      "bytes": 21113,
+      "complete": true,
+      "response_sha256": "6e8635bf878b83f748566234d2e4929172c6e4d2c9e5fc8d7a8a6d707e1a6875"
+    },
+    "zhao-ci-head": {
+      "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs?head_sha=6b14ed70a28709019d323438679b7b100b325022&per_page=30",
+      "final_url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs?head_sha=6b14ed70a28709019d323438679b7b100b325022&per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.016792+00:00",
+      "bytes": 15019,
+      "complete": true,
+      "response_sha256": "da08764342f75c455bced6293a86badf794b05dd3e4016da46bd736eb88e5b6a"
+    },
+    "zhao-ci-pr-jobs": {
+      "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/jobs?per_page=30",
+      "final_url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs/45388632856/jobs?per_page=30",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:53:50.546614+00:00",
+      "bytes": 22805,
+      "complete": true,
+      "response_sha256": "7957c7353ca9b6602588868be92edf377c6e647bbfdc7a8ffed1bfbff7ccb3f3"
+    },
+    "zhao-ci-recent": {
+      "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs?per_page=8",
+      "final_url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/actions/runs?per_page=8",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.059237+00:00",
+      "bytes": 90951,
+      "complete": true,
+      "response_sha256": "e58c32c9f2c93a90b22dcaaf7f39a30a0cc7cf0261cddbf3825cc48bd2fbeec0"
+    },
+    "zhao-ci-workflow": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/.github/workflows/verify.yml",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/.github/workflows/verify.yml",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:29.793045+00:00",
+      "bytes": 810,
+      "complete": true,
+      "response_sha256": "35b218c571661de22c284aed7189f688aedf65e29a297b65fc0e5bb041bb32ce"
+    },
+    "zhao-head-commits": {
+      "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/commits?per_page=8",
+      "final_url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/commits?per_page=8",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:57.189757+00:00",
+      "bytes": 27533,
+      "complete": true,
+      "response_sha256": "0f4054df0b0235401aa510736273c03b22376defa01b085658af8708d64092e7"
+    },
+    "zhao-head-tree": {
+      "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/git/trees/main?recursive=1",
+      "final_url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/git/trees/main?recursive=1",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:57.019419+00:00",
+      "bytes": 7193,
+      "complete": true,
+      "response_sha256": "27fa73aa49933105860139ad497a8d48991f7246cd2c4d5714790bf464bdbbd1"
+    },
+    "zhao-manifest-head": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/manifest.json",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/manifest.json",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.493429+00:00",
+      "bytes": 4037,
+      "complete": true,
+      "response_sha256": "7051f008045f025c75ea65e8607813602de1cd7ef5ff6d5201f105094da81f82"
+    },
+    "zhao-out-vectors": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/expected/out_vectors.json",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/expected/out_vectors.json",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.307702+00:00",
+      "bytes": 106278,
+      "complete": true,
+      "response_sha256": "e759fb73cdd80c9e02a5a2120dc402d95bbb4275e234ef62fc1b5e0126a3a973"
+    },
+    "zhao-readme": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/main/README.md",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/main/README.md",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:50:56.917921+00:00",
+      "bytes": 8822,
+      "complete": true,
+      "response_sha256": "5c13031fa110644d02b4a324fb547b0146d942218ceed5b265c0e1fb6ad370d1"
+    },
+    "zhao-runner-head": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/tsd_digest.py",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/tsd_digest.py",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.248308+00:00",
+      "bytes": 9273,
+      "complete": true,
+      "response_sha256": "72e0010ae06beb090beddf9fca491cdebb3c8d1dab9aa7559d4f210b2d9edd59"
+    },
+    "zhao-runner-prev": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/5a20a98a9553fe3a007f500ddf204ff1567d6efe/tsd_digest.py",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/5a20a98a9553fe3a007f500ddf204ff1567d6efe/tsd_digest.py",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.268724+00:00",
+      "bytes": 9273,
+      "complete": true,
+      "response_sha256": "72e0010ae06beb090beddf9fca491cdebb3c8d1dab9aa7559d4f210b2d9edd59"
+    },
+    "zhao-vectors": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/data/vectors.json",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/data/vectors.json",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:29.809484+00:00",
+      "bytes": 72367,
+      "complete": true,
+      "response_sha256": "1b1e6706681755740faa85966ece46150ffc70ba452113dc9ae05eb2357d63eb"
+    },
+    "zhao-verify-log": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/expected/verify.log",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/expected/verify.log",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:29.724933+00:00",
+      "bytes": 672,
+      "complete": true,
+      "response_sha256": "488f0a1793065717f09eb3d1874152e359030b20c1f675ab9643cd6ba6ff43f6"
+    },
+    "zhao-verify-script": {
+      "url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/verify.py",
+      "final_url": "https://raw.githubusercontent.com/zhaoxinghua09-cell/independent-recomputations/6b14ed70a28709019d323438679b7b100b325022/verify.py",
+      "http": 200,
+      "datetime_utc": "2026-11-25T13:52:30.506332+00:00",
+      "bytes": 3012,
+      "complete": true,
+      "response_sha256": "5a762f46afd49a0a7f7c812e55a76773aba79951207219d5bb5af24d2eaa6af8"
+    }
+  }
+}

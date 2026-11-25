@@ -1,4 +1,4 @@
-# Reply to Simon Strandgaard (Agent Memory Atlas reading of attested-memory @ ca686945c) — READY, not sent (pin filled 2026-11-25)
+# Reply to Simon Strandgaard (Agent Memory Atlas reading of attested-memory @ ca686945c) — SENT 2026-11-25 by the owner (qwezzy721@gmail.com, same thread)
 
 §169 done 2026-11-25 05:12Z: mirror tip 25d6b1ab4f0983d2d3c3b35bf03c40535d9c91db (CI pytest/build/deploy green; all fixes present). Owner sends from qwezzy721@gmail.com as a reply in the same thread.
 
