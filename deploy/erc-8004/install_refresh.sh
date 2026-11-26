@@ -6,18 +6,23 @@
 # Puts the runner in /opt/warden-feedback with its own venv and a pinned @aimarket/warden, the
 # state in /var/lib/warden-feedback (never overwritten), reports in /var/www/warden-feedback
 # (served by the histor.modelmarket.dev vhost at /.well-known/erc-8004/feedback/), and enables
-# warden-feedback.timer (Mondays 09:00 UTC, catches up after downtime). The wallet key is created
-# on the host the first time (/etc/warden-feedback/wallet.json, 600) and never leaves it.
+# warden-feedback.timer (Mondays 09:00 UTC, catches up after downtime) plus
+# warden-feedback-watch.timer (every 6h: restart the oneshot if last-run is stale or failed).
+# The wallet key is created on the host the first time (/etc/warden-feedback/wallet.json, 600)
+# and never leaves it.
 set -euo pipefail
 SRC="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SRC/../.." && pwd)"
 HOST=${1:-admin-vps}
 WARDEN_VERSION=0.23.0  # keep equal to WARDEN_VERSION in feedback.py
 ssh "$HOST" 'mkdir -p /opt/warden-feedback/node /var/lib/warden-feedback /var/www/warden-feedback /etc/warden-feedback && chmod 700 /etc/warden-feedback'
-scp -q "$SRC/feedback.py" "$SRC/register.py" "$SRC/build.py" "$SRC/warden_scan.mjs" "$SRC/warden_feedback_refresh.sh" "$SRC/requirements.lock" \
+scp -q "$SRC/feedback.py" "$SRC/register.py" "$SRC/build.py" "$SRC/warden_scan.mjs" \
+       "$SRC/warden_feedback_refresh.sh" "$SRC/warden_feedback_watchdog.py" "$SRC/requirements.lock" \
        "$ROOT/warden/scripts/mcp-survey/mcpclient.py" "$HOST:/opt/warden-feedback/"
-scp -q "$SRC/warden-feedback.service" "$SRC/warden-feedback.timer" "$HOST:/etc/systemd/system/"
-ssh "$HOST" "set -e; cd /opt/warden-feedback; chmod +x warden_feedback_refresh.sh
+scp -q "$SRC/warden-feedback.service" "$SRC/warden-feedback.timer" \
+       "$SRC/warden-feedback-watch.service" "$SRC/warden-feedback-watch.timer" \
+       "$HOST:/etc/systemd/system/"
+ssh "$HOST" "set -e; cd /opt/warden-feedback; chmod +x warden_feedback_refresh.sh warden_feedback_watchdog.py
   [ -x .venv/bin/python ] || python3 -m venv .venv
   # Hash-locked: this venv signs with the feedback wallet. Regenerate the lock with
   #   uv pip compile <pins> --generate-hashes --python-version 3.12 -o deploy/erc-8004/requirements.lock
@@ -30,5 +35,7 @@ from eth_account import Account
 k = \"0x\" + secrets.token_hex(32)
 json.dump({\"accounts\": [{\"address\": Account.from_key(k).address, \"private_key\": k}]}, open(\"/etc/warden-feedback/wallet.json\", \"w\"))'; fi
   chmod 600 /etc/warden-feedback/wallet.json
-  systemctl daemon-reload; systemctl enable --now warden-feedback.timer >/dev/null
-  systemctl list-timers warden-feedback.timer --no-pager | head -2"
+  systemctl daemon-reload
+  systemctl enable --now warden-feedback.timer warden-feedback-watch.timer >/dev/null
+  systemctl list-timers 'warden-feedback*' --no-pager | head -5
+  /usr/bin/python3 /opt/warden-feedback/warden_feedback_watchdog.py --dry-run"

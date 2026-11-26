@@ -1,0 +1,13 @@
+[Unit]
+Description=WARDEN ERC-8004 feedback self-heal — every 6 hours
+Documentation=file:///opt/warden-feedback/warden_feedback_watchdog.py
+
+[Timer]
+Unit=warden-feedback-watch.service
+OnBootSec=20min
+OnUnitActiveSec=6h
+AccuracySec=5min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

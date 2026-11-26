@@ -1,0 +1,10 @@
+[Unit]
+Description=WARDEN ERC-8004 feedback self-heal (start refresh if last-run stale or failed)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /opt/warden-feedback/warden_feedback_watchdog.py
+# Cheap check; the weekly oneshot does the real work when started.
+Nice=10

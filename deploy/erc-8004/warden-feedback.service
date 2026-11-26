@@ -2,6 +2,9 @@
 Description=WARDEN ERC-8004 feedback refresh (re-scan other agents' MCP endpoints, update feedback)
 After=network-online.target
 Wants=network-online.target
+# Oneshot + OnCalendar still schedules the next Monday after a failure. Self-heal between
+# weekly runs is warden-feedback-watch.timer (rate-limited; does not start from OnFailure so
+# a hard wallet/gas refuse cannot loop every few minutes).
 
 [Service]
 Type=oneshot

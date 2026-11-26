@@ -133,6 +133,32 @@ GAS_PRICE_ORACLE = "0x420000000000000000000000000000000000000F"
 GET_L1_FEE_SELECTOR = keccak(text="getL1Fee(bytes)")[:4]
 
 
+def take_tx_budget(actions: list, limit: int) -> tuple[list, int]:
+    """Keep at most `limit` transactions, never splitting a revoke+give for the same agent.
+
+    A hard refuse on oversized plans left the weekly timer failed and last-run.json stale
+    (admin-vps 2026-11-23: 52 actions vs cap 20). Defer the rest to the next run instead.
+    """
+    if len(actions) <= limit:
+        return actions, 0
+    kept: list = []
+    i = 0
+    while i < len(actions) and len(kept) < limit:
+        kind, row, _extra = actions[i]
+        paired = (
+            kind == "revoke"
+            and i + 1 < len(actions)
+            and actions[i + 1][0] == "give"
+            and str(actions[i + 1][1].get("agent_id")) == str(row.get("agent_id"))
+        )
+        need = 2 if paired else 1
+        if len(kept) + need > limit:
+            break
+        kept.extend(actions[i:i + need])
+        i += need
+    return kept, len(actions) - len(kept)
+
+
 def endpoint_ok(url: str) -> bool:
     """A third party's endpoint as it may go into OUR signed calldata: https, short, plain."""
     raw = str(url or "")
@@ -284,8 +310,9 @@ def main() -> None:
     ap.add_argument("--key-file", required=True)
     ap.add_argument("--send", action="store_true")
     ap.add_argument("--max-tx", type=int, default=MAX_TX_PER_RUN,
-                    help=f"transaction cap for this run (default {MAX_TX_PER_RUN}); raise it only after reading "
-                         "the dry run, e.g. once when a new WARDEN release re-issues every feedback")
+                    help=f"transaction budget for this run (default {MAX_TX_PER_RUN}); extras defer to the "
+                         "next run. Raise only after reading the dry run, e.g. once when a new WARDEN "
+                         "release re-issues every feedback")
     ap.add_argument("--revoke-all", action="store_true",
                     help="revoke every live feedback this key's wallet gave (moving to another wallet)")
     args = ap.parse_args()
@@ -315,11 +342,13 @@ def main() -> None:
     CLIENT = acct.address
     scan = {**scan, "rows": [r for r in scan["rows"] if str(r.get("owner") or "").lower() not in OUR_OWNERS]}
     actions, held, unreachable = decide(scan, tools_by_id, scanned_at, excluded)
+    deferred = 0
+    actions, deferred = take_tx_budget(actions, args.max_tx)
     print(f"actions: {[(a, r['agent_id']) for a, r, _ in actions] or 'none'}")
+    if deferred:
+        print(f"deferred to next run (cap {args.max_tx}): {deferred} transactions")
     print(f"held for the owner (blocking findings): {[(r['agent_id'], r['title']) for r in held]}")
     print(f"unreachable this run (left as they are): {[r['agent_id'] for r in unreachable]}")
-    if len(actions) > args.max_tx:
-        sys.exit(f"refusing: {len(actions)} transactions in one run (cap {args.max_tx}); look first")
     if not actions:
         return
     if os.path.exists(PENDING):

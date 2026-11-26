@@ -97,3 +97,37 @@ def test_a_blocking_finding_on_rescan_revokes_and_holds(fb):
                                  "2026-11-05T10:00:00Z", set())
     assert [(a[0], a[2]) for a in actions] == [("revoke", "a blocking finding appeared")]
     assert [r["agent_id"] for r in held] == [300]
+
+
+def _give(aid):
+    return ("give", row(aid), f"/tmp/warden-{aid}.json")
+
+
+def _revoke_give(aid):
+    return [("revoke", row(aid), "changed"), _give(aid)]
+
+
+def test_take_tx_budget_keeps_pairs_and_defers_the_rest(fb):
+    # 12 revoke+give pairs = 24 txs; cap 20 must keep 10 pairs (20) and defer 4.
+    actions = []
+    for aid in range(12):
+        actions.extend(_revoke_give(aid))
+    kept, deferred = fb.take_tx_budget(actions, 20)
+    assert deferred == 4
+    assert len(kept) == 20
+    assert [a[0] for a in kept[18:20]] == ["revoke", "give"]
+    assert kept[18][1]["agent_id"] == kept[19][1]["agent_id"] == 9
+
+
+def test_take_tx_budget_does_not_split_a_trailing_pair(fb):
+    # Cap 2 with a give then a revoke+give: keep the lone give; pair needs 2 and would exceed.
+    actions = [_give(1), ("revoke", row(2), "x"), _give(2)]
+    kept, deferred = fb.take_tx_budget(actions, 2)
+    assert [a[0] for a in kept] == ["give"]
+    assert deferred == 2
+
+
+def test_take_tx_budget_under_cap_unchanged(fb):
+    actions = [_give(1), _give(2)]
+    kept, deferred = fb.take_tx_budget(actions, 20)
+    assert kept == actions and deferred == 0

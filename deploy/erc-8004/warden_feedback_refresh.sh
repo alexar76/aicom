@@ -9,6 +9,10 @@
 # initialize + tools/list on each → the published @aimarket/warden (WARDEN_VERSION in feedback.py) → reports written where
 # nginx serves them → feedback.py. A short public summary goes to last-run.json, which the alerter
 # on not-my-vps turns into a Telegram message (the bot token stays there).
+#
+# Failures always stamp last-run.json (status=failed + ranAt) so operators see "failed" ≠ "never
+# ran", and warden-feedback-watch.timer can self-heal without waiting for the 8-day Telegram page.
+# The weekly oneshot timer still fires next Monday after a failure (Persistent=true).
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 export WARDEN_FB_STATE=${WARDEN_FB_STATE:-/var/lib/warden-feedback}
@@ -18,7 +22,79 @@ KEY_FILE=${KEY_FILE:-/etc/warden-feedback/wallet.json}
 RUN="$WARDEN_FB_STATE/runs/$(date -u +%Y%m%dT%H%M%SZ)"
 WARDEN_PKG="$HERE/node/node_modules/@aimarket/warden/dist/index.js"
 PY_VENV="$HERE/.venv/bin/python"
+LAST_RUN="$WARDEN_FB_REPORTS/last-run.json"
+STAMPED=0
 mkdir -p "$RUN" "$WARDEN_FB_REPORTS"
+
+write_last_run() {
+  # status, optional error line, optional plan path, optional send path
+  local status="$1" error="${2:-}" plan_path="${3:-}" send_path="${4:-}"
+  python3 - "$status" "$error" "$plan_path" "$send_path" "$LAST_RUN" <<'PY'
+import json, os, re, sys, time, urllib.request
+status, error, plan_path, send_path, out = sys.argv[1:6]
+WALLET = "0x564bE09d06117A106ECC006a19b67768cBd91666"
+try:
+    req = urllib.request.Request(
+        "https://mainnet.base.org",
+        headers={"content-type": "application/json", "user-agent": "warden-feedback"},
+        data=json.dumps({"jsonrpc": "2.0", "id": 1, "method": "eth_getBalance",
+                         "params": [WALLET, "latest"]}).encode())
+    balance = int(json.load(urllib.request.urlopen(req, timeout=20))["result"], 16) / 1e18
+except Exception:
+    balance = None
+
+
+def live_total():
+    newest = {}
+    path = os.path.join(os.environ.get("WARDEN_FB_STATE", "/var/lib/warden-feedback"), "feedback.log")
+    try:
+        for line in open(path):
+            if line.strip():
+                e = json.loads(line)
+                if str(e.get("client", "")).lower() == WALLET.lower() and e.get("status") == "ok":
+                    newest[e["agentId"]] = e.get("kind", "give")
+    except OSError:
+        return None
+    return sum(1 for kind in newest.values() if kind == "give")
+
+plan = open(plan_path).read() if plan_path and os.path.exists(plan_path) else ""
+send = open(send_path).read() if send_path and os.path.exists(send_path) else ""
+held = []
+if "held for the owner" in plan:
+    held = re.findall(r"\('(\d+)', '([^']*)'\)", plan.split("held for the owner")[1].split("\n")[0])
+err = None
+if status != "ok":
+    if error:
+        err = error[:300]
+    elif send.strip():
+        err = send.strip().splitlines()[-1][:300]
+    elif plan.strip():
+        err = plan.strip().splitlines()[-1][:300]
+    else:
+        err = "refresh failed before plan/send"
+json.dump({"ranAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "status": status,
+           "given": len(re.findall(r"^  give \d+: ok", send, re.M)),
+           "revoked": len(re.findall(r"^  revoke \d+: ok", send, re.M)),
+           "held": [{"agentId": int(a), "name": n} for a, n in held],
+           "error": err,
+           "wallet": WALLET, "balanceEth": balance, "liveFeedback": live_total()},
+          open(out, "w"), indent=1)
+PY
+  chmod 644 "$LAST_RUN"
+  STAMPED=1
+}
+
+stamp_failure_on_exit() {
+  local ec=$?
+  if [ "$ec" -ne 0 ] && [ "$STAMPED" = 0 ] && [ "${DRY:-0}" != "1" ]; then
+    write_last_run failed "refresh exited with status $ec" \
+      "${RUN:+$RUN/plan.txt}" "${RUN:+$RUN/send.txt}" || true
+  fi
+  # Re-exit so a successful stamp does not turn a failed run into exit 0.
+  exit "$ec"
+}
+trap stamp_failure_on_exit EXIT
+
 [ -f "$WARDEN_PKG" ] || { echo "install first (deploy/erc-8004/install_refresh.sh)" >&2; exit 1; }
 
 curl -fsS -m 30 "https://api.8004scan.io/api/v1/agents?chain_id=8453&has_mcp=true&is_active=true&is_endpoint_verified=true&limit=100" -o "$RUN/verified.json"
@@ -60,45 +136,22 @@ PY
 )
 node "$HERE/warden_scan.mjs" "$RUN/tools_raw.jsonl" "$RUN/scan_results.json" "$WARDEN_PKG" > "$RUN/scan.txt"
 ARGS=(--scan "$RUN/scan_results.json" --tools "$RUN/tools_raw.jsonl" --key-file "$KEY_FILE")
-"$PY_VENV" "$HERE/feedback.py" "${ARGS[@]}" > "$RUN/plan.txt" 2>&1 || { cat "$RUN/plan.txt"; exit 1; }
+# Optional override for a catch-up after reading the dry run, e.g. WARDEN_FB_MAX_TX=60
+if [ -n "${WARDEN_FB_MAX_TX:-}" ]; then
+  ARGS+=(--max-tx "$WARDEN_FB_MAX_TX")
+fi
+if ! "$PY_VENV" "$HERE/feedback.py" "${ARGS[@]}" > "$RUN/plan.txt" 2>&1; then
+  cat "$RUN/plan.txt"
+  err=$(tail -n 1 "$RUN/plan.txt" 2>/dev/null || echo "plan failed")
+  if [ "${DRY:-0}" != "1" ]; then
+    write_last_run failed "$err" "$RUN/plan.txt" ""
+  fi
+  exit 1
+fi
 chmod 644 "$WARDEN_FB_REPORTS"/*.json 2>/dev/null || true
 if [ "${DRY:-0}" = "1" ]; then cat "$RUN/plan.txt"; exit 0; fi
 status=ok
 "$PY_VENV" "$HERE/feedback.py" "${ARGS[@]}" --send > "$RUN/send.txt" 2>&1 || status=failed
 cat "$RUN/plan.txt" "$RUN/send.txt"
-python3 - "$RUN" "$status" "$WARDEN_FB_REPORTS/last-run.json" <<'PY'
-import json, re, sys, time, urllib.request
-run, status, out = sys.argv[1:4]
-WALLET = "0x564bE09d06117A106ECC006a19b67768cBd91666"
-try:
-    req = urllib.request.Request("https://mainnet.base.org", headers={"content-type": "application/json", "user-agent": "warden-feedback"},
-                                 data=json.dumps({"jsonrpc": "2.0", "id": 1, "method": "eth_getBalance", "params": [WALLET, "latest"]}).encode())
-    balance = int(json.load(urllib.request.urlopen(req, timeout=20))["result"], 16) / 1e18
-except Exception:
-    balance = None
-
-
-def live_total():
-    """How many agents carry a live feedback from this wallet: the newest log entry per agent."""
-    import os
-    newest = {}
-    path = os.path.join(os.environ.get("WARDEN_FB_STATE", "/var/lib/warden-feedback"), "feedback.log")
-    try:
-        for line in open(path):
-            if line.strip():
-                e = json.loads(line)
-                if str(e.get("client", "")).lower() == WALLET.lower() and e.get("status") == "ok":
-                    newest[e["agentId"]] = e.get("kind", "give")
-    except OSError:
-        return None
-    return sum(1 for kind in newest.values() if kind == "give")
-plan = open(f"{run}/plan.txt").read(); send = open(f"{run}/send.txt").read()
-held = re.findall(r"\('(\d+)', '([^']*)'\)", plan.split("held for the owner")[1].split("\n")[0]) if "held for the owner" in plan else []
-json.dump({"ranAt": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "status": status,
-           "given": len(re.findall(r"^  give \d+: ok", send, re.M)), "revoked": len(re.findall(r"^  revoke \d+: ok", send, re.M)),
-           "held": [{"agentId": int(a), "name": n} for a, n in held],
-           "error": None if status == "ok" else send.strip().splitlines()[-1][:300],
-           "wallet": WALLET, "balanceEth": balance, "liveFeedback": live_total()}, open(out, "w"), indent=1)
-PY
-chmod 644 "$WARDEN_FB_REPORTS/last-run.json"
+write_last_run "$status" "" "$RUN/plan.txt" "$RUN/send.txt"
 [ "$status" = ok ]

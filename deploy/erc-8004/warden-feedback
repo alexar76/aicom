@@ -7,7 +7,12 @@
 set -euo pipefail
 HOST=${WARDEN_FB_HOST:-admin-vps}
 if [ "${1:-}" = "--status" ]; then
-  ssh "$HOST" 'cat /var/www/warden-feedback/last-run.json; systemctl list-timers warden-feedback.timer --no-pager | sed -n 2p'
+  ssh "$HOST" 'cat /var/www/warden-feedback/last-run.json
+    echo ---
+    systemctl list-timers "warden-feedback*" --no-pager | head -5
+    echo ---
+    /usr/bin/python3 /opt/warden-feedback/warden_feedback_watchdog.py --dry-run 2>/dev/null || true
+    test -f /var/lib/warden-feedback/watchdog-state.json && cat /var/lib/warden-feedback/watchdog-state.json || true'
   echo "wallet: 0x564bE09d06117A106ECC006a19b67768cBd91666  $(curl -s -X POST -H 'content-type: application/json' \
     -d '{"jsonrpc":"2.0","id":1,"method":"eth_getBalance","params":["0x564bE09d06117A106ECC006a19b67768cBd91666","latest"]}' \
     https://mainnet.base.org | python3 -c 'import json,sys; print(int(json.load(sys.stdin)["result"],16)/1e18, "ETH")')"
