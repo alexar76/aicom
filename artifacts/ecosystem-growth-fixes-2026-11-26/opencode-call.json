@@ -1,0 +1,22 @@
+{
+  "client": "OpenCode 2.4.1",
+  "tokenizer": "o200k_base",
+  "full_catalogue_tokens": 634,
+  "scope": "One synthetic lookup. No model service was called; mock provider usage is excluded.",
+  "direct": {
+    "requests_with_tools": 2,
+    "fixture_tool_result": "CATALOGUE_FIXTURE_B17: Synthetic book, 2001.",
+    "all_definition_tokens_at_first_request": 4305,
+    "catalogue_definition_tokens_at_first_request": 648,
+    "result_utf8_bytes": 44,
+    "result_tokens": 16
+  },
+  "code_mode": {
+    "requests_with_tools": 2,
+    "fixture_tool_result": "CATALOGUE_FIXTURE_B17: Synthetic book, 2001.",
+    "all_definition_tokens_at_first_request": 3657,
+    "catalogue_definition_tokens_at_first_request": 0,
+    "result_utf8_bytes": 44,
+    "result_tokens": 16
+  }
+}

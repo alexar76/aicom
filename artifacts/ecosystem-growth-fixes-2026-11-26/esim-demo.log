@@ -1,0 +1,14 @@
+✓ listing.json — esim.quote@v1; order at https://modelmarket.dev/providers/esim/order
+✓ esim.quote@v1 answer — 5 offers for FR, all valid
+✓ cheapest first
+✓ signature — Ed25519 over the request-bound canonical, key from listing.json
+✓ bad input is a 400
+✓ unknown eSIM is a 404 not_found
+✓ refund listing — direct refund route advertised; no refund submitted
+✓ unknown offer is a 400 before any price
+✓ quoted price kept — 10 min, until 2026-11-26T09:21:21.000Z, for an order that brings quote_token
+✓ a changed quote_token is a 400 before any price
+⚠ x402 terms — a demo node: it sells nothing (demo_mode)
+✓ CORS on the free routes
+
+Conforms to esim.*@v1.

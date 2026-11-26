@@ -1,0 +1,27 @@
+{
+  "endpoint": "https://a2uicatalog.ai/mcp",
+  "contract_profile": "mcp-tool-set-digest/1",
+  "histor_change": "https://histor.modelmarket.dev/api/v1/changes/206290",
+  "histor_observed_at": "2026-11-26T06:57:21Z",
+  "observatory_before_at": "2026-11-14T02:02:38.449390Z",
+  "observatory_after_at": "2026-11-26T02:02:16.761399Z",
+  "tool_counts": [
+    40,
+    42
+  ],
+  "added": [
+    "draw_architecture",
+    "draw_sequence"
+  ],
+  "removed": [],
+  "matched_contract_digests": [
+    "sha256-riF3yq5GdE2agwYAlm7QnRWTqz56WmaNwga/mJlkyuY=",
+    "sha256-OY6hzC5tHASI3LEh7ZUNLQR3Q8+DIeGtMhY1s/gKqzw="
+  ],
+  "snapshots": {
+    "observatory_before": "https://raw.githubusercontent.com/mikerawsonnz/mcp-drift-observatory/d59bbcf94ba4fe25fca1be5814d7d82f02bd4298/servers/a2uicatalog.ai/57663a025cf9685e6622.json",
+    "observatory_after": "https://raw.githubusercontent.com/mikerawsonnz/mcp-drift-observatory/0c222bd4a2413f20f0ec32f93ff9affb18c61b00/servers/a2uicatalog.ai/57663a025cf9685e6622.json",
+    "histor_before": "https://histor.modelmarket.dev/api/v1/toolsets/sha256-riF3yq5GdE2agwYAlm7QnRWTqz56WmaNwga%2FmJlkyuY%3D",
+    "histor_after": "https://histor.modelmarket.dev/api/v1/toolsets/sha256-OY6hzC5tHASI3LEh7ZUNLQR3Q8%2BDIeGtMhY1s%2FgKqzw%3D"
+  }
+}

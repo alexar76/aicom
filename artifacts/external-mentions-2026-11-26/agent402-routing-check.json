@@ -1,0 +1,231 @@
+{
+  "agent402_index": {
+    "source": "https://agent402.tools/api/index?seller=modelmarket.dev",
+    "observed_at": "2026-11-26T06:27:46+00:00",
+    "snapshot_time": "2026-11-26T00:40:05.811000+00:00",
+    "eligibility": {
+      "base": {
+        "eligible": false,
+        "reason": "settlement_self_funded",
+        "detail": "below the settlement floor"
+      }
+    },
+    "pay_to_by_network": {
+      "eip155:8453": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a"
+    },
+    "paid_routes": [
+      {
+        "route": "/x402/histor-check",
+        "price_usd": null,
+        "callable": false
+      },
+      {
+        "route": "/x402/warden-scan",
+        "price_usd": null,
+        "callable": false
+      },
+      {
+        "route": "/x402/air-quality-now",
+        "price_usd": null,
+        "callable": false
+      },
+      {
+        "route": "/x402/weather-now",
+        "price_usd": null,
+        "callable": false
+      },
+      {
+        "route": "/x402/nearby-sensors",
+        "price_usd": null,
+        "callable": false
+      },
+      {
+        "route": "/x402/fair-random",
+        "price_usd": null,
+        "callable": false
+      },
+      {
+        "route": "/x402/x402-check",
+        "price_usd": null,
+        "callable": false
+      },
+      {
+        "route": "/x402/mcp-diff",
+        "price_usd": null,
+        "callable": false
+      }
+    ]
+  },
+  "modelmarket_manifest": "https://modelmarket.dev/.well-known/x402",
+  "modelmarket_direct_paywalls": [
+    {
+      "url": "https://modelmarket.dev/x402/histor-check",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:41+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    },
+    {
+      "url": "https://modelmarket.dev/x402/warden-scan",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:41+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    },
+    {
+      "url": "https://modelmarket.dev/x402/weather-now",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:41+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    },
+    {
+      "url": "https://modelmarket.dev/x402/air-quality-now",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:41+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "1000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    },
+    {
+      "url": "https://modelmarket.dev/x402/nearby-sensors",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:41+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "30000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    },
+    {
+      "url": "https://modelmarket.dev/x402/fair-random",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:42+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "6000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    },
+    {
+      "url": "https://modelmarket.dev/x402/x402-check",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:43+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "3000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    },
+    {
+      "url": "https://modelmarket.dev/x402/mcp-diff",
+      "method": "POST",
+      "observed_at": "2026-11-26T06:30:44+00:00",
+      "http": 402,
+      "accepts": [
+        {
+          "scheme": "exact",
+          "network": "eip155:8453",
+          "amount": "3000",
+          "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+          "payTo": "0x1218ff36C5d2e3B6A565CdB1A8B1AcCFc606Ad0a",
+          "maxTimeoutSeconds": 300,
+          "extra": {
+            "name": "USD Coin",
+            "version": "2"
+          }
+        }
+      ],
+      "response_kind": "Payment required"
+    }
+  ],
+  "scope": "Empty JSON POSTs without payment authorization. Verified paywall metadata and matched payee, chain, token and EIP-712 domain against the index. No purchase or delivery check."
+}
