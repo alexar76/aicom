@@ -1,0 +1,24 @@
+{
+ "hangarCommit": "57a691edbcb7",
+ "vectors": 92,
+ "vectorsWithNoSpecDigest": 17,
+ "toolsCompared": 97,
+ "samePerToolDigest": 22,
+ "different": 75,
+ "reasons": {
+  "inputSchema absent or {}: spec writes {}, Hangar omits the member": 56,
+  "description absent or empty: spec writes \"\", Hangar omits the member": 43,
+  "description is not a string: spec reads it as \"\", Hangar keeps the value": 4,
+  "inputSchema is not an object: spec reads it as {}, Hangar keeps the value": 2,
+  "outputSchema is {}: spec keeps it (differs from absent), Hangar omits it": 1,
+  "kept value has no canonical text (TSD-NUMBER: a number with no IEEE 754 double)": 1
+ },
+ "firstVectorPerReason": {
+  "description absent or empty: spec writes \"\", Hangar omits the member": "one-minimal",
+  "inputSchema absent or {}: spec writes {}, Hangar omits the member": "one-minimal",
+  "description is not a string: spec reads it as \"\", Hangar keeps the value": "description-number",
+  "inputSchema is not an object: spec reads it as {}, Hangar keeps the value": "input-schema-array",
+  "outputSchema is {}: spec keeps it (differs from absent), Hangar omits it": "output-schema-empty",
+  "kept value has no canonical text (TSD-NUMBER: a number with no IEEE 754 double)": "description-number-overflow"
+ }
+}

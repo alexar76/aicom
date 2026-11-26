@@ -1,0 +1,86 @@
+{
+ "snapshot": "2026-11-23",
+ "window": [
+  "2026-10-23T18:22:44Z",
+  "2026-11-23T07:20:04Z"
+ ],
+ "changes": 294062,
+ "servers": 9488,
+ "membersMoved": {
+  "other member: version": 270411,
+  "annotations": 18107,
+  "title": 14885,
+  "_meta": 11146,
+  "execution": 4379,
+  "other member: securitySchemes": 768,
+  "icons": 104,
+  "other member: tags": 102,
+  "other member: x402": 61,
+  "other member: commercial_class": 55,
+  "other member: x402_price_usd": 54,
+  "other member: x402_units": 54
+ },
+ "withNoContractChangeInSameRead": {
+  "changes": 181519,
+  "pct": 61.7,
+  "byMembers": {
+   "version": {
+    "changes": 175539,
+    "servers": 1878
+   },
+   "_meta": {
+    "changes": 4629,
+    "servers": 354
+   },
+   "annotations": {
+    "changes": 711,
+    "servers": 654
+   },
+   "annotations+title": {
+    "changes": 222,
+    "servers": 188
+   },
+   "title": {
+    "changes": 163,
+    "servers": 159
+   },
+   "tags": {
+    "changes": 57,
+    "servers": 44
+   },
+   "available+commercial_class+tags+x402_price_usd+x402_units": {
+    "changes": 34,
+    "servers": 34
+   },
+   "execution": {
+    "changes": 27,
+    "servers": 27
+   }
+  },
+  "annotationsOnly": 711,
+  "touchingMeta": 4691,
+  "topPublishers": [
+   [
+    "pipeworx.io",
+    175539
+   ],
+   [
+    "apify.com",
+    3273
+   ],
+   [
+    "emem.dev",
+    316
+   ],
+   [
+    "agentstack.tech",
+    227
+   ]
+  ]
+ },
+ "topPublisher": {
+  "publisher": "pipeworx.io",
+  "changes": 270411,
+  "pct": 92.0
+ }
+}

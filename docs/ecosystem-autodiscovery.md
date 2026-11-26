@@ -154,6 +154,13 @@ The webhook is *not* the path by which a node appears; federation discovery is.
   pinned **http** seed (e.g. Platon on a raw IP) still carries IP-hijack replay
   risk bounded by the freshness window — prefer https for pinned seeds where the
   node supports it.
+- **Withdrawn and unverified entries** — after each verified read of a peer's catalogue
+  the hub deletes the entries that peer no longer lists. When a read fails (peer down,
+  bad signature, stale or rolled-back catalogue) it keeps the peer's entries, but only
+  for `AIMARKET_FEDERATED_MAX_UNVERIFIED_S` (default 48 hours) after the last verified
+  read: past that they are no longer listed, searched, counted or routed, and the next
+  crawl deletes them. A later verified read indexes the peer afresh. Each entry's
+  `catalogue_evidence.checked_at` says when its catalogue was last verified.
 - **Bounds everywhere** — response-size caps (0.5 MB), bounded concurrency,
   max-peer caps, redirects disabled, a `(url, allow_private)`-keyed TTL cache (a
   private-allowed UNI result is never served to the SSRF-guarded REAL path), and

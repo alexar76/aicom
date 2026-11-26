@@ -24,3 +24,35 @@ References
 - [DNS-AID organizational index, section 3.2](https://datatracker.ietf.org/doc/html/draft-mozleywilliams-dawn-dnsaid-00#section-3.2)
 - [Well-known SvcParam wire format, section 2.1](https://datatracker.ietf.org/doc/html/draft-mk-dnsop-svcb-well-known-01#section-2.1)
 - [DNS-AID SDK 0.28.1 release](https://pypi.org/project/dns-aid/0.28.1/)
+
+## Repeat in Ingmar's Instruqt lab
+
+On 2026-11-26 at about 12:10 UTC, the test ran on the workstation in step 5 of the IETF 127 Instruqt track. The lab includes stock `dns-aid` 0.28.1, its locally patched `dns-aid-next` 0.28.1, and the common-parameters client `dawnlab` 0.1.0. The lab and both DNS-AID clients map `well-known` to private-use SvcParamKey `65409`. [Instruqt track](https://play.instruqt.com/infoblox/invite/amv3mzygm6kq)
+
+The lab's documented signing and registrar commands enabled DNSSEC on its private `builder.test` zone. An add-only DDNS update published two priority-1 `_index._agents` SVCB records pointing to `modelmarket.dev` with `alpn=h2`. The control name had no record. The lab's validating resolver reported `AD=True` for both test records. The SDK calls received just the domain name and used the installed resolver configuration. The probe made the HTTPS requests after obtaining the URLs from the SDK.
+
+| Test domain | `well-known` SvcParamValue | Both installed SDK pointer resolvers | `dawnlab.unicast.resolve_owner` |
+| --- | --- | --- | --- |
+| `mmwk1126-control.builder.test` | No record | No pointer | No SVCB |
+| `mmwk1126-len.builder.test` | `00 11` followed by `agent-marketplace` | `/.well-known/ai-catalog.json`, HTTP 200 with the separate ARD AI Catalog | Preserved the prefix as the literal presentation escapes `\000\017` |
+| `mmwk1126-plain.builder.test` | `agent-marketplace` bytes | `/.well-known/agent-marketplace`, HTTP 200. `catalogue_url` led to `/ai-market/v2/manifest`, HTTP 200 with tools. | `agent-marketplace` |
+
+`dawnlab` was tested with the resolver used by `dawn compare`, which takes the explicit SVCB owner and returns parsed parameters. The domain-only lookup and HTTPS follow-through were tested with the SDKs. The stock lab module `dns_aid/core/catalog_pointer.py` matched the public 0.28.1 wheel byte for byte. The patched module differed, with the same result in all three cases.
+
+| Installed file | SHA-256 |
+| --- | --- |
+| Stock `dns_aid/core/catalog_pointer.py` | `2687697ab9e818aefe60cf46ea7a1335c073d107184bcbe0877fa68c4507fe7a` |
+| Patched `dns_aid/core/catalog_pointer.py` | `0ebc2e1b4b3af2d10650a86fcf76e0e5f5e958ed9a34a35798eaf0c457351f06` |
+| `dawnlab/keys.py` | `41ca6cba1b861c232b430b798fe5556565bdcfd55625fc42879d9c067fde5325` |
+| `dawnlab/unicast.py` | `10d2179aa484b64c929343d59cd0584f0dbef88bca1af32082f08b6aff93f8e9` |
+
+In a fresh lab session at step 5, save `lab_probe.py` on the workstation and run the following commands from its directory.
+
+```sh
+lab identity sign builder.test
+lab registrar ds-add builder.test
+/opt/dns-aid-venv/bin/python lab_probe.py add
+/opt/dawn-venv/bin/python lab_probe.py dawn
+/opt/dns-aid-venv/bin/python lab_probe.py sdk
+/opt/dns-aid-next-venv/bin/python lab_probe.py sdk
+```

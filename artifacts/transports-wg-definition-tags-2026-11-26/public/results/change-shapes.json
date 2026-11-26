@@ -1,0 +1,242 @@
+{
+ "snapshot": "2026-11-23",
+ "window": [
+  "2026-09-24T10:53:44Z",
+  "2026-11-23T07:20:04Z"
+ ],
+ "all": {
+  "changes": 177296,
+  "servers": 21458,
+  "kind": {
+   "same names, definitions changed": {
+    "n": 154271,
+    "pct": 87.0
+   },
+   "tools added or removed": {
+    "n": 23025,
+    "pct": 13.0
+   }
+  },
+  "toolsTouched": {
+   "2-5": {
+    "n": 114299,
+    "pct": 64.5
+   },
+   "1": {
+    "n": 38826,
+    "pct": 21.9
+   },
+   "6+": {
+    "n": 24171,
+    "pct": 13.6
+   }
+  },
+  "sameNamesByMembers": {
+   "description": {
+    "n": 90984,
+    "pct": 51.3
+   },
+   "description+inputSchema": {
+    "n": 18152,
+    "pct": 10.2
+   },
+   "inputSchema": {
+    "n": 17667,
+    "pct": 10.0
+   },
+   "description+outputSchema": {
+    "n": 13504,
+    "pct": 7.6
+   },
+   "description+inputSchema+outputSchema": {
+    "n": 7660,
+    "pct": 4.3
+   },
+   "outputSchema": {
+    "n": 4345,
+    "pct": 2.5
+   },
+   "inputSchema+outputSchema": {
+    "n": 1959,
+    "pct": 1.1
+   }
+  }
+ },
+ "topPublishers": [
+  {
+   "publisher": "pipeworx.io",
+   "changes": 96475,
+   "pct": 54.4
+  },
+  {
+   "publisher": "nolimit-observatory.workers.dev",
+   "changes": 2317,
+   "pct": 1.3
+  },
+  {
+   "publisher": "fork.zone",
+   "changes": 1585,
+   "pct": 0.9
+  },
+  {
+   "publisher": "remoshift.com",
+   "changes": 1128,
+   "pct": 0.6
+  },
+  {
+   "publisher": "socialloop.ai",
+   "changes": 1036,
+   "pct": 0.6
+  },
+  {
+   "publisher": "akkilahdot.fi",
+   "changes": 1035,
+   "pct": 0.6
+  },
+  {
+   "publisher": "sistaminuten.se",
+   "changes": 1035,
+   "pct": 0.6
+  },
+  {
+   "publisher": "gradients.studio",
+   "changes": 1035,
+   "pct": 0.6
+  }
+ ],
+ "withoutTopPublisher": {
+  "publisher": "pipeworx.io",
+  "changes": 80821,
+  "servers": 19601,
+  "kind": {
+   "same names, definitions changed": {
+    "n": 58604,
+    "pct": 72.5
+   },
+   "tools added or removed": {
+    "n": 22217,
+    "pct": 27.5
+   }
+  },
+  "toolsTouched": {
+   "1": {
+    "n": 35544,
+    "pct": 44.0
+   },
+   "2-5": {
+    "n": 27450,
+    "pct": 34.0
+   },
+   "6+": {
+    "n": 17827,
+    "pct": 22.1
+   }
+  },
+  "sameNamesByMembers": {
+   "description": {
+    "n": 20074,
+    "pct": 24.8
+   },
+   "inputSchema": {
+    "n": 17574,
+    "pct": 21.7
+   },
+   "description+inputSchema": {
+    "n": 12546,
+    "pct": 15.5
+   },
+   "description+inputSchema+outputSchema": {
+    "n": 3118,
+    "pct": 3.9
+   },
+   "outputSchema": {
+    "n": 2890,
+    "pct": 3.6
+   },
+   "description+outputSchema": {
+    "n": 1496,
+    "pct": 1.9
+   },
+   "inputSchema+outputSchema": {
+    "n": 906,
+    "pct": 1.1
+   }
+  }
+ },
+ "remoteWithoutTopPublisher": {
+  "changes": 67688,
+  "servers": 14116,
+  "kind": {
+   "same names, definitions changed": {
+    "n": 50716,
+    "pct": 74.9
+   },
+   "tools added or removed": {
+    "n": 16972,
+    "pct": 25.1
+   }
+  },
+  "toolsTouched": {
+   "1": {
+    "n": 32239,
+    "pct": 47.6
+   },
+   "2-5": {
+    "n": 22269,
+    "pct": 32.9
+   },
+   "6+": {
+    "n": 13180,
+    "pct": 19.5
+   }
+  },
+  "sameNamesByMembers": {
+   "description": {
+    "n": 18161,
+    "pct": 26.8
+   },
+   "inputSchema": {
+    "n": 15959,
+    "pct": 23.6
+   },
+   "description+inputSchema": {
+    "n": 9599,
+    "pct": 14.2
+   },
+   "outputSchema": {
+    "n": 2665,
+    "pct": 3.9
+   },
+   "description+inputSchema+outputSchema": {
+    "n": 2276,
+    "pct": 3.4
+   },
+   "description+outputSchema": {
+    "n": 1332,
+    "pct": 2.0
+   },
+   "inputSchema+outputSchema": {
+    "n": 724,
+    "pct": 1.1
+   }
+  }
+ },
+ "changesPerServer": {
+  "servers": 21458,
+  "median": 2.0,
+  "one": 9575,
+  "tenOrMore": 3201
+ },
+ "returnsToEarlierList": {
+  "changes": 3221,
+  "pctOfChanges": 1.8,
+  "servers": 463,
+  "withoutTopPublisher": {
+   "changes": 3221,
+   "servers": 463
+  },
+  "hoursAwayMedian": 1.5,
+  "within1h": 1178,
+  "within24h": 2786
+ }
+}
