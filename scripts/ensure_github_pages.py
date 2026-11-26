@@ -3,11 +3,28 @@
 
 from __future__ import annotations
 
+import http.client
 import json
 import os
+import ssl
 import sys
+import time
 import urllib.error
 import urllib.request
+
+
+_REQUEST_ATTEMPTS = 6
+_TRANSIENT_EXC = (
+    urllib.error.URLError,
+    TimeoutError,
+    ConnectionError,
+    ConnectionResetError,
+    BrokenPipeError,
+    http.client.RemoteDisconnected,
+    http.client.IncompleteRead,
+    ssl.SSLError,
+    OSError,
+)
 
 
 def _token() -> str:
@@ -16,16 +33,24 @@ def _token() -> str:
 
 def _request(method: str, url: str, token: str, body: dict | None = None) -> tuple[int, str]:
     data = json.dumps(body).encode() if body is not None else None
-    req = urllib.request.Request(url, data=data, method=method)
-    req.add_header("Authorization", f"Bearer {token}")
-    req.add_header("Accept", "application/vnd.github+json")
-    if body is not None:
-        req.add_header("Content-Type", "application/json")
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return resp.status, resp.read().decode()
-    except urllib.error.HTTPError as e:
-        return e.code, e.read().decode()
+    last_err: BaseException | None = None
+    for attempt in range(_REQUEST_ATTEMPTS):
+        req = urllib.request.Request(url, data=data, method=method)
+        req.add_header("Authorization", f"Bearer {token}")
+        req.add_header("Accept", "application/vnd.github+json")
+        if body is not None:
+            req.add_header("Content-Type", "application/json")
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return resp.status, resp.read().decode()
+        except urllib.error.HTTPError as e:
+            return e.code, e.read().decode()
+        except _TRANSIENT_EXC as e:
+            last_err = e
+            if attempt + 1 >= _REQUEST_ATTEMPTS:
+                break
+            time.sleep(min(2**attempt, 20))
+    raise urllib.error.URLError(last_err or RuntimeError("request failed"))
 
 
 def ensure_pages(org: str, repo: str, *, build_type: str = "workflow") -> tuple[bool, str]:
@@ -34,7 +59,10 @@ def ensure_pages(org: str, repo: str, *, build_type: str = "workflow") -> tuple[
         return False, "missing GH_PAT or GITHUB_TOKEN"
 
     base = f"https://api.github.com/repos/{org}/{repo}/pages"
-    status, raw = _request("GET", base, token)
+    try:
+        status, raw = _request("GET", base, token)
+    except _TRANSIENT_EXC as e:
+        return False, f"GET pages after retries: {e}"
     if status == 200:
         try:
             current = json.loads(raw)

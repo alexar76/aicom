@@ -7,17 +7,13 @@ covers public revision `84e7057` and is published at Atlas commit `7f203a21`.
 
 Hi Simon,
 
-Thanks for re-reading `84e7057` and for correcting the database description. Your notes on evidence packs and the limits of the stored root were especially helpful.
+Thanks for re-reading `84e7057` and for correcting the shared database description. We deployed a follow-up to the hosted instance based on your findings.
 
-The hourly reconcile timer is enabled on our hosted instance. I verified that the 25 November run at 18:23 UTC succeeded. The local follow-up adds an installer for the shipped systemd units.
+On one synthetic private memory, both Personal Memory and the Hub’s `evidence.pack@v1` capability returned HTTP 404 before a grant, 200 with the grant, and 404 after revocation. The owner could still read the pack. The access history retained both grant and revoke pairs. New receipts for non-public memories omit source references, parent IDs and evidence pack IDs. Previously signed receipts retain their original fields.
 
-The follow-up checks current read access when a caller requests an evidence pack tied to a memory. Personal and Team users can also read the pack through the same actor and team checks as the memory. New non-public receipts omit source and parent references and the evidence pack ID. Previously signed receipts retain their original fields.
+Reconciliation now checks signatures and links from the first available receipt through the stored head. The production check matched all nine attested memories, with zero mismatches or unreachable records. Exporting the verified heads and checking against that export also passed. The bundled deployment still shares a PostgreSQL database and role. A checkpoint provides an independent reference when an operator keeps it outside that database’s administrative boundary.
 
-Owner grants and revocations now record their history in the same transaction as the access change. Reconciliation verifies signatures and links across the available lineage. It can also export verified heads for comparison with a copy retained outside the shared database's administrative boundary. Independent retention is an operator step. The bundled deployment still uses one PostgreSQL database and role.
-
-I also made the claim boundary explicit in the docs: the truth verdict summarizes submitted evidence, and labels on buyer-started chains are assertions attributed to that buyer.
-
-These follow-up changes are in the local tree. Thanks again for the public review.
+The hourly timer is active, and the source now includes an installer for new deployments. The docs also clarify that the truth verdict summarizes submitted evidence and that event labels on buyer-started chains are assertions attributed to the buyer.
 
 Best regards,
 Alex

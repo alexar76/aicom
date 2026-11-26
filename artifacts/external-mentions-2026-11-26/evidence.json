@@ -1,0 +1,1442 @@
+{
+  "window_local": {
+    "from": "2026-11-26T04:50:36+01:00",
+    "to": "2026-11-26T04:52:35+01:00",
+    "timezone": "Europe/Amsterdam"
+  },
+  "comparison": {
+    "baseline": "../external-mentions-2026-11-25/post-deploy-scan.evidence.json",
+    "baseline_window": {
+      "from": "2026-11-25T18:41:31+01:00",
+      "to": "2026-11-25T18:47:37+01:00",
+      "timezone": "Europe/Amsterdam"
+    },
+    "later_25_november_work_verified_where_available": true
+  },
+  "agent402": {
+    "previous": {
+      "fetchedAt": 1795628173733,
+      "paidToolCount": 8,
+      "routerDispatchEligible": false,
+      "routerDispatchReason": "settlement_required"
+    },
+    "previous_paid_callable_unproven": 8,
+    "index_fetched_at": "2026-11-26T00:40:05.811000+00:00",
+    "routable": true,
+    "originResponded": true,
+    "paidToolCount": 8,
+    "routerDispatchEligible": false,
+    "routerDispatchReason": "settlement_self_funded",
+    "routerDispatchByChain": {
+      "base": {
+        "eligible": false,
+        "reason": "settlement_self_funded",
+        "detail": "below the settlement floor"
+      }
+    },
+    "callable_paid_count": 0,
+    "paid_routes": [
+      {
+        "route": "/x402/histor-check",
+        "price": 0.001,
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      },
+      {
+        "route": "/x402/warden-scan",
+        "price": 0.001,
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      },
+      {
+        "route": "/x402/air-quality-now",
+        "price": 0.001,
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      },
+      {
+        "route": "/x402/weather-now",
+        "price": 0.001,
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      },
+      {
+        "route": "/x402/nearby-sensors",
+        "price": "$0.03",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      },
+      {
+        "route": "/x402/fair-random",
+        "price": "$0.006",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      },
+      {
+        "route": "/x402/x402-check",
+        "price": "$0.003",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      },
+      {
+        "route": "/x402/mcp-diff",
+        "price": "$0.003",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded",
+        "executeViaLane": null
+      }
+    ],
+    "agent402_rules": {
+      "executeViaCallableNow": "Signals that the index offers execution via the router at the time of its scan.",
+      "settlement_self_funded": "Agent402 estimates prior funding from the seller to buyers, deducts qualifying seller-funded payments and refunds, and applies a settlement floor to the remaining history."
+    },
+    "verification_scope": "Read the index twice. No purchase, direct paywall test or reassessment of the third-party payer attribution in this pass."
+  },
+  "agent_economy_report": {
+    "as_of": "2026-11-25",
+    "tier": "CCC",
+    "organic_paying_agents": 1,
+    "paying_wallets_raw": 7,
+    "settled_usd_14d": 0.07,
+    "outlook_basis": {
+      "compares": "organic paying agents, last 7 days vs previous 7 days",
+      "organic_paying_agents_last_7d": 0,
+      "organic_paying_agents_previous_7d": 1,
+      "text": "0 organic paying agents in the last 7 days vs 1 in the 7 before (-100%)"
+    },
+    "same_last_modified_as_previous_slice": true
+  },
+  "attested_memory_atlas": {
+    "project_source_pin": "470837dda9f1c96a650511a3b66a3e55e0e59ee7",
+    "latest_review": "https://github.com/neoneye/agent-memory-atlas/commit/f11e76a19b49a6edbb1e7829d70ccf5708a9bca2",
+    "review_commit_at": "2026-11-25T20:53:54Z",
+    "previous_review_source_pin": "84e7057bd2ed88344d99066f1827933a5cb6cda5",
+    "marks": [
+      "trust_state",
+      "scope_enforced",
+      "audit_log",
+      "negative_eval"
+    ],
+    "rubric_total": 7,
+    "review_method": "Static source review. The reviewer did not run tests.",
+    "review_findings": [
+      "Market asks for full ledger lineage verification.",
+      "An externally retained head can be checked against current lineage with --check --against.",
+      "The bundled hourly systemd unit invokes neither head export nor comparison with retained heads.",
+      "The evidence pack for a memory unit is checked against the market access API."
+    ],
+    "python_release": "0.3.0"
+  },
+  "histor": {
+    "gdb_status_on_page": "Consistent",
+    "gdb_size_on_page": 3645699,
+    "gdb_previous_late_slice": 3613261,
+    "gdb_delta_page_sizes": 32438,
+    "gdb_cosigned_checkpoint_size_read_after_page": 3645838,
+    "gdb_cosigned_checkpoint_note": "histor.modelmarket.dev/log\n3645838\nA1O21chPcegnN1AbqvWQ42NV439e8eGcrHlE+vsq+IE=\n\n— histor.modelmarket.dev/log rTygZhowOB220JEpZ+yiFutQY1UNCtkn0Gx8FiKXoWz1ISGknJW7RheqpJDyv3qkflH58HDqTFc1m3mzVC4SXC2nMQk=\n— witness.gdbsecurity.com oTmPcwAAAABrB6zm2lwIR3GRffri2J6UK5CIuo7tn7D9uoG9nc87Ye9oxRPVceXbHUiuZSorPrcB40SDGxHlyYVn9BWz49jkxG8wCg==\n",
+    "gdb_scope": "Status reported by the witness. This pass read the note and counted two signature lines.",
+    "mcpcost": {
+      "status": "ok",
+      "probedAt": "2026-11-24T11:39:41.523Z",
+      "toolCount": 3,
+      "serverInfo": {
+        "name": "histor",
+        "version": "0.11.0"
+      }
+    },
+    "credenzo": {
+      "changed": 38,
+      "comparable": 169,
+      "from": "2026-11-16",
+      "to": "2026-11-23"
+    },
+    "hugging_face_downloads": 413,
+    "peer_index": {
+      "date": "2026-11-25",
+      "rows": 50550,
+      "with_digest": 29764
+    }
+  },
+  "reloadpi": {
+    "public_report_updates": [
+      {
+        "html_url": "https://github.com/sF1nX/x402-signals/issues/1#issuecomment-7171528873",
+        "created_at": "2026-11-25T18:52:51Z",
+        "updated_at": "2026-11-25T18:52:51Z",
+        "author_association": "NONE",
+        "author": "cross555"
+      },
+      {
+        "html_url": "https://github.com/sF1nX/x402-signals/issues/1#issuecomment-7171535345",
+        "created_at": "2026-11-25T18:53:08Z",
+        "updated_at": "2026-11-25T18:53:08Z",
+        "author_association": "NONE",
+        "author": "cross555"
+      }
+    ],
+    "pairs": [
+      {
+        "payment": "0xa3beac50d2b6feab48b4610bf001e487ce574ac09c176fbcebfbd644d9b3c4ce",
+        "refund": "0x7539e7a871c755101c76502d1c43e172977dcd4ba1a8e0afbee886c71a9c6142",
+        "state_in_provider_api": "FULFILLMENT_FAILED"
+      },
+      {
+        "payment": "0x997d2dc284cac22fa2cd83ad20fbd6fdf88080277749e28be6a3ef530cece172",
+        "refund": "0x7658ce9050d48e36d6228778c6f0e36f8776eaec7770a237b236dbb370e886c4",
+        "state_in_provider_api": "FULFILLMENT_FAILED"
+      },
+      {
+        "payment": "0xacd55b4d8be6ce915b82a026fb07359c2d31733fa148fef341156a83ca4ebd86",
+        "refund": "0x0b02987edb9172856466d9431cdcc158a081c0f512c27f2721bb6a1f8e963c11",
+        "state_in_provider_api": "FULFILLMENT_FAILED"
+      }
+    ],
+    "total_usdc_refunded": "4.83",
+    "evidence_base_and_provider_status": "../external-mentions-2026-11-25/implementation/reloadpi-order-pairs.evidence.json",
+    "scope": "Compared public updates with the existing Base and provider API check from 25 November. The transfers were reported as May tests of the third-party x402-signals implementation."
+  },
+  "mcp_tool_set_digest_and_warden": {
+    "canari_pypi_version": "0.1.7",
+    "warden_npm_version": "0.39.1",
+    "warden_archive": {
+      "sha256": "693591b450e1390699cfd94a9364c99b0589843afd966140f7a56ef073a1c558",
+      "integrity": "sha512-RrlWxU2hNBAf+otXeO43aZZwvwd+G6NYV6OB9VmztX0tj0+0KGeURUGk2k3w5Asqqlkb8WwOSqhqK2NCVA7ekA==",
+      "integrity_matches_registry": true,
+      "files": 513,
+      "canari_adapter_files": []
+    },
+    "addon_declaration_registry_pr": {
+      "html_url": "https://github.com/modelcontextprotocol/registry/pull/1907",
+      "state": "open",
+      "updated_at": "2026-11-23T11:18:01Z"
+    },
+    "zhao_head": "6b14ed70a28709019d323438679b7b100b325022"
+  },
+  "opencode": {
+    "html_url": "https://github.com/anomalyco/opencode/issues/58716",
+    "state": "open",
+    "updated_at": "2026-11-26T01:29:11Z",
+    "new_comment": {
+      "html_url": "https://github.com/anomalyco/opencode/issues/58716#issuecomment-7179818753",
+      "created_at": "2026-11-26T01:29:11Z",
+      "updated_at": "2026-11-26T01:29:11Z",
+      "author_association": "NONE",
+      "author": "Markgugg"
+    },
+    "scope": "A participant offered to implement byte counts for tool results. The comment contains no reference to mcp-token-cost."
+  },
+  "ietf_ard": {
+    "event_date": "2026-11-20",
+    "slides": "https://datatracker.ietf.org/meeting/127/materials/slides-127-dawn-10-protocols-agentic-resource-discovery-ard-architecture-initial-contact-and-lookup-02",
+    "pages": [
+      6,
+      7
+    ],
+    "scope": "Listed among live ARD deployments in the presenters’ DAWN deck. Already captured in the 25 November late slice."
+  },
+  "npm_downloads": {
+    "scope": "Download events, including repeat and automated downloads. Last nonzero day in this early capture is 24 November. Excluded 25 November from comparisons because all five series report zero for that date.",
+    "packages": {
+      "@aimarket/esim-rails": {
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fesim-rails",
+        "version": "0.5.1",
+        "version_published_at": "2026-11-18T09:03:31.787Z",
+        "daily": {
+          "2026-11-10": 5,
+          "2026-11-11": 5,
+          "2026-11-12": 6,
+          "2026-11-13": 11,
+          "2026-11-14": 4,
+          "2026-11-15": 3,
+          "2026-11-16": 5,
+          "2026-11-17": 162,
+          "2026-11-18": 181,
+          "2026-11-19": 19,
+          "2026-11-20": 15,
+          "2026-11-21": 9,
+          "2026-11-22": 1026,
+          "2026-11-23": 1403,
+          "2026-11-24": 1413,
+          "2026-11-25": 0
+        },
+        "nov_10_to_16": 39,
+        "nov_17_to_23": 2815,
+        "nov_18_to_24": 4066
+      },
+      "@aimarket/warden": {
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fwarden",
+        "version": "0.39.1",
+        "version_published_at": "2026-11-25T19:24:08.447Z",
+        "daily": {
+          "2026-11-10": 205,
+          "2026-11-11": 275,
+          "2026-11-12": 259,
+          "2026-11-13": 114,
+          "2026-11-14": 47,
+          "2026-11-15": 272,
+          "2026-11-16": 264,
+          "2026-11-17": 232,
+          "2026-11-18": 467,
+          "2026-11-19": 87,
+          "2026-11-20": 791,
+          "2026-11-21": 342,
+          "2026-11-22": 553,
+          "2026-11-23": 649,
+          "2026-11-24": 546,
+          "2026-11-25": 0
+        },
+        "nov_10_to_16": 1436,
+        "nov_17_to_23": 3121,
+        "nov_18_to_24": 3435
+      },
+      "@alexar76/argus3": {
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40alexar76%2Fargus3",
+        "version": "0.6.2",
+        "version_published_at": "2026-11-21T09:04:58.903Z",
+        "daily": {
+          "2026-11-10": 172,
+          "2026-11-11": 56,
+          "2026-11-12": 38,
+          "2026-11-13": 21,
+          "2026-11-14": 10,
+          "2026-11-15": 186,
+          "2026-11-16": 81,
+          "2026-11-17": 175,
+          "2026-11-18": 211,
+          "2026-11-19": 44,
+          "2026-11-20": 212,
+          "2026-11-21": 206,
+          "2026-11-22": 33,
+          "2026-11-23": 36,
+          "2026-11-24": 45,
+          "2026-11-25": 0
+        },
+        "nov_10_to_16": 564,
+        "nov_17_to_23": 917,
+        "nov_18_to_24": 787
+      },
+      "mcp-token-cost": {
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/mcp-token-cost",
+        "version": "0.1.0",
+        "version_published_at": "2026-11-21T12:42:13.045Z",
+        "daily": {
+          "2026-11-10": 0,
+          "2026-11-11": 0,
+          "2026-11-12": 0,
+          "2026-11-13": 0,
+          "2026-11-14": 0,
+          "2026-11-15": 0,
+          "2026-11-16": 0,
+          "2026-11-17": 0,
+          "2026-11-18": 0,
+          "2026-11-19": 0,
+          "2026-11-20": 0,
+          "2026-11-21": 312,
+          "2026-11-22": 29,
+          "2026-11-23": 29,
+          "2026-11-24": 15,
+          "2026-11-25": 0
+        },
+        "nov_10_to_16": 0,
+        "nov_17_to_23": 370,
+        "nov_18_to_24": 385
+      },
+      "@aimarket/domain-operator-kit": {
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fdomain-operator-kit",
+        "version": "0.1.0",
+        "version_published_at": "2026-11-22T07:10:36.084Z",
+        "daily": {
+          "2026-11-10": 0,
+          "2026-11-11": 0,
+          "2026-11-12": 0,
+          "2026-11-13": 0,
+          "2026-11-14": 0,
+          "2026-11-15": 0,
+          "2026-11-16": 0,
+          "2026-11-17": 0,
+          "2026-11-18": 0,
+          "2026-11-19": 0,
+          "2026-11-20": 0,
+          "2026-11-21": 0,
+          "2026-11-22": 325,
+          "2026-11-23": 21,
+          "2026-11-24": 21,
+          "2026-11-25": 0
+        },
+        "nov_10_to_16": 0,
+        "nov_17_to_23": 346,
+        "nov_18_to_24": 367
+      }
+    }
+  },
+  "other_public_signals": {
+    "github_profile": {
+      "followers": 55,
+      "repos": 65,
+      "fork_marked_repos": 7,
+      "stars_across_repos": 19,
+      "forks_across_repos": 7,
+      "comparison": {
+        "public_repositories": 65,
+        "non_fork_repositories": 58,
+        "followers": 54,
+        "stars_across_repositories": 18,
+        "forks_across_repositories": 7,
+        "warden_git_forks": [
+          {
+            "full_name": "lanbass869-cell/warden",
+            "html_url": "https://github.com/lanbass869-cell/warden",
+            "created_at": "2026-11-24T04:15:19Z"
+          }
+        ],
+        "digest_git_forks": [
+          {
+            "full_name": "emmanuelorta/mcp-tool-set-digest",
+            "html_url": "https://github.com/emmanuelorta/mcp-tool-set-digest",
+            "created_at": "2026-11-22T21:19:34Z"
+          }
+        ]
+      }
+    },
+    "pingblip_itch_views": 48,
+    "pingblip_itch_reply_count": 0,
+    "pingblip_browse_category": "Adventure",
+    "dev_refund_article_comments": 0,
+    "domain_kit_discovery": "https://npm.io/package/%40aimarket/domain-operator-kit",
+    "libhunt_factory_index": "https://www.libhunt.com/compare-aicom-vs-orbi"
+  },
+  "coverage": {
+    "direct_http_counts": {
+      "200": 55,
+      "error": 2,
+      "404": 1,
+      "403": 1
+    },
+    "followup_http_counts": {
+      "200": 13,
+      "error": 1,
+      "404": 1
+    },
+    "github_search_http_counts": {
+      "200": 7,
+      "error": 1
+    },
+    "github_searches": {
+      "gh-search-new-incoming": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items_returned": 0
+      },
+      "gh-search-updated-incoming": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items_returned": 0
+      },
+      "gh-search-new-comments": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items_returned": 0
+      },
+      "gh-search-outside-histor": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items_returned": 0
+      },
+      "gh-search-outside-tsd": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items_returned": 0
+      },
+      "gh-search-outside-modelmarket": {
+        "total_count": 1,
+        "incomplete_results": false,
+        "items_returned": 1
+      },
+      "gh-search-outside-attested": {
+        "total_count": 32,
+        "incomplete_results": false,
+        "items_returned": 25
+      }
+    },
+    "hn_algolia_hits_since_previous_cut": {
+      "histor": 0,
+      "modelmarket": 0,
+      "attested": 0,
+      "warden": 0,
+      "pingblip": 0,
+      "factory": 0
+    },
+    "known_limits": "Public exact-phrase searches and selected direct observations. A GitHub commit search and one pulsefeed comments request failed. Search results do not enumerate private adoption or authenticated social activity."
+  },
+  "sources": {
+    "direct": {
+      "profile": {
+        "url": "https://api.github.com/users/alexar76",
+        "final_url": "https://api.github.com/users/alexar76",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:44 GMT",
+        "last_modified": "Thu, 19 Nov 2026 06:03:47 GMT",
+        "rate_limit_remaining": "58",
+        "bytes": 1377,
+        "sha256": "a3ea12a0b9d1bafdf50dc54eab7d8ebc0c93df187b95fc52558625d50a7311cb",
+        "limit_exceeded": false
+      },
+      "repos": {
+        "url": "https://api.github.com/users/alexar76/repos?per_page=100&sort=full_name",
+        "final_url": "https://api.github.com/users/alexar76/repos?per_page=100&sort=full_name",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:47 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "55",
+        "bytes": 356721,
+        "sha256": "59afb4ba07a47c4d7257c56a72a76dca4a8573bc8f5f352a5b8759aa01b8372a",
+        "limit_exceeded": false
+      },
+      "atlas": {
+        "url": "https://neoneye.github.io/agent-memory-atlas/systems/attested-memory/",
+        "final_url": "https://neoneye.github.io/agent-memory-atlas/systems/attested-memory/",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:46 GMT",
+        "last_modified": "Thu, 26 Nov 2026 01:19:22 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 73669,
+        "sha256": "bd99f31fbc6e2ad0eef52f486a3922fe9361430d795e104fbd452719a2a7957f",
+        "limit_exceeded": false
+      },
+      "atlas-repository": {
+        "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits?per_page=12",
+        "final_url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits?per_page=12",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:46 GMT",
+        "last_modified": "Thu, 26 Nov 2026 01:18:52 GMT",
+        "rate_limit_remaining": "56",
+        "bytes": 65273,
+        "sha256": "26cbe817bb1b51c32dce6a5370d1c5b85d50acf89014870b857bf50a27635eef",
+        "limit_exceeded": false
+      },
+      "atlas-public-pin": {
+        "url": "https://api.github.com/repos/alexar76/attested-memory/commits/main",
+        "final_url": "https://api.github.com/repos/alexar76/attested-memory/commits/main",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:47 GMT",
+        "last_modified": "Wed, 25 Nov 2026 19:31:03 GMT",
+        "rate_limit_remaining": "53",
+        "bytes": 71516,
+        "sha256": "4a527dda35cf20cef06fb21d44cfab96d40462b6dae4e29090747a6bfa725c44",
+        "limit_exceeded": false
+      },
+      "attested-pypi": {
+        "url": "https://pypi.org/pypi/attested-memory/json",
+        "final_url": "https://pypi.org/pypi/attested-memory/json",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:45 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 10342,
+        "sha256": "b3b501dccf43b317ca741b3f6bec9a5aa6f4e7184a7ac2ba8ec06ad04aceadec",
+        "limit_exceeded": false
+      },
+      "canari-pypi": {
+        "url": "https://pypi.org/pypi/canari-mcp/json",
+        "final_url": "https://pypi.org/pypi/canari-mcp/json",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:44 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 40898,
+        "sha256": "22604860e03a7b39b744097ae751eb557bc7c1bae9c7bad1b8b016dae458df68",
+        "limit_exceeded": false
+      },
+      "canari-repository": {
+        "url": "https://api.github.com/repos/lanbass869-cell/canari/commits?per_page=5",
+        "final_url": "https://api.github.com/repos/lanbass869-cell/canari/commits?per_page=5",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:43+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:44 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:21:23 GMT",
+        "rate_limit_remaining": "59",
+        "bytes": 17770,
+        "sha256": "1fcaf0cb68eae7954ba453f0a2941a60a20ca6325920b58ffae1094f5d8b0694",
+        "limit_exceeded": false
+      },
+      "warden-pr": {
+        "url": "https://api.github.com/repos/alexar76/warden/pulls/15",
+        "final_url": "https://api.github.com/repos/alexar76/warden/pulls/15",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:44+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:45 GMT",
+        "last_modified": "Tue, 24 Nov 2026 07:52:33 GMT",
+        "rate_limit_remaining": "57",
+        "bytes": 20030,
+        "sha256": "6007392375da87c27d44a668015a484c5df75afe458f1fdebd39e90cea325eb6",
+        "limit_exceeded": false
+      },
+      "declaredlist": {
+        "url": "https://declaredlist.com/",
+        "final_url": "https://declaredlist.com/",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:44+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:46 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 7356,
+        "sha256": "8c8d424a0b93177005f9b05870e6c20d8a1413aef6dbf2c877b240bd14a5bb9c",
+        "limit_exceeded": false
+      },
+      "registry-pr": {
+        "url": "https://api.github.com/repos/modelcontextprotocol/registry/pulls/1907",
+        "final_url": "https://api.github.com/repos/modelcontextprotocol/registry/pulls/1907",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:44+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:47 GMT",
+        "last_modified": "Mon, 23 Nov 2026 11:18:01 GMT",
+        "rate_limit_remaining": "54",
+        "bytes": 20236,
+        "sha256": "181ec10358326022b03d8047921dcf9a8e05af46d882eab10a2aa471e392f280",
+        "limit_exceeded": false
+      },
+      "registry-attestation": {
+        "url": "https://api.github.com/repos/modelcontextprotocol/registry/pulls/1404",
+        "final_url": "https://api.github.com/repos/modelcontextprotocol/registry/pulls/1404",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:45+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:49 GMT",
+        "last_modified": "Wed, 25 Nov 2026 09:15:07 GMT",
+        "rate_limit_remaining": "49",
+        "bytes": 20879,
+        "sha256": "90c7dc03cebb4681048aaa2a25fbd13a7b7fe156d97249b5b9028c2280386775",
+        "limit_exceeded": false
+      },
+      "tsd-issue": {
+        "url": "https://api.github.com/repos/alexar76/mcp-tool-set-digest/issues/1",
+        "final_url": "https://api.github.com/repos/alexar76/mcp-tool-set-digest/issues/1",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:46+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:51 GMT",
+        "last_modified": "Mon, 23 Nov 2026 15:16:24 GMT",
+        "rate_limit_remaining": "46",
+        "bytes": 4491,
+        "sha256": "53ec9e767778d16ec3f521871ffecc0a2c4726bd85b3ebb20a7f17deb2334026",
+        "limit_exceeded": false
+      },
+      "tsd-zhao": {
+        "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/commits?per_page=4",
+        "observed_at": "2026-11-26T03:50:46+00:00",
+        "error": "<urlopen error timed out>"
+      },
+      "hangar": {
+        "url": "https://api.github.com/repos/mcp-hangar/mcp-hangar/issues/1768",
+        "final_url": "https://api.github.com/repos/mcp-hangar/mcp-hangar/issues/1768",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:46+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:48 GMT",
+        "last_modified": "Sun, 22 Nov 2026 17:23:27 GMT",
+        "rate_limit_remaining": "51",
+        "bytes": 5696,
+        "sha256": "8298c5dd2acf917e29c18cdf60bc776316a9ed851832dee55e23711f9f010324",
+        "limit_exceeded": false
+      },
+      "rc-check": {
+        "url": "https://api.github.com/repos/basitalisandhu/mcp-rc-check/issues/19",
+        "final_url": "https://api.github.com/repos/basitalisandhu/mcp-rc-check/issues/19",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:46+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:48 GMT",
+        "last_modified": "Wed, 04 Nov 2026 03:41:58 GMT",
+        "rate_limit_remaining": "52",
+        "bytes": 4052,
+        "sha256": "2d4c6afe466a702f81732d2eca6a554864e3da77c6af8c2c307381228d3586ff",
+        "limit_exceeded": false
+      },
+      "opencode": {
+        "url": "https://api.github.com/repos/anomalyco/opencode/issues/58716",
+        "final_url": "https://api.github.com/repos/anomalyco/opencode/issues/58716",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:47+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:49 GMT",
+        "last_modified": "Thu, 26 Nov 2026 01:29:11 GMT",
+        "rate_limit_remaining": "48",
+        "bytes": 5008,
+        "sha256": "222bf7e20fdf6439d86fed3d2a06354506c32390d58b64026167a4cf173e35b5",
+        "limit_exceeded": false
+      },
+      "openlens": {
+        "url": "https://api.github.com/repos/Philippe-arnd/OpenLens/issues/272",
+        "final_url": "https://api.github.com/repos/Philippe-arnd/OpenLens/issues/272",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:47+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:49 GMT",
+        "last_modified": "Thu, 26 Nov 2026 02:19:21 GMT",
+        "rate_limit_remaining": "50",
+        "bytes": 7519,
+        "sha256": "8025e045d88ccad5b1749332619750f9e47f0544549226dbadd59d24483f2196",
+        "limit_exceeded": false
+      },
+      "aid-pr": {
+        "url": "https://api.github.com/repos/agentcommunity/agent-identity-discovery/pulls/155",
+        "final_url": "https://api.github.com/repos/agentcommunity/agent-identity-discovery/pulls/155",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:48+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:52 GMT",
+        "last_modified": "Sat, 21 Nov 2026 00:49:17 GMT",
+        "rate_limit_remaining": "44",
+        "bytes": 20480,
+        "sha256": "003aa09cf17ab8a0fbf0b3072cbd06962846b2c25330f785390f8e517418652a",
+        "limit_exceeded": false
+      },
+      "aid-demo": {
+        "url": "https://edge.aid.agentcommunity.org/interop/modelmarket",
+        "final_url": "https://edge.aid.agentcommunity.org/interop/modelmarket",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:48+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:50 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 27094,
+        "sha256": "f7040e7852348b6df7988d64190a9021f57974be6e0f39d1dadf418699f57737",
+        "limit_exceeded": false
+      },
+      "ietf-ard": {
+        "url": "https://datatracker.ietf.org/meeting/127/materials/slides-127-dawn-10-protocols-agentic-resource-discovery-ard-architecture-initial-contact-and-lookup-02",
+        "final_url": "https://datatracker.ietf.org/meeting/127/materials/slides-127-dawn-10-protocols-agentic-resource-discovery-ard-architecture-initial-contact-and-lookup-02",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:48+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:54 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 180736,
+        "sha256": "8ac2138f2d0206db36e1b828099ffe471665787835f4d333f20f044826e4d429",
+        "limit_exceeded": false
+      },
+      "owasp-tool": {
+        "url": "https://api.github.com/repos/OWASP/MCP-Security-Testing-Guide/pulls/19",
+        "final_url": "https://api.github.com/repos/OWASP/MCP-Security-Testing-Guide/pulls/19",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:49+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:52 GMT",
+        "last_modified": "Thu, 19 Nov 2026 17:22:03 GMT",
+        "rate_limit_remaining": "45",
+        "bytes": 19240,
+        "sha256": "f74aef8df8f6084595c94f42284801b65fc97d5da0ab81c9be0efe2e5ec55118",
+        "limit_exceeded": false
+      },
+      "owasp-playbook": {
+        "url": "https://api.github.com/repos/OWASP/secure-agent-playbook/pulls/34",
+        "final_url": "https://api.github.com/repos/OWASP/secure-agent-playbook/pulls/34",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:49+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:50 GMT",
+        "last_modified": "Sat, 21 Nov 2026 13:49:57 GMT",
+        "rate_limit_remaining": "47",
+        "bytes": 21604,
+        "sha256": "74db66939ed784ef5b44ae524e7766e185de9c105299b5298e5260bb390a72f2",
+        "limit_exceeded": false
+      },
+      "credenzo": {
+        "url": "https://credenzo.io/drift/",
+        "final_url": "https://credenzo.io/drift/",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:49+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:58 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 8167,
+        "sha256": "ba47f0f24cba6e5ce6c832ac365d6a8f768988de77d4c679c435c49a9dec482e",
+        "limit_exceeded": false
+      },
+      "credenzo-repository": {
+        "url": "https://api.github.com/repos/adudley78/credenzo/commits?per_page=6",
+        "final_url": "https://api.github.com/repos/adudley78/credenzo/commits?per_page=6",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:50+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:54 GMT",
+        "last_modified": "Mon, 23 Nov 2026 23:45:02 GMT",
+        "rate_limit_remaining": "43",
+        "bytes": 33231,
+        "sha256": "c0c599054356f2704ca004dc17e02ee8b5b3271126f652ed68e85cc80f0bb1a3",
+        "limit_exceeded": false
+      },
+      "gdb": {
+        "url": "https://witness.gdbsecurity.com/log?origin=histor.modelmarket.dev%2Flog",
+        "final_url": "https://witness.gdbsecurity.com/log?origin=histor.modelmarket.dev%2Flog",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:50+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:53 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 307761,
+        "sha256": "3efb261fd749fc54c0366ded304e1c8945ea1caafdc726ad86c883dc462cf317",
+        "limit_exceeded": false
+      },
+      "gdb-checkpoint": {
+        "url": "https://witness.gdbsecurity.com/checkpoint?origin=histor.modelmarket.dev%2Flog",
+        "final_url": "https://witness.gdbsecurity.com/checkpoint?origin=histor.modelmarket.dev%2Flog",
+        "http": 404,
+        "observed_at": "2026-11-26T03:50:51+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:53 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 19,
+        "sha256": "b16e15764b8bc06c5c3f9f19bc8b99fa48e7894aa5a6ccdad65da49bbf564793",
+        "limit_exceeded": false
+      },
+      "mcpcost": {
+        "url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+        "final_url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:52+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:57 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 1666,
+        "sha256": "7c0d5996920266649a258e5223b7db3be72f0b12924743b955e99b46aba42b6f",
+        "limit_exceeded": false
+      },
+      "yassin": {
+        "url": "https://yassinht.github.io/mcp-transparency-log/data/peers/index.json",
+        "final_url": "https://yassinht.github.io/mcp-transparency-log/data/peers/index.json",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:52+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:55 GMT",
+        "last_modified": "Wed, 25 Nov 2026 04:30:37 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 669,
+        "sha256": "d48ef082380fb88cf7fdb6d0367926c7cfdd2773428663747d5981420ddd2abe",
+        "limit_exceeded": false
+      },
+      "witness-list": {
+        "url": "https://witness-network.org/logs.json",
+        "observed_at": "2026-11-26T03:50:53+00:00",
+        "error": "<urlopen error [SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1129)>"
+      },
+      "hf-histor": {
+        "url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+        "final_url": "https://huggingface.co/api/datasets/alexar76/histor-mcp-tool-definitions",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:53+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:58 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 6585,
+        "sha256": "0e0b3354d42ef4ceb23c8bdf2694cebdb3beef3fcdca4319d907b5c7feb53f28",
+        "limit_exceeded": false
+      },
+      "agent402": {
+        "url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+        "final_url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:54+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:57 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 263645,
+        "sha256": "8645634870334da0aff59c800bd6665092f3b626474349338302d5bbc5f8f739",
+        "limit_exceeded": false
+      },
+      "aer": {
+        "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+        "final_url": "https://agenteconomy.report/s/modelmarket.dev.json",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:54+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:55 GMT",
+        "last_modified": "Wed, 25 Nov 2026 05:57:15 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 4689,
+        "sha256": "e6ea2b98b0d84ca7341d639317889b276a5f8de1868ea8a58fd9514d033817d6",
+        "limit_exceeded": false
+      },
+      "402radar": {
+        "url": "https://402radar.io/modelmarket.dev",
+        "final_url": "https://402radar.io/modelmarket.dev",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:54+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:58 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 256042,
+        "sha256": "8b515d826492eaf24aff47d423c1ad24c3f6127343f2b34062a7535f5a32efd1",
+        "limit_exceeded": false
+      },
+      "kertivo": {
+        "url": "https://kertivo.com/status.json?host=modelmarket.dev",
+        "final_url": "https://kertivo.com/status.json?host=modelmarket.dev",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:56+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:59 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 3541,
+        "sha256": "206ed95cad89de8ce8698a54b091d499fad8f17a4df8924b222bd19a64d7ff42",
+        "limit_exceeded": false
+      },
+      "market402": {
+        "url": "https://market402.com/op/modelmarket.dev",
+        "final_url": "https://market402.com/op/modelmarket.dev",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:56+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:08 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 8073,
+        "sha256": "ccc8db026bf33dfebc3e99b93dd096603829dabf24ce4a47dab185d30f25b5d2",
+        "limit_exceeded": false
+      },
+      "insight": {
+        "url": "https://api.github.com/repos/alexar76/aimarket-hub/issues/23",
+        "final_url": "https://api.github.com/repos/alexar76/aimarket-hub/issues/23",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:57+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:58 GMT",
+        "last_modified": "Sat, 21 Nov 2026 17:05:21 GMT",
+        "rate_limit_remaining": "42",
+        "bytes": 4628,
+        "sha256": "2d42e8bbaf696725c4cde5c91613831dd45d4db1f0055830993631bfdbc754d8",
+        "limit_exceeded": false
+      },
+      "reloadpi": {
+        "url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1",
+        "final_url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:57+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:01 GMT",
+        "last_modified": "Wed, 25 Nov 2026 18:53:08 GMT",
+        "rate_limit_remaining": "41",
+        "bytes": 11042,
+        "sha256": "6e84b34f95bebbd7b684534ed086ca719b38a34432af196f0dee9012afa30797",
+        "limit_exceeded": false
+      },
+      "serverdex": {
+        "url": "https://serverdex.io/publisher/alexar76",
+        "final_url": "https://serverdex.io/publisher/alexar76",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:58+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:00 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 103014,
+        "sha256": "19ff9566f1c056d4776bba31084af2b02a18aa8b3ac2f40bb25db496b08f7813",
+        "limit_exceeded": false
+      },
+      "mcprush": {
+        "url": "https://mcprush.com/alexar76/warden-mcp-security-firewall",
+        "final_url": "https://mcprush.com/alexar76/warden-mcp-security-firewall",
+        "http": 403,
+        "observed_at": "2026-11-26T03:50:58+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:09 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 5566,
+        "sha256": "c89275263f31397eae208d6c18641c4026bc254c75c79c3cf5cfb7b3d5cfee3e",
+        "limit_exceeded": false
+      },
+      "pingblip-catalog": {
+        "url": "https://browse.games/game/pingblip",
+        "final_url": "https://browse.games/game/pingblip",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:58+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:01 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 37899,
+        "sha256": "9033bd67129c8b1393a8d411e795b22e61dc203969dbeb133350a92152c4f536",
+        "limit_exceeded": false
+      },
+      "pingblip-itch": {
+        "url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+        "final_url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:59+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:06 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 15279,
+        "sha256": "177d5e05b2dae79c25def4576f5df9c9035d1f5a96ae4bd6c9161ea0a60ac766",
+        "limit_exceeded": false
+      },
+      "dev-refund": {
+        "url": "https://dev.to/api/articles/alexar76/how-to-verify-an-x402-refund-on-base-52cn",
+        "final_url": "https://dev.to/api/articles/alexar76/how-to-verify-an-x402-refund-on-base-52cn",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:00+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:05 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 40293,
+        "sha256": "a6ec971ba9e93ed02f7e5e3609a9f285d1f861bd4c62c9e575aafd1e77e44911",
+        "limit_exceeded": false
+      },
+      "npm-warden": {
+        "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fwarden",
+        "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fwarden",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:00+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:02 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:51:02 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 672,
+        "sha256": "930414bea1770f72cb762139666e83310f8abc6f0e138839766027bbdc8e9744",
+        "limit_exceeded": false
+      },
+      "npm-meta-warden": {
+        "url": "https://registry.npmjs.org/%40aimarket%2Fwarden",
+        "final_url": "https://registry.npmjs.org/%40aimarket%2Fwarden",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:01+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:04 GMT",
+        "last_modified": "Wed, 25 Nov 2026 19:24:10 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 195162,
+        "sha256": "d2831af44711d14b6160c06c10f153cd95a5feac5a1d41e5ada2db6e434637ba",
+        "limit_exceeded": false
+      },
+      "npm-argus": {
+        "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40alexar76%2Fargus3",
+        "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40alexar76%2Fargus3",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:01+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:02 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:51:02 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 665,
+        "sha256": "4ea06aea645bfd129e8b16481a22df3b316b2c54d5e4cf314513cfbaf4ad65c9",
+        "limit_exceeded": false
+      },
+      "npm-meta-argus": {
+        "url": "https://registry.npmjs.org/%40alexar76%2Fargus3",
+        "final_url": "https://registry.npmjs.org/%40alexar76%2Fargus3",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:01+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:03 GMT",
+        "last_modified": "Sat, 21 Nov 2026 09:05:00 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 70772,
+        "sha256": "7b1910338b3d9fb2a5ba90fca51296c8842e7abc14f6665557179d9a8167cc3a",
+        "limit_exceeded": false
+      },
+      "npm-esim": {
+        "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fesim-rails",
+        "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fesim-rails",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:02+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:02 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:51:02 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 664,
+        "sha256": "7824110e9177c31a919c0dab323b2e7d6ee9d4ec504541cf29a3730e4045d5cc",
+        "limit_exceeded": false
+      },
+      "npm-meta-esim": {
+        "url": "https://registry.npmjs.org/%40aimarket%2Fesim-rails",
+        "final_url": "https://registry.npmjs.org/%40aimarket%2Fesim-rails",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:02+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:04 GMT",
+        "last_modified": "Wed, 18 Nov 2026 09:03:33 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 23753,
+        "sha256": "91b5e3e47339544468d71b03bcc08ab2e086fc7d0e3070051debd76a88ceebb5",
+        "limit_exceeded": false
+      },
+      "npm-token-cost": {
+        "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/mcp-token-cost",
+        "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/mcp-token-cost",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:02+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:06 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:51:06 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 647,
+        "sha256": "16d400d035e1114fb693cb553189dc742ead9947048f98b7be3c756cca814d30",
+        "limit_exceeded": false
+      },
+      "npm-meta-token-cost": {
+        "url": "https://registry.npmjs.org/mcp-token-cost",
+        "final_url": "https://registry.npmjs.org/mcp-token-cost",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:03+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:05 GMT",
+        "last_modified": "Sat, 21 Nov 2026 12:42:14 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 13995,
+        "sha256": "80c72b6acebade7f9fa7346696e98bd75299c0ec07dd92bab4f498b44da147b5",
+        "limit_exceeded": false
+      },
+      "npm-domain": {
+        "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fdomain-operator-kit",
+        "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fdomain-operator-kit",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:04+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:07 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:51:07 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 661,
+        "sha256": "f6feed6afbc68265c85d755ca1411127d07a435148c6035beb10a55f5a8f3de3",
+        "limit_exceeded": false
+      },
+      "npm-meta-domain": {
+        "url": "https://registry.npmjs.org/%40aimarket%2Fdomain-operator-kit",
+        "final_url": "https://registry.npmjs.org/%40aimarket%2Fdomain-operator-kit",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:04+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:05 GMT",
+        "last_modified": "Sun, 22 Nov 2026 07:10:37 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 22200,
+        "sha256": "b11bca66c1a62a8dbd8b90c39c508ebcfbb08dd48a9709db2c8e7211ed475397",
+        "limit_exceeded": false
+      },
+      "hn-histor": {
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=histor.modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=histor.modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:05+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:05 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 469,
+        "sha256": "d56d2521e75d5c34c6d6f068ff184aa8409c7aa1b73d084d4e684554844db94b",
+        "limit_exceeded": false
+      },
+      "hn-modelmarket": {
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:05+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:08 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 444,
+        "sha256": "972be19d50e03059b37963e6817c896a21103614ed86367fb619badb24d3b5b0",
+        "limit_exceeded": false
+      },
+      "hn-attested": {
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:05+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:08 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 446,
+        "sha256": "0cfa497390279ef27662aebf3d93dd7fcb098204ef89bdf8428386859b87bf2d",
+        "limit_exceeded": false
+      },
+      "hn-warden": {
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76%2Fwarden&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=alexar76%2Fwarden&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:06+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:09 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 446,
+        "sha256": "c4e4536eadfd1095cf6c235c89c9a61610514e1c4db029c0b59beb090add4eb1",
+        "limit_exceeded": false
+      },
+      "hn-pingblip": {
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:06+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:07 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 425,
+        "sha256": "096621e7e7fc54cc3a34922d6866f3f084c6864d0c05629095cd1ab58dc6f432",
+        "limit_exceeded": false
+      },
+      "hn-factory": {
+        "url": "https://hn.algolia.com/api/v1/search_by_date?query=magic-ai-factory.com&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=magic-ai-factory.com&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+        "http": 200,
+        "observed_at": "2026-11-26T03:51:06+00:00",
+        "date": "Thu, 26 Nov 2026 03:51:08 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 464,
+        "sha256": "f0ed1525630d57eba1b65372c292dcc5adfdf39488ab72c8919dce20e9a9c412",
+        "limit_exceeded": false
+      }
+    },
+    "followup": {
+      "reloadpi-comments": {
+        "url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1/comments?per_page=30",
+        "final_url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1/comments?per_page=30",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:22+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:29 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "40",
+        "bytes": 29746,
+        "sha256": "c9cea8a7f36f383fb627dd1282c019fd5fe85829f9d94e9f5a50e7cf968268e5",
+        "limit_exceeded": false
+      },
+      "opencode-comments": {
+        "url": "https://api.github.com/repos/anomalyco/opencode/issues/58716/comments?per_page=30",
+        "final_url": "https://api.github.com/repos/anomalyco/opencode/issues/58716/comments?per_page=30",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:22+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:35 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "35",
+        "bytes": 6682,
+        "sha256": "fef4bcba69ed3846aae5f56b3b39172de7bfd7e8643a62c78d306b408ccc40cb",
+        "limit_exceeded": false
+      },
+      "pulsefeed-comments": {
+        "url": "https://api.github.com/repos/Nikolife2016/pulsefeed-x402/issues/3/comments?since=2026-11-25T17:47:37Z&per_page=30",
+        "observed_at": "2026-11-26T03:52:22+00:00",
+        "error": "Remote end closed connection without response"
+      },
+      "canari-head": {
+        "url": "https://api.github.com/repos/lanbass869-cell/canari/commits/380a62ebe2d6",
+        "final_url": "https://api.github.com/repos/lanbass869-cell/canari/commits/380a62ebe2d6",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:22+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:29 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:21:23 GMT",
+        "rate_limit_remaining": "39",
+        "bytes": 11290,
+        "sha256": "86d9581a3c6ea4bbe75b9e989e46a05ef61edc14c3fa14383a880bb658d60895",
+        "limit_exceeded": false
+      },
+      "canari-data": {
+        "url": "https://api.github.com/repos/lanbass869-cell/canari/commits/7c1840ba0c4d",
+        "final_url": "https://api.github.com/repos/lanbass869-cell/canari/commits/7c1840ba0c4d",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:22+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:31 GMT",
+        "last_modified": "Thu, 26 Nov 2026 03:13:43 GMT",
+        "rate_limit_remaining": "38",
+        "bytes": 1340663,
+        "sha256": "bdcce1018c0d3754ec80254592e53f67beaa8e6e0b74c5703b007ed070d7f017",
+        "limit_exceeded": false
+      },
+      "tsd-zhao": {
+        "url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/commits?per_page=4",
+        "final_url": "https://api.github.com/repos/zhaoxinghua09-cell/independent-recomputations/commits?per_page=4",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:22+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:32 GMT",
+        "last_modified": "Tue, 24 Nov 2026 15:51:15 GMT",
+        "rate_limit_remaining": "37",
+        "bytes": 12622,
+        "sha256": "75e79f8cbbb6966e484fb56b5b57d9e67149d6afd12910bf384b257713633ffc",
+        "limit_exceeded": false
+      },
+      "gdb-checkpoint": {
+        "url": "https://witness.gdbsecurity.com/b588375bae81fe1143b42f1ec690a1890007318081ccbcb7b7986f580a79347b/checkpoint",
+        "final_url": "https://witness.gdbsecurity.com/b588375bae81fe1143b42f1ec690a1890007318081ccbcb7b7986f580a79347b/checkpoint",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:30+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:31 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 338,
+        "sha256": "ecb8643bb29102c900b0ca14da06cf2a3c998ebd3f13ddaffb16405c24c9775b",
+        "limit_exceeded": false
+      },
+      "yassin-next": {
+        "url": "https://yassinht.github.io/mcp-transparency-log/data/peers/index.json",
+        "final_url": "https://yassinht.github.io/mcp-transparency-log/data/peers/index.json",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:30+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:31 GMT",
+        "last_modified": "Wed, 25 Nov 2026 04:30:37 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 669,
+        "sha256": "d48ef082380fb88cf7fdb6d0367926c7cfdd2773428663747d5981420ddd2abe",
+        "limit_exceeded": false
+      },
+      "aer-next": {
+        "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+        "final_url": "https://agenteconomy.report/s/modelmarket.dev.json",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:31+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:34 GMT",
+        "last_modified": "Wed, 25 Nov 2026 05:57:15 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 4689,
+        "sha256": "e6ea2b98b0d84ca7341d639317889b276a5f8de1868ea8a58fd9514d033817d6",
+        "limit_exceeded": false
+      },
+      "agent402-next": {
+        "url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+        "final_url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:31+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:36 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 263645,
+        "sha256": "8645634870334da0aff59c800bd6665092f3b626474349338302d5bbc5f8f739",
+        "limit_exceeded": false
+      },
+      "atlas-current": {
+        "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits/f11e76a19b49",
+        "final_url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits/f11e76a19b49",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:32+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:34 GMT",
+        "last_modified": "Wed, 25 Nov 2026 20:53:54 GMT",
+        "rate_limit_remaining": "36",
+        "bytes": 201480,
+        "sha256": "2c5e183291ec7ed223b10906d9d464569ba5fe2e6b2b50a3a88f8b21f36c63f8",
+        "limit_exceeded": false
+      },
+      "warden-archive": {
+        "url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.39.1.tgz",
+        "final_url": "https://registry.npmjs.org/@aimarket/warden/-/warden-0.39.1.tgz",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:32+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:34 GMT",
+        "last_modified": "Wed, 25 Nov 2026 19:24:10 GMT",
+        "rate_limit_remaining": null,
+        "bytes": 3905392,
+        "sha256": "693591b450e1390699cfd94a9364c99b0589843afd966140f7a56ef073a1c558",
+        "limit_exceeded": false
+      },
+      "ietf-agenda": {
+        "url": "https://datatracker.ietf.org/meeting/127/session/dawn",
+        "final_url": "https://datatracker.ietf.org/meeting/127/session/dawn",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:34+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:35 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 45580,
+        "sha256": "6eec9f5a917f10cffeefc9193080831e80627857ade2ad5adbec7e90d02a8ee3",
+        "limit_exceeded": false
+      },
+      "ietf-minutes": {
+        "url": "https://datatracker.ietf.org/doc/minutes-127-dawn-202611201630/",
+        "final_url": "https://datatracker.ietf.org/doc/minutes-127-dawn-202611201630/",
+        "http": 404,
+        "observed_at": "2026-11-26T03:52:34+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:35 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": null,
+        "bytes": 23047,
+        "sha256": "8c31ae58b554cd5042c6e6be75965d070f9be36f3a55c50be857994fb233b130",
+        "limit_exceeded": false
+      },
+      "ai-memory-mcp": {
+        "url": "https://api.github.com/repos/alphaonedev/ai-memory-mcp/issues/4404/comments?since=2026-11-25T17:47:37Z&per_page=30",
+        "final_url": "https://api.github.com/repos/alphaonedev/ai-memory-mcp/issues/4404/comments?since=2026-11-25T17:47:37Z&per_page=30",
+        "http": 200,
+        "observed_at": "2026-11-26T03:52:35+00:00",
+        "date": "Thu, 26 Nov 2026 03:52:35 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "34",
+        "bytes": 7922,
+        "sha256": "a6cea58f90d07be77e9d4e3224c90534fbc71fce38862ca08a8d4699be590868",
+        "limit_exceeded": false
+      }
+    },
+    "github_search": {
+      "gh-search-new-incoming": {
+        "url": "https://api.github.com/search/issues?q=user%3Aalexar76+-author%3Aalexar76+-author%3Aapp%2Fdependabot+created%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=25",
+        "final_url": "https://api.github.com/search/issues?q=user%3Aalexar76+-author%3Aalexar76+-author%3Aapp%2Fdependabot+created%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=25",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:36+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:38 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "9",
+        "bytes": 79,
+        "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+        "limit_exceeded": false
+      },
+      "gh-search-updated-incoming": {
+        "url": "https://api.github.com/search/issues?q=user%3Aalexar76+-author%3Aalexar76+-author%3Aapp%2Fdependabot+updated%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=25",
+        "final_url": "https://api.github.com/search/issues?q=user%3Aalexar76+-author%3Aalexar76+-author%3Aapp%2Fdependabot+updated%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=25",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:38+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:39 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "8",
+        "bytes": 79,
+        "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+        "limit_exceeded": false
+      },
+      "gh-search-new-comments": {
+        "url": "https://api.github.com/search/issues?q=commenter%3Aalexar76+-user%3Aalexar76+updated%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=25",
+        "final_url": "https://api.github.com/search/issues?q=commenter%3Aalexar76+-user%3Aalexar76+updated%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=25",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:39+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:41 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "7",
+        "bytes": 79,
+        "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+        "limit_exceeded": false
+      },
+      "gh-search-outside-histor": {
+        "url": "https://api.github.com/search/issues?q=%22histor.modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "final_url": "https://api.github.com/search/issues?q=%22histor.modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:41+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:44 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "6",
+        "bytes": 79,
+        "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+        "limit_exceeded": false
+      },
+      "gh-search-outside-tsd": {
+        "url": "https://api.github.com/search/issues?q=%22mcp-tool-set-digest%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "final_url": "https://api.github.com/search/issues?q=%22mcp-tool-set-digest%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:44+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:45 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "5",
+        "bytes": 79,
+        "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0",
+        "limit_exceeded": false
+      },
+      "gh-search-outside-modelmarket": {
+        "url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "final_url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:45+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:46 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "4",
+        "bytes": 8148,
+        "sha256": "12ac0ce2cda58922449aee6d970dd1312c83058e8ad19e6d2f31aa409e0b5f8e",
+        "limit_exceeded": false
+      },
+      "gh-search-outside-attested": {
+        "url": "https://api.github.com/search/issues?q=%22attested-memory%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "final_url": "https://api.github.com/search/issues?q=%22attested-memory%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=25",
+        "http": 200,
+        "observed_at": "2026-11-26T03:50:46+00:00",
+        "date": "Thu, 26 Nov 2026 03:50:48 GMT",
+        "last_modified": null,
+        "rate_limit_remaining": "3",
+        "bytes": 458279,
+        "sha256": "2b1b2aa5b8f3114f2e1e6ef3a7c8000c51dcea2b6f5eddc630272d66703fcae5",
+        "limit_exceeded": false
+      },
+      "gh-search-outside-commits": {
+        "url": "https://api.github.com/search/commits?q=%22mcp-tool-set-digest%22+-user%3Aalexar76+committer-date%3A%3E%3D2026-11-25&sort=committer-date&per_page=25",
+        "observed_at": "2026-11-26T03:50:49+00:00",
+        "error": "Remote end closed connection without response"
+      }
+    }
+  }
+}

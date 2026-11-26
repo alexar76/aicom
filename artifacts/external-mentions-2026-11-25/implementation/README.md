@@ -23,7 +23,9 @@ PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 AIFACTORY_DEV=1 \
 
 ## ReloadPi
 
-В сохранённых квитанциях Base есть один платёж и три возврата по 1,61 USDC. Подтвердились адреса, сумма, направление и время включения каждого перевода в блок. Сумма трёх возвратов — 4,83 USDC. Запрос к документированному `GET /api/catalog/orders?txHash=…` по опубликованному платежу дал HTTP 200 и `found: false`. Связь между этим платежом и конкретным возвратом ждёт строки статуса от оператора. [Полевой отчёт](https://github.com/sF1nX/x402-signals/issues/1) · [Квитанции, блоки и результат поиска](reloadpi-base-evidence.json) · [Черновик ответа Cross](../../external-mentions-2026-11-24/reply-reloadpi-2026-11-25.md)
+При первой проверке мы сверили один платёж и три возврата по 1,61 USDC, суммарно 4,83 USDC. В квитанциях Base подтвердились адреса, сумма, направление и время каждого перевода. По хешу первого опубликованного платежа API вернул HTTP 200 и `found: false`. [Полевой отчёт](https://github.com/sF1nX/x402-signals/issues/1) · [Квитанции, блоки и результат поиска](reloadpi-base-evidence.json) · [Черновик ответа Cross](../../external-mentions-2026-11-24/reply-reloadpi-2026-11-25.md)
+
+После ответа Cross: `0xacffa5…` был отдельным ранним тестом без возврата. В обновлённом issue ReloadPi опубликовал три пары из последующих тестов. По всем трём новым хешам оплаты API вернул `FULFILLMENT_FAILED`, а Base подтвердил шесть переводов по 1,61 USDC и возврат исходному плательщику в каждой паре. Связь между хешами в каждой паре взята из issue. [Повторная проверка](reloadpi-order-pairs.evidence.json)
 
 ```sh
 python3 artifacts/external-mentions-2026-11-25/implementation/check_reloadpi_transfers.py

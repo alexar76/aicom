@@ -3,9 +3,12 @@
 
 from __future__ import annotations
 
+import http.client
 import json
 import os
+import ssl
 import sys
+import time
 import urllib.error
 import urllib.request
 from typing import Any
@@ -14,6 +17,21 @@ from typing import Any
 # GitHub refuses a repository description over 350 characters with a bare
 # "Repository creation failed." (HTTP 422) — HISTOR's first publish hit exactly that.
 GITHUB_DESCRIPTION_MAX = 350
+
+# Transient TLS/connection drops from api.github.com (seen 2026-11-26 on
+# aimarket-courses / aimarket-sdks). Retry instead of aborting the satellite.
+_REQUEST_ATTEMPTS = 6
+_TRANSIENT_EXC = (
+    urllib.error.URLError,
+    TimeoutError,
+    ConnectionError,
+    ConnectionResetError,
+    BrokenPipeError,
+    http.client.RemoteDisconnected,
+    http.client.IncompleteRead,
+    ssl.SSLError,
+    OSError,
+)
 
 
 def clamp_description(text: str, limit: int = GITHUB_DESCRIPTION_MAX) -> str:
@@ -44,22 +62,30 @@ def _token() -> str:
 
 def _request(method: str, url: str, token: str, body: dict[str, Any] | None = None) -> tuple[int, dict[str, Any] | str]:
     data = json.dumps(body).encode() if body is not None else None
-    req = urllib.request.Request(url, data=data, method=method)
-    req.add_header("Authorization", f"Bearer {token}")
-    req.add_header("Accept", "application/vnd.github+json")
-    if body is not None:
-        req.add_header("Content-Type", "application/json")
-    try:
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            raw = resp.read().decode()
-            return resp.status, json.loads(raw) if raw else {}
-    except urllib.error.HTTPError as e:
-        raw = e.read().decode()
+    last_err: BaseException | None = None
+    for attempt in range(_REQUEST_ATTEMPTS):
+        req = urllib.request.Request(url, data=data, method=method)
+        req.add_header("Authorization", f"Bearer {token}")
+        req.add_header("Accept", "application/vnd.github+json")
+        if body is not None:
+            req.add_header("Content-Type", "application/json")
         try:
-            payload: dict[str, Any] | str = json.loads(raw) if raw else {}
-        except json.JSONDecodeError:
-            payload = raw[:300]
-        return e.code, payload
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                raw = resp.read().decode()
+                return resp.status, json.loads(raw) if raw else {}
+        except urllib.error.HTTPError as e:
+            raw = e.read().decode()
+            try:
+                payload: dict[str, Any] | str = json.loads(raw) if raw else {}
+            except json.JSONDecodeError:
+                payload = raw[:300]
+            return e.code, payload
+        except _TRANSIENT_EXC as e:
+            last_err = e
+            if attempt + 1 >= _REQUEST_ATTEMPTS:
+                break
+            time.sleep(min(2**attempt, 20))
+    raise urllib.error.URLError(last_err or RuntimeError("request failed"))
 
 
 def _token_kind(token: str) -> str:
@@ -94,7 +120,10 @@ def ensure_repo(org: str, repo: str, *, description: str = "", private: bool = F
     if not token:
         return False, "missing GH_PAT or GITHUB_TOKEN"
 
-    status, _ = _request("GET", f"https://api.github.com/repos/{org}/{repo}", token)
+    try:
+        status, _ = _request("GET", f"https://api.github.com/repos/{org}/{repo}", token)
+    except _TRANSIENT_EXC as e:
+        return False, f"GET repos/{org}/{repo} after retries: {e}"
     if status == 200:
         return True, "exists"
     if status != 404:
@@ -113,7 +142,10 @@ def ensure_repo(org: str, repo: str, *, description: str = "", private: bool = F
 
     # User-owned org repos: POST /orgs/{org}/repos; personal account: POST /user/repos
     for url in (f"https://api.github.com/orgs/{org}/repos", "https://api.github.com/user/repos"):
-        status, payload = _request("POST", url, token, body)
+        try:
+            status, payload = _request("POST", url, token, body)
+        except _TRANSIENT_EXC as e:
+            return False, f"POST {url} after retries: {e}"
         if status in (201, 202):
             return True, "created"
         if status == 422 and isinstance(payload, dict):

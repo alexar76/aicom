@@ -1,0 +1,988 @@
+{
+  "window_local": {
+    "from": "2026-11-26T07:13:36+01:00",
+    "to": "2026-11-26T07:16:49+01:00",
+    "timezone": "Europe/Amsterdam"
+  },
+  "baseline": {
+    "file": "evidence.json",
+    "window_local": {
+      "from": "2026-11-26T04:50:36+01:00",
+      "to": "2026-11-26T04:52:35+01:00",
+      "timezone": "Europe/Amsterdam"
+    }
+  },
+  "aer": {
+    "previous": {
+      "as_of": "2026-11-25",
+      "tier": "CCC",
+      "organic_paying_agents": 1,
+      "paying_wallets_raw": 7,
+      "settled_usd_14d": 0.07,
+      "outlook_basis": {
+        "compares": "organic paying agents, last 7 days vs previous 7 days",
+        "organic_paying_agents_last_7d": 0,
+        "organic_paying_agents_previous_7d": 1,
+        "text": "0 organic paying agents in the last 7 days vs 1 in the 7 before (-100%)"
+      }
+    },
+    "current": {
+      "as_of": "2026-11-26",
+      "tier": "CCC",
+      "organic_paying_agents": 2,
+      "paying_wallets_raw": 6,
+      "settled_usd_14d": 0.06,
+      "outlook_basis": {
+        "compares": "organic paying agents, last 7 days vs previous 7 days",
+        "organic_paying_agents_last_7d": 1,
+        "organic_paying_agents_previous_7d": 1,
+        "text": "1 organic paying agents in the last 7 days vs 1 in the 7 before (+0%)"
+      }
+    }
+  },
+  "agent402": {
+    "index_fetched_at": "2026-11-26T01:40:05.811000+01:00",
+    "paidToolCount": 8,
+    "routerDispatchEligible": false,
+    "routerDispatchReason": "settlement_self_funded",
+    "routerDispatchByChain": {
+      "base": {
+        "eligible": false,
+        "reason": "settlement_self_funded",
+        "detail": "below the settlement floor"
+      }
+    },
+    "eligible_paid_count": 0,
+    "paid_routes": [
+      {
+        "route": "/x402/histor-check",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/warden-scan",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/air-quality-now",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/weather-now",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/nearby-sensors",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/fair-random",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/x402-check",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      },
+      {
+        "route": "/x402/mcp-diff",
+        "executeViaCallableNow": false,
+        "routerDispatchReason": "settlement_self_funded"
+      }
+    ]
+  },
+  "roundhouse": {
+    "recipient": "0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+    "page_observations": {
+      "received_usd_displayed": "1.64",
+      "base_settlements_displayed": 136,
+      "distinct_counterparties_all_indexed_history": 28
+    },
+    "known_own_test_wallet": {
+      "address": "0x097e3f339d0b023605e12a6b81e2d6cb7571475a",
+      "received_usd_displayed": "1.02",
+      "attribution": "../../docs/evidence/external-use-pass6-2026-10-30/summary.json"
+    },
+    "verified_native_usdc_transfers": [
+      {
+        "endpoint": "https://mainnet.base.org",
+        "observed_at": "2026-11-26T06:16:47+00:00",
+        "capture": {
+          "receipt": {
+            "type": "0x2",
+            "status": "0x1",
+            "cumulativeGasUsed": "0x1bd2db",
+            "logs": [
+              {
+                "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                "topics": [
+                  "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+                  "0x00000000000000000000000082cef1cdc34d65cf690235dc24e823a6585a6f86",
+                  "0x7955a73a5dedbfbaa813db9b7666cc7f78922181da9e36e346d312b7c30049f5"
+                ],
+                "data": "0x",
+                "blockHash": "0x2ab4a5232e3e3d1e8c7d85a17fe2c3fdc1f604eb0387e615f02aad4852f2bdf7",
+                "blockNumber": "0x3b6fb60",
+                "blockTimestamp": "0x6b0785ae",
+                "transactionHash": "0xc8248a8bfb81053f5f9b6a282c20fdb5fb0e7988b1937e87440c17c88f9d463c",
+                "transactionIndex": "0xc",
+                "logIndex": "0x37",
+                "removed": false,
+                "blockTimestampMs": "0x1a215622fb0"
+              },
+              {
+                "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                "topics": [
+                  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                  "0x00000000000000000000000082cef1cdc34d65cf690235dc24e823a6585a6f86",
+                  "0x0000000000000000000000001218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a"
+                ],
+                "data": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+                "blockHash": "0x2ab4a5232e3e3d1e8c7d85a17fe2c3fdc1f604eb0387e615f02aad4852f2bdf7",
+                "blockNumber": "0x3b6fb60",
+                "blockTimestamp": "0x6b0785ae",
+                "transactionHash": "0xc8248a8bfb81053f5f9b6a282c20fdb5fb0e7988b1937e87440c17c88f9d463c",
+                "transactionIndex": "0xc",
+                "logIndex": "0x38",
+                "removed": false,
+                "blockTimestampMs": "0x1a215622fb0"
+              }
+            ],
+            "logsBloom": "0x00000000000000000000000000000000000020400000000000000000000000000800000000000000000000000000100000000000000000000000000200000000000000000000040000000008000000000000000000080800004000000000000000800000020000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000004000000000000000000100000000000000000000000000000004000000000000000000000000000000000002000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "transactionHash": "0xc8248a8bfb81053f5f9b6a282c20fdb5fb0e7988b1937e87440c17c88f9d463c",
+            "transactionIndex": "0xc",
+            "blockHash": "0x2ab4a5232e3e3d1e8c7d85a17fe2c3fdc1f604eb0387e615f02aad4852f2bdf7",
+            "blockNumber": "0x3b6fb60",
+            "gasUsed": "0x1520a",
+            "effectiveGasPrice": "0x989680",
+            "blobGasUsed": "0x8ac0",
+            "from": "0x42dd53906b49c202e8e934b059dc019e04634b00",
+            "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            "contractAddress": null,
+            "l1GasPrice": "0x3c358a6",
+            "l1GasUsed": "0xf02",
+            "l1Fee": "0x57746f26",
+            "l1BaseFeeScalar": "0x8dd",
+            "l1BlobBaseFee": "0x372d20",
+            "l1BlobBaseFeeScalar": "0x101c12",
+            "daFootprintGasScalar": "0x94"
+          },
+          "block": {
+            "blockHash": "0x2ab4a5232e3e3d1e8c7d85a17fe2c3fdc1f604eb0387e615f02aad4852f2bdf7",
+            "number": "0x3b6fb60",
+            "timestamp": "0x6b0785ae"
+          }
+        },
+        "transfer": {
+          "tx_hash": "0xc8248a8bfb81053f5f9b6a282c20fdb5fb0e7988b1937e87440c17c88f9d463c",
+          "from": "0x82cef1cdc34d65cf690235dc24e823a6585a6f86",
+          "to": "0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+          "amount_atomic": 1000,
+          "block_time": "2026-11-26T01:04:46+00:00"
+        },
+        "errors": []
+      },
+      {
+        "endpoint": "https://base.publicnode.com",
+        "observed_at": "2026-11-26T06:16:49+00:00",
+        "capture": {
+          "receipt": {
+            "type": "0x2",
+            "status": "0x1",
+            "cumulativeGasUsed": "0x17c0ab",
+            "logs": [
+              {
+                "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                "topics": [
+                  "0x98de503528ee59b575ef0c0a2576a82497bfc029a5685b209e9ec333479b10a5",
+                  "0x000000000000000000000000a4f183a6799f0310fccc545b07f2dcc960223de2",
+                  "0x17c4e2a592a6ee6a0a05c7a941fbf6fa7db21e4207c0b63a0e5ea7325b443bec"
+                ],
+                "data": "0x",
+                "blockHash": "0x03990886c7f2efa0f5f8f6b067cfdad4f9511c4dca0c104a2a687f4942eebe4a",
+                "blockNumber": "0x3b39999",
+                "blockTimestamp": "0x6b06d886",
+                "transactionHash": "0xdafa69090c40ae6c9b4aa26fa85a3e96e0fd4f733223ac395efd437b049901b9",
+                "transactionIndex": "0x16",
+                "logIndex": "0x12",
+                "removed": false,
+                "blockTimestampMs": "0x1a212bdcc38"
+              },
+              {
+                "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+                "topics": [
+                  "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                  "0x000000000000000000000000a4f183a6799f0310fccc545b07f2dcc960223de2",
+                  "0x0000000000000000000000001218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a"
+                ],
+                "data": "0x00000000000000000000000000000000000000000000000000000000000003e8",
+                "blockHash": "0x03990886c7f2efa0f5f8f6b067cfdad4f9511c4dca0c104a2a687f4942eebe4a",
+                "blockNumber": "0x3b39999",
+                "blockTimestamp": "0x6b06d886",
+                "transactionHash": "0xdafa69090c40ae6c9b4aa26fa85a3e96e0fd4f733223ac395efd437b049901b9",
+                "transactionIndex": "0x16",
+                "logIndex": "0x13",
+                "removed": false,
+                "blockTimestampMs": "0x1a212bdcc38"
+              }
+            ],
+            "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000200000000000000000000000000002008000000000000000000080000004000000000000000800000020000000000000000000000000000000000000000000010000000000800040000400000000000000000000000000000000000004000000000000000000000000000000000000000000000000004000000010000000000000000008000000002000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+            "transactionHash": "0xdafa69090c40ae6c9b4aa26fa85a3e96e0fd4f733223ac395efd437b049901b9",
+            "transactionIndex": "0x16",
+            "blockHash": "0x03990886c7f2efa0f5f8f6b067cfdad4f9511c4dca0c104a2a687f4942eebe4a",
+            "blockNumber": "0x3b39999",
+            "gasUsed": "0x15202",
+            "effectiveGasPrice": "0x989680",
+            "blobGasUsed": "0x8ac0",
+            "from": "0xca5e87f82b3fa093800e6ad67d621a427d79c70d",
+            "to": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+            "contractAddress": null,
+            "l1GasPrice": "0xe970b3a",
+            "l1GasUsed": "0xf02",
+            "l1Fee": "0x15ba534b0",
+            "l1BaseFeeScalar": "0x8dd",
+            "l1BlobBaseFee": "0xde9454",
+            "l1BlobBaseFeeScalar": "0x101c12",
+            "daFootprintGasScalar": "0x94"
+          },
+          "block": {
+            "blockHash": "0x03990886c7f2efa0f5f8f6b067cfdad4f9511c4dca0c104a2a687f4942eebe4a",
+            "number": "0x3b39999",
+            "timestamp": "0x6b06d886"
+          }
+        },
+        "transfer": {
+          "tx_hash": "0xdafa69090c40ae6c9b4aa26fa85a3e96e0fd4f733223ac395efd437b049901b9",
+          "from": "0xa4f183a6799f0310fccc545b07f2dcc960223de2",
+          "to": "0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+          "amount_atomic": 1000,
+          "block_time": "2026-11-25T12:45:58+00:00"
+        },
+        "errors": [
+          {
+            "endpoint": "https://mainnet.base.org",
+            "error": "<urlopen error _ssl.c:1112: The handshake operation timed out>"
+          }
+        ]
+      }
+    ],
+    "scope": "The two Base receipts confirm addresses, timestamp, chain and amount. Wallet ownership and individual service delivery were not established. Roundhouse labels both rows Coinbase; that inference was not needed to verify the transfers."
+  },
+  "histor": {
+    "witness_status_on_page": "Consistent",
+    "witness_checkpoint_previous": 3645838,
+    "witness_checkpoint_current": 3655040,
+    "witness_checkpoint_delta": 9202,
+    "checkpoint_note": "histor.modelmarket.dev/log\n3655040\n5FjVCiUvpz14kgFxUc7TLRJs/TxwNASBMqACaVvniyM=\n\n— histor.modelmarket.dev/log rTygZj2RRdlTv07P5wnyKiuk5e3cx4ppPV2sK6ZtX7kSvVaxxe2+nGfENDr/7HKijkIHMGy0BoehXfgfthjmwZlyngo=\n— witness.gdbsecurity.com oTmPcwAAAABrB832gxXd5otzdCue/Fd1CudBdobdRn5YT9yey90MoZXCN7kflAKEf7g8pXQvHm7EbQvrXttRt0HMQnDqKLjH4M+sBA==\n",
+    "scope": "Witness-reported status and direct reading of the cosigned note; no new signature verification.",
+    "credenzo_drift": {
+      "changed": 38,
+      "comparable": 169,
+      "from": "2026-11-16",
+      "to": "2026-11-23"
+    }
+  },
+  "attested_memory_review": {
+    "project_source_pin": "470837dda9f1c96a650511a3b66a3e55e0e59ee7",
+    "latest_review": "https://github.com/neoneye/agent-memory-atlas/commit/f11e76a19b49a6edbb1e7829d70ccf5708a9bca2",
+    "review_commit_at": "2026-11-25T20:53:54Z",
+    "previous_review_source_pin": "84e7057bd2ed88344d99066f1827933a5cb6cda5",
+    "marks": [
+      "trust_state",
+      "scope_enforced",
+      "audit_log",
+      "negative_eval"
+    ],
+    "rubric_total": 7,
+    "review_method": "Static source review. The reviewer did not run tests.",
+    "review_findings": [
+      "Market asks for full ledger lineage verification.",
+      "An externally retained head can be checked against current lineage with --check --against.",
+      "The bundled hourly systemd unit invokes neither head export nor comparison with retained heads.",
+      "The evidence pack for a memory unit is checked against the market access API."
+    ],
+    "python_release": "0.3.0"
+  },
+  "mcpcost": {
+    "histor": {
+      "url": "pypi:aimarket-histor==0.11.0",
+      "page": "https://mcpcost.ulehla.dev/s/io.github.alexar76/histor",
+      "status": "ok",
+      "probedAt": "2026-11-24T11:39:41.523Z",
+      "toolCount": 3,
+      "serverInfo": {
+        "name": "histor",
+        "version": "0.11.0"
+      }
+    },
+    "warden": {
+      "url": "npm:@aimarket/warden@0.39.0",
+      "page": "https://mcpcost.ulehla.dev/s/io.github.alexar76/warden",
+      "status": "ok",
+      "probedAt": "2026-11-25T10:30:17.882Z",
+      "toolCount": 9,
+      "serverInfo": {
+        "name": "warden",
+        "version": "0.39.0"
+      }
+    },
+    "argus": {
+      "url": "npm:@alexar76/argus3@0.6.2",
+      "page": "https://mcpcost.ulehla.dev/s/io.github.alexar76/argus3",
+      "status": "ok",
+      "probedAt": "2026-11-22T08:51:58.082Z",
+      "toolCount": 3,
+      "serverInfo": {
+        "name": "argus",
+        "version": "0.6.2"
+      }
+    }
+  },
+  "npm": {
+    "scope": "Download events, including CI and repeat downloads. The five series all returned zero for 25 November in this capture, so comparisons end on 24 November.",
+    "packages": {
+      "@aimarket/esim-rails": {
+        "nov_10_to_16": 39,
+        "nov_17_to_23": 2815,
+        "nov_18_to_24": 4066,
+        "nov_22_to_24": 3842,
+        "daily": {
+          "2026-11-10": 5,
+          "2026-11-11": 5,
+          "2026-11-12": 6,
+          "2026-11-13": 11,
+          "2026-11-14": 4,
+          "2026-11-15": 3,
+          "2026-11-16": 5,
+          "2026-11-17": 162,
+          "2026-11-18": 181,
+          "2026-11-19": 19,
+          "2026-11-20": 15,
+          "2026-11-21": 9,
+          "2026-11-22": 1026,
+          "2026-11-23": 1403,
+          "2026-11-24": 1413,
+          "2026-11-25": 0
+        },
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fesim-rails"
+      },
+      "@aimarket/warden": {
+        "nov_10_to_16": 1436,
+        "nov_17_to_23": 3121,
+        "nov_18_to_24": 3435,
+        "nov_22_to_24": 1748,
+        "daily": {
+          "2026-11-10": 205,
+          "2026-11-11": 275,
+          "2026-11-12": 259,
+          "2026-11-13": 114,
+          "2026-11-14": 47,
+          "2026-11-15": 272,
+          "2026-11-16": 264,
+          "2026-11-17": 232,
+          "2026-11-18": 467,
+          "2026-11-19": 87,
+          "2026-11-20": 791,
+          "2026-11-21": 342,
+          "2026-11-22": 553,
+          "2026-11-23": 649,
+          "2026-11-24": 546,
+          "2026-11-25": 0
+        },
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fwarden"
+      },
+      "@alexar76/argus3": {
+        "nov_10_to_16": 564,
+        "nov_17_to_23": 917,
+        "nov_18_to_24": 787,
+        "nov_22_to_24": 114,
+        "daily": {
+          "2026-11-10": 172,
+          "2026-11-11": 56,
+          "2026-11-12": 38,
+          "2026-11-13": 21,
+          "2026-11-14": 10,
+          "2026-11-15": 186,
+          "2026-11-16": 81,
+          "2026-11-17": 175,
+          "2026-11-18": 211,
+          "2026-11-19": 44,
+          "2026-11-20": 212,
+          "2026-11-21": 206,
+          "2026-11-22": 33,
+          "2026-11-23": 36,
+          "2026-11-24": 45,
+          "2026-11-25": 0
+        },
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40alexar76%2Fargus3"
+      },
+      "@aimarket/domain-operator-kit": {
+        "nov_10_to_16": 0,
+        "nov_17_to_23": 346,
+        "nov_18_to_24": 367,
+        "nov_22_to_24": 367,
+        "daily": {
+          "2026-11-10": 0,
+          "2026-11-11": 0,
+          "2026-11-12": 0,
+          "2026-11-13": 0,
+          "2026-11-14": 0,
+          "2026-11-15": 0,
+          "2026-11-16": 0,
+          "2026-11-17": 0,
+          "2026-11-18": 0,
+          "2026-11-19": 0,
+          "2026-11-20": 0,
+          "2026-11-21": 0,
+          "2026-11-22": 325,
+          "2026-11-23": 21,
+          "2026-11-24": 21,
+          "2026-11-25": 0
+        },
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fdomain-operator-kit"
+      },
+      "mcp-token-cost": {
+        "nov_10_to_16": 0,
+        "nov_17_to_23": 370,
+        "nov_18_to_24": 385,
+        "nov_22_to_24": 73,
+        "daily": {
+          "2026-11-10": 0,
+          "2026-11-11": 0,
+          "2026-11-12": 0,
+          "2026-11-13": 0,
+          "2026-11-14": 0,
+          "2026-11-15": 0,
+          "2026-11-16": 0,
+          "2026-11-17": 0,
+          "2026-11-18": 0,
+          "2026-11-19": 0,
+          "2026-11-20": 0,
+          "2026-11-21": 312,
+          "2026-11-22": 29,
+          "2026-11-23": 29,
+          "2026-11-24": 15,
+          "2026-11-25": 0
+        },
+        "source": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/mcp-token-cost"
+      }
+    }
+  },
+  "other": {
+    "github": {
+      "public_repositories": 65,
+      "profile_followers": 55,
+      "repositories_marked_fork": 7,
+      "stars_across_repositories": 19,
+      "forks_across_repositories": 7
+    },
+    "pingblip_itch_announcement_views": 49,
+    "registry_addon_pr": {
+      "state": "open",
+      "updated_at": "2026-11-23T11:18:01Z",
+      "html_url": "https://github.com/modelcontextprotocol/registry/pull/1907"
+    }
+  },
+  "searches": {
+    "github_issues_and_prs": {
+      "incoming": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items": []
+      },
+      "outside-histor": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items": []
+      },
+      "outside-tsd": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items": []
+      },
+      "outside-memory": {
+        "total_count": 0,
+        "incomplete_results": false,
+        "items": []
+      },
+      "outside-modelmarket-retry": {
+        "total_count": 1,
+        "incomplete_results": false,
+        "items": [
+          {
+            "title": "radar: 26 веток ждут ответа",
+            "html_url": "https://github.com/Nikolife2016/pulsefeed-x402/issues/3",
+            "created_at": "2026-07-31T08:41:56Z",
+            "updated_at": "2026-11-25T19:22:12Z",
+            "login": "github-actions[bot]"
+          }
+        ]
+      }
+    },
+    "hn_algolia_since_baseline": {
+      "histor": {
+        "raw_hits": 0,
+        "matching_mentions": 0
+      },
+      "modelmarket": {
+        "raw_hits": 0,
+        "matching_mentions": 0
+      },
+      "memory": {
+        "raw_hits": 0,
+        "matching_mentions": 0
+      },
+      "factory": {
+        "raw_hits": 0,
+        "matching_mentions": 0
+      },
+      "pingblip": {
+        "raw_hits": 0,
+        "matching_mentions": 0
+      },
+      "warden": {
+        "raw_hits": 1,
+        "matching_mentions": 0,
+        "false_positive": "https://news.ycombinator.com/item?id=50647004"
+      }
+    }
+  },
+  "public_reads": {
+    "aer": {
+      "url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:36 GMT",
+      "last_modified": "Thu, 26 Nov 2026 05:57:05 GMT",
+      "final_url": "https://agenteconomy.report/s/modelmarket.dev.json",
+      "bytes": 4680,
+      "sha256": "c488f046607a2286f7139b4fd17e0265ee00ee262df048a5942271e880dcfc75"
+    },
+    "agent402": {
+      "url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:36 GMT",
+      "last_modified": null,
+      "final_url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+      "bytes": 263645,
+      "sha256": "efc3177fd040b069fb408d6c83806d2622fbcf8f870253813d5c8bcff0f5f2af"
+    },
+    "roundhouse-agent": {
+      "url": "https://api.roundhouseai.io/v0/agents/0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 401,
+      "date": "Thu, 26 Nov 2026 06:13:40 GMT",
+      "retry_after": null
+    },
+    "roundhouse-tx": {
+      "url": "https://api.roundhouseai.io/v0/entities/0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a/settlements?limit=20",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 401,
+      "date": "Thu, 26 Nov 2026 06:13:43 GMT",
+      "retry_after": null
+    },
+    "roundhouse-merchant": {
+      "url": "https://roundhouseai.io/merchant/0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:38 GMT",
+      "last_modified": null,
+      "final_url": "https://roundhouseai.io/merchant/0x1218ff36c5d2e3b6a565cdb1a8b1accfc606ad0a",
+      "bytes": 620728,
+      "sha256": "6d65b8e2bcc634d736c60dce6196ac473f81f4587f569d6dbba9f4b9cbaf6744"
+    },
+    "atlas": {
+      "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits?path=docs/systems/attested-memory.md&per_page=5",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:37 GMT",
+      "last_modified": null,
+      "final_url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits?path=docs/systems/attested-memory.md&per_page=5",
+      "bytes": 2,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "atlas-pin": {
+      "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits/f11e76a19b49a6edbb1e7829d70ccf5708a9bca2",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:40 GMT",
+      "last_modified": "Wed, 25 Nov 2026 20:53:54 GMT",
+      "final_url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits/f11e76a19b49a6edbb1e7829d70ccf5708a9bca2",
+      "bytes": 201480,
+      "sha256": "2c5e183291ec7ed223b10906d9d464569ba5fe2e6b2b50a3a88f8b21f36c63f8"
+    },
+    "atlas-page": {
+      "url": "https://neoneye.github.io/agent-memory-atlas/systems/attested-memory/",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:38 GMT",
+      "last_modified": "Thu, 26 Nov 2026 01:19:22 GMT",
+      "final_url": "https://neoneye.github.io/agent-memory-atlas/systems/attested-memory/",
+      "bytes": 73669,
+      "sha256": "bd99f31fbc6e2ad0eef52f486a3922fe9361430d795e104fbd452719a2a7957f"
+    },
+    "gdb": {
+      "url": "https://witness.gdbsecurity.com/log?origin=histor.modelmarket.dev%2Flog",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:51 GMT",
+      "last_modified": null,
+      "final_url": "https://witness.gdbsecurity.com/log?origin=histor.modelmarket.dev%2Flog",
+      "bytes": 307758,
+      "sha256": "4edfca977cc8a247b7d66241774fdef9edc2ad308f122c7964afe6ca9181349e"
+    },
+    "gdb-checkpoint": {
+      "url": "https://witness.gdbsecurity.com/b588375bae81fe1143b42f1ec690a1890007318081ccbcb7b7986f580a79347b/checkpoint",
+      "observed_at": "2026-11-26T06:13:36+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:37 GMT",
+      "last_modified": null,
+      "final_url": "https://witness.gdbsecurity.com/b588375bae81fe1143b42f1ec690a1890007318081ccbcb7b7986f580a79347b/checkpoint",
+      "bytes": 338,
+      "sha256": "45f4843e5d849d320b052078f66c6d1a6a9bd7e42a30b3fac23087d552cfd64c"
+    },
+    "credenzo": {
+      "url": "https://credenzo.io/drift/",
+      "observed_at": "2026-11-26T06:13:37+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:40 GMT",
+      "last_modified": null,
+      "final_url": "https://credenzo.io/drift/",
+      "bytes": 8167,
+      "sha256": "ba47f0f24cba6e5ce6c832ac365d6a8f768988de77d4c679c435c49a9dec482e"
+    },
+    "mcp-beat": {
+      "url": "https://mcpbeat.com/",
+      "observed_at": "2026-11-26T06:13:37+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:40 GMT",
+      "last_modified": null,
+      "final_url": "https://mcpbeat.com/",
+      "bytes": 42634,
+      "sha256": "a0fa4f44eb8abd7ec41453b8d7175b9706a3d730c7a7e1ed7250c78d68f488b8"
+    },
+    "mcpcost-argus": {
+      "url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/argus3.json",
+      "observed_at": "2026-11-26T06:13:38+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:41 GMT",
+      "last_modified": null,
+      "final_url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/argus3.json",
+      "bytes": 1630,
+      "sha256": "cff08257593295652edd1605d95d8a3ce87f7e567699c2f7ba7a5693de178b88"
+    },
+    "mcpcost-histor": {
+      "url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+      "observed_at": "2026-11-26T06:13:39+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:40 GMT",
+      "last_modified": "Thu, 26 Nov 2026 03:50:57 GMT",
+      "final_url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/histor.json",
+      "bytes": 1666,
+      "sha256": "7c0d5996920266649a258e5223b7db3be72f0b12924743b955e99b46aba42b6f"
+    },
+    "mcpcost-warden": {
+      "url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/warden.json",
+      "observed_at": "2026-11-26T06:13:40+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:41 GMT",
+      "last_modified": null,
+      "final_url": "https://mcpcost.ulehla.dev/api/s/io.github.alexar76/warden.json",
+      "bytes": 2118,
+      "sha256": "58812a43e59ecb157b9b5f93e904e48e69a9705381e06ed620e221c0c40c3f9d"
+    },
+    "aid-demo": {
+      "url": "https://edge.aid.agentcommunity.org/interop/modelmarket",
+      "observed_at": "2026-11-26T06:13:40+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:43 GMT",
+      "last_modified": null,
+      "final_url": "https://edge.aid.agentcommunity.org/interop/modelmarket",
+      "bytes": 27094,
+      "sha256": "f7040e7852348b6df7988d64190a9021f57974be6e0f39d1dadf418699f57737"
+    },
+    "canari": {
+      "url": "https://pypi.org/pypi/canari-mcp/0.1.7/json",
+      "observed_at": "2026-11-26T06:13:40+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:41 GMT",
+      "last_modified": null,
+      "final_url": "https://pypi.org/pypi/canari-mcp/0.1.7/json",
+      "bytes": 29192,
+      "sha256": "d557b5bbdc440464c0fd2ed7c1d8039794b8e1e664d360fcc1cfca33abb03c5a"
+    },
+    "registry-pr": {
+      "url": "https://api.github.com/repos/modelcontextprotocol/registry/pulls/1907",
+      "observed_at": "2026-11-26T06:13:40+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:42 GMT",
+      "last_modified": "Mon, 23 Nov 2026 11:18:01 GMT",
+      "final_url": "https://api.github.com/repos/modelcontextprotocol/registry/pulls/1907",
+      "bytes": 20236,
+      "sha256": "1f136298b25d4d14b14bc5bf2e5365137491719229554f623af70403ed0468d6"
+    },
+    "warden-fork": {
+      "url": "https://api.github.com/repos/lanbass869-cell/warden",
+      "observed_at": "2026-11-26T06:13:40+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:41 GMT",
+      "last_modified": "Tue, 24 Nov 2026 04:15:19 GMT",
+      "final_url": "https://api.github.com/repos/lanbass869-cell/warden",
+      "bytes": 16311,
+      "sha256": "aa4b35459f5dbcfeb868a23923fad21404c79b00afd25282ce88a7f11c41cd01"
+    },
+    "profile": {
+      "url": "https://api.github.com/users/alexar76",
+      "observed_at": "2026-11-26T06:13:41+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:44 GMT",
+      "last_modified": "Thu, 19 Nov 2026 06:03:47 GMT",
+      "final_url": "https://api.github.com/users/alexar76",
+      "bytes": 1377,
+      "sha256": "a3ea12a0b9d1bafdf50dc54eab7d8ebc0c93df187b95fc52558625d50a7311cb"
+    },
+    "repos": {
+      "url": "https://api.github.com/users/alexar76/repos?per_page=100&sort=full_name",
+      "observed_at": "2026-11-26T06:13:41+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:44 GMT",
+      "last_modified": null,
+      "final_url": "https://api.github.com/users/alexar76/repos?per_page=100&sort=full_name",
+      "bytes": 356721,
+      "sha256": "59afb4ba07a47c4d7257c56a72a76dca4a8573bc8f5f352a5b8759aa01b8372a"
+    },
+    "reports-reloadpi": {
+      "url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1/comments?per_page=30",
+      "observed_at": "2026-11-26T06:13:41+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:43 GMT",
+      "last_modified": null,
+      "final_url": "https://api.github.com/repos/sF1nX/x402-signals/issues/1/comments?per_page=30",
+      "bytes": 29746,
+      "sha256": "c9cea8a7f36f383fb627dd1282c019fd5fe85829f9d94e9f5a50e7cf968268e5"
+    },
+    "pingblip": {
+      "url": "https://browse.games/game/pingblip",
+      "observed_at": "2026-11-26T06:13:41+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:44 GMT",
+      "last_modified": null,
+      "final_url": "https://browse.games/game/pingblip",
+      "bytes": 37897,
+      "sha256": "2ee8c603c47899bbce9aecec01a54853704bd8181e267b9f4e1b4dcd7ba15fdd"
+    },
+    "pingblip-itch": {
+      "url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+      "observed_at": "2026-11-26T06:13:42+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:52 GMT",
+      "last_modified": null,
+      "final_url": "https://itch.io/t/7175888/pingblip-hatch-a-pet-from-real-weather-free-browser-game",
+      "bytes": 15279,
+      "sha256": "c55e731385fce496cc59843dd0b44c96857c9ccdab61b2794eca400a73cbbc78"
+    },
+    "npm-esim": {
+      "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fesim-rails",
+      "observed_at": "2026-11-26T06:13:43+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:44 GMT",
+      "last_modified": "Thu, 26 Nov 2026 06:13:44 GMT",
+      "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fesim-rails",
+      "bytes": 664,
+      "sha256": "7824110e9177c31a919c0dab323b2e7d6ee9d4ec504541cf29a3730e4045d5cc"
+    },
+    "npm-warden": {
+      "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fwarden",
+      "observed_at": "2026-11-26T06:13:43+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:47 GMT",
+      "last_modified": "Thu, 26 Nov 2026 06:13:47 GMT",
+      "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fwarden",
+      "bytes": 672,
+      "sha256": "930414bea1770f72cb762139666e83310f8abc6f0e138839766027bbdc8e9744"
+    },
+    "npm-argus": {
+      "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40alexar76%2Fargus3",
+      "observed_at": "2026-11-26T06:13:43+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:44 GMT",
+      "last_modified": "Thu, 26 Nov 2026 06:13:44 GMT",
+      "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40alexar76%2Fargus3",
+      "bytes": 665,
+      "sha256": "4ea06aea645bfd129e8b16481a22df3b316b2c54d5e4cf314513cfbaf4ad65c9"
+    },
+    "npm-domain": {
+      "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fdomain-operator-kit",
+      "observed_at": "2026-11-26T06:13:44+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:53 GMT",
+      "last_modified": "Thu, 26 Nov 2026 06:13:53 GMT",
+      "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/%40aimarket%2Fdomain-operator-kit",
+      "bytes": 661,
+      "sha256": "f6feed6afbc68265c85d755ca1411127d07a435148c6035beb10a55f5a8f3de3"
+    },
+    "npm-token": {
+      "url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/mcp-token-cost",
+      "observed_at": "2026-11-26T06:13:44+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:45 GMT",
+      "last_modified": "Thu, 26 Nov 2026 06:13:45 GMT",
+      "final_url": "https://api.npmjs.org/downloads/range/2026-11-10:2026-11-25/mcp-token-cost",
+      "bytes": 647,
+      "sha256": "16d400d035e1114fb693cb553189dc742ead9947048f98b7be3c756cca814d30"
+    },
+    "gh-incoming": {
+      "url": "https://api.github.com/search/issues?q=user%3Aalexar76+-author%3Aalexar76+-author%3Aapp%2Fdependabot+created%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=20",
+      "observed_at": "2026-11-26T06:13:44+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:56 GMT",
+      "last_modified": null,
+      "final_url": "https://api.github.com/search/issues?q=user%3Aalexar76+-author%3Aalexar76+-author%3Aapp%2Fdependabot+created%3A%3E%3D2026-11-25T17%3A47%3A37Z&sort=updated&per_page=20",
+      "bytes": 79,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0"
+    },
+    "gh-outside-histor": {
+      "url": "https://api.github.com/search/issues?q=%22histor.modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=20",
+      "observed_at": "2026-11-26T06:13:44+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:47 GMT",
+      "last_modified": null,
+      "final_url": "https://api.github.com/search/issues?q=%22histor.modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=20",
+      "bytes": 79,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0"
+    },
+    "gh-outside-tsd": {
+      "url": "https://api.github.com/search/issues?q=%22mcp-tool-set-digest%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=20",
+      "observed_at": "2026-11-26T06:13:45+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:45 GMT",
+      "last_modified": null,
+      "final_url": "https://api.github.com/search/issues?q=%22mcp-tool-set-digest%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=20",
+      "bytes": 79,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0"
+    },
+    "gh-outside-modelmarket": {
+      "url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=20",
+      "observed_at": "2026-11-26T06:13:45+00:00",
+      "error": "Remote end closed connection without response"
+    },
+    "gh-outside-memory": {
+      "url": "https://api.github.com/search/issues?q=%22attestedmemory.net%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=20",
+      "observed_at": "2026-11-26T06:13:45+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:47 GMT",
+      "last_modified": null,
+      "final_url": "https://api.github.com/search/issues?q=%22attestedmemory.net%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=20",
+      "bytes": 79,
+      "sha256": "c9938edecb99d754b2d039ac9eec320a94c769b6a6417921e2dcbef9e2fe01a0"
+    },
+    "hn-histor": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=histor.modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "observed_at": "2026-11-26T06:13:47+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:49 GMT",
+      "last_modified": null,
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=histor.modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "bytes": 458,
+      "sha256": "229e3d445dbb12024ee26b577179d90c50e202daa109228786d09b61907f2225"
+    },
+    "hn-modelmarket": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "observed_at": "2026-11-26T06:13:47+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:48 GMT",
+      "last_modified": null,
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=modelmarket.dev&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "bytes": 439,
+      "sha256": "dfc07ee6e68e192701ee180db47a68a6be70685ab7bc6b8c74d3c52d1eba04f0"
+    },
+    "hn-memory": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "observed_at": "2026-11-26T06:13:47+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:50 GMT",
+      "last_modified": null,
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=attestedmemory.net&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "bytes": 450,
+      "sha256": "aa6eb12f1b9e1dcb44f019f2e41868006f952fe3785e3a66b9ad63adcaf1f9bf"
+    },
+    "hn-factory": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=magic-ai-factory.com&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "observed_at": "2026-11-26T06:13:48+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:50 GMT",
+      "last_modified": null,
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=magic-ai-factory.com&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "bytes": 464,
+      "sha256": "60695b3971eba54d6cc31ebfd75c99586c1a95e4bfcd2bae052d0eaca01c7c72"
+    },
+    "hn-pingblip": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "observed_at": "2026-11-26T06:13:49+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:53 GMT",
+      "last_modified": null,
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=pingblip&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "bytes": 437,
+      "sha256": "e7805ff6b12612b08af25958e20a115a3eb3744fdfe5a45c454b01bfda59bcb5"
+    },
+    "hn-warden": {
+      "url": "https://hn.algolia.com/api/v1/search_by_date?query=%40aimarket%2Fwarden&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "observed_at": "2026-11-26T06:13:50+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:13:53 GMT",
+      "last_modified": null,
+      "final_url": "https://hn.algolia.com/api/v1/search_by_date?query=%40aimarket%2Fwarden&numericFilters=created_at_i%3E1795628857&hitsPerPage=10",
+      "bytes": 2105,
+      "sha256": "9a43f3d8a0cb2d641a1b354cbb35356f8ee1df5cc9b6409a259f7fdd721870ef"
+    },
+    "atlas-path-history": {
+      "url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits?path=content/systems/attested-memory.md&per_page=4",
+      "observed_at": "2026-11-26T06:15:39+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:15:42 GMT",
+      "final_url": "https://api.github.com/repos/neoneye/agent-memory-atlas/commits?path=content/systems/attested-memory.md&per_page=4",
+      "bytes": 22686,
+      "sha256": "9738424a58ba146192ed457fddc8bff4b1fef076286d3b9649c07c07ad90a267"
+    },
+    "gh-outside-modelmarket-retry": {
+      "url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=10",
+      "observed_at": "2026-11-26T06:15:39+00:00",
+      "http": 200,
+      "date": "Thu, 26 Nov 2026 06:15:43 GMT",
+      "final_url": "https://api.github.com/search/issues?q=%22modelmarket.dev%22+-user%3Aalexar76+updated%3A%3E%3D2026-11-25&sort=updated&per_page=10",
+      "bytes": 8148,
+      "sha256": "12ac0ce2cda58922449aee6d970dd1312c83058e8ad19e6d2f31aa409e0b5f8e"
+    },
+    "base-roundhouse-1": {
+      "url": "https://base.blockscout.com/api/v2/transactions/0xc8248a8bfb81053f5f9b6a282c20fdb5fb0e7988b1937e87440c17c88f9d463c/token-transfers",
+      "observed_at": "2026-11-26T06:15:39+00:00",
+      "http": 403,
+      "date": "Thu, 26 Nov 2026 06:15:40 GMT"
+    },
+    "base-roundhouse-1-tx": {
+      "url": "https://base.blockscout.com/api/v2/transactions/0xc8248a8bfb81053f5f9b6a282c20fdb5fb0e7988b1937e87440c17c88f9d463c",
+      "observed_at": "2026-11-26T06:15:39+00:00",
+      "http": 403,
+      "date": "Thu, 26 Nov 2026 06:15:46 GMT"
+    },
+    "base-roundhouse-2": {
+      "url": "https://base.blockscout.com/api/v2/transactions/0xdafa69090c40ae6c9b4aa26fa85a3e96e0fd4f733223ac395efd437b049901b9/token-transfers",
+      "observed_at": "2026-11-26T06:15:39+00:00",
+      "http": 403,
+      "date": "Thu, 26 Nov 2026 06:15:41 GMT"
+    },
+    "base-roundhouse-2-tx": {
+      "url": "https://base.blockscout.com/api/v2/transactions/0xdafa69090c40ae6c9b4aa26fa85a3e96e0fd4f733223ac395efd437b049901b9",
+      "observed_at": "2026-11-26T06:15:39+00:00",
+      "http": 403,
+      "date": "Thu, 26 Nov 2026 06:15:41 GMT"
+    }
+  }
+}

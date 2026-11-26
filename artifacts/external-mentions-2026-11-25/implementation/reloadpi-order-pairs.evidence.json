@@ -1,0 +1,172 @@
+{
+  "checked_at": "2026-11-25T19:57:18+00:00",
+  "chain_id": 8453,
+  "rpc_source": "https://mainnet.base.org",
+  "native_usdc_contract": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+  "observed_finalized_block": 62226430,
+  "association_source": "https://github.com/sF1nX/x402-signals/issues/1",
+  "association_source_updated_at": "2026-11-25T18:53:08Z",
+  "pairs_verified_on_base": 3,
+  "total_usdc_refunded": "4.83",
+  "pairs": [
+    {
+      "status_url": "https://api.reloadpi.com/api/catalog/orders?txHash=0xa3beac50d2b6feab48b4610bf001e487ce574ac09c176fbcebfbd644d9b3c4ce",
+      "order_http": 200,
+      "order_data": {
+        "found": true,
+        "productType": "topup",
+        "status": "FULFILLMENT_FAILED",
+        "fulfillment_deadline": "2026-05-10T23:17:55.365Z",
+        "refund_deadline": "2026-05-11T23:13:18.908Z"
+      },
+      "order_response_fields": [
+        "found",
+        "productType",
+        "offerId",
+        "status",
+        "provider_status",
+        "fulfillment_deadline",
+        "refund_deadline",
+        "refund_eligible",
+        "poll_again",
+        "recovery"
+      ],
+      "payment": {
+        "hash": "0xa3beac50d2b6feab48b4610bf001e487ce574ac09c176fbcebfbd644d9b3c4ce",
+        "status": "0x1",
+        "block": 45832715,
+        "canonical_block": true,
+        "block_utc": "2026-05-10T23:12:57+00:00",
+        "usdc": [
+          {
+            "from": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+            "to": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+            "amount_atomic": 1610000
+          }
+        ]
+      },
+      "refund": {
+        "hash": "0x7539e7a871c755101c76502d1c43e172977dcd4ba1a8e0afbee886c71a9c6142",
+        "status": "0x1",
+        "block": 45833528,
+        "canonical_block": true,
+        "block_utc": "2026-05-10T23:40:03+00:00",
+        "usdc": [
+          {
+            "from": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+            "to": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+            "amount_atomic": 1610000
+          }
+        ]
+      }
+    },
+    {
+      "status_url": "https://api.reloadpi.com/api/catalog/orders?txHash=0x997d2dc284cac22fa2cd83ad20fbd6fdf88080277749e28be6a3ef530cece172",
+      "order_http": 200,
+      "order_data": {
+        "found": true,
+        "productType": "topup",
+        "status": "FULFILLMENT_FAILED",
+        "fulfillment_deadline": "2026-05-11T00:10:33.862Z",
+        "refund_deadline": "2026-05-12T00:05:46.537Z"
+      },
+      "order_response_fields": [
+        "found",
+        "productType",
+        "offerId",
+        "status",
+        "provider_status",
+        "fulfillment_deadline",
+        "refund_deadline",
+        "refund_eligible",
+        "poll_again",
+        "recovery"
+      ],
+      "payment": {
+        "hash": "0x997d2dc284cac22fa2cd83ad20fbd6fdf88080277749e28be6a3ef530cece172",
+        "status": "0x1",
+        "block": 45834294,
+        "canonical_block": true,
+        "block_utc": "2026-05-11T00:05:35+00:00",
+        "usdc": [
+          {
+            "from": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+            "to": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+            "amount_atomic": 1610000
+          }
+        ]
+      },
+      "refund": {
+        "hash": "0x7658ce9050d48e36d6228778c6f0e36f8776eaec7770a237b236dbb370e886c4",
+        "status": "0x1",
+        "block": 45834728,
+        "canonical_block": true,
+        "block_utc": "2026-05-11T00:20:03+00:00",
+        "usdc": [
+          {
+            "from": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+            "to": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+            "amount_atomic": 1610000
+          }
+        ]
+      }
+    },
+    {
+      "status_url": "https://api.reloadpi.com/api/catalog/orders?txHash=0xacd55b4d8be6ce915b82a026fb07359c2d31733fa148fef341156a83ca4ebd86",
+      "order_http": 200,
+      "order_data": {
+        "found": true,
+        "productType": "topup",
+        "status": "FULFILLMENT_FAILED",
+        "fulfillment_deadline": "2026-05-11T00:21:23.685Z",
+        "refund_deadline": "2026-05-12T00:16:46.930Z"
+      },
+      "order_response_fields": [
+        "found",
+        "productType",
+        "offerId",
+        "status",
+        "provider_status",
+        "fulfillment_deadline",
+        "refund_deadline",
+        "refund_eligible",
+        "poll_again",
+        "recovery"
+      ],
+      "payment": {
+        "hash": "0xacd55b4d8be6ce915b82a026fb07359c2d31733fa148fef341156a83ca4ebd86",
+        "status": "0x1",
+        "block": 45834619,
+        "canonical_block": true,
+        "block_utc": "2026-05-11T00:16:25+00:00",
+        "usdc": [
+          {
+            "from": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+            "to": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+            "amount_atomic": 1610000
+          }
+        ]
+      },
+      "refund": {
+        "hash": "0x0b02987edb9172856466d9431cdcc158a081c0f512c27f2721bb6a1f8e963c11",
+        "status": "0x1",
+        "block": 45834878,
+        "canonical_block": true,
+        "block_utc": "2026-05-11T00:25:03+00:00",
+        "usdc": [
+          {
+            "from": "0x8a598a28a435fe44d31854251b1c88d0781ea822",
+            "to": "0xc4fad660624fa3b61df809322087ed9c9595fd0a",
+            "amount_atomic": 1610000
+          }
+        ]
+      }
+    }
+  ],
+  "historical_lookup": {
+    "payment_hash": "0xacffa5e9b1e208097b57cdb4647a9b4a9295a793530dc9ba14e506d99c3b3ab1",
+    "http": 200,
+    "found": false,
+    "operator_reported_outcome": "Separate test under the original policy with no refund"
+  }
+}

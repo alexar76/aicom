@@ -1,0 +1,84 @@
+{
+  "commit": "0bb7953434171453e57fd9aa2ca0cb6d4c58766a",
+  "deployment": {
+    "method": "Direct container rollout on the Attested production host",
+    "deployed_at": "2026-11-25T19:44:25+00:00",
+    "github_write": false,
+    "services": {
+      "provenance-ledger": "attested-atlas-followup:provenance-ledger-0bb795343",
+      "memory-market": "attested-atlas-followup:memory-market-0bb795343",
+      "truth-layer": "attested-atlas-followup:truth-layer-0bb795343",
+      "personal-memory": "attested-atlas-followup:personal-memory-0bb795343",
+      "team-memory": "attested-atlas-followup:team-memory-0bb795343"
+    },
+    "backup": {
+      "directory": "/root/attested-atlas-followup-0bb795343-oCxywqxU",
+      "database_dump_bytes": 50368
+    },
+    "reconcile_timer": {
+      "state": "active",
+      "enablement": "enabled"
+    },
+    "lineage_before_deploy": {
+      "attested": 8,
+      "matching": 8,
+      "unreachable": 0
+    },
+    "lineage_after_deploy": {
+      "attested": 8,
+      "matching": 8,
+      "unreachable": 0
+    }
+  },
+  "production_smoke": {
+    "verified_at": "2026-11-25T19:45:58+00:00",
+    "evidence_grantee_http": [
+      404,
+      200,
+      404
+    ],
+    "owner_http_after_revoke": 200,
+    "hub_capability_http": [
+      404,
+      200,
+      404
+    ],
+    "lineage_receipts": 2,
+    "events": [
+      "created",
+      "verified"
+    ],
+    "full_chain_verified": true,
+    "verified_head_export_round_trip": true,
+    "grant_history": [
+      "granted",
+      "revoked",
+      "granted",
+      "revoked"
+    ],
+    "market_check": {
+      "attested": 9,
+      "matching": 9,
+      "unreachable": 0
+    },
+    "mismatches": 0,
+    "private_reference_fields_omitted_in_new_receipts": true,
+    "record_type": "synthetic private memory"
+  },
+  "checkpoint": {
+    "round_trip_verified": true,
+    "independent_checkpoint_configured_by_this_rollout": false
+  },
+  "public_openapi": [
+    {
+      "url": "https://attestedmemory.net/memory/openapi.json",
+      "http_status": 200,
+      "evidence_pack_path": "/api/memories/{memory_id}/evidence-pack"
+    },
+    {
+      "url": "https://attestedmemory.net/teams/openapi.json",
+      "http_status": 200,
+      "evidence_pack_path": "/api/team-memories/{memory_id}/evidence-pack"
+    }
+  ]
+}
