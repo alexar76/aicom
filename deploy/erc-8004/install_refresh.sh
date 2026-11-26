@@ -14,7 +14,7 @@ set -euo pipefail
 SRC="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$SRC/../.." && pwd)"
 HOST=${1:-admin-vps}
-WARDEN_VERSION=0.23.0  # keep equal to WARDEN_VERSION in feedback.py
+WARDEN_VERSION=0.39.2  # keep equal to WARDEN_VERSION in feedback.py
 ssh "$HOST" 'mkdir -p /opt/warden-feedback/node /var/lib/warden-feedback /var/www/warden-feedback /etc/warden-feedback && chmod 700 /etc/warden-feedback'
 scp -q "$SRC/feedback.py" "$SRC/register.py" "$SRC/build.py" "$SRC/warden_scan.mjs" \
        "$SRC/warden_feedback_refresh.sh" "$SRC/warden_feedback_watchdog.py" "$SRC/requirements.lock" \

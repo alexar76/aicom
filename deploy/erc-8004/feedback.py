@@ -14,6 +14,23 @@ wallet (the operator, owner of agent 96684); the contract refuses feedback on ou
 Agents with a blocking finding are NOT published: WARDEN has false positives, and a public
 negative mark on someone else's agent is the owner's call, made per agent.
 
+On chain the feedback is tagged `compliance` / `warden-scan` (TAG1 / TAG2 below). Until 2026-11-26
+it was `warden-scan` / `ruleset-v<N>`. ERC-8004 leaves tag1 free-form, and indexers that compute a
+score average only the tag1 values they know hold a 0-100 rating (QuickNode's explorer, reputation
+formula v1.4, lists `compliance` among them and showed `warden-scan` as "not in score"). The value
+did not change: WARDEN's 0-100 score of the served tool definitions against its ruleset, which is
+what "compliance" says. The ruleset stays in the report file the on-chain hash commits to. A live
+feedback under the old tags is re-issued (revoke + give) by decide(), within the run's budget.
+
+A feedback stays on chain as given for as long as its statement holds. Every run re-scans every
+agent with the release named in WARDEN_VERSION; where the endpoint serves the same definitions and
+the score is the same, nothing is sent and the agent is listed in confirmed.json next to the reports
+(what was re-checked, when, with which release). A feedback is revoked and given again only when the
+definitions changed, the score changed, or the report format or tags did. Until 2026-11-26 a new
+release re-issued every live feedback. Each revoke leaves a revoked row on the rated agent, and
+indexers count those against it (QuickNode's explorer: reliability = 1 - revoked / total), so our
+housekeeping was lowering other agents' scores.
+
 Reports land in deploy/erc-8004/feedback/warden-<agentId>.json and are served from
 https://modelmarket.dev/.well-known/erc-8004/feedback/ (copy them to /var/www/erc-8004/feedback/
 on the apex host BEFORE sending: the on-chain hash commits to those bytes).
@@ -68,12 +85,15 @@ OUT = os.environ.get("WARDEN_FB_REPORTS", os.path.join(STATE, "feedback"))
 LOG = os.path.join(STATE, "feedback.log")
 PENDING = os.path.join(STATE, "feedback-pending.json")
 CLIENT = OPERATOR  # set from the key file in main()
-#: The published release every scan must come from; tag2 on chain names its ruleset. Moving to a
-#: new release re-issues every live feedback (revoke + give) on the next run: see decide().
-WARDEN_VERSION = "0.23.0"
-RULESET_VERSION = "17"
-WARDEN_INTEGRITY = "sha512-xP9OV7bNhinFqAej0xu4IuAGyPVVsoQ79mRpaTB9ffnMxbCs/qbw1+/UXLAR9NykV4jDhT6fvc+VMHszsvgnWA=="
+#: The published release every scan must come from. Moving to a new release re-scans every agent
+#: and re-issues only the feedback whose score it changes: see decide().
+WARDEN_VERSION = "0.39.2"
+RULESET_VERSION = "24"
+WARDEN_INTEGRITY = "sha512-lnCGPlssvJVYCxVRx+FRiCyQL4E4I/u4wdLhHJt/g6sIQexgho19a5327GMpsEvV+AUucXyin0S+bzk1tURCpA=="
 REPORT_TYPE = "aimarket.warden-scan/v2"
+#: tag1 is the dimension the 0-100 value is a rating on; tag2 says whose rating it is.
+TAG1 = "compliance"
+TAG2 = "warden-scan"
 SELECTOR = keccak(text="giveFeedback(uint256,int128,uint8,string,string,string,string,bytes32)")[:4]
 
 
@@ -91,8 +111,8 @@ def report_for(row: dict, tools: list, scan: dict, scanned_at: str) -> dict:
         "createdAt": scanned_at,
         "value": int(row["score"]),
         "valueDecimals": 0,
-        "tag1": "warden-scan",
-        "tag2": f"ruleset-v{RULESET_VERSION}",
+        "tag1": TAG1,
+        "tag2": TAG2,
         "endpoint": row["url"],
         "type": REPORT_TYPE,
         "issuer": {"name": "WARDEN", "agentRegistry": f"eip155:{CHAIN_ID}:{IDENTITY}",
@@ -114,7 +134,7 @@ def report_for(row: dict, tools: list, scan: dict, scanned_at: str) -> dict:
 
 def calldata(agent_id: int, value: int, endpoint: str, uri: str, digest: bytes) -> str:
     body = encode(["uint256", "int128", "uint8", "string", "string", "string", "string", "bytes32"],
-                  [agent_id, value, 0, "warden-scan", f"ruleset-v{RULESET_VERSION}", endpoint, uri, digest])
+                  [agent_id, value, 0, TAG1, TAG2, endpoint, uri, digest])
     return "0x" + (SELECTOR + body).hex()
 
 
@@ -205,6 +225,7 @@ def served_matches(uri: str, raw: bytes) -> bool:
 def decide(scan: dict, tools_by_id: dict, scanned_at: str, excluded: set) -> tuple[list, list, list]:
     """(actions, held, unreachable). An action is ('give', row, path) or ('revoke', row, reason)."""
     actions, held, unreachable = [], [], []
+    CONFIRMED.clear()
     seen = published()
     stamp = scanned_at[:10].replace("-", "")
     for r in scan["rows"]:
@@ -228,21 +249,83 @@ def decide(scan: dict, tools_by_id: dict, scanned_at: str, excluded: set) -> tup
         if live:
             old = json.load(open(os.path.join(OUT, os.path.basename(prev["uri"]))))
             same_tools = old["result"]["toolsSha256"] == rep["result"]["toolsSha256"]
-            same_scanner = (old.get("type") == rep["type"]
-                            and old.get("scanner", {}).get("package") == rep["scanner"]["package"])
-            if same_tools and same_scanner:
-                continue                   # same definitions, same scanner: statement still true
-            actions.append(("revoke", r, "tool definitions changed" if not same_tools else
-                            f"rescanned with @aimarket/warden {WARDEN_VERSION} (ruleset v{RULESET_VERSION})"))
+            same_type = old.get("type") == rep["type"]
+            # A v2 report states its on-chain tags and value; one given under other tags, or whose
+            # score this release changes, is re-issued so the live record says what the file says.
+            same_tags = (old.get("tag1"), old.get("tag2")) == (TAG1, TAG2)
+            same_value = old.get("value") == rep["value"]
+            if same_tools and same_type and same_tags and same_value:
+                # Same definitions, same score: the statement on chain still holds, whichever
+                # release made it. Nothing is sent; the re-check is recorded off chain.
+                CONFIRMED.append({"agentId": int(aid), "report": prev["uri"], "value": rep["value"],
+                                  "toolsSha256": rep["result"]["toolsSha256"]})
+                continue
+            if not same_tools:
+                reason = "tool definitions changed"
+            elif not same_type:
+                reason = f"rescanned with @aimarket/warden {WARDEN_VERSION} (ruleset v{RULESET_VERSION})"
+            elif not same_tags:
+                reason = f"moved to the tags {TAG1} / {TAG2}"
+            else:
+                reason = (f"score changed from {old.get('value')} to {rep['value']} under "
+                          f"@aimarket/warden {WARDEN_VERSION}")
+            actions.append(("revoke", r, reason))
             name = f"warden-{aid}-{stamp}.json"
         else:
             name = f"warden-{aid}.json" if not os.path.exists(os.path.join(OUT, f"warden-{aid}.json")) \
                 else f"warden-{aid}-{stamp}.json"
-        path = os.path.join(OUT, name)
+        path = free_report_path(name, rep)
         if not os.path.exists(path):
             open(path, "wb").write(json.dumps(rep, indent=1, ensure_ascii=False).encode() + b"\n")
         actions.append(("give", r, path))
     return actions, held, unreachable
+
+
+#: Live feedback the last decide() left in place: re-checked, statement unchanged, nothing sent.
+CONFIRMED: list = []
+CONFIRMED_TYPE = "aimarket.warden-scan-confirmations/v1"
+
+
+def write_confirmed(scan: dict, scanned_at: str) -> str:
+    """Publish what this run re-checked without a transaction, next to the reports it refers to."""
+    path = os.path.join(OUT, "confirmed.json")
+    doc = {
+        "type": CONFIRMED_TYPE,
+        "checkedAt": scanned_at,
+        "scanner": {"package": f"@aimarket/warden@{scan['warden']}", "ruleset": scan["ruleset"]},
+        "meaning": ("Each entry is a feedback WARDEN gave earlier and left unchanged on chain: at checkedAt "
+                    "the agent's MCP endpoint served the same tool definitions (toolsSha256) and this release "
+                    "gave the same score with no blocking finding. The report holds the original statement."),
+        "confirmed": sorted(CONFIRMED, key=lambda e: e["agentId"]),
+    }
+    tmp = path + ".tmp"
+    with open(tmp, "wb") as f:
+        f.write(json.dumps(doc, indent=1, ensure_ascii=False).encode() + b"\n")
+    os.replace(tmp, path)
+    return path
+
+
+def _says_the_same(a: dict, b: dict) -> bool:
+    """Two reports make the same on-chain statement (a retry may reuse the file already served)."""
+    key = lambda d: (d.get("tag1"), d.get("tag2"), d.get("value"), d.get("type"),  # noqa: E731
+                     d.get("scanner", {}).get("package"), d.get("result", {}).get("toolsSha256"))
+    return key(a) == key(b)
+
+
+def free_report_path(name: str, rep: dict) -> str:
+    """Where this report goes. A served report is never rewritten: the hash on chain commits to its
+    bytes. A second, different report for the same agent on the same day takes the next free name."""
+    stem, n = name[:-len(".json")], 1
+    while True:
+        path = os.path.join(OUT, name if n == 1 else f"{stem}-{n}.json")
+        if not os.path.exists(path):
+            return path
+        try:
+            if _says_the_same(json.load(open(path)), rep):
+                return path
+        except ValueError:
+            pass
+        n += 1
 
 
 def send_one(acct, data: str) -> tuple[str, dict]:
@@ -311,8 +394,8 @@ def main() -> None:
     ap.add_argument("--send", action="store_true")
     ap.add_argument("--max-tx", type=int, default=MAX_TX_PER_RUN,
                     help=f"transaction budget for this run (default {MAX_TX_PER_RUN}); extras defer to the "
-                         "next run. Raise only after reading the dry run, e.g. once when a new WARDEN "
-                         "release re-issues every feedback")
+                         "next run. Raise only after reading the dry run, e.g. once when a change of "
+                         "tags or report format re-issues every feedback")
     ap.add_argument("--revoke-all", action="store_true",
                     help="revoke every live feedback this key's wallet gave (moving to another wallet)")
     args = ap.parse_args()
@@ -342,6 +425,8 @@ def main() -> None:
     CLIENT = acct.address
     scan = {**scan, "rows": [r for r in scan["rows"] if str(r.get("owner") or "").lower() not in OUR_OWNERS]}
     actions, held, unreachable = decide(scan, tools_by_id, scanned_at, excluded)
+    write_confirmed(scan, scanned_at)
+    print(f"confirmed without a transaction: {len(CONFIRMED)}")
     deferred = 0
     actions, deferred = take_tx_budget(actions, args.max_tx)
     print(f"actions: {[(a, r['agent_id']) for a, r, _ in actions] or 'none'}")

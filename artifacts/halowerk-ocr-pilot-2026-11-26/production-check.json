@@ -1,0 +1,55 @@
+{
+  "checked_at_utc": "2026-11-26T18:53:31.330391+00:00",
+  "origin": "https://modelmarket.dev",
+  "checks": {
+    "health": 200,
+    "directory": 200,
+    "search": 200,
+    "mcp_market_search": 200,
+    "homepage": 200,
+    "unsigned_pdf_quote": 402
+  },
+  "card": {
+    "id": "halowerk-ocr",
+    "name": "HALOWERK OCR",
+    "description": "Returns the text of an image, scan or screenshot in reading order, typed blocks with their box on the page, tables as a matrix plus Markdown, and every QR code and barcode with its decoded content. Runs local OCR (Tesseract); the 402 quotes the exact price from the file.",
+    "documentation_url": "https://doc.halowerk.com/llms.txt",
+    "endpoint": "/ai-market/v2/external-services/halowerk-ocr/ocr",
+    "provider_endpoint": "https://doc.halowerk.com/ocr",
+    "method": "POST",
+    "payment_networks": [
+      "base"
+    ],
+    "payment_protocol": "x402",
+    "asset": "USDC",
+    "payment_recipient": "provider",
+    "published_price_usd": 0.006,
+    "price_basis": "one_page_pdf",
+    "price_source": "payment-required",
+    "hub_invoke": false,
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "image_base64": {
+          "type": "string",
+          "description": "One-page PDF encoded as base64."
+        },
+        "mime": {
+          "type": "string",
+          "const": "application/pdf"
+        }
+      },
+      "required": [
+        "image_base64",
+        "mime"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "quote": {
+    "amount_atomic": "6000",
+    "network": "eip155:8453",
+    "payee": "0x2880EdfFF13100677Bf97A3CBdF3Bc34771C4E5E"
+  },
+  "payment_submitted_by_this_check": false
+}

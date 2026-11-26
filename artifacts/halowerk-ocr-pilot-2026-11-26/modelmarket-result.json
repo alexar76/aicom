@@ -1,0 +1,21 @@
+{
+  "via": "http://127.0.0.1:19183/ai-market/v2/external-services/halowerk-ocr/ocr",
+  "http_status": 200,
+  "quote_amount_atomic": "6000",
+  "receipt_success": true,
+  "receipt_network": "eip155:8453",
+  "provider_request_id": "87869e4f-440c-4031-bb92-c88400ee02d5",
+  "tracked": true,
+  "transaction": "0x741890b43bfab3e9367264417951ae72bafc29de603a2612e09d8d596afc24df",
+  "receipt_transaction": "0x741890b43bfab3e9367264417951ae72bafc29de603a2612e09d8d596afc24df",
+  "balance_atomic_before": "6773115",
+  "balance_atomic_after": "6767115",
+  "document_matches": true,
+  "pages_processed": [
+    1
+  ],
+  "ocr_text": "MODEL MARKET OCR TEST\nSynthetic document for the HALOWERK pilot.\nReference: MM-TEST-2046\nSample code: AOB7\nControl total: 123.45 EUR",
+  "block_confidence": [
+    0.94
+  ]
+}

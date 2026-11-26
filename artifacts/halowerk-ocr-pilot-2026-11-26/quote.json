@@ -1,0 +1,869 @@
+{
+  "http_status": 402,
+  "http_date": "Thu, 26 Nov 2026 18:30:57 GMT",
+  "payment_required": {
+    "x402Version": 2,
+    "error": "payment_required",
+    "extensions": {
+      "bazaar": {
+        "info": {
+          "input": {
+            "type": "http",
+            "method": "POST",
+            "bodyType": "json",
+            "body": {
+              "url": "https://example.com/scan.png",
+              "mime": "image/png"
+            }
+          },
+          "output": {
+            "type": "json",
+            "example": {
+              "extracted_at": "2026-11-19T17:18:03.886Z",
+              "text": "Rechnung Nr. 2026-1117\n\nDatum: 17.11.202"
+            }
+          }
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "http"
+                },
+                "method": {
+                  "const": "POST"
+                },
+                "bodyType": {
+                  "const": "json"
+                }
+              },
+              "required": [
+                "type",
+                "method",
+                "bodyType"
+              ],
+              "additionalProperties": true
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "example": {}
+              },
+              "required": [
+                "type"
+              ]
+            }
+          },
+          "required": [
+            "input"
+          ]
+        }
+      }
+    },
+    "resource": {
+      "url": "https://doc.halowerk.com/ocr",
+      "description": "Returns the text of an image, scan or screenshot in reading order, typed blocks with their box on the page, tables as a matrix plus Markdown, and every QR code and barcode with its decoded content. Runs local OCR (Tesseract); the 402 quotes the exact price from the file.",
+      "mimeType": "application/json",
+      "serviceName": "Document Extraction Hub",
+      "iconUrl": "https://doc.halowerk.com/favicon.svg",
+      "tags": [
+        "ocr",
+        "image-to-text",
+        "barcode",
+        "qr-code",
+        "tesseract"
+      ]
+    },
+    "summary": "Read a picture, a scan or a screenshot: full text in reading order, typed blocks with their box on the page, tables as a matrix plus markdown, and every QR code and barcode with its decoded content.",
+    "inputSchema": {
+      "$ref": "https://doc.halowerk.com/ocr/schema#/inputSchema"
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "6000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x2880EdfFF13100677Bf97A3CBdF3Bc34771C4E5E",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "asset": "USDC",
+          "network_name": "Base Mainnet",
+          "name": "USD Coin",
+          "version": "2",
+          "assetTransferMethod": "eip3009",
+          "eip712Domain": {
+            "name": "USD Coin",
+            "version": "2",
+            "chainId": 8453,
+            "verifyingContract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+          }
+        }
+      }
+    ],
+    "quote": {
+      "file_sha256": "4123b58c920baff11e27c661c8eedbfb86057e654f4fb6e9e4777d3288f44a88",
+      "media_type": "application/pdf",
+      "bytes": 34703,
+      "pages_total": 1,
+      "pages_priced": [
+        1
+      ],
+      "unit_price_usdc": {
+        "first_page": "0.006",
+        "further_page": "0.002"
+      },
+      "line_items": [
+        {
+          "kind": "first_page",
+          "pages": 1,
+          "unit_usdc": "0.006",
+          "amount_usdc": 0.006
+        },
+        {
+          "kind": "further_page",
+          "pages": 0,
+          "unit_usdc": "0.002",
+          "amount_usdc": 0
+        }
+      ],
+      "total_usdc": "0.006000",
+      "note": "A multi page PDF pays 0.006 USDC for the first page and 0.002 USDC for every further page, at most 50 pages per call. Narrow \"pages\" to pay less."
+    },
+    "capability_request": {
+      "url": "https://bedarf.halowerk.com/capabilities/request",
+      "method": "POST",
+      "cost": "free",
+      "description": "Missing a capability, or does the scope not fit? Report the need here - no payment required. Similar reports are bundled; the response returns an id you can check back on.",
+      "body_example": {
+        "requested_capability": "short label",
+        "description": "what exactly is needed",
+        "max_price": 0.01
+      }
+    },
+    "payment_header": "PAYMENT-SIGNATURE",
+    "instructions": "Sign the accepted terms with an x402 client and repeat the identical request with the payment header.",
+    "docs": "https://doc.halowerk.com/llms.txt",
+    "pricing": "https://doc.halowerk.com/pricing"
+  },
+  "body": {
+    "x402Version": 2,
+    "error": "payment_required",
+    "extensions": {
+      "bazaar": {
+        "info": {
+          "input": {
+            "type": "http",
+            "method": "POST",
+            "bodyType": "json",
+            "body": {
+              "url": "https://medien.halowerk.com/beispiel/scan.png",
+              "mime": "image/png"
+            }
+          },
+          "output": {
+            "type": "json",
+            "example": {
+              "document": {
+                "sha256": "eaaec2859957627db3381a5b77e5bb1aa567aec03031afa7286e163759f003b8",
+                "media_type": "image/png",
+                "source": "url",
+                "source_url": "https://medien.halowerk.com/beispiel/scan.png",
+                "bytes": 21936,
+                "pages_total": 1,
+                "pages_processed": [
+                  1
+                ]
+              },
+              "ocr": {
+                "engine": "tesseract",
+                "version": "ocr-1.0.0/1.0.0",
+                "languages": [
+                  "deu",
+                  "eng"
+                ],
+                "want": [
+                  "text",
+                  "tables",
+                  "codes",
+                  "layout"
+                ],
+                "render_dpi": null,
+                "coordinate_system": "pixels of the page that was read, origin top left, x0/y0 upper left corner of the box"
+              },
+              "pages": [
+                {
+                  "page": 1,
+                  "width": 1400,
+                  "height": 620,
+                  "word_count": 22,
+                  "confidence": 0.957,
+                  "blocks": 2,
+                  "tables": 0,
+                  "codes": 0,
+                  "text": "Rechnung Nr. 2026-1117\n\nDatum: 17.11.2026\nLeistung: Wartung der Heizungsanlage\nBetrag: 249,00 EUR\nZahlbar innerhalb von 14 Tagen.\nVielen Dank f\u00fcr Ihren Auftrag."
+                }
+              ],
+              "confidence": {
+                "pages_mean": 0.957,
+                "blocks_below_threshold": 0,
+                "threshold": 0.5,
+                "note": "Every block carries the confidence the engine reported. Blocks below 0.5 are listed in \"warnings\" and flagged with \"low_confidence\"; their text is passed on as it was read."
+              },
+              "policy": {
+                "codes_are_data": "URLs found inside a code are reported and never opened. Check them before following them.",
+                "url_risk_endpoint": "/v1/url/risk",
+                "no_biometrics": "No face recognition, no matching of people, no reading of identity documents beyond the plain text they carry."
+              },
+              "warnings": [],
+              "extracted_at": "2026-11-19T17:18:03.886Z",
+              "text": "Rechnung Nr. 2026-1117\n\nDatum: 17.11.2026\nLeistung: Wartung der Heizungsanlage\nBetrag: 249,00 EUR\nZahlbar innerhalb von 14 Tagen.\nVielen Dank f\u00fcr Ihren Auftrag.",
+              "blocks": [
+                {
+                  "page": 1,
+                  "type": "ueberschrift",
+                  "text": "Rechnung Nr. 2026-1117",
+                  "box": {
+                    "x0": 75,
+                    "y0": 60,
+                    "x1": 813,
+                    "y1": 113
+                  },
+                  "column": 0,
+                  "lines": 1,
+                  "words": 3,
+                  "confidence": 0.96,
+                  "low_confidence": false,
+                  "language": null,
+                  "language_confidence": 0,
+                  "table_index": null
+                },
+                {
+                  "page": 1,
+                  "type": "absatz",
+                  "text": "Datum: 17.11.2026\nLeistung: Wartung der Heizungsanlage\nBetrag: 249,00 EUR\nZahlbar innerhalb von 14 Tagen.\nVielen Dank f\u00fcr Ihren Auftrag.",
+                  "box": {
+                    "x0": 70,
+                    "y0": 147,
+                    "x1": 884,
+                    "y1": 548
+                  },
+                  "column": 0,
+                  "lines": 5,
+                  "words": 19,
+                  "confidence": 0.956,
+                  "low_confidence": false,
+                  "language": "deu",
+                  "language_confidence": 0.99,
+                  "table_index": null
+                }
+              ],
+              "tables": [],
+              "codes": [],
+              "layout": {
+                "pages": [
+                  {
+                    "page": 1,
+                    "columns": 1,
+                    "column_separators_x": [],
+                    "rotation_degrees": 0,
+                    "rotation_confidence": 6.96,
+                    "script": "Latin",
+                    "coordinate_frame": "source",
+                    "size_pixels": {
+                      "width": 1400,
+                      "height": 620
+                    },
+                    "render_dpi": null,
+                    "languages_detected": [
+                      "deu"
+                    ],
+                    "blocks_by_type": {
+                      "ueberschrift": 1,
+                      "absatz": 1
+                    }
+                  }
+                ]
+              }
+            },
+            "schemaUrl": "https://doc.halowerk.com/ocr/schema#/outputSchema"
+          }
+        },
+        "schema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "const": "http"
+                },
+                "method": {
+                  "type": "string",
+                  "enum": [
+                    "POST",
+                    "PUT",
+                    "PATCH"
+                  ]
+                },
+                "bodyType": {
+                  "type": "string",
+                  "enum": [
+                    "json",
+                    "form-data",
+                    "text"
+                  ]
+                },
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "image_base64": {
+                      "type": "string",
+                      "description": "The picture or PDF as base64. Use this or \"url\", not both."
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "Public http or https URL of the picture or PDF. Use this or \"image_base64\", not both."
+                    },
+                    "mime": {
+                      "type": "string",
+                      "enum": [
+                        "image/png",
+                        "image/jpeg",
+                        "image/webp",
+                        "application/pdf"
+                      ],
+                      "description": "Media type of the input. Checked against the actual bytes; a mismatch is refused rather than worked around."
+                    },
+                    "languages": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "deu",
+                          "eng"
+                        ]
+                      },
+                      "default": [
+                        "deu",
+                        "eng"
+                      ],
+                      "description": "Languages to read, default deu plus eng. Installed models: deu, eng."
+                    },
+                    "want": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "text",
+                          "tables",
+                          "codes",
+                          "layout"
+                        ]
+                      },
+                      "default": [
+                        "text",
+                        "tables",
+                        "codes",
+                        "layout"
+                      ],
+                      "description": "Which parts of the answer to compute. The price does not change with it; asking for less is simply faster."
+                    },
+                    "pages": {
+                      "description": "Optional page range for PDF input, for example \"1-5\" or \"2,4,7\". At most 50 pages per call. Not allowed for a single image.",
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "type",
+                "method",
+                "bodyType",
+                "body"
+              ],
+              "additionalProperties": false
+            },
+            "output": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "const": "json"
+                },
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "document": {
+                      "type": "object",
+                      "properties": {
+                        "sha256": {
+                          "type": "string"
+                        },
+                        "media_type": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        },
+                        "source_url": {
+                          "type": "string"
+                        },
+                        "bytes": {
+                          "type": "integer"
+                        },
+                        "pages_total": {
+                          "type": "integer"
+                        },
+                        "pages_processed": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "ocr": {
+                      "type": "object",
+                      "properties": {
+                        "engine": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "languages": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "want": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "render_dpi": {
+                          "type": "null"
+                        },
+                        "coordinate_system": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "pages": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "page": {
+                            "type": "integer"
+                          },
+                          "width": {
+                            "type": "integer"
+                          },
+                          "height": {
+                            "type": "integer"
+                          },
+                          "word_count": {
+                            "type": "integer"
+                          },
+                          "confidence": {
+                            "type": "number"
+                          },
+                          "blocks": {
+                            "type": "integer"
+                          },
+                          "tables": {
+                            "type": "integer"
+                          },
+                          "codes": {
+                            "type": "integer"
+                          },
+                          "text": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "confidence": {
+                      "type": "object",
+                      "properties": {
+                        "pages_mean": {
+                          "type": "number"
+                        },
+                        "blocks_below_threshold": {
+                          "type": "integer"
+                        },
+                        "threshold": {
+                          "type": "number"
+                        },
+                        "note": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "policy": {
+                      "type": "object",
+                      "properties": {
+                        "codes_are_data": {
+                          "type": "string"
+                        },
+                        "url_risk_endpoint": {
+                          "type": "string"
+                        },
+                        "no_biometrics": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "warnings": {
+                      "type": "array"
+                    },
+                    "extracted_at": {
+                      "type": "string"
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "blocks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "page": {
+                            "type": "integer"
+                          },
+                          "type": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "box": {
+                            "type": "object",
+                            "properties": {
+                              "x0": {
+                                "type": "integer"
+                              },
+                              "y0": {
+                                "type": "integer"
+                              },
+                              "x1": {
+                                "type": "integer"
+                              },
+                              "y1": {
+                                "type": "integer"
+                              }
+                            }
+                          },
+                          "column": {
+                            "type": "integer"
+                          },
+                          "lines": {
+                            "type": "integer"
+                          },
+                          "words": {
+                            "type": "integer"
+                          },
+                          "confidence": {
+                            "type": "number"
+                          },
+                          "low_confidence": {
+                            "type": "boolean"
+                          },
+                          "language": {
+                            "type": "null"
+                          },
+                          "language_confidence": {
+                            "type": "integer"
+                          },
+                          "table_index": {
+                            "type": "null"
+                          }
+                        }
+                      }
+                    },
+                    "tables": {
+                      "type": "array"
+                    },
+                    "codes": {
+                      "type": "array"
+                    },
+                    "layout": {
+                      "type": "object",
+                      "properties": {
+                        "pages": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "page": {
+                                "type": "integer"
+                              },
+                              "columns": {
+                                "type": "integer"
+                              },
+                              "column_separators_x": {
+                                "type": "array"
+                              },
+                              "rotation_degrees": {
+                                "type": "integer"
+                              },
+                              "rotation_confidence": {
+                                "type": "number"
+                              },
+                              "script": {
+                                "type": "string"
+                              },
+                              "coordinate_frame": {
+                                "type": "string"
+                              },
+                              "size_pixels": {
+                                "type": "object",
+                                "properties": {
+                                  "width": {
+                                    "type": "integer"
+                                  },
+                                  "height": {
+                                    "type": "integer"
+                                  }
+                                }
+                              },
+                              "render_dpi": {
+                                "type": "null"
+                              },
+                              "languages_detected": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "blocks_by_type": {
+                                "type": "object",
+                                "properties": {
+                                  "ueberschrift": {
+                                    "type": "integer"
+                                  },
+                                  "absatz": {
+                                    "type": "integer"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required": [
+                    "document",
+                    "ocr",
+                    "pages",
+                    "confidence",
+                    "policy",
+                    "warnings",
+                    "extracted_at",
+                    "text",
+                    "blocks",
+                    "tables",
+                    "codes",
+                    "layout"
+                  ]
+                }
+              },
+              "required": [
+                "type",
+                "example"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "input"
+          ]
+        }
+      }
+    },
+    "resource": {
+      "url": "https://doc.halowerk.com/ocr",
+      "description": "Returns the text of an image, scan or screenshot in reading order, typed blocks with their box on the page, tables as a matrix plus Markdown, and every QR code and barcode with its decoded content. Runs local OCR (Tesseract); the 402 quotes the exact price from the file.",
+      "mimeType": "application/json",
+      "serviceName": "Document Extraction Hub",
+      "iconUrl": "https://doc.halowerk.com/favicon.svg",
+      "tags": [
+        "ocr",
+        "image-to-text",
+        "barcode",
+        "qr-code",
+        "tesseract"
+      ],
+      "outputSchema": {
+        "$ref": "https://doc.halowerk.com/ocr/schema#/outputSchema"
+      },
+      "outputExampleUrl": "https://doc.halowerk.com/ocr/schema#/outputExample"
+    },
+    "summary": "Read a picture, a scan or a screenshot: full text in reading order, typed blocks with their box on the page, tables as a matrix plus markdown, and every QR code and barcode with its decoded content.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "image_base64": {
+          "type": "string",
+          "description": "The picture or PDF as base64. Use this or \"url\", not both."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Public http or https URL of the picture or PDF. Use this or \"image_base64\", not both."
+        },
+        "mime": {
+          "type": "string",
+          "enum": [
+            "image/png",
+            "image/jpeg",
+            "image/webp",
+            "application/pdf"
+          ],
+          "description": "Media type of the input. Checked against the actual bytes; a mismatch is refused rather than worked around."
+        },
+        "languages": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "deu",
+              "eng"
+            ]
+          },
+          "default": [
+            "deu",
+            "eng"
+          ],
+          "description": "Languages to read, default deu plus eng. Installed models: deu, eng."
+        },
+        "want": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "text",
+              "tables",
+              "codes",
+              "layout"
+            ]
+          },
+          "default": [
+            "text",
+            "tables",
+            "codes",
+            "layout"
+          ],
+          "description": "Which parts of the answer to compute. The price does not change with it; asking for less is simply faster."
+        },
+        "pages": {
+          "description": "Optional page range for PDF input, for example \"1-5\" or \"2,4,7\". At most 50 pages per call. Not allowed for a single image.",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          ]
+        }
+      }
+    },
+    "accepts": [
+      {
+        "scheme": "exact",
+        "network": "eip155:8453",
+        "amount": "6000",
+        "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+        "payTo": "0x2880EdfFF13100677Bf97A3CBdF3Bc34771C4E5E",
+        "maxTimeoutSeconds": 300,
+        "extra": {
+          "asset": "USDC",
+          "network_name": "Base Mainnet",
+          "name": "USD Coin",
+          "version": "2",
+          "assetTransferMethod": "eip3009",
+          "eip712Domain": {
+            "name": "USD Coin",
+            "version": "2",
+            "chainId": 8453,
+            "verifyingContract": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+          }
+        }
+      }
+    ],
+    "quote": {
+      "file_sha256": "4123b58c920baff11e27c661c8eedbfb86057e654f4fb6e9e4777d3288f44a88",
+      "media_type": "application/pdf",
+      "bytes": 34703,
+      "pages_total": 1,
+      "pages_priced": [
+        1
+      ],
+      "unit_price_usdc": {
+        "first_page": "0.006",
+        "further_page": "0.002"
+      },
+      "line_items": [
+        {
+          "kind": "first_page",
+          "pages": 1,
+          "unit_usdc": "0.006",
+          "amount_usdc": 0.006
+        },
+        {
+          "kind": "further_page",
+          "pages": 0,
+          "unit_usdc": "0.002",
+          "amount_usdc": 0
+        }
+      ],
+      "total_usdc": "0.006000",
+      "note": "A multi page PDF pays 0.006 USDC for the first page and 0.002 USDC for every further page, at most 50 pages per call. Narrow \"pages\" to pay less."
+    },
+    "capability_request": {
+      "url": "https://bedarf.halowerk.com/capabilities/request",
+      "method": "POST",
+      "cost": "free",
+      "description": "Missing a capability, or does the scope not fit? Report the need here - no payment required. Similar reports are bundled; the response returns an id you can check back on.",
+      "body_example": {
+        "requested_capability": "short label",
+        "description": "what exactly is needed",
+        "max_price": 0.01
+      }
+    },
+    "payment_header": "PAYMENT-SIGNATURE",
+    "instructions": "Sign the accepted terms with an x402 client and repeat the identical request with the payment header.",
+    "docs": "https://doc.halowerk.com/llms.txt",
+    "pricing": "https://doc.halowerk.com/pricing"
+  }
+}

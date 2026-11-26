@@ -1,0 +1,42 @@
+{
+  "surface": "local ModelMarket MCP",
+  "tool": "market_search",
+  "external": {
+    "id": "halowerk-ocr",
+    "name": "HALOWERK OCR",
+    "description": "Returns the text of an image, scan or screenshot in reading order, typed blocks with their box on the page, tables as a matrix plus Markdown, and every QR code and barcode with its decoded content. Runs local OCR (Tesseract); the 402 quotes the exact price from the file.",
+    "documentation_url": "https://doc.halowerk.com/llms.txt",
+    "endpoint": "https://modelmarket.dev/ai-market/v2/external-services/halowerk-ocr/ocr",
+    "provider_endpoint": "https://doc.halowerk.com/ocr",
+    "method": "POST",
+    "payment_networks": [
+      "base"
+    ],
+    "payment_protocol": "x402",
+    "asset": "USDC",
+    "payment_recipient": "provider",
+    "published_price_usd": 0.006,
+    "price_basis": "one_page_pdf",
+    "price_source": "payment-required",
+    "hub_invoke": false,
+    "input_schema": {
+      "type": "object",
+      "properties": {
+        "image_base64": {
+          "type": "string",
+          "description": "One-page PDF encoded as base64."
+        },
+        "mime": {
+          "type": "string",
+          "const": "application/pdf"
+        }
+      },
+      "required": [
+        "image_base64",
+        "mime"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "note": "POST the one-page PDF to endpoint to get a provider quote. Repeat the same request with PAYMENT-SIGNATURE after the buyer approves the quote. The provider receives the payment."
+}
