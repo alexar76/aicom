@@ -1,0 +1,7 @@
+payout run finished, seen 2026-11-27T05:17:52Z
+backup /root/hub-backups/modelmarket-hub-pre-quotemmq-20261127T051753Z.db 6.5M
+previous image sha256:f5c439ae835d0470b882237daddd2481dbef83eb2e83d734f9c7ff53dbf9fb29
+{"container": "modelmarket-hub", "healthy": true, "image": "modelmarket-hub:halowerk-ocr-20261126-XwKcRz-mcp0728-20261126-quotecount-20261127-quotemmq-20261127", "previous_container": "modelmarket-hub-security-prev-1795756674191229797", "removed_env_names": [], "image_env_names": ["AIMARKET_CRAWL_INTERVAL_S", "AIMARKET_DB_PATH", "AIMARKET_OPERATOR_ACCOUNTS", "AIMARKET_PEER_REJECTIONS_FILE", "AIMARKET_SEED_LIST", "AIMARKET_SIGNING_KEY_PATH", "AIMARKET_ZK_BACKEND", "AIMARKET_ZK_NULLIFIER_DB", "AIMARKET_ZK_VERIFIER_SOL", "AIMARKET_ZK_VKEY_JSON", "AIMARKET_ZK_WASM", "AIMARKET_ZK_ZKEY", "GPG_KEY", "LANG", "PATH", "PYTHON_SHA256", "PYTHON_VERSION"], "set_env_names": [], "borrowers": {"themis": "themis-security-prev-1795756674191229797"}, "snapshot": "/root/security-rollbacks/modelmarket-hub-1795756674191229797/inspect.json"}
+themis	76bc0eb8ba31	Up 8 seconds (healthy)
+modelmarket-hub	modelmarket-hub:halowerk-ocr-20261126-XwKcRz-mcp0728-20261126-quotecount-20261127-quotemmq-20261127	Up 8 seconds (health: starting)
+modelmarket-hub-uni	modelmarket-hub-uni:3.22.0-20261121-mcp0728-20261126	Up 10 hours (healthy)
