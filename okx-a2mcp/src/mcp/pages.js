@@ -29,7 +29,7 @@ export function renderMcpDocs(origin) {
 <h2 class="section-title">Connect</h2>
 <p class="section-note">In Claude: Settings → Connectors → Add custom connector, and paste one of the addresses below. In Cursor, VS Code or any client that takes a JSON config:</p>
 <pre><code>${esc(configJson(origin, "weather"))}</code></pre>
-<p class="section-note">The servers answer POST requests with JSON (no session, no server-sent stream). Use the current addresses below for weather, SYMMARTYS business facts, MCP security and domains.</p>
+<p class="section-note">The servers answer POST requests with JSON (no session, no server-sent stream). They speak MCP 2026-07-28 (<code>server/discover</code>, no handshake) and, through <code>initialize</code>, the revisions from 2024-11-05 to 2025-11-25. Use the current addresses below for weather, SYMMARTYS business facts, MCP security and domains.</p>
 </section>
 ${servers}
 <section class="section">
