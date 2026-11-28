@@ -1,0 +1,54 @@
+== MCP org: tool hash/drift/pin: 93
+   2026-11-27 closed rdimitrov modelcontextprotocol/registry | Bound distinct package ownership checks on publish and edit | 0 c | https://github.com/modelcontextprotocol/registry/pull/1928
+   2026-11-27 closed cliffhall modelcontextprotocol/servers | Release v2.6.0: merge v2/main into main | 9 c | https://github.com/modelcontextprotocol/servers/pull/5685
+   2026-11-27 closed cliffhall modelcontextprotocol/servers | Release v2.6.0 | 2 c | https://github.com/modelcontextprotocol/servers/issues/5681
+   2026-11-27 closed cliffhall modelcontextprotocol/servers | fix(fetch): GHSA-g7v6-hfx3-8rv6 - robots.txt check misses backslash and path-parameter spe | 2 c | https://github.com/modelcontextprotocol/servers/pull/5678
+   2026-11-27 closed cliffhall modelcontextprotocol/servers | fix(git): GHSA-5pwg-5xfw-x322 - a concurrent alternates rewrite lets tools read objects ou | 4 c | https://github.com/modelcontextprotocol/servers/pull/5677
+   2026-11-27 closed cliffhall modelcontextprotocol/servers | fix(git): GHSA-f33v-89w7-f9vc - repo_path expands environment variables and error messages | 2 c | https://github.com/modelcontextprotocol/servers/pull/5675
+   2026-11-27 closed cliffhall modelcontextprotocol/servers | fix(git): GHSA-6663-fm5v-gqm5 - Git LFS runs programs named in a repository's own configur | 2 c | https://github.com/modelcontextprotocol/servers/pull/5672
+   2026-11-27 closed cliffhall modelcontextprotocol/inspector | fix(client): let inspector-client start when installed on its own | 1 c | https://github.com/modelcontextprotocol/inspector/pull/3060
+== MCP org: tools/list changed/listChanged: 48
+   2026-11-27 open jeanmatthieu modelcontextprotocol/swift-sdk | fix: Require an RFC 2397 media type in data: URLs, and say when a string decodes as Value. | 0 c | https://github.com/modelcontextprotocol/swift-sdk/pull/395
+   2026-11-27 open luiacuaniello modelcontextprotocol/go-sdk | mcp: stateless subscriptions/listen stream can start with an unrequested tools/list_change | 0 c | https://github.com/modelcontextprotocol/go-sdk/issues/1551
+   2026-11-27 closed cliffhall modelcontextprotocol/servers | Release v2.6.0: merge v2/main into main | 9 c | https://github.com/modelcontextprotocol/servers/pull/5685
+   2026-11-26 closed SkillzBench modelcontextprotocol/ext-skills | docs(implementations): add SkillzBench server | 0 c | https://github.com/modelcontextprotocol/ext-skills/pull/175
+   2026-11-26 open Falkicon modelcontextprotocol/python-sdk | MCPServer: public hooks for tool input schemas, capabilities and handler removal | 0 c | https://github.com/modelcontextprotocol/python-sdk/issues/3933
+   2026-11-26 open ar70n modelcontextprotocol/rust-sdk | fix(server): tolerate a client notification during the bootstrap window | 2 c | https://github.com/modelcontextprotocol/rust-sdk/pull/1506
+   2026-11-26 open ar70n modelcontextprotocol/rust-sdk | stdio server exits if a notification arrives after server/discover | 1 c | https://github.com/modelcontextprotocol/rust-sdk/issues/1505
+   2026-11-26 open kraenhansen modelcontextprotocol/swift-sdk | Implement SEP-3415: Events Extension | 2 c | https://github.com/modelcontextprotocol/swift-sdk/issues/376
+== x402: refund/receipt/payee/price: 45
+   2026-11-27 open agent402-dev x402-foundation/x402 | [Feature]: `bond` extension: seller points to an on-chain bond the client can verify befor | 4 c | https://github.com/x402-foundation/x402/issues/4489
+   2026-11-27 closed mintlify[bot] x402-foundation/x402 | Document receipt Logs requirement for Go batch-settlement facilitator | 3 c | https://github.com/x402-foundation/x402/pull/4487
+   2026-11-27 open mortezashojaei x402-foundation/x402 | feat(python): add a sync httpx transport | 1 c | https://github.com/x402-foundation/x402/pull/4479
+   2026-11-27 open JulienKervarrec x402-foundation/x402 | docs(specs): use reason codes in A2A failure receipts | 1 c | https://github.com/x402-foundation/x402/pull/4473
+   2026-11-27 closed PhilBot402 x402-foundation/x402 | docs(specs): fix stellar exact scheme examples | 1 c | https://github.com/x402-foundation/x402/pull/4462
+   2026-11-26 closed PhilBot402 x402-foundation/x402 | feat(go/evm): derive batch-settlement channelState from receipt events | 4 c | https://github.com/x402-foundation/x402/pull/4460
+   2026-11-26 closed PhilBot402 x402-foundation/x402 | feat(ts/evm): derive batch-settlement channelState from receipt events | 3 c | https://github.com/x402-foundation/x402/pull/4459
+   2026-11-26 open GitSerge-crypto x402-foundation/x402 | Proposal: anchors for signed receipts — checking an artifact after its issuer is gone | 3 c | https://github.com/x402-foundation/x402/issues/4457
+== any: "tool poisoning" or "rug pull" MCP: 44424
+   2026-11-27 open wasimjalali Useful-Build/inhouse | Prompt v6: a member_find match with a hidden name, or two matches, has no rule, so a notic | 0 c | https://github.com/Useful-Build/inhouse/issues/548
+   2026-11-27 open MohabMohie ShaftHQ/chaosengine-harness | [Spec]: Cursor — register the shell, file, MCP, and workspace hooks | 0 c | https://github.com/ShaftHQ/chaosengine-harness/issues/279
+   2026-11-27 open joseyx joseyx/remote-pc | [FEAT]: Bandeja de ClickUp en el Cockpit | 0 c | https://github.com/joseyx/remote-pc/issues/67
+   2026-11-27 open MohabMohie ShaftHQ/chaosengine-harness | [Spec]: Codex — register PermissionRequest, model, and Interrupt hooks | 0 c | https://github.com/ShaftHQ/chaosengine-harness/issues/275
+   2026-11-27 open MohabMohie ShaftHQ/chaosengine-harness | [Spec]: Claude Code — register the remaining official hook events | 0 c | https://github.com/ShaftHQ/chaosengine-harness/issues/274
+   2026-11-27 open MohabMohie ShaftHQ/chaosengine-harness | [Epic]: Cover every vendor hook, rule, and instruction injection point | 0 c | https://github.com/ShaftHQ/chaosengine-harness/issues/272
+   2026-11-27 open Jesuso Jesuso/agenthook | refactor: src/agent-api.js becomes src/agent-api/, split by job | 0 c | https://github.com/Jesuso/agenthook/issues/860
+   2026-11-27 open spharx01 openairymax/agentrt | ci-debug macos ctest rerun (run 46055399311) | 0 c | https://github.com/openairymax/agentrt/issues/2713
+== any: eSIM MCP agent: 70
+   2026-11-27 open LazarC11 LazarC11/TheCarLauncher | Unit report: samsung SM-A546B (s5e8835, Android 16) | 0 c | https://github.com/LazarC11/TheCarLauncher/issues/112
+   2026-11-27 closed anbh2787 Mountainheads-Private-limited/osmo-travel-esim | docs: add Glama listing badge | 0 c | https://github.com/Mountainheads-Private-limited/osmo-travel-esim/pull/1
+   2026-11-27 open LazarC11 LazarC11/TheCarLauncher | Unit report: samsung SM-S936B (qcom, Android 17) | 0 c | https://github.com/LazarC11/TheCarLauncher/issues/111
+   2026-11-27 open AnisDhiyaEddine punkpeye/awesome-remote-mcp-servers | Add SimOwl travel eSIM server | 0 c | https://github.com/punkpeye/awesome-remote-mcp-servers/pull/6220
+   2026-11-27 open AnisDhiyaEddine sylviangth/awesome-remote-mcp-servers | Add SimOwl hosted MCP server (travel eSIM) | 0 c | https://github.com/sylviangth/awesome-remote-mcp-servers/pull/464
+   2026-11-27 open AnisDhiyaEddine toolsdk-ai/toolsdk-mcp-registry | Add SimOwl travel eSIM remote MCP server | 0 c | https://github.com/toolsdk-ai/toolsdk-mcp-registry/pull/1654
+   2026-11-27 open AnisDhiyaEddine habitoai/awesome-mcp-servers | Add SimOwl to Travel and Transportation | 1 c | https://github.com/habitoai/awesome-mcp-servers/pull/437
+   2026-11-27 open AnisDhiyaEddine pathintegral-institute/mcpm.sh | [Server Submission]: SimOwl travel eSIM | 0 c | https://github.com/pathintegral-institute/mcpm.sh/issues/589
+== any: transparency log MCP: 385
+   2026-11-27 open dependabot[bot] tempestai-dev/tempest | chore(deps): Bump the minor-and-patch group across 1 directory with 50 updates | 1 c | https://github.com/tempestai-dev/tempest/pull/166
+   2026-11-27 open ValgulNecron GameplanePanel/Gameplane | test(e2e): theme marketplace e2e bucket, standalone theme source, api/web specs (spec 043) | 2 c | https://github.com/GameplanePanel/Gameplane/pull/1142
+   2026-11-27 open dependabot[bot] Alamlikumm/openjarvis | fix(deps): bump the frontend-minor-patch group across 1 directory with 10 updates | 0 c | https://github.com/Alamlikumm/openjarvis/pull/12
+   2026-11-27 closed renovate[bot] nfrankel/opentelemetry-tracing | Update Helm release traefik to v43 | 0 c | https://github.com/nfrankel/opentelemetry-tracing/pull/910
+   2026-11-27 open dependabot[bot] httpsved-ux/vedjarvis2.0 | fix(deps): bump the frontend-minor-patch group in /frontend with 10 updates | 0 c | https://github.com/httpsved-ux/vedjarvis2.0/pull/5
+   2026-11-27 closed Zubair-hussain Zubair-hussain/Sightline | Phase 2: Cloudflare security audit | 0 c | https://github.com/Zubair-hussain/Sightline/pull/29
+   2026-11-27 closed zyx1121 NYCU-WinLab/carrel | fix: hide admin operations from tenant members in operation_get | 3 c | https://github.com/NYCU-WinLab/carrel/pull/763
+   2026-11-27 open jafargas lennylabs/podium | feat(sign, serverboot): Sigstore instances and trusted roots (attestation PR5) | 2 c | https://github.com/lennylabs/podium/pull/251

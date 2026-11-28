@@ -1,0 +1,92 @@
+{
+ "fetched": "2026-11-27 ~06:00Z",
+ "url": "https://agent402.tools/api/index?seller=modelmarket.dev",
+ "summary": {
+  "origin": "https://modelmarket.dev",
+  "toolCount": 199,
+  "paidToolCount": 8,
+  "routable": true,
+  "routerDispatchEligible": false,
+  "routerDispatchReason": "settlement_self_funded",
+  "routerDispatchByChain": {
+   "base": {
+    "eligible": false,
+    "reason": "settlement_self_funded",
+    "detail": "below the settlement floor"
+   }
+  },
+  "networks": [
+   "eip155:8453"
+  ],
+  "reputation": {
+   "overall": {
+    "status": "not-enough-data",
+    "score": null,
+    "components": [],
+    "weights": {
+     "paywallUptime": 0.3,
+     "delivery": 0.25,
+     "manifestUptime": 0.2,
+     "priceMatchesListing": 0.15,
+     "responsiveness": 0.1
+    },
+    "method": "the weighted mean of the scored components, the weights renormalized over those scored; published only when both manifestUptime and paywallUptime are scored"
+   },
+   "metrics": {
+    "manifestUptime": {
+     "status": "scored",
+     "score": 1,
+     "sampleSize": 56,
+     "minSampleSize": 10,
+     "windowDays": 30,
+     "lastMeasuredAt": "2026-11-27T04:29:40.235Z",
+     "method": "each pass records the seller's newest crawl, if newer than the last one recorded: 1 when its own documents answered with routes, 0 when the seller's host answered with an error or nothing usable; a read that failed on our side (our time limit, resolver or size limit), a robots.txt exclusion and a registry-only record are left out"
+    },
+    "paywallUptime": {
+     "status": "not-enough-data",
+     "score": null,
+     "sampleSize": 0,
+     "minSampleSize": 5,
+     "windowDays": 30,
+     "lastMeasuredAt": null,
+     "method": "each pass records the newest unpaid probe of the seller's cheapest paid route, if newer than the last one recorded: 1 when it answered 402, 0 for any other status; a probe that read no status or a malformed-request answer (400, 415, 422) is left out"
+    },
+    "responsiveness": {
+     "status": "not-enough-data",
+     "score": null,
+     "sampleSize": 0,
+     "minSampleSize": 5,
+     "windowDays": 30,
+     "lastMeasuredAt": null,
+     "method": "time from our unpaid paywall probe to the seller's response headers, measured from this server; the score is the share of probes answered within 2000 ms, beside the median"
+    },
+    "priceMatchesListing": {
+     "status": "scored",
+     "score": 1,
+     "sampleSize": 8,
+     "minSampleSize": 3,
+     "windowDays": 30,
+     "lastMeasuredAt": "2026-11-27T00:38:05.557Z",
+     "method": "routes whose 402 we read live in the window and whose own documents list a price: the share where the price the 402 asks matches the listed price"
+    },
+    "delivery": {
+     "status": "not-enough-data",
+     "score": null,
+     "sampleSize": 0,
+     "minSampleSize": 5,
+     "windowDays": 30,
+     "lastMeasuredAt": null,
+     "method": "measured from purchases Agent402's router made for buyers: 1 when the seller answered 200 after taking the payment, 0 when the router recorded a delivery failure (a 5xx after payment, or a 4xx the seller or the chain shows was charged); a caller's own input error, and calls made for our own probes, canaries and wallets, are left out",
+     "label": "measured from purchases Agent402's router made for buyers"
+    }
+   },
+   "age": {
+    "firstObservedAt": "2026-11-20T12:04:38.119Z",
+    "observedDays": 6,
+    "recordsSince": "2026-11-20T12:04:38.119Z",
+    "note": "when this record first saw the seller in the index; a seller listed before recordsSince reads that date"
+   },
+   "computedAt": "2026-11-27T05:56:49.782Z"
+  }
+ }
+}

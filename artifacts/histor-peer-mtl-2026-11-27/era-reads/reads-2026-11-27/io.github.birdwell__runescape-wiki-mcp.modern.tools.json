@@ -1,0 +1,2554 @@
+[
+ {
+  "name": "lookup_item",
+  "title": "Lookup Item",
+  "description": "Resolve tradeable RS3 names to GE IDs. Use search_wiki for quests, NPCs or guides; non-GE items cannot match here.\n\n- query=\"Abyssal whip\" tries an exact match; \"abyssal\" discovers alternatives. An exact match ends the search regardless of limit.\n- limit also bounds Wiki candidates checked against Weirdgloop. Non-GE candidates are discarded, so results can be fewer; increasing limit widens that screening. Values outside 1–10 error before fetching rather than being clamped.\n- Pass a chosen ID to get_item_details for current records, get_price_series for history, or estimate_flip for profit math. No matches is a tool error; optional price/volume fields may be absent and samples lag activity.\n- Reads are uncached and need no credentials. HTTP defaults to 60 requests/IP/minute; wait for Retry-After after 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "query": {
+     "type": "string",
+     "minLength": 1,
+     "description": "Item name or partial name to search for"
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 10,
+     "description": "Max matches to return (default 5)"
+    }
+   },
+   "required": [
+    "query"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "matches": {
+     "type": "array",
+     "description": "Matching Grand Exchange items, best match first",
+     "items": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "integer",
+        "description": "Grand Exchange item ID"
+       },
+       "name": {
+        "type": "string",
+        "description": "Item name"
+       },
+       "price": {
+        "type": "number",
+        "description": "Latest price in coins, when known"
+       },
+       "volume": {
+        "type": "number",
+        "description": "Latest trade volume, when known"
+       },
+       "timestamp": {
+        "type": "string",
+        "description": "ISO timestamp of the price sample"
+       },
+       "wikiUrl": {
+        "type": "string",
+        "description": "RuneScape Wiki page URL"
+       },
+       "error": {
+        "type": "string",
+        "description": "Why this row could not be resolved"
+       }
+      },
+      "required": [
+       "id",
+       "name"
+      ],
+      "additionalProperties": false
+     }
+    }
+   },
+   "required": [
+    "matches"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Lookup Item"
+  }
+ },
+ {
+  "name": "get_price_series",
+  "title": "Read Item Price History",
+  "description": "Read dated RS3 price history for one known GE item. Resolve names with lookup_item; use get_item_details for current records or candidate comparisons.\n\n- itemId=4151 means Abyssal whip, not a quantity. For observations, choose Jagex for provider averages over roughly 180 days or Weirdgloop for daily samples with reported volume over roughly 90 days.\n- from/to include whole UTC days. Equal bounds cover that day; omitted bounds retain all available history. Requested dates cannot extend retention.\n- statistics computes min/max, unweighted mean and start-to-end change from a fixed 90-day Weirdgloop fetch. For example, days=7 takes the last seven usable samples even if missing dates make them span more than a week.\n- Each call returns its full retained series or statistics in one bounded response; there is no cursor or next page. Unavailable observation dates return empty data; unusable statistics history returns an error. Invalid bounds fail before fetching.\n- Reads are uncached and require no credentials. Provider errors surface without switching sources or retrying automatically. HTTP defaults to 60 requests/IP/minute; wait for Retry-After after 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "itemId": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Known GE item ID resolved with lookup_item"
+    },
+    "source": {
+     "type": "string",
+     "enum": [
+      "jagex",
+      "weirdgloop"
+     ],
+     "description": "History data provider; allowed values and defaults depend on view"
+    },
+    "from": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+     "description": "First UTC date to include; omitted means start of available history"
+    },
+    "to": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+     "description": "Last UTC date to include; omitted means end of available history"
+    },
+    "view": {
+     "type": "string",
+     "enum": [
+      "observations",
+      "statistics"
+     ],
+     "default": "observations",
+     "description": "Raw observations (original default) or computed Weirdgloop statistics"
+    },
+    "days": {
+     "type": "integer",
+     "minimum": 7,
+     "maximum": 90,
+     "description": "Sample window for the statistics view"
+    }
+   },
+   "additionalProperties": false,
+   "required": [
+    "itemId"
+   ],
+   "oneOf": [
+    {
+     "properties": {
+      "view": {
+       "const": "observations"
+      },
+      "source": {
+       "default": "jagex"
+      }
+     },
+     "not": {
+      "required": [
+       "days"
+      ]
+     }
+    },
+    {
+     "properties": {
+      "view": {
+       "const": "statistics"
+      },
+      "source": {
+       "const": "weirdgloop",
+       "default": "weirdgloop"
+      },
+      "days": {
+       "default": 30
+      }
+     },
+     "required": [
+      "view"
+     ],
+     "not": {
+      "anyOf": [
+       {
+        "required": [
+         "from"
+        ]
+       },
+       {
+        "required": [
+         "to"
+        ]
+       }
+      ]
+     }
+    }
+   ]
+  },
+  "outputSchema": {
+   "type": "object",
+   "anyOf": [
+    {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "daily": {
+       "type": "object",
+       "description": "Daily guide prices in coins, keyed by Unix timestamp in milliseconds",
+       "additionalProperties": {
+        "type": "number"
+       }
+      },
+      "average": {
+       "type": "object",
+       "description": "Jagex averaged guide prices in coins, keyed by Unix timestamp in milliseconds",
+       "additionalProperties": {
+        "type": "number"
+       }
+      },
+      "itemId": {
+       "type": "integer",
+       "minimum": 0,
+       "description": "Grand Exchange item ID"
+      },
+      "source": {
+       "const": "weirdgloop",
+       "description": "Present for the Weirdgloop sample-array variant"
+      },
+      "samples": {
+       "type": "array",
+       "description": "Chronological usable observations; malformed timestamp/price rows are discarded, unreported volume omitted, and an entirely malformed nonempty feed is an error",
+       "items": {
+        "type": "object",
+        "properties": {
+         "timestamp": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "UTC Unix timestamp in milliseconds, not seconds"
+         },
+         "price": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Observed guide price in coins"
+         },
+         "volume": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Provider-reported daily volume, when available"
+         }
+        },
+        "required": [
+         "timestamp",
+         "price"
+        ],
+        "additionalProperties": false
+       }
+      }
+     },
+     "required": [],
+     "additionalProperties": true,
+     "oneOf": [
+      {
+       "required": [
+        "daily",
+        "average"
+       ]
+      },
+      {
+       "required": [
+        "itemId",
+        "source",
+        "samples"
+       ]
+      }
+     ]
+    },
+    {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "itemId": {
+       "type": "integer",
+       "description": "Grand Exchange item ID"
+      },
+      "name": {
+       "type": "string",
+       "description": "Name supplied by the caller, when given"
+      },
+      "windowDays": {
+       "type": "integer",
+       "description": "Trailing window actually summarized"
+      },
+      "sampleCount": {
+       "type": "integer",
+       "description": "Daily samples inside the window"
+      },
+      "latestPrice": {
+       "type": "number",
+       "description": "Newest price in the window, in coins"
+      },
+      "oldestPriceInWindow": {
+       "type": "number",
+       "description": "Oldest price in the window, in coins"
+      },
+      "minPrice": {
+       "type": "number",
+       "description": "Lowest price in the window, in coins"
+      },
+      "maxPrice": {
+       "type": "number",
+       "description": "Highest price in the window, in coins"
+      },
+      "avgPrice": {
+       "type": "number",
+       "description": "Average price in the window, rounded to whole coins"
+      },
+      "changeAbs": {
+       "type": "number",
+       "description": "latestPrice minus oldestPriceInWindow"
+      },
+      "changePct": {
+       "type": "number",
+       "description": "Percent change across the window, rounded to two decimals; 0 when the oldest price is 0"
+      },
+      "avgDailyVolume": {
+       "type": "number",
+       "description": "Unweighted mean of reported daily volumes, rounded to a whole number; unreported values are excluded"
+      }
+     },
+     "required": [
+      "itemId",
+      "windowDays",
+      "sampleCount",
+      "latestPrice",
+      "oldestPriceInWindow",
+      "minPrice",
+      "maxPrice",
+      "avgPrice",
+      "changeAbs",
+      "changePct"
+     ],
+     "additionalProperties": false
+    }
+   ]
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Read Item Price History"
+  }
+ },
+ {
+  "name": "get_item_details",
+  "title": "Read Current Item Data",
+  "description": "Read current RS3 catalogue records or compare candidate snapshots. Resolve names with lookup_item; use get_price_series for dated history and estimate_flip for profit calculations.\n\n- records reads Jagex identity, examine/type/membership, icon URLs and guide prices. itemId=4151 means Abyssal whip. Arrays always return results[] in caller order, including errors at failed IDs, even for one entry.\n- includeLiveData adds reported trades and numeric Wiki facts without replacing guide fields. Trades are not executable offers; buy limits are not remaining quota.\n- comparison reads compact Weirdgloop daily price/volume snapshots for itemIds in caller order. Missing metrics remain absent and unresolved IDs become error rows. It does not rank the whole GE.\n- Record batches retain successful rows and error if all fail. At most two reads run concurrently; 429 stops queued reads. Invalid selectors fail before fetching.\n- Guide/comparison reads are uncached and lag activity. Trades cache for 30 seconds and facts for 10 minutes; cache hits preserve fetchedAt. No credentials are required. HTTP defaults to 60 requests/IP/minute; wait for Retry-After after 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "itemId": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Known GE item ID resolved with lookup_item"
+    },
+    "includeLiveData": {
+     "type": "boolean",
+     "default": false,
+     "description": "Optional trade/mapping enrichment for the records view"
+    },
+    "itemIds": {
+     "type": "array",
+     "minItems": 1,
+     "maxItems": 10,
+     "uniqueItems": true,
+     "items": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Grand Exchange item ID"
+     },
+     "description": "GE IDs of the target candidates"
+    },
+    "view": {
+     "type": "string",
+     "enum": [
+      "records",
+      "comparison"
+     ],
+     "default": "records",
+     "description": "Detailed Jagex records (original default) or compact Weirdgloop comparison snapshots"
+    }
+   },
+   "additionalProperties": false,
+   "oneOf": [
+    {
+     "properties": {
+      "view": {
+       "const": "records"
+      }
+     },
+     "oneOf": [
+      {
+       "required": [
+        "itemId"
+       ]
+      },
+      {
+       "required": [
+        "itemIds"
+       ]
+      }
+     ]
+    },
+    {
+     "properties": {
+      "view": {
+       "const": "comparison"
+      },
+      "includeLiveData": {
+       "const": false
+      }
+     },
+     "required": [
+      "view",
+      "itemIds"
+     ],
+     "not": {
+      "required": [
+       "itemId"
+      ]
+     }
+    }
+   ]
+  },
+  "outputSchema": {
+   "type": "object",
+   "anyOf": [
+    {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "item": {
+       "type": "object",
+       "description": "Jagex catalogue item detail; prices are guide values, not executable offers",
+       "properties": {
+        "id": {
+         "type": "integer",
+         "minimum": 0,
+         "description": "Grand Exchange item ID"
+        },
+        "name": {
+         "type": "string"
+        },
+        "wikiUrl": {
+         "type": "string",
+         "format": "uri",
+         "description": "Wiki item-ID lookup link; redirects to the corresponding article without a title search"
+        },
+        "liveTrades": {
+         "type": "object",
+         "description": "Opt-in RS3 recorded transactions; no order book or guaranteed fill price",
+         "properties": {
+          "high": {
+           "type": [
+            "number",
+            "null"
+           ],
+           "minimum": 0,
+           "description": "Last reported instant-buy price in coins; may exceed 32-bit integers; null means none reported"
+          },
+          "highTime": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 0,
+           "description": "Instant-buy transaction Unix timestamp in seconds"
+          },
+          "low": {
+           "type": [
+            "number",
+            "null"
+           ],
+           "minimum": 0,
+           "description": "Last reported instant-sell price in coins; null means none reported"
+          },
+          "lowTime": {
+           "type": [
+            "integer",
+            "null"
+           ],
+           "minimum": 0,
+           "description": "Instant-sell transaction Unix timestamp in seconds"
+          },
+          "sourceUrl": {
+           "type": "string",
+           "format": "uri"
+          },
+          "fetchedAt": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Snapshot retrieval time; retained on cache hits"
+          }
+         },
+         "required": [
+          "high",
+          "highTime",
+          "low",
+          "lowTime",
+          "sourceUrl",
+          "fetchedAt"
+         ],
+         "additionalProperties": false
+        },
+        "wikiFacts": {
+         "type": [
+          "object",
+          "null"
+         ],
+         "description": "Opt-in numeric mapping fields; null when no usable mapping exists",
+         "properties": {
+          "buyLimit": {
+           "type": "integer",
+           "minimum": 0,
+           "description": "Published GE buy-limit cap, not remaining account quota"
+          },
+          "highAlchemy": {
+           "type": "integer",
+           "minimum": 0,
+           "description": "High alchemy value in coins"
+          },
+          "lowAlchemy": {
+           "type": "integer",
+           "minimum": 0,
+           "description": "Low alchemy value in coins"
+          },
+          "value": {
+           "type": "integer",
+           "minimum": 0,
+           "description": "Base item value in coins"
+          },
+          "sourceUrl": {
+           "type": "string",
+           "format": "uri"
+          },
+          "fetchedAt": {
+           "type": "string",
+           "format": "date-time",
+           "description": "Mapping retrieval time; retained on cache hits"
+          }
+         },
+         "required": [
+          "sourceUrl",
+          "fetchedAt"
+         ],
+         "additionalProperties": false
+        },
+        "type": {
+         "type": "string",
+         "description": "Jagex catalogue category name"
+        },
+        "members": {
+         "type": "string",
+         "enum": [
+          "true",
+          "false"
+         ],
+         "description": "Whether the item requires membership; Jagex returns a string"
+        },
+        "icon": {
+         "type": "string",
+         "description": "Small item icon URL"
+        },
+        "icon_large": {
+         "type": "string",
+         "description": "Large item icon URL"
+        },
+        "typeIcon": {
+         "type": "string",
+         "description": "Catalogue category icon URL"
+        },
+        "description": {
+         "type": "string",
+         "description": "In-game examine text"
+        },
+        "current": {
+         "type": "object",
+         "properties": {
+          "price": {
+           "type": [
+            "number",
+            "string"
+           ],
+           "description": "Coins, possibly abbreviated with k or m"
+          },
+          "trend": {
+           "type": "string"
+          }
+         },
+         "additionalProperties": true
+        },
+        "today": {
+         "type": "object",
+         "additionalProperties": true
+        },
+        "day30": {
+         "type": "object",
+         "additionalProperties": true
+        },
+        "day90": {
+         "type": "object",
+         "additionalProperties": true
+        },
+        "day180": {
+         "type": "object",
+         "additionalProperties": true
+        }
+       },
+       "additionalProperties": true
+      },
+      "results": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "query": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Grand Exchange item ID"
+         },
+         "data": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+           "item": {
+            "type": "object",
+            "description": "Jagex catalogue item detail; prices are guide values, not executable offers",
+            "properties": {
+             "id": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Grand Exchange item ID"
+             },
+             "name": {
+              "type": "string"
+             },
+             "wikiUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Wiki item-ID lookup link; redirects to the corresponding article without a title search"
+             },
+             "liveTrades": {
+              "type": "object",
+              "description": "Opt-in RS3 recorded transactions; no order book or guaranteed fill price",
+              "properties": {
+               "high": {
+                "type": [
+                 "number",
+                 "null"
+                ],
+                "minimum": 0,
+                "description": "Last reported instant-buy price in coins; may exceed 32-bit integers; null means none reported"
+               },
+               "highTime": {
+                "type": [
+                 "integer",
+                 "null"
+                ],
+                "minimum": 0,
+                "description": "Instant-buy transaction Unix timestamp in seconds"
+               },
+               "low": {
+                "type": [
+                 "number",
+                 "null"
+                ],
+                "minimum": 0,
+                "description": "Last reported instant-sell price in coins; null means none reported"
+               },
+               "lowTime": {
+                "type": [
+                 "integer",
+                 "null"
+                ],
+                "minimum": 0,
+                "description": "Instant-sell transaction Unix timestamp in seconds"
+               },
+               "sourceUrl": {
+                "type": "string",
+                "format": "uri"
+               },
+               "fetchedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Snapshot retrieval time; retained on cache hits"
+               }
+              },
+              "required": [
+               "high",
+               "highTime",
+               "low",
+               "lowTime",
+               "sourceUrl",
+               "fetchedAt"
+              ],
+              "additionalProperties": false
+             },
+             "wikiFacts": {
+              "type": [
+               "object",
+               "null"
+              ],
+              "description": "Opt-in numeric mapping fields; null when no usable mapping exists",
+              "properties": {
+               "buyLimit": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Published GE buy-limit cap, not remaining account quota"
+               },
+               "highAlchemy": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "High alchemy value in coins"
+               },
+               "lowAlchemy": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Low alchemy value in coins"
+               },
+               "value": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "Base item value in coins"
+               },
+               "sourceUrl": {
+                "type": "string",
+                "format": "uri"
+               },
+               "fetchedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Mapping retrieval time; retained on cache hits"
+               }
+              },
+              "required": [
+               "sourceUrl",
+               "fetchedAt"
+              ],
+              "additionalProperties": false
+             },
+             "type": {
+              "type": "string",
+              "description": "Jagex catalogue category name"
+             },
+             "members": {
+              "type": "string",
+              "enum": [
+               "true",
+               "false"
+              ],
+              "description": "Whether the item requires membership; Jagex returns a string"
+             },
+             "icon": {
+              "type": "string",
+              "description": "Small item icon URL"
+             },
+             "icon_large": {
+              "type": "string",
+              "description": "Large item icon URL"
+             },
+             "typeIcon": {
+              "type": "string",
+              "description": "Catalogue category icon URL"
+             },
+             "description": {
+              "type": "string",
+              "description": "In-game examine text"
+             },
+             "current": {
+              "type": "object",
+              "properties": {
+               "price": {
+                "type": [
+                 "number",
+                 "string"
+                ],
+                "description": "Coins, possibly abbreviated with k or m"
+               },
+               "trend": {
+                "type": "string"
+               }
+              },
+              "additionalProperties": true
+             },
+             "today": {
+              "type": "object",
+              "additionalProperties": true
+             },
+             "day30": {
+              "type": "object",
+              "additionalProperties": true
+             },
+             "day90": {
+              "type": "object",
+              "additionalProperties": true
+             },
+             "day180": {
+              "type": "object",
+              "additionalProperties": true
+             }
+            },
+            "additionalProperties": true
+           }
+          },
+          "required": [
+           "item"
+          ],
+          "additionalProperties": true
+         },
+         "error": {
+          "type": "string"
+         }
+        },
+        "required": [
+         "query"
+        ],
+        "oneOf": [
+         {
+          "required": [
+           "data"
+          ]
+         },
+         {
+          "required": [
+           "error"
+          ]
+         }
+        ],
+        "additionalProperties": false
+       }
+      },
+      "succeeded": {
+       "type": "integer",
+       "minimum": 0
+      },
+      "failed": {
+       "type": "integer",
+       "minimum": 0
+      }
+     },
+     "required": [],
+     "additionalProperties": true,
+     "oneOf": [
+      {
+       "required": [
+        "item"
+       ]
+      },
+      {
+       "required": [
+        "results",
+        "succeeded",
+        "failed"
+       ]
+      }
+     ]
+    },
+    {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "compared": {
+       "type": "integer",
+       "description": "Number of rows returned"
+      },
+      "rows": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "query": {
+          "type": "string",
+          "description": "Name or id that was requested"
+         },
+         "id": {
+          "type": "integer",
+          "description": "Grand Exchange item ID"
+         },
+         "name": {
+          "type": "string"
+         },
+         "price": {
+          "type": "number",
+          "description": "Latest price in coins"
+         },
+         "volume": {
+          "type": "number"
+         },
+         "timestamp": {
+          "type": "string"
+         },
+         "error": {
+          "type": "string",
+          "description": "Present when this row could not be resolved"
+         }
+        },
+        "required": [
+         "query"
+        ],
+        "additionalProperties": false
+       }
+      }
+     },
+     "required": [
+      "compared",
+      "rows"
+     ],
+     "additionalProperties": false
+    }
+   ]
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Read Current Item Data"
+  }
+ },
+ {
+  "name": "get_ge_info",
+  "title": "Read GE Catalogue Metadata",
+  "description": "Read RS3 GE catalogue metadata. Do not use this for item prices: use get_item_details. For entries use browse_items; for Wiki categories use list_wiki_category_members.\n\n- view=status reports configuration date/age, not price freshness.\n- view=categories lists all 44 built-in IDs; duplicate names identify separate groups.\n- view=category_counts requires category 0-43, e.g. 24 for high-level melee weapons. Category 0 is one Miscellaneous group, not an all-groups sentinel. The response counts entries by starting letter (# means numbers), not stock or offers.\n\ncategory is rejected outside category_counts; it cannot filter the full list. categories needs no network; other views make one uncached Jagex read. No credentials required. HTTP defaults to 60 requests/IP/minute; honor 429 Retry-After.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "view": {
+     "type": "string",
+     "enum": [
+      "status",
+      "categories",
+      "category_counts"
+     ],
+     "default": "status",
+     "description": "Metadata view; omit for the original configuration status result"
+    },
+    "category": {
+     "type": "integer",
+     "minimum": 0,
+     "maximum": 43,
+     "description": "Category ID (0-43)"
+    }
+   },
+   "oneOf": [
+    {
+     "properties": {
+      "view": {
+       "enum": [
+        "status",
+        "categories"
+       ]
+      }
+     },
+     "not": {
+      "required": [
+       "category"
+      ]
+     }
+    },
+    {
+     "properties": {
+      "view": {
+       "const": "category_counts"
+      }
+     },
+     "required": [
+      "view",
+      "category"
+     ]
+    }
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "anyOf": [
+    {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "lastConfigUpdateRuneday": {
+       "type": "integer",
+       "description": "Upstream RuneDay counter for catalogue configuration update"
+      },
+      "lastConfigUpdateDate": {
+       "type": "string",
+       "format": "date",
+       "description": "Configuration UTC date derived from RuneDay"
+      },
+      "configurationAgeDays": {
+       "type": "integer",
+       "description": "UTC calendar days since configuration update; negative for a future upstream date"
+      },
+      "fetchedAt": {
+       "type": "string",
+       "format": "date-time",
+       "description": "Server retrieval time, not a price update timestamp"
+      },
+      "categoryCount": {
+       "type": "integer",
+       "description": "Number of canonical GE categories"
+      },
+      "priceFreshness": {
+       "const": "not_reported",
+       "description": "Configuration metadata does not report item-price freshness"
+      }
+     },
+     "required": [
+      "lastConfigUpdateRuneday",
+      "lastConfigUpdateDate",
+      "configurationAgeDays",
+      "fetchedAt",
+      "categoryCount",
+      "priceFreshness"
+     ],
+     "additionalProperties": true
+    },
+    {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "categories": {
+       "type": "array",
+       "description": "All 44 category references, sorted by ID",
+       "items": {
+        "type": "object",
+        "properties": {
+         "id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 43,
+          "description": "Category ID (0-43)"
+         },
+         "name": {
+          "type": "string"
+         }
+        },
+        "required": [
+         "id",
+         "name"
+        ],
+        "additionalProperties": false
+       }
+      }
+     },
+     "required": [
+      "categories"
+     ],
+     "additionalProperties": false
+    },
+    {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "type": "object",
+     "properties": {
+      "types": {
+       "type": "array",
+       "items": {}
+      },
+      "alpha": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "letter": {
+          "type": "string",
+          "description": "Starting letter, or # for numbers"
+         },
+         "items": {
+          "type": "integer",
+          "description": "Number of catalogue items in this letter group"
+         }
+        },
+        "required": [
+         "letter",
+         "items"
+        ]
+       }
+      }
+     },
+     "required": [
+      "types",
+      "alpha"
+     ],
+     "additionalProperties": true
+    }
+   ]
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Read GE Catalogue Metadata"
+  }
+ },
+ {
+  "name": "browse_items",
+  "title": "Browse Catalogue Items",
+  "description": "List GE items within one numeric category. Use list_wiki_category_members for Wiki Category: titles, lookup_item for names, or get_item_details for individual records.\n\n- Discover IDs with get_ge_info view=categories and nonempty letters with view=category_counts. IDs 0 and 42 both say Miscellaneous but identify separate groups.\n- {\"category\":24,\"alpha\":\"#\",\"page\":2} selects the second numeric-name page of high-level melee weapons. Pass literal #, not %23; the server encodes it.\n- Restart page at 1 when category or alpha changes. Stop on empty items; isError signals failure rather than completion.\n- Jagex total counts the category, not the letter. Guide prices lag activity.\n- Each call makes one uncached Jagex read without credentials. HTTP defaults to 60 requests/IP/minute; wait for Retry-After after 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "category": {
+     "type": "integer",
+     "minimum": 0,
+     "maximum": 43,
+     "description": "Category ID (0-43)"
+    },
+    "alpha": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 1,
+     "description": "Starting letter (a-z) or # for numbers. Defaults to \"a\"."
+    },
+    "page": {
+     "type": "integer",
+     "minimum": 1,
+     "description": "Page number (starting from 1)"
+    }
+   },
+   "required": [
+    "category"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "total": {
+     "type": "integer",
+     "description": "Jagex catalogue total"
+    },
+    "items": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "additionalProperties": true
+     }
+    }
+   },
+   "required": [
+    "items"
+   ],
+   "additionalProperties": true
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Browse Catalogue Items"
+  }
+ },
+ {
+  "name": "estimate_flip",
+  "title": "Estimate Flip Profit",
+  "description": "Calculate RS3 resale-profit scenarios after seller tax. ESTIMATE ONLY; never places an order. Use get_item_details for current records/comparisons or lookup_item to resolve names.\n\n- itemId=4151 means Abyssal whip, not a quantity. quantity scales total investment, tax and profit without changing per-unit margin.\n- Omitting both prices gives identical buy/sell prices, usually a tax loss. Supply itemId and both prices to calculate without network access.\n- Seller tax is 2% of each unit's sell price, rounded down. Bonds and sales at 50 coins or less are exempt.\n- With quantity=20 and buyLimitRemaining=5, quota profit covers five units while requested totals still cover twenty. fillTimeMinutes converts full-request profit into an hourly rate, including assumed quota waits. Both inputs are caller assumptions, not observed limits or fill predictions.\n- Sampled prices lag live offers. Reads are uncached and require no credentials. HTTP defaults to 60 requests/IP/minute; wait for Retry-After after 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "itemId": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Known GE item ID resolved with lookup_item"
+    },
+    "buyPrice": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Buy price per item in coins. Defaults to the latest Weirdgloop sample, then Jagex guide price."
+    },
+    "sellPrice": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Sell price per item in coins. Defaults to the latest Weirdgloop sample, then Jagex guide price."
+    },
+    "buyLimitRemaining": {
+     "type": "integer",
+     "minimum": 0,
+     "description": "Caller-supplied remaining purchase quota in the current buy-limit window; 0 means none available"
+    },
+    "fillTimeMinutes": {
+     "type": "number",
+     "exclusiveMinimum": 0,
+     "description": "Caller-assumed minutes to buy and resell the full requested quantity, including any quota waits"
+    },
+    "quantity": {
+     "type": "integer",
+     "minimum": 1,
+     "description": "Number of items to flip (default 1)"
+    }
+   },
+   "additionalProperties": false,
+   "required": [
+    "itemId"
+   ]
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "description": "Flip estimate after the RS3 2% seller tax. marginPct is null when the buy cost is 0.",
+   "properties": {
+    "itemId": {
+     "type": "integer"
+    },
+    "itemName": {
+     "type": "string"
+    },
+    "quantity": {
+     "type": "integer"
+    },
+    "buyPrice": {
+     "type": "number",
+     "description": "Buy price per item in coins"
+    },
+    "sellPrice": {
+     "type": "number",
+     "description": "Sell price per item in coins"
+    },
+    "taxRate": {
+     "type": "number"
+    },
+    "taxPerUnit": {
+     "type": "number"
+    },
+    "totalTax": {
+     "type": "number"
+    },
+    "grossProfit": {
+     "type": "number"
+    },
+    "netProfit": {
+     "type": "number"
+    },
+    "netProfitPerUnit": {
+     "type": "number"
+    },
+    "marginPct": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "breakEvenSellPrice": {
+     "type": "number"
+    },
+    "assumptions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "executionScenario": {
+     "type": "object",
+     "description": "Present only for caller-supplied capacity or duration scenarios; not a market prediction",
+     "properties": {
+      "buyLimitRemaining": {
+       "type": "integer"
+      },
+      "quantityWithinBuyLimit": {
+       "type": "integer"
+      },
+      "quantityOverBuyLimit": {
+       "type": "integer"
+      },
+      "netProfitWithinBuyLimit": {
+       "type": "number",
+       "description": "Tax-adjusted profit on the quantity executable within the supplied quota"
+      },
+      "assumedFillTimeMinutes": {
+       "type": "number"
+      },
+      "assumedNetProfitPerHour": {
+       "type": "number",
+       "description": "Full requested profit divided by caller-assumed round-trip hours"
+      }
+     },
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "itemId",
+    "quantity",
+    "buyPrice",
+    "sellPrice",
+    "netProfit"
+   ],
+   "additionalProperties": true
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Estimate Flip Profit"
+  }
+ },
+ {
+  "name": "get_player_quests",
+  "title": "Get Player Quest Journal",
+  "description": "Read a public RS3 character's complete Jagex Player Data quest journal. Use get_player_skills for current levels, get_player_stats for hiscores ranks, or get_wiki_entity_facts with kind=quest for one quest's metadata. If listed, recommend_next_activity offers paid advice.\n\n- username is the character's display name, not a Jagex login, account ID or quest name. No signed-in-player default exists; ask which character when unknown.\n- Send {\"username\":\"A B\"}, not {\"username\":\"A%20B\"}. The server trims outer whitespace and encodes the name once. The returned username echoes that input; no alias or canonical-identity lookup is performed.\n- No gameMode or quest/status selector applies. Filter the complete returned journal locally; there is no pagination. A quest's members flag does not establish current account membership.\n- Invalid names, private/unavailable or malformed journals return isError/text, not an empty journal or guessed progress.\n- Sends the display name to the Jagex Player Data API for one uncached read (Jagex syncs on logout, world hop and periodically, and may serve data up to 10 minutes old; non-members may be refused), with a 12-second default deadline and no automatic retry. No Jev, API key, login or game changes. HTTP shares 60 requests/IP/minute by default; honor Retry-After on 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "username": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 12,
+     "description": "Exact RS3 player display name"
+    }
+   },
+   "required": [
+    "username"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "username": {
+     "type": "string",
+     "description": "Trimmed input echoed back; not a separate canonical-identity lookup"
+    },
+    "source": {
+     "type": "string",
+     "format": "uri",
+     "description": "Jagex Player Data API request URL"
+    },
+    "fetchedAt": {
+     "type": "string",
+     "format": "date-time",
+     "description": "UTC retrieval time for this uncached journal"
+    },
+    "quests": {
+     "type": "array",
+     "minItems": 1,
+     "maxItems": 600,
+     "description": "Complete journal entries returned by the Jagex Player Data API",
+     "items": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 255,
+        "description": "Quest title from the public journal"
+       },
+       "status": {
+        "type": "string",
+        "enum": [
+         "COMPLETED",
+         "STARTED",
+         "NOT_STARTED"
+        ],
+        "description": "Reported player progress for this quest"
+       },
+       "members": {
+        "type": "boolean",
+        "description": "Whether this quest requires membership; not the account membership state"
+       },
+       "userEligible": {
+        "type": "boolean",
+        "description": "Jagex eligibility flag; not independent verification of equipment, budget or every condition"
+       },
+       "questPoints": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Quest-point value reported by the Jagex Player Data API"
+       }
+      },
+      "required": [
+       "title",
+       "status",
+       "members",
+       "userEligible",
+       "questPoints"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "counts": {
+     "type": "object",
+     "description": "Counts over the returned journal: completed + started + notStarted equals total.",
+     "properties": {
+      "total": {
+       "type": "integer",
+       "minimum": 1,
+       "description": "Number of returned journal entries"
+      },
+      "completed": {
+       "type": "integer",
+       "minimum": 0,
+       "description": "Entries with COMPLETED status"
+      },
+      "started": {
+       "type": "integer",
+       "minimum": 0,
+       "description": "Entries with STARTED status"
+      },
+      "notStarted": {
+       "type": "integer",
+       "minimum": 0,
+       "description": "Entries with NOT_STARTED status"
+      }
+     },
+     "required": [
+      "total",
+      "completed",
+      "started",
+      "notStarted"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "username",
+    "source",
+    "fetchedAt",
+    "quests",
+    "counts"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Get Player Quest Journal"
+  }
+ },
+ {
+  "name": "get_player_stats",
+  "title": "Get Player Stats",
+  "description": "Read an RS3 player's published hiscores ranks, levels and experience, including Overall. Use it for ranks or a specific leaderboard; get_player_skills has fresher levels and XP. Use search_wiki for training guides rather than player data.\n- username is the literal in-game display name, including spaces; the server URL-encodes it. gameMode chooses a separate leaderboard, not a filter on normal stats. Omit it for normal mode.\n- Normal, ironman and hardcore boards are supported. A player absent from the selected board returns a 404 tool error; the tool never substitutes another board. Unranked skills use rank Unranked; unavailable level/XP becomes 0.\n- No login, account changes or local cache. HTTP shares a default 60 requests/IP/minute budget; honor Retry-After on 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "username": {
+     "type": "string",
+     "minLength": 1,
+     "description": "Player username to lookup"
+    },
+    "gameMode": {
+     "type": "string",
+     "enum": [
+      "normal",
+      "ironman",
+      "hardcore"
+     ],
+     "description": "Hiscores board (default: normal)",
+     "default": "normal"
+    }
+   },
+   "required": [
+    "username"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "description": "Map of RS3 skill name to hiscores row. Overall is included.",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "rank": {
+      "description": "Hiscores rank, or the string Unranked",
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "const": "Unranked"
+       }
+      ]
+     },
+     "level": {
+      "type": "integer",
+      "description": "Skill level"
+     },
+     "experience": {
+      "type": "integer",
+      "description": "Skill experience"
+     }
+    },
+    "required": [
+     "rank",
+     "level",
+     "experience"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Get Player Stats"
+  }
+ },
+ {
+  "name": "get_player_skills",
+  "title": "Get Player Skills",
+  "description": "Read an RS3 character's current skill levels and XP from Jagex Player Data, which syncs during play and is usually fresher than the hiscores. It has no ranks or Overall row; use get_player_stats for ranks or a specific leaderboard.\n- username is the character's display name; send it with spaces, not URL-encoded. No gameMode applies: levels belong to the account, not a leaderboard.\n- If Player Data refuses the player (not found, hidden, non-member or malformed), the tool falls back to the normal hiscores board, which also lists ironmen, and reports source=hiscores with fallbackReason. Hiscore skills with no stored data are omitted.\n- Experience is whole XP (Player Data fine_xp / 10, rounded down). Jagex may serve Player Data up to 10 minutes old.\n- No login, account changes or local cache; 12-second default deadline, no automatic retry. HTTP shares 60 requests/IP/minute by default; honor Retry-After on 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "username": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 12,
+     "description": "Exact RS3 player display name"
+    }
+   },
+   "required": [
+    "username"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "username": {
+     "type": "string",
+     "description": "Trimmed input echoed back; not a separate canonical-identity lookup"
+    },
+    "source": {
+     "type": "string",
+     "enum": [
+      "player_data",
+      "hiscores"
+     ],
+     "description": "player_data, or hiscores when Player Data refused the player"
+    },
+    "sourceUrl": {
+     "type": "string",
+     "format": "uri",
+     "description": "Request URL that supplied the skills"
+    },
+    "fetchedAt": {
+     "type": "string",
+     "format": "date-time",
+     "description": "UTC retrieval time for this uncached read"
+    },
+    "fallbackReason": {
+     "type": "string",
+     "description": "Why Player Data was not used; present only when source is hiscores"
+    },
+    "skills": {
+     "type": "object",
+     "description": "Map of RS3 skill name (same names as get_player_stats, without Overall) to level and XP",
+     "additionalProperties": {
+      "type": "object",
+      "properties": {
+       "level": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Skill level"
+       },
+       "experience": {
+        "type": "integer",
+        "minimum": 0,
+        "description": "Whole skill experience"
+       }
+      },
+      "required": [
+       "level",
+       "experience"
+      ],
+      "additionalProperties": false
+     }
+    }
+   },
+   "required": [
+    "username",
+    "source",
+    "sourceUrl",
+    "fetchedAt",
+    "skills"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Get Player Skills"
+  }
+ },
+ {
+  "name": "search_wiki",
+  "title": "Search Wiki Pages",
+  "description": "Find RS3 Wiki sources for items, NPCs/monsters, quests and guides. Use get_wiki_page_content for reviewed text/page references, lookup_item for GE identities or get_item_details for catalogue records.\n\nquery accepts raw Wiki syntax; the server URL-encodes it. \"Abyssal demon\" \"drop\" requires both phrases; intitle:\"Cook's Assistant\" focuses titles. prefix:Category:Weapons selects Wiki categories instead of articles.\n\nlimit caps one relevance-ranked set, not an offset. No continuation cursor exists: refine the query for different matches. No matches returns an empty set; invalid queries or API failures return errors.\n\nPublic reads require no credentials and are uncached. The shared HTTP budget defaults to 60 requests/IP/minute; honor 429 Retry-After.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "query": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 200,
+     "description": "Words to search for on the RuneScape Wiki"
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 10,
+     "description": "Max pages to return (default 5)"
+    }
+   },
+   "required": [
+    "query"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "results": {
+     "type": "array",
+     "description": "Matching RuneScape Wiki pages, best match first",
+     "items": {
+      "type": "object",
+      "properties": {
+       "title": {
+        "type": "string",
+        "description": "Wiki page title"
+       },
+       "snippet": {
+        "type": "string",
+        "description": "Empty: search returns references without copying unreviewed text"
+       },
+       "url": {
+        "type": "string",
+        "description": "RuneScape Wiki page URL"
+       },
+       "contentStatus": {
+        "const": "link_only"
+       },
+       "attribution": {
+        "type": "object",
+        "properties": {
+         "author": {
+          "type": "string"
+         },
+         "sourceUrl": {
+          "type": "string"
+         },
+         "historyUrl": {
+          "type": "string"
+         },
+         "termsUrl": {
+          "type": "string"
+         },
+         "changes": {
+          "type": "string"
+         },
+         "copyrightNotices": {
+          "type": "array",
+          "items": {
+           "type": "string"
+          }
+         },
+         "license": {
+          "anyOf": [
+           {
+            "type": "null"
+           },
+           {
+            "type": "object",
+            "properties": {
+             "name": {
+              "type": "string"
+             },
+             "url": {
+              "type": "string"
+             }
+            },
+            "required": [
+             "name",
+             "url"
+            ],
+            "additionalProperties": false
+           }
+          ]
+         }
+        },
+        "required": [
+         "author",
+         "sourceUrl",
+         "historyUrl",
+         "termsUrl",
+         "changes",
+         "copyrightNotices",
+         "license"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "required": [
+       "title",
+       "snippet",
+       "url",
+       "contentStatus",
+       "attribution"
+      ],
+      "additionalProperties": false
+     }
+    }
+   },
+   "required": [
+    "results"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Search Wiki Pages"
+  }
+ },
+ {
+  "name": "get_wiki_page_content",
+  "title": "Get Wiki Content or References",
+  "description": "Get reviewed Wiki article text, or a source reference when text is unavailable. Use search_wiki for titles; get_item_details for prices.\n- page takes one unencoded title; pages takes 1-10, e.g. [\"Abyssal whip\"]. URLs, #fragments and |separators reject the call before fetching.\n- For page, read the flat response. For pages, even one title, check results[i].error before reading results[i].data. Rows preserve order and duplicates; redirects resolve.\n- The server sets output contentStatus: reviewed_extract includes approved, unchanged text and attribution; successful link_only has null text, url and reason. Inputs cannot approve content.\n- In valid batches, missing-page/API errors are per row; the call fails only if all rows fail. At most two requests run concurrently; 429 stops queued work.\n- No authentication is required and responses are not cached here. Shared HTTP budget: 60 requests/IP/minute. Honor Retry-After.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "page": {
+     "type": "string",
+     "minLength": 1,
+     "description": "Wiki page title (spaces allowed; redirects are followed)"
+    },
+    "pages": {
+     "type": "array",
+     "minItems": 1,
+     "maxItems": 10,
+     "items": {
+      "type": "string",
+      "minLength": 1
+     },
+     "description": "Wiki titles for a reference batch; exclusive with page"
+    }
+   },
+   "oneOf": [
+    {
+     "required": [
+      "page"
+     ]
+    },
+    {
+     "required": [
+      "pages"
+     ]
+    }
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "title": {
+     "type": "string"
+    },
+    "url": {
+     "type": "string"
+    },
+    "revisionId": {
+     "anyOf": [
+      {
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "contentStatus": {
+     "enum": [
+      "link_only",
+      "reviewed_extract"
+     ]
+    },
+    "text": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "reason": {
+     "type": "string"
+    },
+    "attribution": {
+     "type": "object",
+     "properties": {
+      "author": {
+       "type": "string"
+      },
+      "sourceUrl": {
+       "type": "string"
+      },
+      "historyUrl": {
+       "type": "string"
+      },
+      "termsUrl": {
+       "type": "string"
+      },
+      "changes": {
+       "type": "string"
+      },
+      "copyrightNotices": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "license": {
+       "anyOf": [
+        {
+         "type": "null"
+        },
+        {
+         "type": "object",
+         "properties": {
+          "name": {
+           "type": "string"
+          },
+          "url": {
+           "type": "string"
+          }
+         },
+         "required": [
+          "name",
+          "url"
+         ],
+         "additionalProperties": false
+        }
+       ]
+      }
+     },
+     "required": [
+      "author",
+      "sourceUrl",
+      "historyUrl",
+      "termsUrl",
+      "changes",
+      "copyrightNotices",
+      "license"
+     ],
+     "additionalProperties": false
+    },
+    "results": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "query": {
+        "type": "string"
+       },
+       "data": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+         "title": {
+          "type": "string"
+         },
+         "url": {
+          "type": "string"
+         },
+         "revisionId": {
+          "anyOf": [
+           {
+            "type": "integer"
+           },
+           {
+            "type": "null"
+           }
+          ]
+         },
+         "contentStatus": {
+          "enum": [
+           "link_only",
+           "reviewed_extract"
+          ]
+         },
+         "text": {
+          "anyOf": [
+           {
+            "type": "string"
+           },
+           {
+            "type": "null"
+           }
+          ]
+         },
+         "reason": {
+          "type": "string"
+         },
+         "attribution": {
+          "type": "object",
+          "properties": {
+           "author": {
+            "type": "string"
+           },
+           "sourceUrl": {
+            "type": "string"
+           },
+           "historyUrl": {
+            "type": "string"
+           },
+           "termsUrl": {
+            "type": "string"
+           },
+           "changes": {
+            "type": "string"
+           },
+           "copyrightNotices": {
+            "type": "array",
+            "items": {
+             "type": "string"
+            }
+           },
+           "license": {
+            "anyOf": [
+             {
+              "type": "null"
+             },
+             {
+              "type": "object",
+              "properties": {
+               "name": {
+                "type": "string"
+               },
+               "url": {
+                "type": "string"
+               }
+              },
+              "required": [
+               "name",
+               "url"
+              ],
+              "additionalProperties": false
+             }
+            ]
+           }
+          },
+          "required": [
+           "author",
+           "sourceUrl",
+           "historyUrl",
+           "termsUrl",
+           "changes",
+           "copyrightNotices",
+           "license"
+          ],
+          "additionalProperties": false
+         }
+        },
+        "required": [
+         "title",
+         "url",
+         "revisionId",
+         "contentStatus",
+         "text",
+         "reason",
+         "attribution"
+        ],
+        "additionalProperties": false
+       },
+       "error": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "query"
+      ],
+      "oneOf": [
+       {
+        "required": [
+         "data"
+        ]
+       },
+       {
+        "required": [
+         "error"
+        ]
+       }
+      ],
+      "additionalProperties": false
+     }
+    },
+    "succeeded": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "failed": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [],
+   "additionalProperties": false,
+   "oneOf": [
+    {
+     "required": [
+      "title",
+      "url",
+      "revisionId",
+      "contentStatus",
+      "text",
+      "reason",
+      "attribution"
+     ]
+    },
+    {
+     "required": [
+      "results",
+      "succeeded",
+      "failed"
+     ]
+    }
+   ]
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Get Wiki Content or References"
+  }
+ },
+ {
+  "name": "get_wiki_entity_facts",
+  "title": "Get Structured Monster and Quest Facts",
+  "description": "Read RS3 monster combat stats or quest metadata. Use search_wiki for titles, get_wiki_page_content for reviewed text/links, or get_item_details for GE records.\n\n- page is a literal main-article title with spaces; the server URL-encodes it. URLs, #variants, |separators and Category: titles are rejected.\n- kind chooses a dataset, not a name filter: quest includes miniquests, subquests and sagas; a title in the wrong dataset errors.\n- limit expands a prefix instead of advancing a page: raising 5 to 10 repeats the first five variants before adding more. Select variants by returned references. If truncated, increase limit or visit the source link; there is no cursor.\n- Missing fields are omitted instead of zero-filled. Article prose/images are excluded, and the uncached index can lag edits.\n- No credentials are required. HTTP defaults to 60 requests/IP/minute; wait for Retry-After after 429.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "page": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 255,
+     "description": "Wiki page title, e.g. Abyssal demon or Cook's Assistant; redirects are resolved"
+    },
+    "kind": {
+     "type": "string",
+     "enum": [
+      "monster",
+      "quest"
+     ],
+     "description": "Structured dataset: combat monster statistics or quest metadata"
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 10,
+     "default": 5,
+     "description": "Maximum variant records from the selected page (default 5)"
+    }
+   },
+   "required": [
+    "page",
+    "kind"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "page": {
+     "type": "string",
+     "description": "Canonical Wiki page title"
+    },
+    "kind": {
+     "type": "string",
+     "enum": [
+      "monster",
+      "quest"
+     ]
+    },
+    "sourceUrl": {
+     "type": "string",
+     "format": "uri"
+    },
+    "fetchedAt": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "truncated": {
+     "type": "boolean",
+     "description": "Additional indexed variants exceeded the requested limit"
+    },
+    "records": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "reference": {
+        "type": "string",
+        "description": "Indexed page/variant identifier, not article text"
+       },
+       "ids": {
+        "type": "array",
+        "items": {
+         "type": "integer",
+         "minimum": 0
+        },
+        "description": "Wiki-indexed entity IDs, not GE item IDs"
+       },
+       "isMembers": {
+        "type": "boolean"
+       },
+       "stats": {
+        "type": "object",
+        "properties": {
+         "combatLevel": {
+          "type": "number",
+          "minimum": 0
+         },
+         "lifePoints": {
+          "type": "number",
+          "minimum": 0
+         },
+         "slayerLevel": {
+          "type": "number",
+          "minimum": 0
+         },
+         "slayerExperience": {
+          "type": "number",
+          "minimum": 0
+         },
+         "attackLevel": {
+          "type": "number",
+          "minimum": 0
+         },
+         "defenceLevel": {
+          "type": "number",
+          "minimum": 0
+         },
+         "magicLevel": {
+          "type": "number",
+          "minimum": 0
+         },
+         "rangedLevel": {
+          "type": "number",
+          "minimum": 0
+         },
+         "meleeMaxHit": {
+          "type": "number",
+          "minimum": 0
+         },
+         "magicMaxHit": {
+          "type": "number",
+          "minimum": 0
+         },
+         "rangedMaxHit": {
+          "type": "number",
+          "minimum": 0
+         },
+         "armour": {
+          "type": "number",
+          "minimum": 0
+         }
+        },
+        "additionalProperties": false
+       },
+       "difficulty": {
+        "type": "string",
+        "enum": [
+         "Novice",
+         "Intermediate",
+         "Experienced",
+         "Master",
+         "Grandmaster",
+         "Special"
+        ]
+       },
+       "questType": {
+        "type": "string",
+        "enum": [
+         "quest",
+         "miniquest",
+         "subquest",
+         "saga"
+        ]
+       },
+       "releaseDate": {
+        "type": "string",
+        "format": "date"
+       }
+      },
+      "required": [
+       "reference"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "attribution": {
+     "type": "object",
+     "properties": {
+      "author": {
+       "type": "string"
+      },
+      "sourceUrl": {
+       "type": "string",
+       "format": "uri"
+      },
+      "historyUrl": {
+       "type": "string",
+       "format": "uri"
+      },
+      "license": {
+       "type": "null",
+       "description": "No article-content license or review is inferred for these index facts"
+      }
+     },
+     "required": [
+      "author",
+      "sourceUrl",
+      "historyUrl",
+      "license"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "page",
+    "kind",
+    "sourceUrl",
+    "fetchedAt",
+    "truncated",
+    "records",
+    "attribution"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Get Structured Monster and Quest Facts"
+  }
+ },
+ {
+  "name": "list_wiki_category_members",
+  "title": "List Wiki Category Members",
+  "description": "List direct articles, subcategories and files in an RS3 Wiki category. Use search_wiki to discover category titles; get_ge_info (view=categories) lists GE groups instead.\n\ncategory is a literal Category: title, not a GE number. limit bounds this page of members, not recursion depth. Supply nextCursor unchanged with the same category to continue. You may change limit between pages, but changing categories invalidates the cursor. There is no recursive expansion or snapshot lock, so edits can affect later pages.\n\nAn empty set can mean an empty or missing category. Results contain metadata links, never article bodies or images. Reads are uncached and need no credentials. HTTP defaults to 60 requests/IP/minute; honor 429 Retry-After.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "category": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 255,
+     "description": "Wiki category title including Category:, e.g. Category:Weapons"
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 50,
+     "default": 20,
+     "description": "Maximum rows in this response"
+    },
+    "cursor": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 4096,
+     "description": "Opaque nextCursor from this category; omit for its first page"
+    }
+   },
+   "required": [
+    "category"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "type": "object",
+   "properties": {
+    "category": {
+     "type": "string"
+    },
+    "sourceUrl": {
+     "type": "string",
+     "format": "uri"
+    },
+    "fetchedAt": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "contentStatus": {
+     "const": "link_only"
+    },
+    "members": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "pageId": {
+        "type": "integer",
+        "minimum": 1
+       },
+       "namespace": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "title": {
+        "type": "string"
+       },
+       "url": {
+        "type": "string",
+        "format": "uri"
+       }
+      },
+      "required": [
+       "pageId",
+       "namespace",
+       "title",
+       "url"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "nextCursor": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "skippedRows": {
+     "type": "integer",
+     "minimum": 0
+    }
+   },
+   "required": [
+    "category",
+    "sourceUrl",
+    "fetchedAt",
+    "contentStatus",
+    "members",
+    "nextCursor",
+    "skippedRows"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "List Wiki Category Members"
+  }
+ },
+ {
+  "name": "get_wiki_drop_table",
+  "title": "Get Indexed Wiki Drop Facts",
+  "description": "Read indexed RS3 drop items, quantities and listed rarities. Use get_wiki_entity_facts for combat stats or lookup_item for GE identities.\n\n- page resolves redirects; put #variant only in variant. A supplied variant must match a returned sourceReference; omission includes all variants.\n- offset counts source rows from zero, including malformed rows that are skipped. Follow nextOffset even after a short usable result. limit bounds rows, not kills/rolls; edits or tied names can shift boundaries.\n- Missing/non-article sources error; unindexed articles yield empty rows. Unknown facts stay null.\n- Listed probabilities are per row. Rolls and omitted conditions can change actual chances; consult the returned source link when hasOmittedAnnotations is true.\n\nEach call reads article identity and the dropsline index without returning article prose/images. Uncached reads may lag and require no credentials. HTTP defaults to 60 requests/IP/minute; honor 429 Retry-After.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "page": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 255,
+     "description": "Literal source article title, e.g. Abyssal demon; not an item ID or URL"
+    },
+    "variant": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 512,
+     "description": "Exact sourceReference for one variant of the resolved article"
+    },
+    "limit": {
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 50,
+     "default": 20,
+     "description": "Maximum rows in this response"
+    },
+    "offset": {
+     "type": "integer",
+     "minimum": 0,
+     "maximum": 10000,
+     "default": 0,
+     "description": "nextOffset from a prior result; omit to start"
+    }
+   },
+   "required": [
+    "page"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "type": "object",
+   "properties": {
+    "page": {
+     "type": "string"
+    },
+    "sourceUrl": {
+     "type": "string",
+     "format": "uri"
+    },
+    "fetchedAt": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "nextOffset": {
+     "type": [
+      "integer",
+      "null"
+     ],
+     "minimum": 0,
+     "description": "Continue with this offset; null means the index page ended or the 10000 offset bound was reached"
+    },
+    "skippedRows": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "rows": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "sourceReference": {
+        "type": "string"
+       },
+       "itemTitle": {
+        "type": "string"
+       },
+       "itemUrl": {
+        "type": "string",
+        "format": "uri"
+       },
+       "quantityMinimum": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "minimum": 0
+       },
+       "quantityMaximum": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "minimum": 0
+       },
+       "rolls": {
+        "type": [
+         "integer",
+         "null"
+        ],
+        "minimum": 1
+       },
+       "rarityLabel": {
+        "type": [
+         "string",
+         "null"
+        ],
+        "enum": [
+         "Always",
+         "Common",
+         "Uncommon",
+         "Rare",
+         "Very rare",
+         "Extremely rare",
+         "Varies",
+         "Unknown",
+         null
+        ]
+       },
+       "listedProbability": {
+        "type": [
+         "number",
+         "null"
+        ],
+        "minimum": 0,
+        "maximum": 1
+       },
+       "approximate": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "rareDropTable": {
+        "type": [
+         "boolean",
+         "null"
+        ]
+       },
+       "hasOmittedAnnotations": {
+        "type": "boolean"
+       }
+      },
+      "required": [
+       "sourceReference",
+       "itemTitle",
+       "itemUrl",
+       "quantityMinimum",
+       "quantityMaximum",
+       "rolls",
+       "rarityLabel",
+       "listedProbability",
+       "approximate",
+       "rareDropTable",
+       "hasOmittedAnnotations"
+      ],
+      "additionalProperties": false
+     }
+    }
+   },
+   "required": [
+    "page",
+    "sourceUrl",
+    "fetchedAt",
+    "rows",
+    "nextOffset",
+    "skippedRows"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "idempotentHint": true,
+   "openWorldHint": true,
+   "title": "Get Indexed Wiki Drop Facts"
+  }
+ }
+]

@@ -1,0 +1,10 @@
+dns-aid 0.28.1 | dnspython 2.9.2
+PASS control             url=None warning=no
+FAIL wk01                url=https://modelmarket.dev/.well-known/ai-catalog.json warning=no   (expected url=https://modelmarket.dev/.well-known/agent-marketplace, warning=no)
+PASS plain               url=https://modelmarket.dev/.well-known/agent-marketplace warning=no
+FAIL wk01-two            url=https://modelmarket.dev/.well-known/ai-catalog.json warning=no   (expected url=https://modelmarket.dev/.well-known/agent-marketplace, warning=no)
+FAIL malformed           url=https://modelmarket.dev/.well-known/ai-catalog.json warning=no   (expected url=None, warning=yes)
+FAIL malformed-and-good  url=https://modelmarket.dev/.well-known/ai-catalog.json warning=no   (expected url=https://modelmarket.dev/.well-known/agent-marketplace, warning=no)
+INFO priority: 20 lookups of priority 1 (agent-marketplace) and priority 2 (ai-catalog.json): priority 1 used 0 times, priority 2 20 times
+fetch: discovery document + catalogue (320 tools, same signer)
+exit=1

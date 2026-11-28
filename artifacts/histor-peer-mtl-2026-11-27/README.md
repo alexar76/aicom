@@ -70,3 +70,54 @@ His dated.json: 17, 18 and 26 Nov checked (sha256 + bytes match); 27 Nov not in 
 
 The 12:00 UTC timer now runs all three (this one ~15 min more). My test folder /root/peers-sample-test removed;
 /root/peers-mtl-20261127 and /root/peers-sample-20261127 (backups) kept.
+
+## The four persistent disagreements traced, 08:50–09:05Z (another session; reads from the Mac, not the HISTOR host)
+
+Folder `era-reads/`. Method: read his public source (58dc54f); read each server once per protocol era with our own
+identity (`read_eras.py`: `server/discover` + `tools/list` in 2026-07-28, then `initialize` asking 2025-11-25,
+2025-06-18, 2025-03-26, 2024-11-05; read-only; raw lists in `reads-2026-11-27/`); run his own `JCSToolsDigest`
+(`pkg/canon`, copied unchanged) over our lists (`mtlrun/`, the two copied files are not kept here).
+
+His digest code over our lists gives HISTOR's digest for all four servers: the rule is implemented the same on both
+sides. Each disagreement has its own cause:
+
+| server | cause | proof |
+|---|---|---|
+| com.stackerscan/stackerscan | the list depends on the protocol revision; he reads after `initialize`, HISTOR in 2026-07-28 | our 2026-07-28 read = HISTOR's digest, each of our four handshake reads = his digest; one member differs: `get_price_history.outputSchema` is the schema itself in 2026-07-28 and `{type: object, properties: {result: <it>}, required: [result]}` to a handshake client |
+| io.github.phreakocious/ebcdic | one tool is named differently for each reader (`ebcdic_ref_<10 hex>`, "exists to measure which directories republish this tool list") | HISTOR holds `ebcdic_ref_3c5d0f47ef`, the Mac was given `ebcdic_ref_929b481f22`; a third digest |
+| io.github.rajeswaran140/crowvault | ten of the 379 tools are named `server_health`; his `toolsOf` (cmd/mcpobs/classify.go) gathers tools into a map by name, so one survives | the 369 others + only the `server_health` that starts "Check security MCP server health" = his digest exactly |
+| io.github.adriancasas/geo360-concierge | he was sent six tools, we are sent seven | our seven without `1hlabs_shadow_solana_b2b_checkout` = his digest exactly; why the server leaves it out for him is not visible from here |
+
+Consequence on our side, checked live: `POST /api/v1/check` with stackerscan's endpoint and the handshake-era digest
+answers `different` ("differs from every set HISTOR has observed"), with the 2026-07-28 digest `same`. A handshake
+client (WARDEN `scan --histor` among them) is told a server changed when it is only being read in another revision.
+The answer carries no protocol version.
+
+A second mechanism met in the sample below (io.github.ValmoDev/joomil): `$schema` in every input and output schema
+is `https://json-schema.org/draft/2020-12/schema` in 2026-07-28 and `http://json-schema.org/draft-07/schema#` after
+`initialize` (and `execution.taskSupport` is present only after `initialize`, outside the contract).
+
+Sample to size it: `era_sample.py` reads 300 servers whose last HISTOR read was on 2026-07-28 (one per registrable
+domain, seed 20261127, from the 26 Nov export) once in each era; rows in `era-sample-2026-11-27.jsonl`, counts with
+`summarize_sample.py`.
+
+### Sample result, reads 08:55:42–09:29:02Z
+
+300 servers on 300 registrable domains. 277 gave a digest in both eras; 273 the same one, **4 a different one (1.4 %)**.
+Of the other 23: 4 answer 2026-07-28 and refuse or fail the handshake (HTTP 400 twice, one with `-32020`; 401; a
+`tools/list` error), 2 answered only the handshake today, 17 answered neither (503, 500, 530, 404, 410, 403, 308, DNS).
+The handshake was answered as 2025-06-18 by 268, 2025-11-25 by 5, 2025-03-26 by 1, and as 2026-07-28 by 3.
+
+The four, each re-read with raw lists saved (`reads-2026-11-27/`):
+
+| server | what a handshake client gets instead |
+|---|---|
+| io.github.birdwell/runescape-wiki-mcp | `get_ge_info.outputSchema` wrapped as `{type: object, properties: {result: <schema with anyOf at the root>}, required: [result]}`: the stackerscan case |
+| io.github.ValmoDev/joomil | `$schema` draft-07 in place of 2020-12 in all five tools' input and output schemas |
+| com.producthunt/mcp | 32 tools in place of 30: `get_launch_preview_view` and `open_launch_editor` are listed only after `initialize` |
+| au.com.ftcapital/ftus-mcp | no tools: `initialize` is answered with `protocolVersion: 2026-07-28` whatever was asked, and `tools/list` in that session returns an empty list (nine tools in 2026-07-28) |
+
+One sample, one day, one reader from one address; a server that differs per reader rather than per revision would
+look the same here. 4 of 277 gives a 95 % interval of about 0.6–3.7 % (Wilson).
+
+Reply draft: PromoMaterials/outreach/standard-track-2026-11-27/histor13-yassinht-reply-2.md (colleague §181).

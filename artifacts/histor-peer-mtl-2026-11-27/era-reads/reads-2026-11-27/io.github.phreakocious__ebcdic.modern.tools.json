@@ -1,0 +1,96 @@
+[
+ {
+  "name": "echo",
+  "annotations": {
+   "readOnlyHint": true,
+   "idempotentHint": true,
+   "openWorldHint": false
+  },
+  "description": "Returns the text you send. Exists to measure MCP client behaviour; this server records who connects.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "text": {
+     "type": "string",
+     "description": "Text to echo back"
+    }
+   },
+   "required": [
+    "text"
+   ]
+  }
+ },
+ {
+  "name": "ebcdic_to_ascii",
+  "annotations": {
+   "readOnlyHint": true,
+   "idempotentHint": true,
+   "openWorldHint": false
+  },
+  "description": "Decodes EBCDIC bytes, given as hex digits, to text. Code pages cp037 (default), cp500, cp273. Nobody needs this; it exists so that a call to it means something.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "hex": {
+     "type": "string",
+     "description": "EBCDIC bytes as hex digits"
+    },
+    "codepage": {
+     "type": "string",
+     "enum": [
+      "cp037",
+      "cp500",
+      "cp273"
+     ],
+     "default": "cp037"
+    }
+   },
+   "required": [
+    "hex"
+   ]
+  }
+ },
+ {
+  "name": "ascii_to_ebcdic",
+  "annotations": {
+   "readOnlyHint": true,
+   "idempotentHint": true,
+   "openWorldHint": false
+  },
+  "description": "Encodes ASCII text to EBCDIC bytes, returned as hex digits. Code pages cp037 (default), cp500, cp273.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "text": {
+     "type": "string",
+     "description": "ASCII text to encode"
+    },
+    "codepage": {
+     "type": "string",
+     "enum": [
+      "cp037",
+      "cp500",
+      "cp273"
+     ],
+     "default": "cp037"
+    }
+   },
+   "required": [
+    "text"
+   ]
+  }
+ },
+ {
+  "name": "ebcdic_ref_929b481f22",
+  "annotations": {
+   "readOnlyHint": true,
+   "idempotentHint": true,
+   "openWorldHint": false
+  },
+  "description": "Returns EBCDIC reference table 929b481f22. Exists to measure which directories republish this tool list.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  }
+ }
+]

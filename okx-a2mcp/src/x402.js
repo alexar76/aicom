@@ -32,7 +32,7 @@ const HISTOR_CHECK_SCHEMA = okSchema("histor-check", {
       query: { type: "object" },
       target: { type: ["object", "null"], description: "the server HISTOR knows by this endpoint or name" },
       observed: { type: ["object", "null"], description: "HISTOR's latest observation of its tool set" },
-      match: { type: "string", enum: ["same", "different", "previously-observed", "not-observed", "not-listed", "no-digest"] },
+      match: { type: "string", enum: ["same", "different", "previously-observed", "same-other-revision", "not-observed", "not-listed", "no-digest", "undigestible"] },
       note: { type: "string" },
       patternScan: { type: "object", properties: { status: { type: "string" } } },
       log: { type: "object", description: "the signed tree head the answer was given under" },

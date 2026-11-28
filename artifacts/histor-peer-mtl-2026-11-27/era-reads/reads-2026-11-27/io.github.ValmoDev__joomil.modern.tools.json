@@ -1,0 +1,826 @@
+[
+ {
+  "name": "suggest_filters",
+  "title": "Suggest Filters",
+  "description": "Suggest Joomil listing filters from a short free-text query about a category, place or budget. Returns filters, a category confidence score and warnings, not matching listings.",
+  "inputSchema": {
+   "type": "object",
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "properties": {
+    "query": {
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 500,
+     "description": "Natural-language search request, e.g. 'appartement 3 pièces à Sion' or 'Tesla Model 3 moins de 25000 CHF'."
+    }
+   },
+   "required": [
+    "query"
+   ]
+  },
+  "annotations": {
+   "title": "Suggest Filters",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "query": {
+     "type": "string"
+    },
+    "filters": {
+     "type": "object",
+     "properties": {
+      "q": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "cat_id": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "canton": {
+       "anyOf": [
+        {
+         "type": "string",
+         "enum": [
+          "Geneve",
+          "Vaud",
+          "Valais",
+          "Fribourg",
+          "Neuchatel",
+          "Jura",
+          "Bern",
+          "Argovie",
+          "Zurich",
+          "Lucerne",
+          "Bale-Ville",
+          "Etranger"
+         ]
+        },
+        {
+         "type": "null"
+        }
+       ]
+      },
+      "location": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "price_min": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "price_max": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "sort": {
+       "type": "string",
+       "enum": [
+        "recent",
+        "price_asc",
+        "price_desc",
+        "views"
+       ]
+      },
+      "limit": {
+       "type": "number"
+      }
+     },
+     "required": [
+      "q",
+      "cat_id",
+      "canton",
+      "location",
+      "price_min",
+      "price_max",
+      "sort",
+      "limit"
+     ],
+     "additionalProperties": false
+    },
+    "category": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "number"
+        },
+        "name": {
+         "type": "string"
+        },
+        "url": {
+         "type": "string"
+        },
+        "parent_id": {
+         "type": "number"
+        },
+        "confidence": {
+         "type": "number"
+        },
+        "reason": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "id",
+        "name",
+        "url",
+        "parent_id",
+        "confidence",
+        "reason"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "confidence": {
+     "type": "number"
+    },
+    "warnings": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "next_step": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "query",
+    "filters",
+    "category",
+    "confidence",
+    "warnings",
+    "next_step"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "search_classifieds",
+  "title": "Search Classifieds",
+  "description": "Search public Joomil.ch classified ads by keyword, category, place or budget. Returns a paginated list with titles, short descriptions, prices in CHF, locations and listing URLs. With no filters, returns recent listings. No seller contact details or transactions.",
+  "inputSchema": {
+   "type": "object",
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "properties": {
+    "q": {
+     "description": "Full-text search query (searches title and description)",
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "cat_id": {
+     "description": "Category ID filter — includes subcategories automatically. Use get_categories to browse available categories.",
+     "anyOf": [
+      {
+       "type": "integer",
+       "exclusiveMinimum": 0,
+       "maximum": 9007199254740991
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "canton": {
+     "description": "Swiss canton filter — strict enum. Use get_cantons for the official list. WARNING: values are API-specific (e.g. 'Bern' not 'Berne', 'Geneve' not 'Genève'/'Geneva'). Supported: Geneve, Vaud, Valais, Fribourg, Neuchatel, Jura, Bern, Argovie, Zurich, Lucerne, Bale-Ville, Etranger.",
+     "anyOf": [
+      {
+       "type": "string",
+       "enum": [
+        "Geneve",
+        "Vaud",
+        "Valais",
+        "Fribourg",
+        "Neuchatel",
+        "Jura",
+        "Bern",
+        "Argovie",
+        "Zurich",
+        "Lucerne",
+        "Bale-Ville",
+        "Etranger"
+       ]
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "location": {
+     "description": "City name or postal code (NPA) — partial match",
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "price_min": {
+     "description": "Minimum price in CHF (inclusive)",
+     "anyOf": [
+      {
+       "type": "number",
+       "minimum": 0
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "price_max": {
+     "description": "Maximum price in CHF (inclusive)",
+     "anyOf": [
+      {
+       "type": "number",
+       "minimum": 0
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "sort": {
+     "description": "Sort order: recent (newest first, default), price_asc, price_desc, views",
+     "type": "string",
+     "enum": [
+      "recent",
+      "price_asc",
+      "price_desc",
+      "views"
+     ]
+    },
+    "limit": {
+     "description": "Results per page (1–50, default 20)",
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 50
+    },
+    "offset": {
+     "description": "Pagination offset. Use next_offset from previous response to get next page.",
+     "type": "integer",
+     "minimum": 0,
+     "maximum": 9007199254740991
+    }
+   }
+  },
+  "annotations": {
+   "title": "Search Classifieds",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "results": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "number"
+       },
+       "title": {
+        "type": "string"
+       },
+       "description": {
+        "type": "string"
+       },
+       "price": {
+        "type": "object",
+        "properties": {
+         "amount": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "currency": {
+          "type": "string",
+          "const": "CHF"
+         }
+        },
+        "required": [
+         "amount",
+         "currency"
+        ],
+        "additionalProperties": false
+       },
+       "location": {
+        "type": "object",
+        "properties": {
+         "city": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "postal_code": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "canton": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "country": {
+          "type": [
+           "string",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "city",
+         "postal_code",
+         "canton",
+         "country"
+        ],
+        "additionalProperties": false
+       },
+       "category": {
+        "anyOf": [
+         {
+          "type": "object",
+          "properties": {
+           "id": {
+            "type": "number"
+           },
+           "name": {
+            "type": "string"
+           },
+           "url": {
+            "type": "string"
+           }
+          },
+          "required": [
+           "id",
+           "name",
+           "url"
+          ],
+          "additionalProperties": false
+         },
+         {
+          "type": "null"
+         }
+        ]
+       },
+       "url": {
+        "type": "string"
+       },
+       "created_at": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "has_picture": {
+        "type": "boolean"
+       },
+       "seller": {
+        "type": "object",
+        "properties": {
+         "name": {
+          "type": [
+           "string",
+           "null"
+          ]
+         },
+         "certified": {
+          "type": "boolean"
+         }
+        },
+        "required": [
+         "name",
+         "certified"
+        ],
+        "additionalProperties": false
+       }
+      },
+      "required": [
+       "id",
+       "title",
+       "price",
+       "location",
+       "category",
+       "url",
+       "created_at",
+       "has_picture",
+       "seller"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "total": {
+     "type": "number"
+    },
+    "limit": {
+     "type": "number"
+    },
+    "offset": {
+     "type": "number"
+    },
+    "has_more": {
+     "type": "boolean"
+    },
+    "next_offset": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "filtered_out": {
+     "type": "number"
+    }
+   },
+   "required": [
+    "results",
+    "total",
+    "limit",
+    "offset",
+    "has_more",
+    "next_offset",
+    "filtered_out"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "get_classified",
+  "title": "Get Classified",
+  "description": "Get full details of a single classified ad on Joomil.ch by its numeric ID. Returns complete description, all images URLs, category breadcrumb (full_path), public seller info (name, certified status, pro company), expiry date and boost level.",
+  "inputSchema": {
+   "type": "object",
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "properties": {
+    "id": {
+     "type": "integer",
+     "exclusiveMinimum": 0,
+     "maximum": 9007199254740991,
+     "description": "Numeric listing ID — visible in the URL and in search_classifieds results"
+    }
+   },
+   "required": [
+    "id"
+   ]
+  },
+  "annotations": {
+   "title": "Get Classified",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "id": {
+     "type": "number"
+    },
+    "title": {
+     "type": "string"
+    },
+    "description": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "price": {
+     "type": "object",
+     "properties": {
+      "amount": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "currency": {
+       "type": "string",
+       "const": "CHF"
+      }
+     },
+     "required": [
+      "amount",
+      "currency"
+     ],
+     "additionalProperties": false
+    },
+    "location": {
+     "type": "object",
+     "properties": {
+      "city": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "postal_code": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "canton": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "country": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     },
+     "required": [
+      "city",
+      "postal_code",
+      "canton",
+      "country"
+     ],
+     "additionalProperties": false
+    },
+    "category": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {
+        "id": {
+         "type": "number"
+        },
+        "name": {
+         "type": "string"
+        },
+        "url": {
+         "type": "string"
+        },
+        "path": {
+         "type": [
+          "string",
+          "null"
+         ]
+        }
+       },
+       "required": [
+        "id",
+        "name",
+        "url",
+        "path"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "url": {
+     "type": "string"
+    },
+    "created_at": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "has_picture": {
+     "type": "boolean"
+    },
+    "seller": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "certified": {
+       "type": "boolean"
+      },
+      "type": {
+       "type": "string",
+       "enum": [
+        "pro",
+        "private"
+       ]
+      },
+      "company": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     },
+     "required": [
+      "name",
+      "certified",
+      "type",
+      "company"
+     ],
+     "additionalProperties": false
+    },
+    "images": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "expires_at": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "boost": {
+     "anyOf": [
+      {
+       "type": "string",
+       "enum": [
+        "star",
+        "flash"
+       ]
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "id",
+    "title",
+    "description",
+    "price",
+    "location",
+    "category",
+    "url",
+    "created_at",
+    "has_picture",
+    "seller",
+    "images",
+    "expires_at",
+    "boost"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "get_categories",
+  "title": "Get Categories",
+  "description": "List active categories of the Joomil.ch marketplace. Returns a flat list with parent_id for hierarchy reconstruction. Omit parent_id for all categories, use parent_id=0 for root categories only, or pass a specific ID to get direct children of that category.",
+  "inputSchema": {
+   "type": "object",
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "properties": {
+    "parent_id": {
+     "description": "Filter to direct children of this category ID. Omit for all categories. Use 0 for root categories only.",
+     "type": "integer",
+     "minimum": 0,
+     "maximum": 9007199254740991
+    }
+   }
+  },
+  "annotations": {
+   "title": "Get Categories",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "categories": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "id": {
+        "type": "number"
+       },
+       "name": {
+        "type": "string"
+       },
+       "url": {
+        "type": "string"
+       },
+       "parent_id": {
+        "type": "number"
+       },
+       "ad_count": {
+        "type": "number"
+       },
+       "allow_ads": {
+        "type": "boolean"
+       }
+      },
+      "required": [
+       "id",
+       "name",
+       "url",
+       "parent_id"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "total": {
+     "type": "number"
+    }
+   },
+   "required": [
+    "categories",
+    "total"
+   ],
+   "additionalProperties": false
+  }
+ },
+ {
+  "name": "get_cantons",
+  "title": "Get Cantons",
+  "description": "List the Swiss cantons supported by Joomil's `canton` filter. Returns the exact `name` value accepted by search_classifieds, plus a readable French label (e.g. 'Bern' rather than 'Berne').",
+  "inputSchema": {
+   "type": "object",
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "properties": {}
+  },
+  "annotations": {
+   "title": "Get Cantons",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "cantons": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "label_fr": {
+        "type": "string"
+       },
+       "code": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "region": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "name",
+       "label_fr",
+       "code",
+       "region"
+      ],
+      "additionalProperties": false
+     }
+    },
+    "total": {
+     "type": "number"
+    }
+   },
+   "required": [
+    "cantons",
+    "total"
+   ],
+   "additionalProperties": false
+  }
+ }
+]

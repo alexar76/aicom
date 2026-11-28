@@ -1,0 +1,383 @@
+[
+ {
+  "name": "geo360_catalog_discovery",
+  "domain": "discovery",
+  "category": "Business Verticals and Storefront Discovery",
+  "phase": "Discovery",
+  "schema_version": "2.2",
+  "description": "[Discovery Gateway] Explores the 3 Business Verticals of GEO360 (commercial_transit, luxury_vip, industrial_b2a) and transversal affiliate_2_0. Call without domain or domain='summary' for storefront; call with domain='transit', 'vip', 'b2a', or 'aff2' to enter that specific shop and retrieve its specialized tools.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "domain": {
+     "type": "string",
+     "enum": [
+      "summary",
+      "transit",
+      "vip",
+      "b2a",
+      "aff2",
+      "crypto",
+      "zengate",
+      "all"
+     ],
+     "default": "summary",
+     "description": "Vertical shop to explore: 'summary' (vitrina), 'transit' (10 mobility tools), 'vip' (6 luxury tools), 'b2a' (12 industrial workflow tools), 'aff2' (6 partner booking/referral tools), 'crypto' (7 Model A Client-Side Crypto / Solana SPL-USDC / Bitcoin L402 / #81 Circuit Breaker / #82 FHE tools)."
+    },
+    "compact": {
+     "type": "boolean",
+     "default": true,
+     "description": "If true, returns condensed schema to preserve LLM context tokens."
+    }
+   }
+  }
+ },
+ {
+  "name": "1hlabs_agent_allowance_circuit_breaker",
+  "domain": "crypto",
+  "category": "Autonomous Wallet Safety & Circuit Breaker (#81)",
+  "phase": "Settlement",
+  "schema_version": "2.2",
+  "description": "[1HLabs Client-Side Wallet Allowance Policy Calculator (#81)] Model A SaaS (0 bps fee), non-custodial deterministic spending-cap template with 3,600s max TTL for client-side execution. Eliminates prompt-injection wallet drainage and runaway execution costs for autonomous crypto wallets (Exodus, Solana, Lightning, Base USDC). Hard-capped 3,600s TTL with automated clawback.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "parent_wallet_pubkey": {
+     "type": "string",
+     "description": "Parent crypto wallet public key / address in Exodus or Solana/Bitcoin/EVM"
+    },
+    "task_budget_cap": {
+     "type": "number",
+     "description": "Maximum spending ceiling authorized for this autonomous task session"
+    },
+    "wallet_protocol": {
+     "type": "string",
+     "enum": [
+      "SOLANA",
+      "BITCOIN_LIGHTNING",
+      "BASE_USDC",
+      "CROSS_RAIL"
+     ],
+     "default": "SOLANA",
+     "description": "Underlying blockchain / wallet rail of the autonomous agent"
+    },
+    "currency": {
+     "type": "string",
+     "enum": [
+      "SOL",
+      "USDC",
+      "SATS",
+      "EUR",
+      "USD"
+     ],
+     "default": "SOL",
+     "description": "Denomination of the task budget"
+    },
+    "ttl_seconds": {
+     "type": "integer",
+     "default": 1800,
+     "description": "Session TTL in seconds (strictly capped at 3,600s against wallet drain)"
+    },
+    "task_objective_hash": {
+     "type": "string",
+     "description": "SHA-256 hash of the agent objective binding the allowance"
+    },
+    "auto_refund_on_failure": {
+     "type": "boolean",
+     "default": true,
+     "description": "Automatically return unspent funds on timeout or failure"
+    },
+    "dry_run": {
+     "type": "boolean",
+     "default": false,
+     "description": "Dry-Run Software Simulation mode. When true, returns locked preview quote with settlement_token without debiting wallet."
+    },
+    "settlement_token": {
+     "type": "string",
+     "description": "Optional dry-run settlement token (tok_dry_...) to redeem a previously locked preview quote."
+    }
+   },
+   "required": [
+    "parent_wallet_pubkey",
+    "task_budget_cap"
+   ]
+  }
+ },
+ {
+  "name": "1hlabs_solana_pda_scaffold",
+  "domain": "crypto",
+  "category": "Solana Mainnet-Beta SPL-USDC PDA Software Template",
+  "phase": "Settlement",
+  "schema_version": "2.2",
+  "description": "[Solana Mainnet-Beta SPL-USDC Client PDA Template] Institutional-grade programmatic SPL-USDC milestone_template for high-frequency agentic settlements (50 to 50,000 USDC). Locks counterparty funds in a non-custodial Program Derived Address (PDA) with atomic clawback guarantees and Model A Non-Custodial B2B SaaS novation.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "payer_pubkey": {
+     "type": "string",
+     "description": "Base58 encoded Solana public key of the funding agent wallet"
+    },
+    "payee_pubkey": {
+     "type": "string",
+     "description": "Base58 encoded Solana public key of the beneficiary merchant"
+    },
+    "amount_usdc": {
+     "type": "number",
+     "minimum": 10.0,
+     "maximum": 100000.0,
+     "default": 1000.0,
+     "description": "Exact settlement amount denominated in USDC (6 decimal precision)"
+    },
+    "timeout_seconds": {
+     "type": "integer",
+     "default": 300,
+     "description": "Client-side timeout parameter embedded in the unsigned PDA instruction template"
+    },
+    "priority_fee_level": {
+     "type": "string",
+     "enum": [
+      "low",
+      "medium",
+      "high",
+      "turbo"
+     ],
+     "default": "medium",
+     "description": "Compute budget unit price multiplier to bypass L1 network congestion"
+    },
+    "dry_run": {
+     "type": "boolean",
+     "default": false,
+     "description": "Dry-Run Software Simulation mode. When true, returns locked preview quote with settlement_token without committing funds."
+    },
+    "settlement_token": {
+     "type": "string",
+     "description": "Optional dry-run settlement token (tok_dry_...) to redeem a previously locked preview quote."
+    }
+   },
+   "required": [
+    "payer_pubkey",
+    "payee_pubkey",
+    "amount_usdc"
+   ]
+  }
+ },
+ {
+  "name": "1hlabs_shadow_solana_b2b_checkout",
+  "domain": "crypto",
+  "category": "Solana B2B SPL-USDC Checkout",
+  "phase": "Settlement",
+  "schema_version": "2.2",
+  "description": "[Solana B2B SPL-USDC Checkout & SPL Memo Verification] Automated commercial invoicing and checkout protocol certifying digital dollar (USDC) transactions with on-chain SPL Memo v2 cryptographic binding.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "merchant_solana_address": {
+     "type": "string",
+     "description": "Destination Base58 Solana wallet or vendor treasury address"
+    },
+    "invoice_amount_usdc": {
+     "type": "number",
+     "default": 500.0,
+     "description": "Total billing amount in USDC"
+    },
+    "memo_order_ref": {
+     "type": "string",
+     "description": "Cryptographic order ID, purchase voucher hash, or procurement SKU"
+    },
+    "corporate_tax_jurisdiction": {
+     "type": "string",
+     "default": "GLOBAL_EU_CH",
+     "description": "Tax reconciliation standard (e.g. Swiss VAT reverse charge or US W-9)"
+    },
+    "dry_run": {
+     "type": "boolean",
+     "default": false,
+     "description": "Dry-Run Software Simulation mode. When true, returns locked preview quote with settlement_token without committing funds."
+    },
+    "settlement_token": {
+     "type": "string",
+     "description": "Optional dry-run settlement token (tok_dry_...) to redeem a previously locked preview quote."
+    }
+   },
+   "required": [
+    "merchant_solana_address",
+    "invoice_amount_usdc",
+    "memo_order_ref"
+   ]
+  }
+ },
+ {
+  "name": "1hlabs_bitcoin_l402_gateway",
+  "domain": "crypto",
+  "category": "Bitcoin Lightning L402 & Taproot Client-Side Gateway",
+  "phase": "Settlement",
+  "schema_version": "2.2",
+  "description": "[Client-Side Bitcoin L402 & Taproot Parameter Gateway] Model A B2B SaaS (0 bps): generates L402 invoice challenges and client-side Taproot PSBT templates: Lightning Network L402 BOLT11 (< 1,000 EUR) and Unsigned On-Chain Taproot 2-of-3 Client-Side PSBT Template (>= 1,000 EUR) under Model A Non-Custodial B2B SaaS.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "mandate_description": {
+     "type": "string",
+     "description": "Commercial capability, task, or inventory item being settled via Bitcoin"
+    },
+    "amount_eur": {
+     "type": "number",
+     "description": "Settlement amount denominated in EUR"
+    },
+    "amount_sats": {
+     "type": "integer",
+     "description": "Optional direct satoshi amount (overrides amount_eur)"
+    },
+    "settlement_rail": {
+     "type": "string",
+     "enum": [
+      "AUTO_DETECT",
+      "LIGHTNING_L402",
+      "TAPROOT_PSBT_CLIENT_TEMPLATE"
+     ],
+     "default": "AUTO_DETECT",
+     "description": "Lightning L402 (< 1k EUR) or Taproot 2-of-3 PSBT Template (>= 1k EUR)"
+    },
+    "client_agent_pubkey_or_lnurl": {
+     "type": "string",
+     "description": "Optional refund pubkey or LNURL / Lightning address"
+    },
+    "auto_generate_l402_invoice": {
+     "type": "boolean",
+     "default": true,
+     "description": "Instantly generate BOLT11 L402 invoice in single pulse"
+    },
+    "dry_run": {
+     "type": "boolean",
+     "default": false,
+     "description": "Dry-Run Software Simulation mode. When true, returns locked preview quote with settlement_token without committing funds."
+    },
+    "settlement_token": {
+     "type": "string",
+     "description": "Optional dry-run settlement token (tok_dry_...) to redeem a previously locked preview quote."
+    }
+   },
+   "required": [
+    "mandate_description"
+   ]
+  }
+ },
+ {
+  "name": "1hlabs_shadow_fhe_blind_route_attestation",
+  "domain": "crypto",
+  "category": "FHE Blind Policy Routing (#82)",
+  "phase": "Intelligence",
+  "schema_version": "2.2",
+  "description": "[1HLabs FHE Blind Routing & B2A Commerce Attestation Gateway (#82)] Evaluates blinded financial policy hashes and selects suggested routing between Bitcoin Lightning L402 (Patrol / Streaming) and Solana SPL-USDC (Strike / Client-Side PDA Template) without exposing master balances under Model A Non-Custodial B2B SaaS.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "blinded_policy_hash": {
+     "type": "string",
+     "description": "SHA-256 hash of the client confidential financial spending limit or encrypted threshold"
+    },
+    "intent_category": {
+     "type": "string",
+     "enum": [
+      "PATROL_STREAMING",
+      "STRIKE_B2B_SETTLEMENT"
+     ],
+     "default": "PATROL_STREAMING",
+     "description": "Operational phase: continuous patrol vs. atomic settlement strike"
+    },
+    "estimated_ticket_band": {
+     "type": "string",
+     "enum": [
+      "MICRO_BELOW_1USD",
+      "MACRO_ABOVE_1USD"
+     ],
+     "default": "MICRO_BELOW_1USD",
+     "description": "Economic ticket scale determining gas and client-side template parameters"
+    },
+    "client_public_identity": {
+     "type": "string",
+     "description": "Public DID, agent label, or treasury identity for attestation binding"
+    },
+    "dry_run": {
+     "type": "boolean",
+     "default": false,
+     "description": "Dry-Run Software Simulation mode. When true, returns locked preview quote with settlement_token without committing funds."
+    },
+    "settlement_token": {
+     "type": "string",
+     "description": "Optional dry-run settlement token (tok_dry_...) to redeem a previously locked preview quote."
+    }
+   },
+   "required": [
+    "blinded_policy_hash"
+   ]
+  }
+ },
+ {
+  "name": "1hlabs_agent_experience_survey",
+  "description": "[1HLabs Network Agent Experience (AX) & Usability Survey] Evaluates your autonomous agentic navigation across our federated capability mesh (Commercial Mobility, Institutional Privacy, Ephemeral UI, Software Tasks, B2A Workflow Coordination). Report your interaction friction, schema clarity rating, or missing user requirements directly to our hostess.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "ax_usability_score": {
+     "type": "string",
+     "enum": [
+      "5_SEAMLESS_INTUITIVE",
+      "4_GOOD_MINOR_FRICTION",
+      "3_AMBIGUOUS_REQUIRED_INFERENCE",
+      "2_HIGH_FRICTION_DROPOUT",
+      "1_UNUSABLE_OR_BLOCKED"
+     ],
+     "description": "Your evaluation of navigating the 1HLabs tool catalog and executing tools."
+    },
+    "primary_friction_cause": {
+     "type": "string",
+     "enum": [
+      "NONE_OPERATION_SUCCESSFUL",
+      "STOREFRONT_DISCOVERY_AMBIGUITY",
+      "SCHEMA_PARAMETER_UNCERTAINTY",
+      "MISSING_VERTICAL_OR_CAPABILITY",
+      "HOSTESS_SEVERANCE_TOO_STRICT",
+      "CONTEXT_WINDOW_OVERHEAD",
+      "BUDGET_OR_POLICY_MISALIGNMENT"
+     ],
+     "description": "Primary friction point encountered during session, if any."
+    },
+    "target_vertical_interest": {
+     "type": "string",
+     "enum": [
+      "commercial_mobility",
+      "privacy_services",
+      "b2a_workflow_coordination",
+      "software_foundry",
+      "sensory_interfaces",
+      "cross_domain_composite",
+      "other_custom_domain"
+     ],
+     "description": "Target domain or capability relevant to your user mandate."
+    },
+    "user_mandate_prompt": {
+     "type": "string",
+     "description": "Clean summary of your user's explicit objective, requirement, or intent."
+    },
+    "user_budget_eur": {
+     "type": "number",
+     "description": "Estimated economic allocation/budget in EUR if applicable."
+    },
+    "agentic_feedback_details": {
+     "type": "string",
+     "description": "Concrete technical feedback: schema improvements, parameter naming, response format."
+    },
+    "agent_client_model": {
+     "type": "string",
+     "description": "Your model name or agent runtime identity."
+    }
+   },
+   "required": [
+    "ax_usability_score",
+    "primary_friction_cause",
+    "user_mandate_prompt"
+   ]
+  }
+ }
+]

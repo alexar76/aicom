@@ -77,9 +77,11 @@ def _packages_using_v1() -> list[Path]:
     return sorted(hits)
 
 
-def test_the_sweep_finds_the_packages_it_is_about():
-    projects = _packages_using_v1()
-    assert projects, "no package imports the mcp v1 API — the walk is broken"
+def test_the_sweep_still_sees_first_party_trees():
+    """Empty v1 consumers is fine after the mcp 2 migration; a broken walk is not."""
+    assert _first_party("pyproject.toml"), "walk found no pyproject.toml — the walk is broken"
+    # `_packages_using_v1()` may be empty: packages that still import FastMCP must pin mcp<2
+    # via `test_a_v1_consumer_pins_mcp_below_2`. Finding none means the migration completed.
 
 
 def _mcp_constraints(text: str) -> list[str]:

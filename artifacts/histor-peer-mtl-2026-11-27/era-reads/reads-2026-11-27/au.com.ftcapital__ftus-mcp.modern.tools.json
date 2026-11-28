@@ -1,0 +1,109 @@
+[
+ {
+  "name": "latest_nav",
+  "description": "Returns the fund's most recent daily NAV record: date, total NAV, entry price, exit price, and NAV unit price, for FT Capital Multi Class Investment Fund, class FTUS/FTUSLCE (ISIN AU60ETL93373).",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "nav_history",
+  "description": "Returns the fund's full daily NAV history, one entry per date from inception (2026-04-07) to the latest available date: total NAV, entry price, exit price, NAV unit price, and units on issue.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "mpi_positions",
+  "description": "Returns the fund's open futures positions (Material Portfolio Information) for the latest trading day: one entry per position, with date, Bloomberg ticker, side, number of contracts, exchange, description, and contract code. Historical positions are not published.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "benchmark_history",
+  "description": "Returns the fund's benchmark percent return, one entry per date, alongside which E-mini S&P 500 futures contract was the lead-month benchmark on that date.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "fund_metadata",
+  "description": "Returns the fund's static reference data in the openfunds standard: fund name, ISIN, LEI, class code, currency, fee rates, and service-provider names (administrator, custodian, trustee, auditor).",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "performance",
+  "description": "Returns the fund's full daily performance history, one entry per date: percent NAV return and percent benchmark return, plus summary metadata (latest percent NAV, alpha, and benchmark return, and the high water mark value and date).",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "performance_vs_benchmark",
+  "description": "Returns the fund's return against its E-mini S&P 500 benchmark for the same 1, 3, and 6 month periods published in the daily NAV report, as at the latest available date: for each period, the start and end date, the fund's percent return, the benchmark's percent return (chained across every futures contract roll in the period, not a naive price ratio), and the excess return. Benchmark and excess return are left out for a class with no benchmark mapped.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "personnel",
+  "description": "Returns Future Trading Capital's named personnel: one entry per person, with id, name, role, a short biography, and LinkedIn profile URL. Call personnel_photo with a returned id to retrieve that person's photo.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {}
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ },
+ {
+  "name": "personnel_photo",
+  "description": "Returns one named person's photo as a PNG image, watermarked at the moment of the call with a short token this deployment's own audit log also records. Call personnel first to find a valid id.",
+  "inputSchema": {
+   "type": "object",
+   "properties": {
+    "id": {
+     "type": "string",
+     "description": "A personnel id returned by the personnel tool, for example \"george-moskos\"."
+    }
+   },
+   "required": [
+    "id"
+   ]
+  },
+  "annotations": {
+   "readOnlyHint": true
+  }
+ }
+]

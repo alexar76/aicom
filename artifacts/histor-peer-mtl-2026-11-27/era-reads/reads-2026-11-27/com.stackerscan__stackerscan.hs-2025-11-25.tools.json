@@ -1,0 +1,1103 @@
+[
+ {
+  "name": "get_spot_prices",
+  "title": "Spot metal prices",
+  "description": "Current and previous-session spot prices for gold, silver, platinum, palladium, copper and nickel, in any supported currency and per troy ounce or gram.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "base": {
+     "description": "A currency code from the live catalog at /api/currencies (ISO 4217 fiat plus BTC and the metal codes). Defaults to USD.",
+     "type": "string",
+     "minLength": 1
+    },
+    "unit": {
+     "description": "Price per troy ounce or per gram. Defaults to troy_oz.",
+     "type": "string",
+     "enum": [
+      "troy_oz",
+      "gram"
+     ]
+    },
+    "metals": {
+     "description": "Metal symbols to include (xau gold, xag silver, xpt platinum, xpd palladium, xcu copper, ni nickel). Omit for all six; Goldback is not a spot metal.",
+     "minItems": 1,
+     "maxItems": 6,
+     "type": "array",
+     "items": {
+      "type": "string",
+      "enum": [
+       "xau",
+       "xag",
+       "xpt",
+       "xpd",
+       "xcu",
+       "ni"
+      ]
+     }
+    }
+   },
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "base": {
+     "type": "string",
+     "minLength": 1,
+     "description": "Resolved uppercase currency code."
+    },
+    "unit": {
+     "type": "string",
+     "enum": [
+      "troy_oz",
+      "gram"
+     ],
+     "description": "Shared price denominator for every returned metal."
+    },
+    "asOf": {
+     "type": "string",
+     "format": "date-time",
+     "description": "UTC source update instant."
+    },
+    "date": {
+     "type": "string",
+     "format": "date",
+     "description": "Market or session date."
+    },
+    "metals": {
+     "type": "object",
+     "properties": {
+      "xau": {
+       "type": "object",
+       "properties": {
+        "open": {
+         "type": "number",
+         "description": "Opening price in the result's shared base and unit."
+        },
+        "high": {
+         "type": "number",
+         "description": "Session high in the result's shared base and unit."
+        },
+        "low": {
+         "type": "number",
+         "description": "Session low in the result's shared base and unit."
+        },
+        "close": {
+         "type": "number",
+         "description": "Latest or session-close price in the result's shared base and unit."
+        }
+       },
+       "required": [
+        "open",
+        "high",
+        "low",
+        "close"
+       ],
+       "additionalProperties": false,
+       "title": "Ohlc"
+      },
+      "xag": {
+       "type": "object",
+       "properties": {
+        "open": {
+         "type": "number",
+         "description": "Opening price in the result's shared base and unit."
+        },
+        "high": {
+         "type": "number",
+         "description": "Session high in the result's shared base and unit."
+        },
+        "low": {
+         "type": "number",
+         "description": "Session low in the result's shared base and unit."
+        },
+        "close": {
+         "type": "number",
+         "description": "Latest or session-close price in the result's shared base and unit."
+        }
+       },
+       "required": [
+        "open",
+        "high",
+        "low",
+        "close"
+       ],
+       "additionalProperties": false,
+       "title": "Ohlc"
+      },
+      "xpt": {
+       "type": "object",
+       "properties": {
+        "open": {
+         "type": "number",
+         "description": "Opening price in the result's shared base and unit."
+        },
+        "high": {
+         "type": "number",
+         "description": "Session high in the result's shared base and unit."
+        },
+        "low": {
+         "type": "number",
+         "description": "Session low in the result's shared base and unit."
+        },
+        "close": {
+         "type": "number",
+         "description": "Latest or session-close price in the result's shared base and unit."
+        }
+       },
+       "required": [
+        "open",
+        "high",
+        "low",
+        "close"
+       ],
+       "additionalProperties": false,
+       "title": "Ohlc"
+      },
+      "xpd": {
+       "type": "object",
+       "properties": {
+        "open": {
+         "type": "number",
+         "description": "Opening price in the result's shared base and unit."
+        },
+        "high": {
+         "type": "number",
+         "description": "Session high in the result's shared base and unit."
+        },
+        "low": {
+         "type": "number",
+         "description": "Session low in the result's shared base and unit."
+        },
+        "close": {
+         "type": "number",
+         "description": "Latest or session-close price in the result's shared base and unit."
+        }
+       },
+       "required": [
+        "open",
+        "high",
+        "low",
+        "close"
+       ],
+       "additionalProperties": false,
+       "title": "Ohlc"
+      },
+      "xcu": {
+       "type": "object",
+       "properties": {
+        "open": {
+         "type": "number",
+         "description": "Opening price in the result's shared base and unit."
+        },
+        "high": {
+         "type": "number",
+         "description": "Session high in the result's shared base and unit."
+        },
+        "low": {
+         "type": "number",
+         "description": "Session low in the result's shared base and unit."
+        },
+        "close": {
+         "type": "number",
+         "description": "Latest or session-close price in the result's shared base and unit."
+        }
+       },
+       "required": [
+        "open",
+        "high",
+        "low",
+        "close"
+       ],
+       "additionalProperties": false,
+       "title": "Ohlc"
+      },
+      "ni": {
+       "type": "object",
+       "properties": {
+        "open": {
+         "type": "number",
+         "description": "Opening price in the result's shared base and unit."
+        },
+        "high": {
+         "type": "number",
+         "description": "Session high in the result's shared base and unit."
+        },
+        "low": {
+         "type": "number",
+         "description": "Session low in the result's shared base and unit."
+        },
+        "close": {
+         "type": "number",
+         "description": "Latest or session-close price in the result's shared base and unit."
+        }
+       },
+       "required": [
+        "open",
+        "high",
+        "low",
+        "close"
+       ],
+       "additionalProperties": false,
+       "title": "Ohlc"
+      }
+     },
+     "additionalProperties": false,
+     "title": "SpotMetals",
+     "description": "Requested spot symbols only; Goldback is not a spot metal."
+    }
+   },
+   "required": [
+    "base",
+    "unit",
+    "asOf",
+    "date",
+    "metals"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "title": "Spot metal prices",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  }
+ },
+ {
+  "name": "get_observed_premiums",
+  "title": "Observed premiums over spot",
+  "description": "Rolling fine-metal-weighted median asking premiums for silver, gold, platinum, palladium, copper, nickel and Goldback, observed from marketplace listings.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "metal": {
+     "type": "string",
+     "enum": [
+      "silver",
+      "gold",
+      "platinum",
+      "palladium",
+      "copper",
+      "nickel",
+      "goldback"
+     ],
+     "description": "Which metal's observed premiums to return."
+    },
+    "query": {
+     "description": "Case-insensitive product label/canonical-key search.",
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 100
+    },
+    "limit": {
+     "default": 10,
+     "description": "Product page size. Without a query, pages browse the most-listed products.",
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 10
+    },
+    "cursor": {
+     "description": "Opaque continuation token returned by the same tool with exactly the same filters.",
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2048
+    }
+   },
+   "required": [
+    "metal"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "metal": {
+     "type": "string",
+     "enum": [
+      "silver",
+      "gold",
+      "platinum",
+      "palladium",
+      "copper",
+      "nickel",
+      "goldback"
+     ]
+    },
+    "asOf": {
+     "type": "string",
+     "format": "date-time",
+     "description": "UTC latest observation instant."
+    },
+    "windowDays": {
+     "type": "integer",
+     "exclusiveMinimum": 0
+    },
+    "minimumListings": {
+     "type": "integer",
+     "exclusiveMinimum": 0
+    },
+    "productQuery": {
+     "anyOf": [
+      {
+       "type": "string",
+       "minLength": 1
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "productOrder": {
+     "type": "string",
+     "enum": [
+      "search",
+      "listing_count"
+     ],
+     "description": "How product rows were selected: search (query match, catalog order) or listing_count (browse, most-listed first). Empty products means no data."
+    },
+    "sourceUrl": {
+     "type": "string",
+     "format": "uri"
+    },
+    "overall": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {
+        "medianPercent": {
+         "type": "number"
+        },
+        "listingCount": {
+         "type": "integer",
+         "minimum": 0
+        }
+       },
+       "required": [
+        "medianPercent",
+        "listingCount"
+       ],
+       "additionalProperties": false,
+       "title": "PremiumSummary"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "categories": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "medianPercent": {
+        "type": "number"
+       },
+       "listingCount": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "key": {
+        "type": "string"
+       },
+       "label": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "medianPercent",
+       "listingCount",
+       "key",
+       "label"
+      ],
+      "additionalProperties": false,
+      "title": "PremiumCategory"
+     }
+    },
+    "products": {
+     "maxItems": 10,
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "medianPercent": {
+        "type": "number"
+       },
+       "listingCount": {
+        "type": "integer",
+        "minimum": 0
+       },
+       "key": {
+        "type": "string",
+        "maxLength": 160
+       },
+       "label": {
+        "type": "string",
+        "maxLength": 200
+       },
+       "fineTroyOz": {
+        "anyOf": [
+         {
+          "type": "number"
+         },
+         {
+          "type": "null"
+         }
+        ]
+       },
+       "numistaUrl": {
+        "anyOf": [
+         {
+          "type": "string",
+          "maxLength": 2048,
+          "format": "uri"
+         },
+         {
+          "type": "null"
+         }
+        ]
+       },
+       "listingsUrl": {
+        "type": "string",
+        "maxLength": 2048,
+        "format": "uri"
+       }
+      },
+      "required": [
+       "medianPercent",
+       "listingCount",
+       "key",
+       "label",
+       "fineTroyOz",
+       "numistaUrl",
+       "listingsUrl"
+      ],
+      "additionalProperties": false,
+      "title": "PremiumProduct"
+     }
+    },
+    "nextCursor": {
+     "anyOf": [
+      {
+       "type": "string",
+       "minLength": 1
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "metal",
+    "asOf",
+    "windowDays",
+    "minimumListings",
+    "productQuery",
+    "productOrder",
+    "sourceUrl",
+    "overall",
+    "categories",
+    "products",
+    "nextCursor"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "title": "Observed premiums over spot",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  }
+ },
+ {
+  "name": "get_price_history",
+  "title": "Historical price series",
+  "description": "Daily historical series for charting — one metal or the Goldback.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "metal": {
+     "type": "string",
+     "enum": [
+      "gold",
+      "silver",
+      "platinum",
+      "palladium",
+      "copper",
+      "nickel",
+      "goldback"
+     ],
+     "description": "The metal (or Goldback) whose history to return."
+    },
+    "days": {
+     "default": 90,
+     "description": "How many trailing days of history to return.",
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 3650
+    },
+    "base": {
+     "default": "USD",
+     "description": "A currency code from the live catalog at /api/currencies (ISO 4217 fiat plus BTC and the metal codes). Defaults to USD.",
+     "type": "string",
+     "minLength": 1
+    },
+    "format": {
+     "default": "line",
+     "description": "ohlc returns open/high/low/close rows; line returns closes.",
+     "type": "string",
+     "enum": [
+      "line",
+      "ohlc"
+     ]
+    },
+    "limit": {
+     "default": 90,
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 100
+    },
+    "cursor": {
+     "description": "Opaque continuation token returned by the same tool with exactly the same filters.",
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2048
+    }
+   },
+   "required": [
+    "metal"
+   ],
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "result": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "oneOf": [
+      {
+       "type": "object",
+       "properties": {
+        "series": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "const": "metal"
+          },
+          "metal": {
+           "type": "string",
+           "enum": [
+            "gold",
+            "silver",
+            "platinum",
+            "palladium",
+            "copper",
+            "nickel",
+            "goldback"
+           ]
+          }
+         },
+         "required": [
+          "kind",
+          "metal"
+         ],
+         "additionalProperties": false,
+         "title": "MetalSeries"
+        },
+        "base": {
+         "type": "string",
+         "minLength": 1
+        },
+        "unit": {
+         "type": "string",
+         "enum": [
+          "troy_oz",
+          "goldback"
+         ]
+        },
+        "requestedDays": {
+         "type": "integer",
+         "minimum": 1,
+         "maximum": 3650
+        },
+        "startDate": {
+         "type": "string",
+         "format": "date"
+        },
+        "endDate": {
+         "type": "string",
+         "format": "date"
+        },
+        "nextCursor": {
+         "anyOf": [
+          {
+           "type": "string",
+           "minLength": 1
+          },
+          {
+           "type": "null"
+          }
+         ]
+        },
+        "format": {
+         "type": "string",
+         "const": "line"
+        },
+        "points": {
+         "maxItems": 100,
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "date": {
+            "type": "string",
+            "format": "date"
+           },
+           "price": {
+            "type": "number"
+           }
+          },
+          "required": [
+           "date",
+           "price"
+          ],
+          "additionalProperties": false,
+          "title": "LinePoint"
+         }
+        }
+       },
+       "required": [
+        "series",
+        "base",
+        "unit",
+        "requestedDays",
+        "startDate",
+        "endDate",
+        "nextCursor",
+        "format",
+        "points"
+       ],
+       "additionalProperties": false
+      },
+      {
+       "type": "object",
+       "properties": {
+        "series": {
+         "type": "object",
+         "properties": {
+          "kind": {
+           "type": "string",
+           "const": "metal"
+          },
+          "metal": {
+           "type": "string",
+           "enum": [
+            "gold",
+            "silver",
+            "platinum",
+            "palladium",
+            "copper",
+            "nickel",
+            "goldback"
+           ]
+          }
+         },
+         "required": [
+          "kind",
+          "metal"
+         ],
+         "additionalProperties": false,
+         "title": "MetalSeries"
+        },
+        "base": {
+         "type": "string",
+         "minLength": 1
+        },
+        "unit": {
+         "type": "string",
+         "enum": [
+          "troy_oz",
+          "goldback"
+         ]
+        },
+        "requestedDays": {
+         "type": "integer",
+         "minimum": 1,
+         "maximum": 3650
+        },
+        "startDate": {
+         "type": "string",
+         "format": "date"
+        },
+        "endDate": {
+         "type": "string",
+         "format": "date"
+        },
+        "nextCursor": {
+         "anyOf": [
+          {
+           "type": "string",
+           "minLength": 1
+          },
+          {
+           "type": "null"
+          }
+         ]
+        },
+        "format": {
+         "type": "string",
+         "const": "ohlc"
+        },
+        "points": {
+         "maxItems": 100,
+         "type": "array",
+         "items": {
+          "type": "object",
+          "properties": {
+           "open": {
+            "type": "number",
+            "description": "Opening price in the result's shared base and unit."
+           },
+           "high": {
+            "type": "number",
+            "description": "Session high in the result's shared base and unit."
+           },
+           "low": {
+            "type": "number",
+            "description": "Session low in the result's shared base and unit."
+           },
+           "close": {
+            "type": "number",
+            "description": "Latest or session-close price in the result's shared base and unit."
+           },
+           "date": {
+            "type": "string",
+            "format": "date"
+           }
+          },
+          "required": [
+           "open",
+           "high",
+           "low",
+           "close",
+           "date"
+          ],
+          "additionalProperties": false,
+          "title": "OhlcPoint"
+         }
+        }
+       },
+       "required": [
+        "series",
+        "base",
+        "unit",
+        "requestedDays",
+        "startDate",
+        "endDate",
+        "nextCursor",
+        "format",
+        "points"
+       ],
+       "additionalProperties": false
+      }
+     ]
+    }
+   },
+   "required": [
+    "result"
+   ]
+  },
+  "annotations": {
+   "title": "Historical price series",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  }
+ },
+ {
+  "name": "get_goldback_rate",
+  "title": "Goldback exchange rate",
+  "description": "The latest Goldback premium multiple over its gold content, and the exchange rate that follows from it.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "base": {
+     "description": "A currency code from the live catalog at /api/currencies (ISO 4217 fiat plus BTC and the metal codes). Defaults to USD.",
+     "type": "string",
+     "minLength": 1
+    }
+   },
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "base": {
+     "type": "string",
+     "minLength": 1,
+     "description": "Resolved uppercase currency code."
+    },
+    "ratePerGoldback": {
+     "type": "number",
+     "description": "Price of one Goldback: goldSpotPerTroyOz × goldContentTroyOz × premiumMultiple."
+    },
+    "goldContentTroyOz": {
+     "type": "number",
+     "const": 0.001,
+     "description": "Fine-gold content of one Goldback note."
+    },
+    "goldSpotPerTroyOz": {
+     "type": "number",
+     "description": "Underlying gold spot price per troy ounce in the base currency."
+    },
+    "premiumMultiple": {
+     "type": "number",
+     "minimum": 0,
+     "description": "Multiple applied to the note's contained-gold spot value."
+    },
+    "rateDate": {
+     "type": "string",
+     "format": "date",
+     "description": "Effective date of the premium multiple."
+    },
+    "spotAsOf": {
+     "type": "string",
+     "format": "date-time",
+     "description": "UTC update instant of the gold spot input."
+    }
+   },
+   "required": [
+    "base",
+    "ratePerGoldback",
+    "goldContentTroyOz",
+    "goldSpotPerTroyOz",
+    "premiumMultiple",
+    "rateDate",
+    "spotAsOf"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "title": "Goldback exchange rate",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  }
+ },
+ {
+  "name": "list_supported_currencies",
+  "title": "Supported currency catalog",
+  "description": "The live list of codes every `currency`/`base` parameter accepts — ISO 4217 fiat plus the metal codes.",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "query": {
+     "description": "Case-insensitive substring match against code or name.",
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 50
+    },
+    "limit": {
+     "default": 20,
+     "type": "integer",
+     "minimum": 1,
+     "maximum": 25
+    },
+    "cursor": {
+     "description": "Opaque continuation token returned by the same tool with exactly the same filters.",
+     "type": "string",
+     "minLength": 1,
+     "maxLength": 2048
+    }
+   },
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "query": {
+     "anyOf": [
+      {
+       "type": "string",
+       "minLength": 1
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "currencies": {
+     "maxItems": 25,
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "code": {
+        "type": "string",
+        "maxLength": 16,
+        "pattern": "^[A-Z0-9]+$"
+       },
+       "name": {
+        "type": "string",
+        "maxLength": 200
+       }
+      },
+      "required": [
+       "code",
+       "name"
+      ],
+      "additionalProperties": false,
+      "title": "Currency"
+     }
+    },
+    "nextCursor": {
+     "anyOf": [
+      {
+       "type": "string",
+       "minLength": 1
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "query",
+    "currencies",
+    "nextCursor"
+   ],
+   "additionalProperties": false
+  },
+  "annotations": {
+   "title": "Supported currency catalog",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  }
+ },
+ {
+  "name": "get_how_to_use",
+  "title": "How to Use guide",
+  "description": "StackerScan's How to Use guide in any app language: its table of contents, or one section as markdown quoting the app's own button and field labels. Sections: createAccount (Your Account), stackSettings (Stack Settings), addItems (Adding Items to Your Stack), editItems (Editing, Selling and Deleting Items), addPhotos (Adding Photos to Your Items), managePortfolio (Understanding Your Portfolio Overview), worthToday (How Items Are Valued), dataFields (Understanding Your Item Data Fields), useTags (How to Use Tags), useCredits (Using Credits), trackPrices (Tracking Metal Prices), premiums (Checking Premiums), stackChat (Asking About Your Stack).",
+  "inputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "locale": {
+     "description": "App language, for the labels a person sees in it. Defaults to en.",
+     "type": "string",
+     "enum": [
+      "en",
+      "es",
+      "de",
+      "fr",
+      "ja",
+      "pt",
+      "zh-CN",
+      "zh-TW",
+      "ar",
+      "ru",
+      "hi",
+      "it",
+      "nl",
+      "he",
+      "tr",
+      "pl",
+      "sv",
+      "nb",
+      "da",
+      "fi",
+      "uk"
+     ]
+    },
+    "section": {
+     "description": "A section id. Omit for the table of contents.",
+     "type": "string",
+     "enum": [
+      "createAccount",
+      "stackSettings",
+      "addItems",
+      "editItems",
+      "addPhotos",
+      "managePortfolio",
+      "worthToday",
+      "dataFields",
+      "useTags",
+      "useCredits",
+      "trackPrices",
+      "premiums",
+      "stackChat"
+     ]
+    }
+   },
+   "additionalProperties": false
+  },
+  "outputSchema": {
+   "$schema": "https://json-schema.org/draft/2020-12/schema",
+   "type": "object",
+   "properties": {
+    "sections": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "section": {
+        "type": "string",
+        "minLength": 1
+       },
+       "title": {
+        "type": "string",
+        "minLength": 1
+       },
+       "subsections": {
+        "type": "array",
+        "items": {
+         "type": "string",
+         "minLength": 1
+        }
+       }
+      },
+      "required": [
+       "section",
+       "title"
+      ],
+      "additionalProperties": false,
+      "title": "HowToUseContentsEntry"
+     }
+    },
+    "section": {
+     "type": "string",
+     "minLength": 1
+    },
+    "title": {
+     "type": "string",
+     "minLength": 1
+    },
+    "markdown": {
+     "type": "string",
+     "minLength": 1
+    }
+   },
+   "additionalProperties": false
+  },
+  "annotations": {
+   "title": "How to Use guide",
+   "readOnlyHint": true,
+   "destructiveHint": false,
+   "openWorldHint": true
+  }
+ }
+]

@@ -1,0 +1,8 @@
+warden-scan | POST(empty) 402 accepts=yes amount=1000 payTo_ok=True ; POST({}) 402 accepts=yes amount=1000 payTo_ok=True ; GET 402 accepts=yes amount=1000 payTo_ok=True
+air-quality-now | POST(empty) 402 accepts=yes amount=1000 payTo_ok=True ; POST({}) 402 accepts=yes amount=1000 payTo_ok=True ; GET 402 accepts=yes amount=1000 payTo_ok=True
+histor-check | POST(empty) 402 accepts=yes amount=1000 payTo_ok=True ; POST({}) 402 accepts=yes amount=1000 payTo_ok=True ; GET 402 accepts=yes amount=1000 payTo_ok=True
+weather-now | POST(empty) 402 accepts=yes amount=1000 payTo_ok=True ; POST({}) 402 accepts=yes amount=1000 payTo_ok=True ; GET 402 accepts=yes amount=1000 payTo_ok=True
+nearby-sensors | POST(empty) 402 accepts=yes amount=30000 payTo_ok=True ; POST({}) 402 accepts=yes amount=30000 payTo_ok=True ; GET 402 accepts=yes amount=30000 payTo_ok=True
+fair-random | POST(empty) 402 accepts=yes amount=6000 payTo_ok=True ; POST({}) 402 accepts=yes amount=6000 payTo_ok=True ; GET 402 accepts=yes amount=6000 payTo_ok=True
+x402-check | POST(empty) 402 accepts=yes amount=3000 payTo_ok=True ; POST({}) 402 accepts=yes amount=3000 payTo_ok=True ; GET 402 accepts=yes amount=3000 payTo_ok=True
+mcp-diff | POST(empty) 402 accepts=yes amount=3000 payTo_ok=True ; POST({}) 402 accepts=yes amount=3000 payTo_ok=True ; GET 402 accepts=yes amount=3000 payTo_ok=True
